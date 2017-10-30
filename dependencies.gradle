@@ -69,6 +69,13 @@ ext {
             timber                        : 'com.jakewharton.timber:timber:4.5.1',
 
     ]
+
+    daggerDependencies = [
+            daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
+            dagger:             "com.google.dagger:dagger:${daggerVersion}",
+            javaxAnnotation:    "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
+    ]
+
 //
 //    domainDependencies = [
 //            javaxAnnotation:    "javax.annotation:jsr250-api:${javaxAnnotationVersion}",

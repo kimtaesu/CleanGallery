@@ -29,12 +29,16 @@ dependencies {
 
     implementation opensourceDependencies.rxKotlin
     implementation opensourceDependencies.timber
+
+    kapt opensourceDependencies.permissionsDispatcherProcessor
     implementation(opensourceDependencies.permissionDispatcher) {
         // if you don't use android.app.Fragment you can exclude support for them
         exclude module: "support-v13"
     }
 
-    kapt opensourceDependencies.permissionsDispatcherProcessor
+    implementation daggerDependencies.dagger
+    kapt daggerDependencies.daggerCompiler
+    compileOnly daggerDependencies.javaxAnnotation
 
     testImplementation testDependencies.junit
     testImplementation testDependencies.mock
