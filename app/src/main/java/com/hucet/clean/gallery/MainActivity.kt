@@ -22,7 +22,9 @@ class MainActivity : AppCompatActivity() {
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
     fun showGallaery() {
 //        TODO next step
-        Toast.makeText(this, "showCamera", Toast.LENGTH_SHORT).show()
+        supportFragmentManager.beginTransaction()
+                .add(android.R.id.content, ListGalleryFragment.newInstance())
+                .commit()
     }
 
     @OnShowRationale(Manifest.permission.READ_EXTERNAL_STORAGE)
