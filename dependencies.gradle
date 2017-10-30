@@ -39,7 +39,7 @@ ext {
     dexmakerVersion = '1.0'
     espressoVersion = '3.0.0'
     testingSupportLibVersion = '0.1'
-    mockitoKotlinVersion = '1.5.2'
+    mockitoKotlinVersion = '1.5.0'
     mockitoAndroidVersion = '2.8.47'
     androidSupportRunnerVersion = '1.0.0'
     androidSupportRulesVersion = '1.0.0'
@@ -57,14 +57,16 @@ ext {
     ]
 
     testDependencies = [
-            junit: "junit:junit:${jUnitVersion}",
+            junit      : "junit:junit:${jUnitVersion}",
+            mock       : "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
+            robolectric: "org.robolectric:robolectric:${robolectricVersion}",
     ]
 
     opensourceDependencies = [
             permissionDispatcher          : "com.github.hotchemi:permissionsdispatcher:${permissionDispatcherVersion}",
             permissionsDispatcherProcessor: "com.github.hotchemi:permissionsdispatcher-processor:${permissionDispatcherVersion}",
             rxKotlin                      : 'io.reactivex.rxjava2:rxkotlin:2.1.0',
-            timber                      : 'com.jakewharton.timber:timber:4.5.1',
+            timber                        : 'com.jakewharton.timber:timber:4.5.1',
 
     ]
 //
@@ -76,7 +78,7 @@ ext {
 //
 //    domainTestDependencies = [
 //            junit:              "junit:junit:${jUnitVersion}",
-//            mockito:            "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
+//
 //            assertj:            "org.assertj:assertj-core:${assertJVersion}"
 //    ]
 //
@@ -105,7 +107,7 @@ ext {
 //            kotlinJUnit:        "org.jetbrains.kotlin:kotlin-test-junit:${kotlin_version}",
 //            assertj:            "org.assertj:assertj-core:${assertJVersion}",
 //            mockito:            "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
-//            robolectric:        "org.robolectric:robolectric:${robolectricVersion}"
+//
 //    ]
 //
 //    dataDependencies = [

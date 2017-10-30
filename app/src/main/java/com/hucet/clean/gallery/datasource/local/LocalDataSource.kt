@@ -1,5 +1,6 @@
-package com.hucet.clean.gallery.datasource
+package com.hucet.clean.gallery.datasource.local
 
+import com.hucet.clean.gallery.datasource.GalleryDataStore
 import com.hucet.clean.gallery.model.Gallery
 import io.reactivex.Flowable
 

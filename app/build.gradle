@@ -3,7 +3,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
-
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -38,4 +37,5 @@ dependencies {
     kapt opensourceDependencies.permissionsDispatcherProcessor
 
     testImplementation testDependencies.junit
+    testImplementation testDependencies.mock
 }
