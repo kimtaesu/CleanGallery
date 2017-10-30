@@ -13,7 +13,7 @@ class GalleryApplication : Application() {
         initStrictMode()
     }
 
-    fun initStrictMode() {
+    private fun initStrictMode() {
         if (BuildConfig.DEBUG) {
             StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder()
                     .detectDiskReads()
@@ -28,6 +28,5 @@ class GalleryApplication : Application() {
                     .penaltyDeath()
                     .build())
         }
-        super.onCreate()
     }
 }
