@@ -28,7 +28,7 @@ dependencies {
     implementation androidSupportDependencies.androidSupportV7
     implementation androidSupportDependencies.constraintLayout
 
-    implementation androidSupportDependencies.constraintLayout
+    implementation opensourceDependencies.rxKotlin
 
     implementation(opensourceDependencies.permissionDispatcher) {
         // if you don't use android.app.Fragment you can exclude support for them

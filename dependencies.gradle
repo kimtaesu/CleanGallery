@@ -45,7 +45,7 @@ ext {
     androidSupportRulesVersion = '1.0.0'
     dexmakerMockitoversion = '2.2.0'
     runnerVersion = '0.5'
-    abc = '3.0.1'
+    permissionDispatcherVersion = '3.0.1'
     kotlinDependencies = [
             kotlin: "org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}"
     ]
@@ -61,8 +61,10 @@ ext {
     ]
 
     opensourceDependencies = [
-            permissionDispatcher          : "com.github.hotchemi:permissionsdispatcher:${abc}",
-            permissionsDispatcherProcessor: "com.github.hotchemi:permissionsdispatcher-processor:${abc}"
+            permissionDispatcher          : "com.github.hotchemi:permissionsdispatcher:${permissionDispatcherVersion}",
+            permissionsDispatcherProcessor: "com.github.hotchemi:permissionsdispatcher-processor:${permissionDispatcherVersion}",
+            rxKotlin                      : 'io.reactivex.rxjava2:rxkotlin:2.1.0'
+
     ]
 //
 //    domainDependencies = [
