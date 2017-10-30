@@ -29,7 +29,7 @@ dependencies {
     implementation androidSupportDependencies.constraintLayout
 
     implementation opensourceDependencies.rxKotlin
-
+    implementation opensourceDependencies.timber
     implementation(opensourceDependencies.permissionDispatcher) {
         // if you don't use android.app.Fragment you can exclude support for them
         exclude module: "support-v13"

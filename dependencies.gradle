@@ -63,7 +63,8 @@ ext {
     opensourceDependencies = [
             permissionDispatcher          : "com.github.hotchemi:permissionsdispatcher:${permissionDispatcherVersion}",
             permissionsDispatcherProcessor: "com.github.hotchemi:permissionsdispatcher-processor:${permissionDispatcherVersion}",
-            rxKotlin                      : 'io.reactivex.rxjava2:rxkotlin:2.1.0'
+            rxKotlin                      : 'io.reactivex.rxjava2:rxkotlin:2.1.0',
+            timber                      : 'com.jakewharton.timber:timber:4.5.1',
 
     ]
 //

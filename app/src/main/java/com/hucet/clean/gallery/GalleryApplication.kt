@@ -2,6 +2,8 @@ package com.hucet.clean.gallery
 
 import android.app.Application
 import android.os.StrictMode
+import com.hucet.clean.gallery.debug.OptionalTree
+import timber.log.Timber
 
 
 /**
@@ -11,6 +13,7 @@ class GalleryApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         initStrictMode()
+        initTimber()
     }
 
     private fun initStrictMode() {
@@ -27,6 +30,12 @@ class GalleryApplication : Application() {
                     .penaltyLog()
                     .penaltyDeath()
                     .build())
+        }
+    }
+
+    private fun initTimber() {
+        if (BuildConfig.DEBUG) {
+            Timber.plant(OptionalTree(threadName = true))
         }
     }
 }
