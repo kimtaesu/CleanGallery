@@ -1,4 +1,3 @@
-
 allprojects {
     repositories {
         jcenter()
@@ -46,9 +45,9 @@ ext {
     androidSupportRulesVersion = '1.0.0'
     dexmakerMockitoversion = '2.2.0'
     runnerVersion = '0.5'
-
+    abc = '3.0.1'
     kotlinDependencies = [
-            kotlin:             "org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}"
+            kotlin: "org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}"
     ]
 
     androidSupportDependencies = [
@@ -58,7 +57,12 @@ ext {
     ]
 
     testDependencies = [
-            junit:              "junit:junit:${jUnitVersion}",
+            junit: "junit:junit:${jUnitVersion}",
+    ]
+
+    opensourceDependencies = [
+            permissionDispatcher          : "com.github.hotchemi:permissionsdispatcher:${abc}",
+            permissionsDispatcherProcessor: "com.github.hotchemi:permissionsdispatcher-processor:${abc}"
     ]
 //
 //    domainDependencies = [

@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 26
@@ -25,5 +26,15 @@ dependencies {
     implementation kotlinDependencies.kotlin
     implementation androidSupportDependencies.androidSupportV7
     implementation androidSupportDependencies.constraintLayout
+
+    implementation androidSupportDependencies.constraintLayout
+
+    implementation(opensourceDependencies.permissionDispatcher) {
+        // if you don't use android.app.Fragment you can exclude support for them
+        exclude module: "support-v13"
+    }
+
+    kapt opensourceDependencies.permissionsDispatcherProcessor
+
     testImplementation testDependencies.junit
 }
