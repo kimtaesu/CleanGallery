@@ -8,12 +8,14 @@ import android.Manifest.permission
 import android.R.string.cancel
 import android.annotation.SuppressLint
 import android.support.v7.app.AlertDialog
+import dagger.android.AndroidInjection
 import permissions.dispatcher.*
 
 
 @RuntimePermissions
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         showGallaeryWithPermissionCheck()

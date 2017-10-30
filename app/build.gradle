@@ -37,7 +37,9 @@ dependencies {
     }
 
     implementation daggerDependencies.dagger
+    implementation daggerDependencies.daggerSupport
     kapt daggerDependencies.daggerCompiler
+    kapt daggerDependencies.daggerProcessor
     compileOnly daggerDependencies.javaxAnnotation
 
     testImplementation testDependencies.junit

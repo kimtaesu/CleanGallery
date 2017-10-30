@@ -71,9 +71,11 @@ ext {
     ]
 
     daggerDependencies = [
-            daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
-            dagger:             "com.google.dagger:dagger:${daggerVersion}",
-            javaxAnnotation:    "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
+            daggerCompiler : "com.google.dagger:dagger-compiler:${daggerVersion}",
+            daggerProcessor: "com.google.dagger:dagger-android-processor:${daggerVersion}",
+            daggerSupport  : "com.google.dagger:dagger-android-support:${daggerVersion}",
+            dagger         : "com.google.dagger:dagger:${daggerVersion}",
+            javaxAnnotation: "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
     ]
 
 //
