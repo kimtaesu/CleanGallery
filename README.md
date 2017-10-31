@@ -16,4 +16,7 @@ Trello : https://trello.com/b/txtiUe3Y/cleangallery
 [MediaFixture](https://github.com/kimtaesu/CleanGallery/blob/master/app/src/test/java/com/hucet/clean/gallery/fixture/MediaFixture.kt) Testable 환경 구축으로 앞으로의 요구사항 "Sort, Filter, Video etc.." 다양한 Test case 에 적용할 경우 쉽게 Test할 수 있습니다.
 또한 *Local Storage*를 Data Source로 추상화하여 추가적인 Data Source(Cache, Network etc..) 에 대응이 가능합니다.
 
+[TestableMedia]
+![](/document/media_testable.jpg)
+
  [cleancode]: https://github.com/bufferapp/clean-architecture-components-boilerplate
