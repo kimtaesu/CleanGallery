@@ -1,10 +1,11 @@
-package com.hucet.clean.gallery
+package com.hucet.clean.gallery.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.hucet.clean.gallery.R
 
 /**
  * Created by taesu on 2017-10-30.

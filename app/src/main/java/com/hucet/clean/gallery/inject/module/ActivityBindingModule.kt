@@ -1,6 +1,6 @@
 package com.hucet.clean.gallery.inject.module
 
-import com.hucet.clean.gallery.MainActivity
+import com.hucet.clean.gallery.activity.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import org.buffer.android.boilerplate.ui.injection.module.MainActivityModule

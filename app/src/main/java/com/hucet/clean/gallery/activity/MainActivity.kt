@@ -1,13 +1,12 @@
-package com.hucet.clean.gallery
+package com.hucet.clean.gallery.activity
 
 import android.Manifest
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
-import android.Manifest.permission
-import android.R.string.cancel
-import android.annotation.SuppressLint
-import android.support.v7.app.AlertDialog
+import com.hucet.clean.gallery.R
+import com.hucet.clean.gallery.fragment.ListGalleryFragment
 import dagger.android.AndroidInjection
 import permissions.dispatcher.*
 
@@ -23,7 +22,6 @@ class MainActivity : AppCompatActivity() {
 
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
     fun showGallaery() {
-//        TODO next step
         supportFragmentManager.beginTransaction()
                 .add(android.R.id.content, ListGalleryFragment.newInstance())
                 .commit()

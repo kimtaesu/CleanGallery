@@ -51,8 +51,10 @@ ext {
     ]
 
     androidSupportDependencies = [
-            androidSupportV7: "com.android.support:appcompat-v7:${supportLibraryVersion}",
-            constraintLayout: "com.android.support.constraint:constraint-layout:1.0.2"
+            androidSupportV7   : "com.android.support:appcompat-v7:${supportLibraryVersion}",
+            constraintLayout   : "com.android.support.constraint:constraint-layout:1.0.2",
+            supportRecyclerView: "com.android.support:recyclerview-v7:${supportLibraryVersion}",
+            supportDesign      : "com.android.support:design:${supportLibraryVersion}",
 
     ]
 

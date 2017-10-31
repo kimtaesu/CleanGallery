@@ -19,4 +19,9 @@ Trello : https://trello.com/b/txtiUe3Y/cleangallery
 [TestableMedia]
 ![](/document/media_testable.jpg)
 
+## Step 2.
+요구사항 : RecyclerView를 사용하여 Local Storage에 있는 Images를 UI로 표현
+
+과정
+
  [cleancode]: https://github.com/bufferapp/clean-architecture-components-boilerplate

@@ -11,6 +11,5 @@ import io.reactivex.Flowable
 class LocalDataSource : GalleryDataStore {
     override fun getGalleries(): Flowable<List<Gallery>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-
     }
 }
