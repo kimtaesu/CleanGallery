@@ -29,6 +29,7 @@ dependencies {
 
     implementation opensourceDependencies.rxKotlin
     implementation opensourceDependencies.timber
+    implementation opensourceDependencies.gson
 
     kapt opensourceDependencies.permissionsDispatcherProcessor
     implementation(opensourceDependencies.permissionDispatcher) {

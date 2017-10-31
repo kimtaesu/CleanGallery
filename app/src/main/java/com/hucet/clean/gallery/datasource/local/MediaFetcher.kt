@@ -99,6 +99,7 @@ class MediaFetcher constructor(val context: Context, val applcationConfig: Appli
                     try {
                         if (shouldStop)
                             break
+
                         val path = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)).trim()
                         var filename = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))?.trim() ?: ""
                         if (filename.isEmpty())
@@ -124,6 +125,7 @@ class MediaFetcher constructor(val context: Context, val applcationConfig: Appli
                             continue
 
                         var size = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE))
+
                         val file = File(path)
                         if (size == 0L) {
                             size = file.length()

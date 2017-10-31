@@ -67,7 +67,8 @@ ext {
             permissionsDispatcherProcessor: "com.github.hotchemi:permissionsdispatcher-processor:${permissionDispatcherVersion}",
             rxKotlin                      : 'io.reactivex.rxjava2:rxkotlin:2.1.0',
             timber                        : 'com.jakewharton.timber:timber:4.5.1',
-
+            moshi                         : 'com.squareup.moshi:moshi-kotlin:1.5.0',
+            gson                          : 'com.google.code.gson:gson:2.8.2',
     ]
 
     daggerDependencies = [
