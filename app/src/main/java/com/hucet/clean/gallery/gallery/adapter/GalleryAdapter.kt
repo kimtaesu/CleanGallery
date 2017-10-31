@@ -1,4 +1,4 @@
-package com.hucet.clean.gallery.adapter
+package com.hucet.clean.gallery.gallery.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -13,7 +13,7 @@ import com.hucet.clean.gallery.model.Medium
  */
 class GalleryAdapter : RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
 
-    var mediums: List<Medium> = arrayListOf()
+    var mediums: ArrayList<Medium> = arrayListOf()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val medium = mediums[position]
