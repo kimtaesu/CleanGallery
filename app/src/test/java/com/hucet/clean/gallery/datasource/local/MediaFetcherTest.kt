@@ -7,6 +7,10 @@ import com.hucet.clean.gallery.config.IMAGES
 import com.hucet.clean.gallery.fixture.MediaFixture
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
+import org.hamcrest.core.Is
+import org.hamcrest.core.Is.*
+import org.junit.Assert
+import org.junit.Assert.*
 import org.junit.Test
 
 /**
@@ -18,6 +22,9 @@ class MediaFetcherTest {
         val mediaFetcher = MediaFetcher(mockContext(), mockConfig())
         val cursor = MediaFixture().getMediaFromJson("media/default_media.json")
         val result = mediaFetcher.getFilesFrom(cursor, "", false, false, arrayListOf())
+        assertThat(result.size, `is`(2))
+        assertThat(result.get(0).name, `is`("3_Forest.jpg"))
+        assertThat(result.get(1).name, `is`("4_Structure.jpg"))
     }
 
     private fun mockConfig(): ApplicationConfig {
