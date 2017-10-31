@@ -20,7 +20,8 @@ class MediaFetcher constructor(val context: Context, val applcationConfig: Appli
     var shouldStop = false
 
     fun getMediaByDirectories(isPickVideo: Boolean, isPickImage: Boolean): HashMap<String, ArrayList<Medium>> {
-        val media = getFilesFrom("", isPickImage, isPickVideo)
+        val cursor = query("")
+        val media = getFilesFrom(cursor, "", isPickImage, isPickVideo, getNoMediaFolders())
         val excludedPaths = applcationConfig.excludedFolders
         val includedPaths = applcationConfig.includedFolders
         val showHidden = applcationConfig.shouldShowHidden
@@ -42,7 +43,7 @@ class MediaFetcher constructor(val context: Context, val applcationConfig: Appli
         return directories
     }
 
-    fun getFilesFrom(curPath: String, isPickImage: Boolean, isPickVideo: Boolean): ArrayList<Medium> {
+    fun query(curPath: String): Cursor {
         val projection = arrayOf(MediaStore.Images.Media._ID,
                 MediaStore.Images.Media.DISPLAY_NAME,
                 MediaStore.Images.Media.DATE_TAKEN,
@@ -53,18 +54,18 @@ class MediaFetcher constructor(val context: Context, val applcationConfig: Appli
         val selection = getSelectionQuery(curPath)
         val selectionArgs = getSelectionArgsQuery(curPath)
 
-        return try {
-            val cur = context.contentResolver.query(uri, projection, selection, selectionArgs, getSortingForFolder(curPath))
-            parseCursor(cur, isPickImage, isPickVideo, curPath)
-        } catch (e: Exception) {
-            ArrayList()
-        }
+        return context.contentResolver.query(uri, projection, selection, selectionArgs, getSortingForFolder(curPath))
+    }
+
+    fun getFilesFrom(cursor: Cursor?, curPath: String, isPickImage: Boolean, isPickVideo: Boolean, noMediaFolders: ArrayList<String>): ArrayList<Medium> {
+        cursor ?: return ArrayList()
+        return parseCursor(cursor, isPickImage, isPickVideo, curPath, noMediaFolders)
     }
 
     private fun getSelectionQuery(path: String): String? {
         val dataQuery = "${MediaStore.Images.Media.DATA} LIKE ?"
         return if (path.isEmpty()) {
-            if (context.isAndroidFour())
+            if (isAndroidFour())
                 return null
 
             var query = "($dataQuery) OR ($dataQuery)"
@@ -76,7 +77,7 @@ class MediaFetcher constructor(val context: Context, val applcationConfig: Appli
 
     private fun getSelectionArgsQuery(path: String): Array<String>? {
         return if (path.isEmpty()) {
-            if (context.isAndroidFour())
+            if (isAndroidFour())
                 return null
             arrayOf("${getExternalStorageDirectory()}/%", "${getSdCardStorageDirectory()}/%")
         } else {
@@ -84,13 +85,12 @@ class MediaFetcher constructor(val context: Context, val applcationConfig: Appli
         }
     }
 
-    private fun parseCursor(cur: Cursor, isPickImage: Boolean, isPickVideo: Boolean, curPath: String): ArrayList<Medium> {
+    private fun parseCursor(cur: Cursor, isPickImage: Boolean, isPickVideo: Boolean, curPath: String, noMediaFolders: ArrayList<String>): ArrayList<Medium> {
         val curMedia = ArrayList<Medium>()
         val filterMedia = applcationConfig.filterMedia
         val showHidden = applcationConfig.shouldShowHidden
         val includedFolders = applcationConfig.includedFolders.map { "${it.trimEnd('/')}/" }
         val excludedFolders = applcationConfig.excludedFolders.map { "${it.trimEnd('/')}/" }
-        val noMediaFolders = getNoMediaFolders()
         val isThirdPartyIntent = applcationConfig.isThirdPartyIntent
 
         cur.use {
@@ -99,9 +99,8 @@ class MediaFetcher constructor(val context: Context, val applcationConfig: Appli
                     try {
                         if (shouldStop)
                             break
-
-                        val path = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)).trim()
-                        var filename = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))?.trim() ?: ""
+                        val path = cur.getString(cur.getColumnIndex(MediaStore.Images.Media.DATA)).trim()
+                        var filename = cur.getString(cur.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME))?.trim() ?: ""
                         if (filename.isEmpty())
                             filename = path.getFilenameFromPath()
 
@@ -124,7 +123,7 @@ class MediaFetcher constructor(val context: Context, val applcationConfig: Appli
                         if (!showHidden && filename.startsWith('.'))
                             continue
 
-                        var size = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE))
+                        var size = cur.getLong(cur.getColumnIndex(MediaStore.Images.Media.SIZE))
 
                         val file = File(path)
                         if (size == 0L) {
@@ -159,10 +158,10 @@ class MediaFetcher constructor(val context: Context, val applcationConfig: Appli
                         }
 
                         if (!isExcluded || isThirdPartyIntent) {
-                            if (!file.exists())
-                                continue
-                            val dateTaken = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN))
-                            val dateModified = cur.getInt(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED)) * 1000L
+//                            if (!file.exists())
+//                                continue
+                            val dateTaken = cur.getLong(cur.getColumnIndex(MediaStore.Images.Media.DATE_TAKEN))
+                            val dateModified = cur.getInt(cur.getColumnIndex(MediaStore.Images.Media.DATE_MODIFIED)) * 1000L
 
                             val medium = Medium(filename, path, isVideo, dateModified, dateTaken, size)
                             curMedia.add(medium)

@@ -1,9 +1,9 @@
 package com.hucet.clean.gallery.fixture
 
 import android.database.Cursor
+import android.provider.MediaStore
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import java.io.File
@@ -17,10 +17,10 @@ private var currentIndex = 0
 
 class MediaFixture {
 
-    val gson = GsonBuilder()
+    private val gson = GsonBuilder()
             .create()
 
-    fun getMediaFromJson(path: String): Cursor? {
+    fun getMediaFromJson(path: String): Cursor {
         return getCursor(readJson(path))
     }
 
@@ -30,38 +30,46 @@ class MediaFixture {
         return file.readText()
     }
 
-    private fun getCursor(json: String): Cursor? {
+    private fun getCursor(json: String): Cursor {
         val medias = fakeMedia(json)
-        return mockMedia(medias)
+        return mockCursor(medias)
     }
 
-    private fun mockMedia(medias: List<FakeMedia>): Cursor? {
-        val arrayCursor = ArrayList<Cursor>()
-        for (media in medias) {
-            val cursor = mock<Cursor>()
-            whenever(cursor.getColumnIndexOrThrow(any())).thenReturn(any())
-            whenever(cursor.getString(MediaColumnOfIndex.DATA.getValue())).thenReturn(media.data)
-            whenever(cursor.getString(MediaColumnOfIndex.DISPLAY_NAME.getValue())).thenReturn(media.displayName)
-            whenever(cursor.getLong(MediaColumnOfIndex.SIZE.getValue())).thenReturn(media.size)
-            whenever(cursor.getLong(MediaColumnOfIndex.DATE_TAKEN.getValue())).thenReturn(media.dateTaken)
-            whenever(cursor.getInt(MediaColumnOfIndex.DATE_MODIFIED.getValue())).thenReturn(media.dateModified)
-            arrayCursor.add(cursor)
-        }
+    private fun mockCursor(medias: List<FakeMedia>): Cursor {
+        var cursor = mock<Cursor>()
+        changeCursorProperties(cursor, medias[currentIndex])
 
-        for (i in 0 until arrayCursor.size) {
-            whenever(arrayCursor[i].moveToFirst()).thenAnswer({
-                currentIndex = 0
+        whenever(cursor?.moveToFirst()).thenAnswer({
+            currentIndex = 0
+            changeCursorProperties(cursor, medias[currentIndex])
+            true
+        })
+        whenever(cursor?.moveToNext()).thenAnswer({
+            if (currentIndex++ + 1 < medias.size) {
+                changeCursorProperties(cursor, medias[currentIndex])
                 true
-            })
-            whenever(arrayCursor[i].moveToNext()).thenAnswer({
-                if (currentIndex++ + 1 < arrayCursor.size) {
-                    true
-                } else {
-                    false
-                }
-            })
-        }
-        return arrayCursor.first()
+            } else {
+                false
+            }
+        })
+        return cursor
+    }
+
+    private fun mockColumnIndex(c: Cursor) {
+        whenever(c.getColumnIndex(MediaStore.Images.Media.DATA)).thenReturn(MediaColumnOfIndex.DATA.getValue())
+        whenever(c.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)).thenReturn(MediaColumnOfIndex.DISPLAY_NAME.getValue())
+        whenever(c.getColumnIndex(MediaStore.Images.Media.SIZE)).thenReturn(MediaColumnOfIndex.SIZE.getValue())
+        whenever(c.getColumnIndex(MediaStore.Images.Media.DATE_TAKEN)).thenReturn(MediaColumnOfIndex.DATE_TAKEN.getValue())
+        whenever(c.getColumnIndex(MediaStore.Images.Media.DATE_MODIFIED)).thenReturn(MediaColumnOfIndex.DATE_MODIFIED.getValue())
+    }
+
+    private fun changeCursorProperties(cursor: Cursor, newMedia: FakeMedia) {
+        mockColumnIndex(cursor)
+        whenever(cursor?.getString(MediaColumnOfIndex.DATA.getValue())).thenReturn(newMedia.data)
+        whenever(cursor?.getString(MediaColumnOfIndex.DISPLAY_NAME.getValue())).thenReturn(newMedia.displayName)
+        whenever(cursor?.getLong(MediaColumnOfIndex.SIZE.getValue())).thenReturn(newMedia.size)
+        whenever(cursor?.getLong(MediaColumnOfIndex.DATE_TAKEN.getValue())).thenReturn(newMedia.dateTaken)
+        whenever(cursor?.getInt(MediaColumnOfIndex.DATE_MODIFIED.getValue())).thenReturn(newMedia.dateModified)
     }
 
     private enum class MediaColumnOfIndex(private val i: Int) {

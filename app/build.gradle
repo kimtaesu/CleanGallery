@@ -45,4 +45,8 @@ dependencies {
 
     testImplementation testDependencies.junit
     testImplementation testDependencies.mock
+    testImplementation testDependencies.mockInline
+    testImplementation testDependencies.robolectric
+
+
 }

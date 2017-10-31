@@ -59,6 +59,7 @@ ext {
     testDependencies = [
             junit      : "junit:junit:${jUnitVersion}",
             mock       : "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
+            mockInline : "org.mockito:mockito-inline:+",
             robolectric: "org.robolectric:robolectric:${robolectricVersion}",
     ]
 
