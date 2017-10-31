@@ -1,5 +1,6 @@
 package com.hucet.clean.gallery.gallery.adapter
 
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +29,14 @@ class GalleryAdapter : RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
     }
 
     override fun getItemCount() = mediums.size
+
+    fun updateData(newItems: List<Medium>) {
+        val diffCallback = MediumDiffCallback(this.mediums, newItems)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        this.mediums.clear()
+        this.mediums.addAll(newItems)
+        diffResult.dispatchUpdatesTo(this)
+    }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var fileName: TextView = view.findViewById(R.id.filename)
