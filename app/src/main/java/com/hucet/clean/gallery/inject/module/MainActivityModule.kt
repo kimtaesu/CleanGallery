@@ -1,5 +1,6 @@
 package org.buffer.android.boilerplate.ui.injection.module
 
+import com.hucet.clean.gallery.datasource.local.LocalDataSource
 import com.hucet.clean.gallery.repository.GalleryRepository
 import dagger.Module
 import dagger.Provides
@@ -14,6 +15,6 @@ class MainActivityModule {
     @Provides
     @PerActivity
     fun provideGalleryRepository(): GalleryRepository {
-        return GalleryRepository()
+        return GalleryRepository(LocalDataSource())
     }
 }

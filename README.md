@@ -72,4 +72,9 @@ Thread[main] doOnTerminate
 Thread[main] Completed
 ```
 
+## Step 4.
+요구사항 : Ui GradView
+
+과정
+
  [cleancode]: https://github.com/bufferapp/clean-architecture-components-boilerplate
