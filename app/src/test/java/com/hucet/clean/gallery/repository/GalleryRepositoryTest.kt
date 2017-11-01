@@ -24,7 +24,7 @@ class GalleryRepositoryTest {
 
     @Test
     fun `subscriber State Completed 확인`() {
-        whenever(mockLocalDataSource.getGalleries()).thenReturn(Flowable.just(listOf()))
+        whenever(mockLocalDataSource.getGalleries()).thenReturn(Flowable.just(testMediumData()))
 
         val testSubscriber = repository.getGalleries().test()
         testSubscriber.assertNoErrors()
@@ -33,13 +33,16 @@ class GalleryRepositoryTest {
 
     @Test
     fun `subscriber assert value`() {
-        val testData = listOf(Medium("tyler", "/tyler", false, System.currentTimeMillis(), System.currentTimeMillis(), 10))
-        whenever(mockLocalDataSource.getGalleries()).thenReturn(Flowable.just(testData))
+        whenever(mockLocalDataSource.getGalleries()).thenReturn(Flowable.just(testMediumData()))
 
         val testSubscriber = repository.getGalleries().test()
         testSubscriber.assertComplete()
         testSubscriber.assertValue { data ->
-            data == testData
+            data == testMediumData()
         }
     }
+}
+
+fun testMediumData(): List<Medium> {
+    return listOf(Medium("tyler", "/tyler", false, System.currentTimeMillis(), System.currentTimeMillis(), 10))
 }
