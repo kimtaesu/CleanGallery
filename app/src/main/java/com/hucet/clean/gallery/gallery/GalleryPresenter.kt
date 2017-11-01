@@ -17,9 +17,6 @@ class GalleryPresenter constructor(val view: Gallery.View,
     override fun fetchItems() {
         repository
                 .getGalleries()
-                .map {
-                    adapter.fetchData(it)
-                }
                 .subscribeOn(Schedulers.io())
                 .main()
                 .doOnSubscribe {
@@ -34,7 +31,7 @@ class GalleryPresenter constructor(val view: Gallery.View,
                 .subscribe(
                         { next ->
                             Timber.d("Next[${next}]")
-                            adapter.updateUi(next)
+                            adapter.updateData(next)
                         },
                         { error ->
                             Timber.d("Error[${error}]")
