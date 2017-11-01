@@ -34,6 +34,42 @@ Trello : https://trello.com/b/txtiUe3Y/cleangallery
 요구사항 : Ui <-> Presenter관계 연결 With Rx
 
 과정
+* Rx Style [Start, Error, Complete] 정의
 
+```kotlin
+repository
+                .getGalleries()
+                .subscribeOn(Schedulers.io())
+                .main()
+                .doOnSubscribe {
+                    view.showProgress()
+                }
+                .main()
+                .doOnTerminate {
+                    view.hideProgress()
+                }
+                .subscribe(
+                        { next ->
+                            adapter.updateData(next)
+                        },
+                        { error ->
+                            view.showError()
+                        },
+                        {
+                        })
+```
+
+> [UI Thread] : showProgress, hideProgress, showError
+
+> [RxCachedThreadScheduler] : getGalleries
+
+Thread Log
+```java
+Thread[main] doOnSubscribe
+Thread[RxCachedThreadScheduler-1] GalleryPresenter getGalleries
+Thread[main] Next[[Medium(name=tyler, path=/tyler, video=false, modified=1509514003251, taken=1509514003251, size=10)]]
+Thread[main] doOnTerminate
+Thread[main] Completed
+```
 
  [cleancode]: https://github.com/bufferapp/clean-architecture-components-boilerplate
