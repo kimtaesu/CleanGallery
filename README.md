@@ -31,7 +31,7 @@ Trello : https://trello.com/b/txtiUe3Y/cleangallery
 ![](/document/di_graph.jpg)
 
 ## Step 3.
-요구사항 : Ui <-> Presenter관계 연결 With Rx
+요구사항 : Repository With Rx
 
 과정
 * Rx Style [Start, Error, Complete] 정의
