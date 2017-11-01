@@ -7,13 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.hucet.clean.gallery.R
+import com.hucet.clean.gallery.inject.scopes.PerFragment
 import com.hucet.clean.gallery.model.Medium
+import javax.inject.Inject
 
 /**
  * Created by taesu on 2017-10-31.
  */
-class GalleryAdapter : RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
-
+@PerFragment
+class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
     var mediums: ArrayList<Medium> = arrayListOf()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

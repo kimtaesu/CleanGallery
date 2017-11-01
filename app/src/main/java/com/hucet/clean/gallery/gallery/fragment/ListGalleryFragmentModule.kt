@@ -1,7 +1,10 @@
 package com.hucet.clean.gallery.gallery.fragment
 
 import com.hucet.clean.gallery.gallery.Gallery
+import com.hucet.clean.gallery.gallery.GalleryPresenter
+import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.inject.scopes.PerFragment
+import com.hucet.clean.gallery.repository.GalleryRepository
 import dagger.Module
 import dagger.Provides
 
@@ -13,14 +16,14 @@ class ListGalleryFragmentModule {
 
     @PerFragment
     @Provides
-    internal fun providesGalleryFragmentView(fragment: ListGalleryFragment): Gallery.View {
+    fun providesGalleryPresenter(view: Gallery.View, adapter: GalleryAdapter, repository: GalleryRepository): Gallery.Presenter {
+        return GalleryPresenter(view, adapter, repository)
+    }
+
+    @PerFragment
+    @Provides
+    fun providesGalleryFragmentView(fragment: ListGalleryFragment): Gallery.View {
         return fragment
     }
-//
-//    @PerFragment
-//    @Provides
-//    internal fun providesDetailFragmentPresenter(detailFragmentView: DetailFragmentView): DetailFragmentPresenter {
-//        return DetailFragmentPresenter(detailFragmentView)
-//    }
 
 }

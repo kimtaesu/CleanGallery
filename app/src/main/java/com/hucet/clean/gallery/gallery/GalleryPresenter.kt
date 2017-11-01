@@ -6,10 +6,10 @@ import com.hucet.clean.gallery.repository.GalleryRepository
 /**
  * Created by taesu on 2017-10-31.
  */
-class GalleryPresenter : Gallery.Presenter {
-    private var repository = GalleryRepository()
-    lateinit var view: Gallery.View
-    lateinit var adapter: GalleryAdapter
+class GalleryPresenter constructor(val view: Gallery.View,
+                                   val adapter: GalleryAdapter,
+                                   val repository: GalleryRepository
+) : Gallery.Presenter {
 
     override fun fetchItems() {
         repository
@@ -20,6 +20,7 @@ class GalleryPresenter : Gallery.Presenter {
                         },
                         { error ->
                             view.showError()
+                            error.printStackTrace()
                         },
                         {
                             view.hideProgress()

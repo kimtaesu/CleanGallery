@@ -10,10 +10,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.gallery.Gallery
-import com.hucet.clean.gallery.gallery.GalleryPresenter
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_gallery.*
+import javax.inject.Inject
 
 
 /**
@@ -22,8 +22,8 @@ import kotlinx.android.synthetic.main.fragment_gallery.*
 class ListGalleryFragment : Fragment(), Gallery.View {
 
 
-    private var adapter = GalleryAdapter()
-    private var presenter = GalleryPresenter()
+    @Inject lateinit var adapter: GalleryAdapter
+    @Inject lateinit var presenter: Gallery.Presenter
 
     companion object {
         fun newInstance() = ListGalleryFragment()
@@ -36,18 +36,12 @@ class ListGalleryFragment : Fragment(), Gallery.View {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initRecyclerView()
-        setPresenter()
         presenter.fetchItems()
     }
 
     override fun onAttach(context: Context?) {
         AndroidSupportInjection.inject(this);
         super.onAttach(context)
-    }
-
-    private fun setPresenter() {
-        presenter.view = this
-        presenter.adapter = adapter
     }
 
     private fun initRecyclerView() {
