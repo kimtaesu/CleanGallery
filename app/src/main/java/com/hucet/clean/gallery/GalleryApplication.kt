@@ -16,8 +16,6 @@ import javax.inject.Inject
  * Created by taesu on 2017-10-30.
  */
 class GalleryApplication : Application(), HasActivityInjector {
-
-
     @Inject lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
 
     override fun onCreate() {

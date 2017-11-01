@@ -1,6 +1,7 @@
 package com.hucet.clean.gallery.inject.module
 
 import com.hucet.clean.gallery.activity.MainActivity
+import com.hucet.clean.gallery.gallery.GalleryFragmentProviderModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import org.buffer.android.boilerplate.ui.injection.module.MainActivityModule
@@ -12,6 +13,6 @@ import org.buffer.android.boilerplate.ui.injection.scopes.PerActivity
 @Module
 abstract class ActivityBindingModule {
     @PerActivity
-    @ContributesAndroidInjector(modules = arrayOf(MainActivityModule::class))
+    @ContributesAndroidInjector(modules = arrayOf(MainActivityModule::class, GalleryFragmentProviderModule::class))
     abstract fun bindMainActivity(): MainActivity
 }
