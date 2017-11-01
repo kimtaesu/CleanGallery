@@ -73,7 +73,7 @@ Thread[main] Completed
 ```
 
 ## Step 4.
-요구사항 : Ui GradView
+요구사항 : Ui Thumbnail
 
 과정
 
