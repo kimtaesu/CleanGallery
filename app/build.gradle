@@ -29,7 +29,8 @@ dependencies {
     implementation androidSupportDependencies.supportRecyclerView
     implementation androidSupportDependencies.supportDesign
 
-    implementation opensourceDependencies.rxKotlin
+    implementation rxDependencies.rxKotlin
+    implementation rxDependencies.rxAndroid
     implementation opensourceDependencies.timber
     implementation opensourceDependencies.gson
 

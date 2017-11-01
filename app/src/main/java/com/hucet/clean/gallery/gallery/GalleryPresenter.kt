@@ -1,7 +1,10 @@
 package com.hucet.clean.gallery.gallery
 
+import com.hucet.clean.gallery.extension.main
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.repository.GalleryRepository
+import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 
 /**
  * Created by taesu on 2017-10-31.
@@ -14,16 +17,32 @@ class GalleryPresenter constructor(val view: Gallery.View,
     override fun fetchItems() {
         repository
                 .getGalleries()
+                .map {
+                    adapter.fetchData(it)
+                }
+                .subscribeOn(Schedulers.io())
+                .main()
+                .doOnSubscribe {
+                    Timber.d("doOnSubscribe")
+                    view.showProgress()
+                }
+                .main()
+                .doOnTerminate {
+                    Timber.d("doOnTerminate")
+                    view.hideProgress()
+                }
                 .subscribe(
                         { next ->
-                            adapter.updateData(next)
+                            Timber.d("Next[${next}]")
+                            adapter.updateUi(next)
                         },
                         { error ->
+                            Timber.d("Error[${error}]")
                             view.showError()
-                            error.printStackTrace()
                         },
                         {
-                            view.hideProgress()
+                            Timber.d("Completed")
                         })
     }
+
 }

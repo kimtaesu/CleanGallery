@@ -30,4 +30,10 @@ Trello : https://trello.com/b/txtiUe3Y/cleangallery
 [DependencyGraph]
 ![](/document/di_graph.jpg)
 
+## Step 3.
+요구사항 : Ui <-> Presenter관계 연결 With Rx
+
+과정
+
+
  [cleancode]: https://github.com/bufferapp/clean-architecture-components-boilerplate

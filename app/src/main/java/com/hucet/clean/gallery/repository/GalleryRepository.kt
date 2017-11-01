@@ -1,6 +1,7 @@
 package com.hucet.clean.gallery.repository
 
 import com.hucet.clean.gallery.datasource.local.LocalDataSource
+import com.hucet.clean.gallery.extension.io
 import com.hucet.clean.gallery.model.Medium
 import io.reactivex.Flowable
 
@@ -11,6 +12,6 @@ class GalleryRepository {
 
     private var localDataSource = LocalDataSource()
     fun getGalleries(): Flowable<List<Medium>> {
-        return localDataSource.getGalleries()
+        return Flowable.defer { localDataSource.getGalleries().io() }
     }
 }
