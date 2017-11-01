@@ -20,7 +20,7 @@ Trello : https://trello.com/b/txtiUe3Y/cleangallery
 ![](/document/media_testable.jpg)
 
 ## Step 2.
-요구사항 : Repository를 통한 Data 관계 연결
+요구사항 : Presenter <-> Repository <-> DataSource 관계 연결
 
 과정
 * MVP Pattern
