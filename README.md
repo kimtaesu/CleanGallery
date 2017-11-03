@@ -76,5 +76,5 @@ Thread[main] Completed
 요구사항 : Ui Thumbnail
 
 과정
-   <img src="/document/gallery_thumbnail.png" alt="Smiley face" height="400" width="1000">
+   <img src="/document/gallery_thumbnail.png" alt="Smiley face" height="1000" width="400">
 
