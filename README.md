@@ -101,5 +101,5 @@ GalleryAdapter.kt
                 .into(holder.thumbnail)
 ```
 
-   <img src="/document/gallery_thumbnail.png" alt="Smiley face" height="600" width="300">
+   <img src="/document/gallery_thumbnail.png" alt="Smiley face" height="510" width="300">
 
