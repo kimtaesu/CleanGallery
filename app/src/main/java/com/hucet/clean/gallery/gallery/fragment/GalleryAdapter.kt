@@ -5,8 +5,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.hucet.clean.gallery.R
+import com.hucet.clean.gallery.gallery.fragment.GlideRequests
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import com.hucet.clean.gallery.model.Medium
 import javax.inject.Inject
@@ -16,11 +18,18 @@ import javax.inject.Inject
  */
 @PerFragment
 class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
+
+    @Inject lateinit var glideRequests: GlideRequests
     var mediums: ArrayList<Medium> = arrayListOf()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val medium = mediums[position]
         holder.fileName.text = medium.name
+        glideRequests
+                .asDrawable()
+                .centerCrop()
+                .load(medium.path)
+                .into(holder.thumbnail)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -41,8 +50,8 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<GalleryAdapter
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var fileName: TextView = view.findViewById(R.id.filename)
-
+        val fileName: TextView = view.findViewById(R.id.filename)
+        val thumbnail: ImageView = view.findViewById(R.id.thumbnail)
     }
 
 }

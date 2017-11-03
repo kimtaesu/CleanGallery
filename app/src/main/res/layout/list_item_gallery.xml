@@ -3,8 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:id="@+id/thumbnail"
+        android:layout_width="@dimen/list_view_folder_thumbnail_size"
+        android:layout_height="@dimen/list_view_folder_thumbnail_size" />
+
     <TextView
+        android:id="@+id/filename"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/filename"/>
+        android:layout_height="wrap_content" />
 </LinearLayout>
