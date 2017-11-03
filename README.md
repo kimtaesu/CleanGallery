@@ -176,3 +176,5 @@ override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
        ...
     }
 ```
+* Detail View
+<img src="/document/gallery_detail.png" alt="Smiley face" height="510" width="300">
