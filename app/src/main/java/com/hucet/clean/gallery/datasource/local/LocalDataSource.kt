@@ -9,10 +9,10 @@ import timber.log.Timber
  * Created by taesu on 2017-10-30.
  */
 
-class LocalDataSource : GalleryDataStore {
+class LocalDataSource constructor(val madiaFetcher: MediaFetcher) : GalleryDataStore {
     override fun getGalleries(): Flowable<List<Medium>> {
         Timber.d("GalleryPresenter getGalleries")
-        val dummy = arrayListOf(Medium("tyler", "/tyler", false, System.currentTimeMillis(), System.currentTimeMillis(), 10))
-        return Flowable.just(dummy)
+        val cursor = madiaFetcher.query("")
+        return Flowable.just(madiaFetcher.getFilesFrom(cursor, "", false, false))
     }
 }

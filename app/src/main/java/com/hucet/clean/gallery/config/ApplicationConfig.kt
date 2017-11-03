@@ -1,11 +1,12 @@
 package com.hucet.clean.gallery.config
 
 import android.app.Application
+import javax.inject.Inject
 
 /**
  * Created by taesu on 2017-10-30.
  */
-class ApplicationConfig(
+class ApplicationConfig @Inject constructor(
         val application: Application
 ) {
     val excludedFolders: Set<String>

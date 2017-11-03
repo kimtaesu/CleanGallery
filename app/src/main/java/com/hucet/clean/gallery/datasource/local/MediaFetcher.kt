@@ -7,41 +7,37 @@ import com.hucet.clean.gallery.config.*
 import com.hucet.clean.gallery.extension.*
 import com.hucet.clean.gallery.model.Medium
 import java.io.File
-import java.util.LinkedHashMap
-import kotlin.collections.ArrayList
-import kotlin.collections.component1
-import kotlin.collections.component2
 
 /**
  * Created by taesu on 2017-10-30.
  */
 
-class MediaFetcher constructor(val context: Context, val applcationConfig: ApplicationConfig) {
-    var shouldStop = false
+class MediaFetcher constructor(private val context: Context, private val applcationConfig: ApplicationConfig) {
+    private var shouldStop = false
 
-    fun getMediaByDirectories(isPickVideo: Boolean, isPickImage: Boolean): HashMap<String, ArrayList<Medium>> {
-        val cursor = query("")
-        val media = getFilesFrom(cursor, "", isPickImage, isPickVideo, getNoMediaFolders())
-        val excludedPaths = applcationConfig.excludedFolders
-        val includedPaths = applcationConfig.includedFolders
-        val showHidden = applcationConfig.shouldShowHidden
-        val directories = groupDirectories(media)
+//    fun getMediaByDirectories(isPickVideo: Boolean, isPickImage: Boolean): HashMap<String, List<Medium>> {
+//        val cursor = query("")
+//        val media = getFilesFrom(cursor, "", isPickImage, isPickVideo)
+//        val excludedPaths = applcationConfig.excludedFolders
+//        val includedPaths = applcationConfig.includedFolders
+//        val showHidden = applcationConfig.shouldShowHidden
+//        val directories = groupDirectories(media)
+//
+//        val removePaths = ArrayList<String>()
+//        for ((_, curMedia) in directories) {
+//            // make sure the path has uppercase letters wherever appropriate
+//            val groupPath = File(curMedia.first().path).parent
+//            if (!File(groupPath).exists() || !shouldFolderBeVisible(groupPath, excludedPaths, includedPaths, showHidden)) {
+//                removePaths.add(groupPath.toLowerCase())
+//            }
+//        }
+//
+//        removePaths.forEach {
+//            directories.remove(it)
+//        }
 
-        val removePaths = ArrayList<String>()
-        for ((_, curMedia) in directories) {
-            // make sure the path has uppercase letters wherever appropriate
-            val groupPath = File(curMedia.first().path).parent
-            if (!File(groupPath).exists() || !shouldFolderBeVisible(groupPath, excludedPaths, includedPaths, showHidden)) {
-                removePaths.add(groupPath.toLowerCase())
-            }
-        }
-
-        removePaths.forEach {
-            directories.remove(it)
-        }
-
-        return directories
-    }
+//        return directories
+//    }
 
     fun query(curPath: String): Cursor {
         val projection = arrayOf(MediaStore.Images.Media._ID,
@@ -57,9 +53,9 @@ class MediaFetcher constructor(val context: Context, val applcationConfig: Appli
         return context.contentResolver.query(uri, projection, selection, selectionArgs, getSortingForFolder(curPath))
     }
 
-    fun getFilesFrom(cursor: Cursor?, curPath: String, isPickImage: Boolean, isPickVideo: Boolean, noMediaFolders: ArrayList<String>): ArrayList<Medium> {
-        cursor ?: return ArrayList()
-        return parseCursor(cursor, isPickImage, isPickVideo, curPath, noMediaFolders)
+    fun getFilesFrom(cursor: Cursor?, curPath: String, isPickImage: Boolean, isPickVideo: Boolean): List<Medium> {
+        cursor ?: return emptyList()
+        return parseCursor(cursor, isPickImage, isPickVideo, curPath)
     }
 
     private fun getSelectionQuery(path: String): String? {
@@ -85,7 +81,7 @@ class MediaFetcher constructor(val context: Context, val applcationConfig: Appli
         }
     }
 
-    private fun parseCursor(cur: Cursor, isPickImage: Boolean, isPickVideo: Boolean, curPath: String, noMediaFolders: ArrayList<String>): ArrayList<Medium> {
+    private fun parseCursor(cur: Cursor, isPickImage: Boolean, isPickVideo: Boolean, curPath: String): ArrayList<Medium> {
         val curMedia = ArrayList<Medium>()
         val filterMedia = applcationConfig.filterMedia
         val showHidden = applcationConfig.shouldShowHidden
@@ -146,11 +142,11 @@ class MediaFetcher constructor(val context: Context, val applcationConfig: Appli
                         }
 
                         if (!isExcluded && !showHidden) {
-                            noMediaFolders.forEach {
-                                if (path.startsWith(it)) {
-                                    isExcluded = true
-                                }
-                            }
+//                            noMediaFolders.forEach {
+//                                if (path.startsWith(it)) {
+//                                    isExcluded = true
+//                                }
+//                            }
                         }
 
                         if (!isExcluded && !showHidden && path.contains("/.")) {
@@ -187,21 +183,21 @@ class MediaFetcher constructor(val context: Context, val applcationConfig: Appli
         return curMedia
     }
 
-    private fun groupDirectories(media: ArrayList<Medium>): HashMap<String, ArrayList<Medium>> {
-        val directories = LinkedHashMap<String, ArrayList<Medium>>()
-        for (medium in media) {
-            if (shouldStop)
-                break
-
-            val parentDir = File(medium.path).parent?.toLowerCase() ?: continue
-            if (directories.containsKey(parentDir)) {
-                directories[parentDir]!!.add(medium)
-            } else {
-                directories.put(parentDir, arrayListOf(medium))
-            }
-        }
-        return directories
-    }
+//    private fun groupDirectories(media: ArrayList<Medium>): HashMap<String, List<Medium>> {
+//        val directories = LinkedHashMap<String, List<Medium>>()
+//        for (medium in media) {
+//            if (shouldStop)
+//                break
+//
+//            val parentDir = File(medium.path).parent?.toLowerCase() ?: continue
+//            if (directories.containsKey(parentDir)) {
+//                directories[parentDir]!!.add(medium)
+//            } else {
+//                directories.put(parentDir, arrayListOf(medium))
+//            }
+//        }
+//        return directories
+//    }
 
     private fun shouldFolderBeVisible(path: String, excludedPaths: Set<String>, includedPaths: Set<String>, showHidden: Boolean): Boolean {
         val file = File(path)

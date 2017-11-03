@@ -46,6 +46,9 @@ dependencies {
     kapt daggerDependencies.daggerProcessor
     compileOnly daggerDependencies.javaxAnnotation
 
+    implementation opensourceDependencies.glide
+    kapt opensourceDependencies.glideCompiler
+
     testImplementation testDependencies.junit
     testImplementation testDependencies.mock
     testImplementation testDependencies.mockInline

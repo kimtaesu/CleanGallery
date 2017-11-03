@@ -1,4 +1,4 @@
-package com.hucet.clean.gallery.gallery
+package com.hucet.clean.gallery.gallery.presenter
 
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.repository.GalleryRepository

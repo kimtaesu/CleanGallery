@@ -21,7 +21,7 @@ class MediaFetcherTest {
     fun `default media json 에 의한 검증`() {
         val mediaFetcher = MediaFetcher(mockContext(), mockConfig())
         val cursor = MediaFixture().getMediaFromJson("media/default_media.json")
-        val result = mediaFetcher.getFilesFrom(cursor, "", false, false, arrayListOf())
+        val result = mediaFetcher.getFilesFrom(cursor, "", false, false)
         assertThat(result.size, `is`(2))
         assertThat(result.get(0).name, `is`("3_Forest.jpg"))
         assertThat(result.get(1).name, `is`("4_Structure.jpg"))

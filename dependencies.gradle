@@ -77,6 +77,8 @@ ext {
             timber                        : 'com.jakewharton.timber:timber:4.5.1',
             moshi                         : 'com.squareup.moshi:moshi-kotlin:1.5.0',
             gson                          : 'com.google.code.gson:gson:2.8.2',
+            glide                         : "com.github.bumptech.glide:glide:${glideVersion}",
+            glideCompiler                 : "com.github.bumptech.glide:compiler:${glideVersion}",
     ]
 
     daggerDependencies = [
@@ -209,7 +211,7 @@ ext {
 //            dagger:             "com.google.dagger:dagger:${daggerVersion}",
 //            rxKotlin:           "io.reactivex.rxjava2:rxkotlin:${rxKotlinVersion}",
 //            rxAndroid:          "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
-//            glide:              "com.github.bumptech.glide:glide:${glideVersion}",
+//
 //            kotlin:             "org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}",
 //            javaxAnnotation:    "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
 //            javaxInject:        "javax.inject:javax.inject:${javaxInjectVersion}",
