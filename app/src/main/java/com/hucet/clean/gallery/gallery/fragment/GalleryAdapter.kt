@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.hucet.clean.gallery.R
+import com.hucet.clean.gallery.gallery.fragment.GalleryListener
 import com.hucet.clean.gallery.gallery.fragment.GlideRequests
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import com.hucet.clean.gallery.model.Medium
@@ -18,9 +19,15 @@ import javax.inject.Inject
  */
 @PerFragment
 class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
-
     @Inject lateinit var glideRequests: GlideRequests
-    var mediums: ArrayList<Medium> = arrayListOf()
+    private var mediums: ArrayList<Medium> = arrayListOf()
+    private var onClick: GalleryListener? = null
+    private var recyclerView: RecyclerView? = null
+
+    fun setOnClickListener(recyclerView: RecyclerView, onClick: GalleryListener) {
+        this.recyclerView = recyclerView
+        this.onClick = onClick
+    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val medium = mediums[position]
@@ -36,6 +43,12 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<GalleryAdapter
         val itemView = LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.list_item_gallery, parent, false)
+
+
+        itemView.setOnClickListener({
+            val position = recyclerView?.getChildAdapterPosition(it)
+            onClick?.onGalleryClicked(mediums.get(position!!))
+        })
         return ViewHolder(itemView)
     }
 
@@ -53,5 +66,6 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<GalleryAdapter
         val fileName: TextView = view.findViewById(R.id.filename)
         val thumbnail: ImageView = view.findViewById(R.id.thumbnail)
     }
+
 
 }

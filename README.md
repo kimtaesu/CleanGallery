@@ -103,3 +103,76 @@ GalleryAdapter.kt
 
    <img src="/document/gallery_thumbnail.png" alt="Smiley face" height="510" width="300">
 
+## Step 5.
+요구사항 : Image(detail) viewing
+
+과정
+* Gallery Click Event
+1. Activity <-> Fragment 관련된 [Acticle](https://medium.com/@kimtaesoo188/android-weekly-277-from-fragments-to-activity-the-lambda-way-cac15973721a)
+
+GalleryActivity.kt
+```kotlin
+galleryFragment = ListGalleryFragment.Companion.Builder()
+            .setOnClickListener(object : GalleryListener {
+                override fun onGalleryClicked(medium: Medium) {
+                    Timber.d("onGalleryClicked ${medium}")
+                }
+            }).build()
+```
+
+```kotlin
+        supportFragmentManager.beginTransaction()
+                .add(android.R.id.content, galleryFragment)
+                .commit()
+```
+ListGalleryFragment.kt
+```kotlin
+class ListGalleryFragment : Fragment(), Gallery.View {
+    companion object {
+        private val BUNDLE_KEY_CLICK_LISTENER = "BUNDLE_KEY_CLICK_LISTENER"
+
+        class Builder {
+            private var onClick: GalleryListener? = null
+
+            fun setOnClickListener(onClick: GalleryListener): Builder {
+                this.onClick = onClick
+                return this
+            }
+
+            fun build(): ListGalleryFragment {
+                val fragment = ListGalleryFragment()
+                fragment.setArguments(createArgs())
+                return fragment
+            }
+
+            private fun createArgs(): Bundle {
+                val bundle = Bundle()
+                if (onClick != null) {
+                    //store the listener in the arguments bundle
+                    //it is a state less lambda, guaranteed to be serializable
+                    bundle.putSerializable(BUNDLE_KEY_CLICK_LISTENER, onClick)
+                }
+                return bundle
+            }
+
+        }
+    }
+```
+2. Fragment <-> Adapter
+
+ListGalleryFragment.kt
+```kotlin
+gallery_list.apply {
+            this@ListGalleryFragment.adapter.setOnClickListener(this, onClick)
+```
+GalleryAdapter.kt
+```kotlin
+override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+       ...
+        itemView.setOnClickListener({
+            val position = recyclerView?.getChildAdapterPosition(it)
+            onClick?.onGalleryClicked(mediums.get(position!!))
+        })
+       ...
+    }
+```

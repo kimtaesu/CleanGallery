@@ -7,12 +7,15 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.hucet.clean.gallery.R
+import com.hucet.clean.gallery.gallery.fragment.GalleryListener
 import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment
+import com.hucet.clean.gallery.model.Medium
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import permissions.dispatcher.*
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -25,6 +28,8 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         return fragmentDispatchingAndroidInjector
     }
 
+    val galleryFragment = createGalleryFragment()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
@@ -34,8 +39,10 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
     fun showGallaery() {
+
+
         supportFragmentManager.beginTransaction()
-                .add(android.R.id.content, ListGalleryFragment.newInstance())
+                .add(android.R.id.content, galleryFragment)
                 .commit()
     }
 
@@ -57,4 +64,11 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     fun showNeverAskForGallaery() {
         Toast.makeText(this, R.string.permission_access_storage_never_ask_again, Toast.LENGTH_SHORT).show()
     }
+
+    private fun createGalleryFragment() = ListGalleryFragment.Companion.Builder()
+            .setOnClickListener(object : GalleryListener {
+                override fun onGalleryClicked(medium: Medium) {
+                    Timber.d("onGalleryClicked ${medium}")
+                }
+            }).build()
 }
