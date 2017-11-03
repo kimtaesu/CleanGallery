@@ -9,6 +9,8 @@ import io.reactivex.Flowable
  */
 class GalleryRepository(private val localDataSource: LocalDataSource) {
     fun getGalleries(): Flowable<List<Medium>> {
-        return localDataSource.getGalleries()
+        return Flowable.defer({
+            localDataSource.getGalleries()
+        })
     }
 }
