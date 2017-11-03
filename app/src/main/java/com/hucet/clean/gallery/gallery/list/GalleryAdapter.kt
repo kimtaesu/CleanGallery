@@ -22,7 +22,7 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<GalleryAdapter
     private var onClick: GalleryListener? = null
     private var recyclerView: RecyclerView? = null
 
-    fun setOnClickListener(recyclerView: RecyclerView, onClick: GalleryListener) {
+    fun setOnClickListener(recyclerView: RecyclerView, onClick: GalleryListener?) {
         this.recyclerView = recyclerView
         this.onClick = onClick
     }

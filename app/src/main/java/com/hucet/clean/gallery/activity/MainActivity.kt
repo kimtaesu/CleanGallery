@@ -69,7 +69,8 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 override fun onGalleryClicked(medium: Medium) {
                     Timber.d("onGalleryClicked ${medium}")
                     supportFragmentManager.beginTransaction()
-                            .replace(android.R.id.content, GalleryDetailFragment.newInstance())
+                            .replace(android.R.id.content, GalleryDetailFragment.Companion.Builder()
+                                    .build(medium))
                             .addToBackStack(null)
                             .commit()
                 }

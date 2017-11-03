@@ -25,8 +25,8 @@ class ListGalleryFragment : Fragment(), Gallery.View {
 
     @Inject lateinit var adapter: GalleryAdapter
     @Inject lateinit var presenter: Gallery.Presenter
-    val onClick by lazy {
-        arguments.getSerializable(BUNDLE_KEY_CLICK_LISTENER) as GalleryListener
+    private val onClick by lazy {
+        arguments.getSerializable(BUNDLE_KEY_CLICK_LISTENER) as GalleryListener?
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
