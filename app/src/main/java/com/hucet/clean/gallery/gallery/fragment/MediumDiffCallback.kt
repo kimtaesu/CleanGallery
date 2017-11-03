@@ -29,7 +29,7 @@ class MediumDiffCallback(private val oldList: List<Medium>, private val newList:
 
     //    두 객체가 같은 항목인지 여부를 결정합니다.
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].path === newList[newItemPosition].path
+        return oldList[oldItemPosition].path == newList[newItemPosition].path
     }
 
     //    두 항목의 데이터가 같은지 여부를 결정합니다. areItemsTheSame()이 true를 반환하는 경우에만 호출됩니다.
