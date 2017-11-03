@@ -38,7 +38,7 @@ class GalleryRepositoryTest {
         val testSubscriber = repository.getGalleries().test()
         testSubscriber.assertComplete()
         testSubscriber.assertValue { data ->
-            data == testMediumData()
+            data.get(0).path == testMediumData().get(0).path
         }
     }
 }
