@@ -1,7 +1,7 @@
 # CleanGallery
 Trello : https://trello.com/b/txtiUe3Y/cleangallery
 
-우리의 프로젝트는 [CleanArchitecture][cleancode] 를 기반으로 개발하고 있습니다.
+우리의 프로젝트는 [CleanArchitecture](https://github.com/bufferapp/clean-architecture-components-boilerplate) 를 기반으로 개발하고 있습니다.
 
 
 ## Step 1.
@@ -76,5 +76,5 @@ Thread[main] Completed
 요구사항 : Ui Thumbnail
 
 과정
+   <img src="/document/gallery_thumbnail.png" alt="Smiley face" height="400" width="1000">
 
- [cleancode]: https://github.com/bufferapp/clean-architecture-components-boilerplate
