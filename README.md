@@ -76,5 +76,27 @@ Thread[main] Completed
 요구사항 : Ui Thumbnail
 
 과정
+ * Glide v4 library를 사용하였습니다.
+
+`@GlideModule` 이 있어야 `GlideRequests, GlideApp etc..`가 generate 됩니다.
+```kotlin
+@GlideModule
+public final class GalleryModule extends AppGlideModule {
+    // Intentionally empty.
+}
+```
+
+
+GalleryAdapter.kt
+```kotlin
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        ...
+        glideRequests
+                .asDrawable()
+                .centerCrop()
+                .load(medium.path)
+                .into(holder.thumbnail)
+```
+
    <img src="/document/gallery_thumbnail.png" alt="Smiley face" height="600" width="300">
 
