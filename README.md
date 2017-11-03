@@ -78,7 +78,10 @@ Thread[main] Completed
 과정
  * Glide v4 library를 사용하였습니다.
 
+
 `@GlideModule` 이 있어야 `GlideRequests, GlideApp etc..`가 generate 됩니다.
+참조 문서 : [Glide#Kotlin](http://bumptech.github.io/glide/doc/generatedapi.html#kotlin)
+
 ```kotlin
 @GlideModule
 public final class GalleryModule extends AppGlideModule {
