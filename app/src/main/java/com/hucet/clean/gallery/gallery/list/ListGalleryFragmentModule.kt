@@ -1,8 +1,7 @@
-package com.hucet.clean.gallery.gallery.fragment
+package com.hucet.clean.gallery.gallery.list
 
-import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
-import com.hucet.clean.gallery.gallery.presenter.Gallery
-import com.hucet.clean.gallery.gallery.presenter.GalleryPresenter
+import com.hucet.clean.gallery.gallery.list.presenter.Gallery
+import com.hucet.clean.gallery.gallery.list.presenter.GalleryPresenter
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import com.hucet.clean.gallery.repository.GalleryRepository
 import dagger.Module

@@ -7,8 +7,9 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.hucet.clean.gallery.R
-import com.hucet.clean.gallery.gallery.fragment.GalleryListener
-import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment
+import com.hucet.clean.gallery.gallery.detail.GalleryDetailFragment
+import com.hucet.clean.gallery.gallery.list.GalleryListener
+import com.hucet.clean.gallery.gallery.list.ListGalleryFragment
 import com.hucet.clean.gallery.model.Medium
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
@@ -39,8 +40,6 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
     fun showGallaery() {
-
-
         supportFragmentManager.beginTransaction()
                 .add(android.R.id.content, galleryFragment)
                 .commit()
@@ -69,6 +68,10 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             .setOnClickListener(object : GalleryListener {
                 override fun onGalleryClicked(medium: Medium) {
                     Timber.d("onGalleryClicked ${medium}")
+                    supportFragmentManager.beginTransaction()
+                            .replace(android.R.id.content, GalleryDetailFragment.newInstance())
+                            .addToBackStack(null)
+                            .commit()
                 }
             }).build()
 }

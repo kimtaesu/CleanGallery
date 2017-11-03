@@ -1,4 +1,4 @@
-package com.hucet.clean.gallery.gallery.fragment
+package com.hucet.clean.gallery.gallery.list
 
 import android.content.Context
 import android.os.Bundle
@@ -9,8 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.hucet.clean.gallery.R
-import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
-import com.hucet.clean.gallery.gallery.presenter.Gallery
+import com.hucet.clean.gallery.gallery.list.presenter.Gallery
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_gallery.*
 import javax.inject.Inject

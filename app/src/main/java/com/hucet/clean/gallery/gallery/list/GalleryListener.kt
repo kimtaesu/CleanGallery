@@ -1,4 +1,4 @@
-package com.hucet.clean.gallery.gallery.fragment
+package com.hucet.clean.gallery.gallery.list
 
 import com.hucet.clean.gallery.model.Medium
 import java.io.Serializable

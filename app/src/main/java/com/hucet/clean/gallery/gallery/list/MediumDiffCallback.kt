@@ -1,4 +1,4 @@
-package com.hucet.clean.gallery.gallery.adapter
+package com.hucet.clean.gallery.gallery.list
 
 import android.support.v7.util.DiffUtil
 import com.hucet.clean.gallery.model.Medium

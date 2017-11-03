@@ -1,6 +1,6 @@
-package com.hucet.clean.gallery.gallery.presenter
+package com.hucet.clean.gallery.gallery.list.presenter
 
-import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
+import com.hucet.clean.gallery.gallery.list.GalleryAdapter
 import com.hucet.clean.gallery.repository.GalleryRepository
 import com.hucet.clean.gallery.scheduler.DefaultSchedulerProvider
 import com.hucet.clean.gallery.scheduler.SchedulerProvider
