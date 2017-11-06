@@ -1,7 +1,13 @@
 # CleanGallery
 Trello : https://trello.com/b/txtiUe3Y/cleangallery
 
-우리의 프로젝트는 [CleanArchitecture](https://github.com/bufferapp/clean-architecture-components-boilerplate) 를 기반으로 개발하고 있습니다.
+우리의 프로젝트는 [CleanArchitecture](https://github.com/bufferapp/clean-architecture-components-boilerplate) 를 기반으로 학습을 목적으로 진행하고 있습니다.
+요구사항을 도출하고 최적의 해결 방안을 모색하는 것을 학습할 수 있습니다.
+
+
+<img src="/document/gallery_thumbnail.png" alt="Smiley face" height="510" width="300">
+<img src="/document/gallery_detail.png" alt="Smiley face" height="510" width="300">
+
 
 
 ## Step 1.
