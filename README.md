@@ -25,20 +25,36 @@ Trello : https://trello.com/b/txtiUe3Y/cleangallery
 <!-- * [Espresso](https://developer.android.com/training/testing/espresso/index.html) -->
 <!-- * [Robolectric](http://robolectric.org/) -->
 
-## Step 1.
-요구사항 : Local Storage에 있는 Images  _List up_
+## Step 1. Local Storage  Images  _List up_
+Clearn Gallery를 계획하면서 많은 *Iteration*들이 있지만 Start Point는 Local Storage로 부터 Images들을 가져오는 것이었다.
+> 우리의 기본 가치 중 하나는 "**가장 먼저 간단한 것 부터 해라**"이다. 진행하면서 실질적인 문제와 해결 방안이 보이기 때문이다. (도메인 학습)
 
-과정
+이에 관련되어 많은 Open Source 를 리서치하고 정리한 결과  [Simple-Gallery](https://github.com/SimpleMobileTools/Simple-Gallery)
+를 기초로 골격을 잡아가는 것으로 결정하게 되었다.
 
- * Permission **READ_EXTERNAL_STORAGE** 권한 부여 로직 : [PermissionsDispatcher](https://github.com/permissions-dispatcher/PermissionsDispatcher) library로 해결
- * Local Storage Image 목록 _List up_ : [Simple-Gallery](https://github.com/SimpleMobileTools/Simple-Gallery) 로직 중 **Android Media**에서 Images를 가져올 수 있는
- 로직을 사용.
+그러면서 필요한 두 가지 요구사항이 발생했다 :
+ * Permission **READ_EXTERNAL_STORAGE**
+ * Migration [Simple-Gallery MediaFetcher][simple-mediafetcher]
+ * DataSource 추상화
 
-[MediaFixture](https://github.com/kimtaesu/CleanGallery/blob/master/app/src/test/java/com/hucet/clean/gallery/fixture/MediaFixture.kt) Testable 환경 구축으로 앞으로의 요구사항 "Sort, Filter, Video etc.." 다양한 Test case 에 적용할 경우 쉽게 Test할 수 있습니다.
-또한 *Local Storage*를 Data Source로 추상화하여 추가적인 Data Source(Cache, Network etc..) 에 대응이 가능합니다.
+#### Permission **READ_EXTERNAL_STORAGE**
+READ_EXTERNAL_STORAGE의 권한을 획득하는 것은 [PermissionsDispatcher](https://github.com/permissions-dispatcher/PermissionsDispatcher) 로 쉽게 해결 할 수 있었다.
 
-[TestableMedia]
-![](/document/media_testable.jpg)
+#### Migration [Simple-Gallery MediaFetcher][simple-mediafetcher]
+MediaFetcher의 경우는 당장 필요하지 않는 코드들이 많으며 상당히 복잡했다. 우선은 가장 빠르게 현재의 요구사항을 만족할 수준으로만
+개발하고 Testable 환경을 만들어 추후 Refactoring을 생각하게 되었다.
+
+[MediaFixture](https://github.com/kimtaesu/CleanGallery/blob/master/app/src/test/java/com/hucet/clean/gallery/fixture/MediaFixture.kt)는 **Json -> deserialize -> Mock** 순서로 동작한다.
+> 요구사항 "Sort, Filter, Video etc.." 다양한 Test case 에 적용할 경우 쉽게 Test가 가능하다.
+![](https://raw.githubusercontent.com/kimtaesu/CleanGallery/master/document/media_testable.jpg)
+
+#### DataSource 추상화
+이 작업은 _Over Engineering_ 일 수도 있지만 우리의 생각을 다르다. DataSource는 Low level에 속하기 때문에
+실제 문제가 1년 뒤에 나타날 수도 있기 때문이다. 이 시간이 지나면 1 년 동안 코드를 변경하는 것이 어려울 수 있다.
+
+그리고 더 중요한 점은 다른 Type의 Data Source(Cache, Network etc..)도 Iteration에 포함되어 있기 때문이다.
+
+[simple-mediafetcher]: https://github.com/SimpleMobileTools/Simple-Gallery/blob/master/app/src/main/kotlin/com/simplemobiletools/gallery/helpers/MediaFetcher.kt
 
 ## Step 2.
 요구사항 : Presenter <-> Repository <-> DataSource 관계 연결
@@ -200,18 +216,16 @@ override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 * Detail View
 <img src="/document/gallery_detail.png" alt="Smiley face" height="510" width="300">
 
-## Step 6.
+## Step 6. Refactoring [MediaFetcher][mediafetcher]
 
 [Simple-Gallery MediaFetcher][simple-mediafetcher]의 코드를 적용했지만 불필요한 작업들이 상당히 많다.
-사용하지 않는 Parameter, 그 외 다양한 Preference 값에 따른 행동들.. 등 지금은 단지 **Image** 만 필요하기 때문에
+사용하지 않는 Parameter, 그 외 다양한 Preference 값에 따른 행동들.. 등 지금은 단지 **Image list** 만 필요하기 때문에
 Refactroing이 필요하다고 생각됬다.
 
 우리는 이미 [Step 1](https://github.com/kimtaesu/CleanGallery#step-1) 에서 Testable 환경을 만들었기 때문에
 [MediaFetcher][mediafetcher]의 refactring이 얼마나 쉽게 가능한지 알 수 있게 된다.
 
-요구사항 : refactoring [MediaFetcher][mediafetcher]
-
-과정
+### 과정
 
 [simple-mediafetcher]: https://github.com/SimpleMobileTools/Simple-Gallery/blob/master/app/src/main/kotlin/com/simplemobiletools/gallery/helpers/MediaFetcher.kt
 [mediafetcher]: https://github.com/kimtaesu/CleanGallery/blob/master/app/src/main/java/com/hucet/clean/gallery/datasource/local/MediaFetcher.kt
