@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.hucet.clean.gallery.R
+import com.hucet.clean.gallery.activity.MainActivity
 import com.hucet.clean.gallery.gallery.list.presenter.Gallery
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_gallery.*
@@ -18,15 +19,12 @@ import javax.inject.Inject
 /**
  * Created by taesu on 2017-10-30.
  */
-
-
 class ListGalleryFragment : Fragment(), Gallery.View {
-
-
     @Inject lateinit var adapter: GalleryAdapter
     @Inject lateinit var presenter: Gallery.Presenter
-    private val onClick by lazy {
-        arguments.getSerializable(BUNDLE_KEY_CLICK_LISTENER) as GalleryListener?
+
+    companion object {
+        fun newInstance() = ListGalleryFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
@@ -45,7 +43,7 @@ class ListGalleryFragment : Fragment(), Gallery.View {
 
     private fun initRecyclerView() {
         gallery_list.apply {
-            this@ListGalleryFragment.adapter.setOnClickListener(this, onClick)
+            this@ListGalleryFragment.adapter.setOnClickListener(this, (activity as MainActivity)?.onGalleryClicked)
             adapter = this@ListGalleryFragment.adapter
             layoutManager = LinearLayoutManager(context)
         }
@@ -61,35 +59,5 @@ class ListGalleryFragment : Fragment(), Gallery.View {
 
     override fun showError() {
         Toast.makeText(context, "showError", Toast.LENGTH_SHORT).show()
-    }
-
-    companion object {
-        private val BUNDLE_KEY_CLICK_LISTENER = "BUNDLE_KEY_CLICK_LISTENER"
-
-        class Builder {
-            private var onClick: GalleryListener? = null
-
-            fun setOnClickListener(onClick: GalleryListener): Builder {
-                this.onClick = onClick
-                return this
-            }
-
-            fun build(): ListGalleryFragment {
-                val fragment = ListGalleryFragment()
-                fragment.setArguments(createArgs())
-                return fragment
-            }
-
-            private fun createArgs(): Bundle {
-                val bundle = Bundle()
-                if (onClick != null) {
-                    //store the listener in the arguments bundle
-                    //it is a state less lambda, guaranteed to be serializable
-                    bundle.putSerializable(BUNDLE_KEY_CLICK_LISTENER, onClick)
-                }
-                return bundle
-            }
-
-        }
     }
 }

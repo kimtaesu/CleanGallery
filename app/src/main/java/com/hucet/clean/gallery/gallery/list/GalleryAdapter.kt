@@ -19,12 +19,12 @@ import javax.inject.Inject
 class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
     @Inject lateinit var glideRequests: GlideRequests
     private var mediums: ArrayList<Medium> = arrayListOf()
-    private var onClick: GalleryListener? = null
+    private var onClick: ((Medium) -> Unit)? = null
     private var recyclerView: RecyclerView? = null
 
-    fun setOnClickListener(recyclerView: RecyclerView, onClick: GalleryListener?) {
+    fun setOnClickListener(recyclerView: RecyclerView, onGalleryClicked: (Medium) -> Unit) {
         this.recyclerView = recyclerView
-        this.onClick = onClick
+        this.onClick = onGalleryClicked
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -42,10 +42,9 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<GalleryAdapter
                 .from(parent.context)
                 .inflate(R.layout.list_item_gallery, parent, false)
 
-
         itemView.setOnClickListener({
             val position = recyclerView?.getChildAdapterPosition(it)
-            onClick?.onGalleryClicked(mediums.get(position!!))
+            onClick?.invoke(mediums.get(position!!))
         })
         return ViewHolder(itemView)
     }

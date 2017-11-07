@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.gallery.detail.GalleryDetailFragment
-import com.hucet.clean.gallery.gallery.list.GalleryListener
 import com.hucet.clean.gallery.gallery.list.ListGalleryFragment
 import com.hucet.clean.gallery.model.Medium
 import dagger.android.AndroidInjection
@@ -29,7 +28,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         return fragmentDispatchingAndroidInjector
     }
 
-    val galleryFragment: Fragment = createGalleryFragment()
+    val galleryFragment: Fragment = ListGalleryFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -64,16 +63,14 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         Toast.makeText(this, R.string.permission_access_storage_never_ask_again, Toast.LENGTH_SHORT).show()
     }
 
-    private fun createGalleryFragment() = ListGalleryFragment.Companion.Builder()
-            .setOnClickListener(object : GalleryListener {
-                override fun onGalleryClicked(medium: Medium) {
-                    Timber.d("onGalleryClicked ${medium}")
-                    supportFragmentManager.beginTransaction()
-                            .hide(galleryFragment)
-                            .add(android.R.id.content, GalleryDetailFragment.Companion.Builder()
-                                    .build(medium))
-                            .addToBackStack(null)
-                            .commit()
-                }
-            }).build()
+    val onGalleryClicked: (Medium) -> Unit = { medium: Medium ->
+        Timber.d("onGalleryClicked ${medium}")
+        supportFragmentManager.beginTransaction()
+                .hide(galleryFragment)
+                .add(android.R.id.content, GalleryDetailFragment.Companion.Builder()
+                        .build(medium))
+                .addToBackStack(null)
+                .commit()
+
+    }
 }
