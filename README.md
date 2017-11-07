@@ -78,12 +78,29 @@ MediaFetcher의 경우는 당장 필요하지 않는 코드들이 많으며 상�
 ![](https://raw.githubusercontent.com/kimtaesu/CleanGallery/master/document/di_graph.jpg)
 
 
-## Step 3.
-요구사항 : Repository With Rx
+## Step 3. Presenter programming Rx Style
+* Main / Background Scheduler 작업 정의
 
-과정
-* Rx Style [Start, Error, Complete] 정의
+Rx를 사용하면 쉽게 Error Handlering이 가능하며 Schedulers를 정의할 수 있다.
+Android Best Practice에서 권장하고 있는 것이며 Unresponsive UI를 발생하지 않기 때문에 적극 권장한다.
 
+우리는 Timber를 사용하여 ThreadName이 출력될 수 있도록 작업했다.
+```kotlin
+class OptionalTree(val threadName: Boolean = false) : Timber.DebugTree() {
+    override fun log(priority: Int, tag: String?, message: String?, t: Throwable?) {
+        var msg = message
+        if (threadName)
+            msg = "Thread[${Thread.currentThread().name}] ${message}"
+        super.log(priority, tag, msg, t)
+    }
+}
+```
+사용법은 간단하다. `Timber.plant`를 아래와 같이 호출하면 된다.
+```kotlin
+Timber.plant(OptionalTree(threadName = true))
+```
+
+이제 어떻게 Error Handlering과 Schedulers를 정의하는지 살펴보자.
 ```kotlin
 repository
                 .getGalleries()
