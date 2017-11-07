@@ -56,16 +56,27 @@ MediaFetcher의 경우는 당장 필요하지 않는 코드들이 많으며 상�
 
 [simple-mediafetcher]: https://github.com/SimpleMobileTools/Simple-Gallery/blob/master/app/src/main/kotlin/com/simplemobiletools/gallery/helpers/MediaFetcher.kt
 
-## Step 2.
-요구사항 : Presenter <-> Repository <-> DataSource 관계 연결
+## Step 2. Presenter <-> Data(Repository) <-> DataSource 관계 연결
+ * Repository 구현
+ * MVP Pattern
+ * Dagger2 v2.11
+#### Repository 구현
+우리는 [Step 1](https://github.com/kimtaesu/CleanGallery#step-1-local-storage--images--list-up)에서 LocalStorage의 DataSource를 구현했다.
 
-과정
-* MVP Pattern
-* Dagger2 (v2.11) 적용
-* DiffUtil
+이제 다음으로 할 일은 Presenter와 DataSource의 관계를 연결해주는 것이다. 그 관계를 연결하기 위해서 [GalleryRepository](https://github.com/kimtaesu/CleanGallery/blob/master/app/src/main/java/com/hucet/clean/gallery/repository/GalleryRepository.kt)를 중간에 두기로 결정했다.
 
-[DependencyGraph]
-![](/document/di_graph.jpg)
+여기서의 Repository 개념은 외부 데이터 레이어에 대한 액세스 지점이며  Multiple DataSource (Local Storage, Cache, Network etc..)에서 데이터를 가져오는 것을 말한다. 우리는 이미 Cache, Network에 대한 Iteration을 계획했기 때문에 이 Repository를 구현했다.
+
+#### MVP Pattern
+[Android Architecture Components](https://github.com/googlesamples/android-architecture)에는 MVP, MVVM와 같은 여러가지 Pattern을 소개한다. Rx의 사용자인 우리는 MVVM을 사용할 경우 Rx를 사용할 수 없다는 사실을 알고 있다.
+또, MVVM 패턴이 아직 Stable 단계가 아니기 때문에 MVP를 결정하게 되었다.
+
+#### Dagger2 v2.11
+[Dagger2](https://github.com/google/dagger)는 Android에서 Dependencies injection의 최강자라고 생각한다. v2.11은 AndroidInjector와 @ContributesAndroidInjector의 도입으로 많은 상용구를 제거할 수 있도록 지원하고 있다.
+
+우리는 Dagger를 사용하기 위하여 항상 Denpendencies Graph를 그린다.
+![](https://raw.githubusercontent.com/kimtaesu/CleanGallery/master/document/di_graph.jpg)
+
 
 ## Step 3.
 요구사항 : Repository With Rx
