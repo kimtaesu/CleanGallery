@@ -267,8 +267,6 @@ Refactroing이 필요하다고 생각됬다.
 [simple-mediafetcher]: https://github.com/SimpleMobileTools/Simple-Gallery/blob/master/app/src/main/kotlin/com/simplemobiletools/gallery/helpers/MediaFetcher.kt
 [mediafetcher]: https://github.com/kimtaesu/CleanGallery/blob/master/app/src/main/java/com/hucet/clean/gallery/datasource/local/MediaFetcher.kt
 
-Refactoring 하는 과정을 글로 작성하면 엄청 길어지게 때문에 Live Coding으로 작성하였습니다.
-
 > [설정 : 자막 On, 품질 1080P]으로 감상 부탁 드립니다.
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/cAsL72Mj-kc/0.jpg)](https://www.youtube.com/watch?v=cAsL72Mj-kc)
