@@ -102,6 +102,8 @@ Timber.plant(OptionalTree(threadName = true))
 ```
 
 이제 어떻게 Error Handlering과 Schedulers를 정의하는지 살펴보자.
+
+[GalleryPresenter](https://github.com/kimtaesu/CleanGallery/blob/master/app/src/main/java/com/hucet/clean/gallery/gallery/list/presenter/GalleryPresenter.kt)
 ```kotlin
 repository
                 .getGalleries()
