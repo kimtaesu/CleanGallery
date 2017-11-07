@@ -12,7 +12,7 @@ import timber.log.Timber
 class LocalDataSource constructor(val madiaFetcher: MediaFetcher) : GalleryDataStore {
     override fun getGalleries(): Flowable<List<Medium>> {
         Timber.d("GalleryPresenter getGalleries")
-        val cursor = madiaFetcher.query("")
-        return Flowable.just(madiaFetcher.getFilesFrom(cursor, "", false, false))
+        val cursor = madiaFetcher.queryImage()
+        return Flowable.just(madiaFetcher.getFilesFrom(cursor))
     }
 }

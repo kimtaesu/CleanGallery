@@ -61,7 +61,14 @@ class MediaFixture {
         whenever(c.getColumnIndex(MediaStore.Images.Media.SIZE)).thenReturn(MediaColumnOfIndex.SIZE.getValue())
         whenever(c.getColumnIndex(MediaStore.Images.Media.DATE_TAKEN)).thenReturn(MediaColumnOfIndex.DATE_TAKEN.getValue())
         whenever(c.getColumnIndex(MediaStore.Images.Media.DATE_MODIFIED)).thenReturn(MediaColumnOfIndex.DATE_MODIFIED.getValue())
+
+        whenever(c.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)).thenReturn(MediaColumnOfIndex.DATA.getValue())
+        whenever(c.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME)).thenReturn(MediaColumnOfIndex.DISPLAY_NAME.getValue())
+        whenever(c.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE)).thenReturn(MediaColumnOfIndex.SIZE.getValue())
+        whenever(c.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN)).thenReturn(MediaColumnOfIndex.DATE_TAKEN.getValue())
+        whenever(c.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED)).thenReturn(MediaColumnOfIndex.DATE_MODIFIED.getValue())
     }
+
 
     private fun changeCursorProperties(cursor: Cursor, newMedia: FakeMedia) {
         mockColumnIndex(cursor)
