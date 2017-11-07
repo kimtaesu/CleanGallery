@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         return fragmentDispatchingAndroidInjector
     }
 
-    val galleryFragment = createGalleryFragment()
+    val galleryFragment: Fragment = createGalleryFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -69,7 +69,8 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 override fun onGalleryClicked(medium: Medium) {
                     Timber.d("onGalleryClicked ${medium}")
                     supportFragmentManager.beginTransaction()
-                            .replace(android.R.id.content, GalleryDetailFragment.Companion.Builder()
+                            .hide(galleryFragment)
+                            .add(android.R.id.content, GalleryDetailFragment.Companion.Builder()
                                     .build(medium))
                             .addToBackStack(null)
                             .commit()
