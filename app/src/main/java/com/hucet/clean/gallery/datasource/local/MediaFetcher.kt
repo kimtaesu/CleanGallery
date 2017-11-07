@@ -27,14 +27,8 @@ class MediaFetcher constructor(private val context: Context, private val applcat
         return context.contentResolver.query(uri, imageProjection, null, null, sortOption)
     }
 
-
-    fun getFilesFrom(cursor: Cursor?): List<Medium> {
-        cursor ?: return emptyList()
-        return parseCursor(cursor)
-    }
-
-
-    private fun parseCursor(cur: Cursor): ArrayList<Medium> {
+    fun parseCursor(cur: Cursor?): List<Medium> {
+        cur ?: return emptyList()
         val curMedia = ArrayList<Medium>()
         cur.use {
             if (cur.moveToFirst()) {
