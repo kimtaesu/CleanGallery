@@ -140,16 +140,13 @@ Thread[main] doOnTerminate
 Thread[main] Completed
 ```
 
-## Step 4.
-요구사항 : Ui Thumbnail
 
-과정
- * Glide v4 library를 사용하였습니다.
-
+## Step 4. Ui Thumbnail using [Glide](https://github.com/bumptech/glide)
+우리는 많은 Loading image 라이브러리 중에 말도 필요없이 [Glide](https://github.com/bumptech/glide)를 사용하기로 결정하였다.
+Glide가 어떻게 Image 처리를 최적화하는지 자세히 알고 싶으면 [여기](https://medium.com/@kimtaesoo188/how-the-android-image-loading-library-glide-and-fresco-works-94a156bed628)를 통해서 알 수 있다.
 
 `@GlideModule` 이 있어야 `GlideRequests, GlideApp etc..`가 generate 됩니다.
 참조 문서 : [Glide#Kotlin](http://bumptech.github.io/glide/doc/generatedapi.html#kotlin)
-
 ```kotlin
 @GlideModule
 public final class GalleryModule extends AppGlideModule {
@@ -169,7 +166,7 @@ GalleryAdapter.kt
                 .into(holder.thumbnail)
 ```
 
-   <img src="/document/gallery_thumbnail.png" alt="Smiley face" height="510" width="300">
+   <img src="https://github.com/kimtaesu/CleanGallery/blob/master/document/gallery_thumbnail.png" alt="Smiley face" height="510" width="300">
 
 ## Step 5.
 요구사항 : Image(detail) viewing
