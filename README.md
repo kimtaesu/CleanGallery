@@ -82,7 +82,8 @@ MediaFetcher의 경우는 당장 필요하지 않는 코드들이 많으며 상�
 * Main / Background Scheduler 작업 정의
 
 Rx를 사용하면 쉽게 Error Handlering이 가능하며 Schedulers를 정의할 수 있다.
-Android Best Practice에서 권장하고 있는 것이며 Unresponsive UI를 발생하지 않기 때문에 적극 권장한다.
+Main Thread에서 16ms 동안 반응이 없는 경우 Frame을 Skip 한다고 한다. FPS (Frames Per Second)가 낮으면 Unresponsive UI라고 말할 수 있다.
+UI를 Update하는 것외에 다른 작업은 별도의 Thread에서 하기를 권장한다.
 
 우리는 Timber를 사용하여 ThreadName이 출력될 수 있도록 작업했다.
 ```kotlin
