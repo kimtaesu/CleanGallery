@@ -14,7 +14,7 @@ import java.io.File
 
 class MediaFetcher constructor(private val context: Context, private val applcationConfig: ApplicationConfig) {
 
-    val sortOption = MediaStore.Video.VideoColumns.DATE_TAKEN + " DESC"
+    val sortOption = MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC"
     val imageProjection = arrayOf(MediaStore.Images.Media._ID,
             MediaStore.Images.Media.DISPLAY_NAME,
             MediaStore.Images.Media.DATE_TAKEN,
