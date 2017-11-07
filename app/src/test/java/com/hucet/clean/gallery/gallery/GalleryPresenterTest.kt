@@ -1,6 +1,6 @@
 package com.hucet.clean.gallery.gallery
 
-import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
+import com.hucet.clean.gallery.gallery.list.GalleryAdapter
 import com.hucet.clean.gallery.gallery.list.presenter.Gallery
 import com.hucet.clean.gallery.gallery.list.presenter.GalleryPresenter
 import com.hucet.clean.gallery.repository.GalleryRepository
