@@ -145,7 +145,7 @@ Thread[main] Completed
 우리는 많은 Loading image 라이브러리 중에 말도 필요없이 [Glide](https://github.com/bumptech/glide)를 사용하기로 결정하였다.
 Glide가 어떻게 Image 처리를 최적화하는지 자세히 알고 싶으면 [여기](https://medium.com/@kimtaesoo188/how-the-android-image-loading-library-glide-and-fresco-works-94a156bed628)를 통해서 알 수 있다.
 
-`@GlideModule` 이 있어야 `GlideRequests, GlideApp etc..`가 generate 됩니다.
+`@GlideModule` 이 있어야 `GlideRequests, GlideApp etc..`가 generate 된다.
 참조 문서 : [Glide#Kotlin](http://bumptech.github.io/glide/doc/generatedapi.html#kotlin)
 ```kotlin
 @GlideModule
@@ -168,14 +168,24 @@ GalleryAdapter.kt
 
    <img src="https://github.com/kimtaesu/CleanGallery/blob/master/document/gallery_thumbnail.png" alt="Smiley face" height="510" width="300">
 
-## Step 5.
-요구사항 : Image(detail) viewing
+## Step 5. Detail View
+우리는 [Step 4](https://github.com/kimtaesu/CleanGallery#step-4-ui-thumbnail-using-glide) 를 거쳐서 모든 Image를 UI상에 보여줄 수 있게 되었다.
+다음은 List의 Item을 클릭했을 경우 Detail View로 이동하는 것이다.
 
-과정
-* Gallery Click Event
-1. Activity <-> Fragment 관련된 [Acticle](https://medium.com/@kimtaesoo188/android-weekly-277-from-fragments-to-activity-the-lambda-way-cac15973721a)
+이 작업을 하기 위해선 두 가지 작업이 필요하다.
+ * Activity <-> Fragment 간 통신
+ * Fragment <-> Adapter 간 통신
 
-GalleryActivity.kt
+#### Activity <-> Fragment 간 통신
+Activity와 Fragment 간 통신을 하기 위해선 Google에서 [권장하는 방법](https://developer.android.com/training/basics/fragments/communicating.html)이 있다.
+
+그러나 위와 같은 방법은 두 가지 위험성이 있다.
+ 1. 위험한 Cast를 사용한다.
+ 2. Fragment와 Activity가 어떻게 연결되어 있는지 명확하게 알 수 없다.
+
+관련 내용은 [여기](https://medium.com/@kimtaesoo188/android-weekly-277-from-fragments-to-activity-the-lambda-way-cac15973721a)에서 확인이 가능하다.
+
+[MainActivity.kt](https://github.com/kimtaesu/CleanGallery/blob/master/app/src/main/java/com/hucet/clean/gallery/activity/MainActivity.kt)
 ```kotlin
 galleryFragment = ListGalleryFragment.Companion.Builder()
             .setOnClickListener(object : GalleryListener {
@@ -190,7 +200,7 @@ galleryFragment = ListGalleryFragment.Companion.Builder()
                 .add(android.R.id.content, galleryFragment)
                 .commit()
 ```
-ListGalleryFragment.kt
+[ListGalleryFragment.kt](https://github.com/kimtaesu/CleanGallery/blob/master/app/src/main/java/com/hucet/clean/gallery/gallery/list/ListGalleryFragment.kt)
 ```kotlin
 class ListGalleryFragment : Fragment(), Gallery.View {
     companion object {
@@ -223,14 +233,14 @@ class ListGalleryFragment : Fragment(), Gallery.View {
         }
     }
 ```
-2. Fragment <-> Adapter
+#### Fragment <-> Adapter 간 통신
 
-ListGalleryFragment.kt
+[ListGalleryFragment.kt](https://github.com/kimtaesu/CleanGallery/blob/master/app/src/main/java/com/hucet/clean/gallery/gallery/list/ListGalleryFragment.kt)
 ```kotlin
 gallery_list.apply {
             this@ListGalleryFragment.adapter.setOnClickListener(this, onClick)
 ```
-GalleryAdapter.kt
+[GalleryAdapter.kt](https://github.com/kimtaesu/CleanGallery/blob/master/app/src/main/java/com/hucet/clean/gallery/gallery/list/GalleryAdapter.kt)
 ```kotlin
 override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
        ...
@@ -241,8 +251,8 @@ override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
        ...
     }
 ```
-* Detail View
-<img src="/document/gallery_detail.png" alt="Smiley face" height="510" width="300">
+
+<img src="https://github.com/kimtaesu/CleanGallery/blob/master/document/gallery_detail.png" alt="Smiley face" height="510" width="300">
 
 ## Step 6. Refactoring [MediaFetcher][mediafetcher]
 
