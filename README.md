@@ -199,3 +199,19 @@ override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 ```
 * Detail View
 <img src="/document/gallery_detail.png" alt="Smiley face" height="510" width="300">
+
+## Step 6.
+
+[Simple-Gallery MediaFetcher][simple-mediafetcher]의 코드를 적용했지만 불필요한 작업들이 상당히 많다.
+사용하지 않는 Parameter, 그 외 다양한 Preference 값에 따른 행동들.. 등 지금은 단지 **Image** 만 필요하기 때문에
+Refactroing이 필요하다고 생각됬다.
+
+우리는 이미 [Step 1](https://github.com/kimtaesu/CleanGallery#step-1) 에서 Testable 환경을 만들었기 때문에
+[MediaFetcher][mediafetcher]의 refactring이 얼마나 쉽게 가능한지 알 수 있게 된다.
+
+요구사항 : refactoring [MediaFetcher][mediafetcher]
+
+과정
+
+[simple-mediafetcher]: https://github.com/SimpleMobileTools/Simple-Gallery/blob/master/app/src/main/kotlin/com/simplemobiletools/gallery/helpers/MediaFetcher.kt
+[mediafetcher]: https://github.com/kimtaesu/CleanGallery/blob/master/app/src/main/java/com/hucet/clean/gallery/datasource/local/MediaFetcher.kt
