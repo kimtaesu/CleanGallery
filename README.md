@@ -257,12 +257,18 @@ override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 ## Step 6. Refactoring [MediaFetcher][mediafetcher]
 Step 1 ~ Step 5로 기본적인 Gallery 골격이 갖춰지게 되었다.
 
-그러나 [Simple-Gallery MediaFetcher][simple-mediafetcher]의 코드를 적용했지만 불필요한 코드들이 상당히 많다.
+그러나 [Simple-Gallery MediaFetcher][simple-mediafetcher]의 코드를 적용했지만 불필요한 작업들이 상당히 많다.
 사용하지 않는 Parameter, 그 외 다양한 Preference 값에 따른 Action들.. 등 지금은 단지 **Images list** 만 필요하기 때문에
-Refactroing이 필요하다고 결정했다.
+Refactroing이 필요하다고 생각됬다.
 
 우리는 이미 [Step 1](https://github.com/kimtaesu/CleanGallery#step-1-local-storage--images--list-up)에서 Testable 환경을 만들었기 때문에
 [MediaFetcher][mediafetcher]의 Refactring을 진행하면서 얼마나 쉽게 변경이 가능한지 알 수 있다.
 
 [simple-mediafetcher]: https://github.com/SimpleMobileTools/Simple-Gallery/blob/master/app/src/main/kotlin/com/simplemobiletools/gallery/helpers/MediaFetcher.kt
 [mediafetcher]: https://github.com/kimtaesu/CleanGallery/blob/master/app/src/main/java/com/hucet/clean/gallery/datasource/local/MediaFetcher.kt
+
+Refactoring 하는 과정을 글로 작성하면 엄청 길어지게 때문에 Live Coding으로 작성하였습니다.
+
+> [설정 : 자막 On, 품질 1080P]으로 감상 부탁 드립니다.
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/cAsL72Mj-kc/0.jpg)](https://www.youtube.com/watch?v=cAsL72Mj-kc)
