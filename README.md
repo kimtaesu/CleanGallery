@@ -184,3 +184,7 @@ Refactroing이 필요하다고 생각됬다.
 > [설정 : 자막 On, 품질 1080P]
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/cAsL72Mj-kc/0.jpg)](https://www.youtube.com/watch?v=cAsL72Mj-kc)
+
+지금까지의 구현이다.
+
+<img src="https://github.com/kimtaesu/CleanGallery/blob/master/document/gallery1.gif" alt="Smiley face" height="510" width="300">
