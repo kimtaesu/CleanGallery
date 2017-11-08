@@ -31,9 +31,19 @@ class MediaFetcher constructor(private val context: Context, private val applcat
             MediaStore.Images.Media.DATA,
             MediaStore.Images.Media.SIZE)
 
-    fun queryImage(): Cursor {
+    fun queryImage(curPath: String): Cursor {
         val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-        return context.contentResolver.query(uri, imageProjection, null, null, sortOption)
+        val selection = getSelectionExpression()
+        val selectionArgs = getSelectionArgs(curPath)
+        return context.contentResolver.query(uri, imageProjection, selection, selectionArgs, sortOption)
+    }
+
+    private fun getSelectionExpression(): String {
+        return "${MediaStore.Images.Media.DATA} LIKE ?"
+    }
+
+    private fun getSelectionArgs(curPath: String): Array<out String> {
+        return arrayOf("${curPath}/%")
     }
 
     fun parseCursor(cur: Cursor?): List<Medium> {

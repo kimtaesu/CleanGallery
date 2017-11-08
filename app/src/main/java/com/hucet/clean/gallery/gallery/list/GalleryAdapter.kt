@@ -29,7 +29,7 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<GalleryAdapter
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val medium = mediums[position]
-        holder.fileName.text = medium.name
+        holder.fileName.text = medium.path
         glideRequests
                 .asDrawable()
                 .centerCrop()

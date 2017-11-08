@@ -2,6 +2,7 @@ package com.hucet.clean.gallery.gallery.list
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Environment
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -33,7 +34,7 @@ class ListGalleryFragment : Fragment(), Gallery.View {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initRecyclerView()
-        presenter.fetchItems()
+        presenter.fetchItems(Environment.getExternalStorageDirectory().absolutePath)
     }
 
     override fun onAttach(context: Context?) {

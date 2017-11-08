@@ -1,5 +1,6 @@
 package com.hucet.clean.gallery.gallery
 
+import android.os.Environment
 import com.hucet.clean.gallery.gallery.list.GalleryAdapter
 import com.hucet.clean.gallery.gallery.list.presenter.Gallery
 import com.hucet.clean.gallery.gallery.list.presenter.GalleryPresenter
@@ -36,13 +37,13 @@ class GalleryPresenterTest {
 
     @Test
     fun `presenter Next Complete 검증`() {
-        whenever(repository.getGalleries()).thenReturn(Flowable.just(testMediumData()))
+        whenever(repository.getGalleries(any())).thenReturn(Flowable.just(testMediumData()))
 
-        presenter.fetchItems()
+        presenter.fetchItems("")
 
         testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
 
-        verify(repository, times(1)).getGalleries()
+        verify(repository, times(1)).getGalleries(any())
 
         verify(adapter, times(1)).updateData(any())
 
@@ -52,16 +53,16 @@ class GalleryPresenterTest {
 
     @Test
     fun `presenter Error 검증`() {
-        whenever(repository.getGalleries()).thenReturn(Flowable.just(testMediumData())
+        whenever(repository.getGalleries(any())).thenReturn(Flowable.just(testMediumData())
                 .map {
                     throw MockitoException("")
                 })
 
-        presenter.fetchItems()
+        presenter.fetchItems("")
 
         testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
 
-        verify(repository, times(1)).getGalleries()
+        verify(repository, times(1)).getGalleries(any())
 
         verify(adapter, never()).updateData(any())
 

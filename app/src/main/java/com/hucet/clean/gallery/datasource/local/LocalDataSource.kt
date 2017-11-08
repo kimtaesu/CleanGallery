@@ -10,10 +10,10 @@ import timber.log.Timber
  */
 
 class LocalDataSource constructor(private val madiaFetcher: MediaFetcher) : GalleryDataStore {
-    override fun getGalleries(): Flowable<Map<String, List<Medium>>> {
+    override fun getGalleries(curPath : String): Flowable<Map<String, List<Medium>>> {
         return Flowable.defer {
             Timber.d("GalleryPresenter getGalleries")
-            val cursor = madiaFetcher.queryImage()
+            val cursor = madiaFetcher.queryImage(curPath)
             val result = madiaFetcher.category(MediaFetcher.CategoryType.UPDATE_DATE, madiaFetcher.parseCursor(cursor))
             Flowable.just(result)
         }

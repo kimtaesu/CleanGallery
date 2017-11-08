@@ -15,9 +15,9 @@ class GalleryPresenter constructor(private val view: Gallery.View,
                                    private val schedulerProvider: SchedulerProvider = DefaultSchedulerProvider()
 ) : Gallery.Presenter {
 
-    override fun fetchItems() {
+    override fun fetchItems(curPath: String) {
         repository
-                .getGalleries()
+                .getGalleries(curPath)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.main())
                 .doOnSubscribe {

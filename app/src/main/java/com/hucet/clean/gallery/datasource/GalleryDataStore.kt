@@ -7,5 +7,5 @@ import io.reactivex.Flowable
  * Created by taesu on 2017-10-30.
  */
 interface GalleryDataStore {
-    fun getGalleries(): Flowable<Map<String, List<Medium>>>
+    fun getGalleries(curPath : String): Flowable<Map<String, List<Medium>>>
 }

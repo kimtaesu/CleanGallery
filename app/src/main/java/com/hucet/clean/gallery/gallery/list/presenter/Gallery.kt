@@ -12,6 +12,6 @@ interface Gallery {
     }
 
     interface Presenter {
-        fun fetchItems()
+        fun fetchItems(curPath: String)
     }
 }

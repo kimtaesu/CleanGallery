@@ -2,6 +2,7 @@ package com.hucet.clean.gallery.repository
 
 import com.hucet.clean.gallery.datasource.local.LocalDataSource
 import com.hucet.clean.gallery.model.Medium
+import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Flowable
@@ -24,18 +25,18 @@ class GalleryRepositoryTest {
 
     @Test
     fun `subscriber State Completed 확인`() {
-        whenever(mockLocalDataSource.getGalleries()).thenReturn(Flowable.just(testMediumData()))
+        whenever(mockLocalDataSource.getGalleries(any())).thenReturn(Flowable.just(testMediumData()))
 
-        val testSubscriber = repository.getGalleries().test()
+        val testSubscriber = repository.getGalleries("").test()
         testSubscriber.assertNoErrors()
         testSubscriber.assertComplete()
     }
 
     @Test
     fun `subscriber assert value`() {
-        whenever(mockLocalDataSource.getGalleries()).thenReturn(Flowable.just(testMediumData()))
+        whenever(mockLocalDataSource.getGalleries(any())).thenReturn(Flowable.just(testMediumData()))
 
-        val testSubscriber = repository.getGalleries().test()
+        val testSubscriber = repository.getGalleries("").test()
         testSubscriber.assertComplete()
         testSubscriber.assertValue { data ->
             data.get(testKey)?.get(0)?.path == testMediumData().get(testKey)?.get(0)?.path
