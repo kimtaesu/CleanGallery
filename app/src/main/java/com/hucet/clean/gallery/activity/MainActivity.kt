@@ -65,10 +65,10 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     val onGalleryClicked: (Medium) -> Unit = { medium: Medium ->
         Timber.d("onGalleryClicked ${medium}")
+
         supportFragmentManager.beginTransaction()
                 .hide(galleryFragment)
-                .add(android.R.id.content, GalleryDetailFragment.Companion.Builder()
-                        .build(medium))
+                .add(android.R.id.content, GalleryDetailFragment.newInstance(medium))
                 .addToBackStack(null)
                 .commit()
 

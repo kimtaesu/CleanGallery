@@ -35,6 +35,7 @@ class GalleryPresenter constructor(private val view: Gallery.View,
                             adapter.updateData(next)
                         },
                         { error ->
+                            error.printStackTrace()
                             Timber.d("Error[${error}]")
                             view.showError()
                         },

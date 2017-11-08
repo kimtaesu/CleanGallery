@@ -33,12 +33,12 @@ class MediaFetcher constructor(private val context: Context, private val applcat
 
     fun queryImage(curPath: String): Cursor {
         val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-        val selection = getSelectionExpression()
+        val selectionClause = getSelectionClause()
         val selectionArgs = getSelectionArgs(curPath)
-        return context.contentResolver.query(uri, imageProjection, selection, selectionArgs, sortOption)
+        return context.contentResolver.query(uri, imageProjection, selectionClause, selectionArgs, sortOption)
     }
 
-    private fun getSelectionExpression(): String {
+    private fun getSelectionClause(): String {
         return "${MediaStore.Images.Media.DATA} LIKE ?"
     }
 

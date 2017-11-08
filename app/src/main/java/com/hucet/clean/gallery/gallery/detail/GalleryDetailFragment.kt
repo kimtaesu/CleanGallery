@@ -42,14 +42,12 @@ class GalleryDetailFragment : Fragment() {
     companion object {
         private val BUNDLE_KEY_MEDIUM = "BUNDLE_KEY_MEDIUM"
 
-        class Builder {
-            fun build(medium: Medium): GalleryDetailFragment {
-                val fragment = GalleryDetailFragment()
-                val bundle = Bundle()
-                bundle.putSerializable(BUNDLE_KEY_MEDIUM, medium)
-                fragment.setArguments(bundle)
-                return fragment
-            }
+        fun newInstance(medium: Medium): GalleryDetailFragment {
+            val fragment = GalleryDetailFragment()
+            val bundle = Bundle()
+            bundle.putSerializable(BUNDLE_KEY_MEDIUM, medium)
+            fragment.setArguments(bundle)
+            return fragment
         }
     }
 }
