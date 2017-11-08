@@ -134,7 +134,7 @@ repository
 Thread Log
 ```java
 Thread[main] doOnSubscribe
-Thread[RxCachedThreadScheduler-1] GalleryPresenter getGalleries
+Thread[RxCachedThreadScheduler-1] GalleryPresenter getGallerie s
 Thread[main] Next[[Medium(name=tyler, path=/tyler, video=false, modified=1509514003251, taken=1509514003251, size=10)]]
 Thread[main] doOnTerminate
 Thread[main] Completed
