@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.inject.scopes.PerFragment
+import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Medium
 import javax.inject.Inject
 
@@ -18,7 +19,7 @@ import javax.inject.Inject
 @PerFragment
 class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
     @Inject lateinit var glideRequests: GlideRequests
-    private var mediums: ArrayList<Medium> = arrayListOf()
+    private var mediums: ArrayList<Basic> = arrayListOf()
     private var onClick: ((Medium) -> Unit)? = null
     private var recyclerView: RecyclerView? = null
 
@@ -51,7 +52,7 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<GalleryAdapter
 
     override fun getItemCount() = mediums.size
 
-    fun updateData(newItems: Map<String, List<Medium>>) {
+    fun <T : Basic>updateData(newItems: Map<String, List<T>>) {
         val allItems = newItems.flatMap {
             it.value
         }
