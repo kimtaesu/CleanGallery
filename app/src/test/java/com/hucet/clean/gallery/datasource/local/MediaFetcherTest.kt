@@ -9,13 +9,16 @@ import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import org.hamcrest.core.Is
 import org.hamcrest.core.Is.*
+import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import java.text.SimpleDateFormat
 
 /**
  * Created by taesu on 2017-10-31.
  */
+
 class MediaFetcherTest {
     var mediaFetcher = MediaFetcher(mockContext(), mockConfig())
 
@@ -34,12 +37,27 @@ class MediaFetcherTest {
 
     @Test
     fun `Category Dir Type  분류 검증`() {
-        val result = getParseCursorFromPath("media/category_media.json")
+        val result = getParseCursorFromPath("media/category_dir_media.json")
         val category: Map<String, List<Medium>> = mediaFetcher.category(MediaFetcher.CategoryType.DIR, result)
-        assertThat(category.size, Is.`is`(3))
+        assertThat(category.size, `is`(3))
         assertThat(category.get("KakaoTalk")?.size, `is`(2))
     }
 
+    @Test
+    fun `Category Update Date Type  분류 검증`() {
+        val testKeys = listOf("2017-02-23", "2017-11-06")
+        val result = getParseCursorFromPath("media/category_date_media.json")
+        val category: Map<String, List<Medium>> = mediaFetcher.category(MediaFetcher.CategoryType.UPDATE_DATE, result)
+        assertThat(category.size, `is`(2))
+        assertThat(category.containsKey(testKeys.get(0)), `is`(true))
+        assertThat(category.containsKey(testKeys.get(1)), `is`(true))
+        assertThat(category.get(testKeys.get(0))?.size, `is`(2))
+        assertThat(category.get(testKeys.get(1))?.size, `is`(3))
+    }
+
+    @After
+    fun after() {
+    }
 
     private fun mockConfig(): ApplicationConfig {
         val config = mock<ApplicationConfig>()
@@ -53,9 +71,8 @@ class MediaFetcherTest {
     }
 
     private fun getParseCursorFromPath(path: String): List<Medium> {
-        val cursor = MediaFixture().getMediaFromJson("media/category_media.json")
+        val cursor = MediaFixture().getMediaFromJson(path)
         return mediaFetcher.parseCursor(cursor)
     }
-
 }
 
