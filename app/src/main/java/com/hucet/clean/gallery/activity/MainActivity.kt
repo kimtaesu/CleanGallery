@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         return fragmentDispatchingAndroidInjector
     }
 
-    val galleryFragment: Fragment = ListGalleryFragment.newInstance()
+    val galleryFragment: ListGalleryFragment = ListGalleryFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -71,5 +71,12 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 .addToBackStack(null)
                 .commit()
 
+    }
+
+    override fun onBackPressed() {
+        if (!galleryFragment.onBackPressed())
+            return
+
+        super.onBackPressed()
     }
 }

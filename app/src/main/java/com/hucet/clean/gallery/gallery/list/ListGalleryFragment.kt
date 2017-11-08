@@ -56,6 +56,15 @@ class ListGalleryFragment : Fragment(), Gallery.View {
         }
     }
 
+    fun onBackPressed(): Boolean {
+        if (!curPath.isExternalStorageDir()) {
+            curPath = Environment.getExternalStorageDirectory().absolutePath
+            presenter.fetchItems(curPath)
+            return false
+        }
+        return true
+    }
+
     private fun initRecyclerView() {
         gallery_list.apply {
             this@ListGalleryFragment.adapter.setOnClickListener(this, onGalleryClicked)
