@@ -12,7 +12,6 @@ import android.widget.Toast
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.activity.MainActivity
 import com.hucet.clean.gallery.extension.isExternalStorageDir
-import com.hucet.clean.gallery.extension.parentDirName
 import com.hucet.clean.gallery.extension.parentDirPath
 import com.hucet.clean.gallery.gallery.list.presenter.Gallery
 import com.hucet.clean.gallery.model.Medium
@@ -50,11 +49,11 @@ class ListGalleryFragment : Fragment(), Gallery.View {
 
     private val onGalleryClicked: (Medium) -> Unit = { medium ->
         if (curPath.isExternalStorageDir()) {
-            presenter.fetchItems(medium.path.parentDirPath())
+            curPath = medium.path.parentDirPath()
+            presenter.fetchItems(curPath)
         } else {
-            (activity as MainActivity)?.onGalleryClicked
+            (activity as MainActivity)?.onGalleryClicked.invoke(medium)
         }
-        curPath = medium.path.parentDirPath()
     }
 
     private fun initRecyclerView() {
