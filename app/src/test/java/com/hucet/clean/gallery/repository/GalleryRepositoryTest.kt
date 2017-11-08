@@ -38,11 +38,12 @@ class GalleryRepositoryTest {
         val testSubscriber = repository.getGalleries().test()
         testSubscriber.assertComplete()
         testSubscriber.assertValue { data ->
-            data.get(0).path == testMediumData().get(0).path
+            data.get(testKey)?.get(0)?.path == testMediumData().get(testKey)?.get(0)?.path
         }
     }
 }
 
-fun testMediumData(): List<Medium> {
-    return listOf(Medium("tyler", "/tyler", false, System.currentTimeMillis(), System.currentTimeMillis(), 10))
+val testKey = "2017-01-01"
+fun testMediumData(): Map<String, List<Medium>> {
+    return mapOf("2017-01-01" to listOf(Medium("tyler", "/tyler", false, System.currentTimeMillis(), System.currentTimeMillis(), 10)))
 }

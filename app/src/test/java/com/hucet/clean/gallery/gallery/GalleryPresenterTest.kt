@@ -32,7 +32,6 @@ class GalleryPresenterTest {
         repository = mock()
         testScheduler = TestScheduler()
         presenter = GalleryPresenter(view, adapter, repository, TestSchedulerProvider(testScheduler))
-
     }
 
     @Test

@@ -51,11 +51,14 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<GalleryAdapter
 
     override fun getItemCount() = mediums.size
 
-    fun updateData(newItems: List<Medium>) {
-        val diffCallback = MediumDiffCallback(this.mediums, newItems)
+    fun updateData(newItems: Map<String, List<Medium>>) {
+        val allItems = newItems.flatMap {
+            it.value
+        }
+        val diffCallback = MediumDiffCallback(this.mediums, allItems)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         this.mediums.clear()
-        this.mediums.addAll(newItems)
+        this.mediums.addAll(allItems)
         diffResult.dispatchUpdatesTo(this)
     }
 
