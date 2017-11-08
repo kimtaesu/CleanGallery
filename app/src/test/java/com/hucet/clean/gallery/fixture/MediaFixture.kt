@@ -21,6 +21,7 @@ class MediaFixture {
             .create()
 
     fun getMediaFromJson(path: String): Cursor {
+        currentIndex = 0
         return getCursor(readJson(path))
     }
 
@@ -76,7 +77,7 @@ class MediaFixture {
         whenever(cursor?.getString(MediaColumnOfIndex.DISPLAY_NAME.getValue())).thenReturn(newMedia.displayName)
         whenever(cursor?.getLong(MediaColumnOfIndex.SIZE.getValue())).thenReturn(newMedia.size)
         whenever(cursor?.getLong(MediaColumnOfIndex.DATE_TAKEN.getValue())).thenReturn(newMedia.dateTaken)
-        whenever(cursor?.getInt(MediaColumnOfIndex.DATE_MODIFIED.getValue())).thenReturn(newMedia.dateModified)
+        whenever(cursor?.getLong(MediaColumnOfIndex.DATE_MODIFIED.getValue())).thenReturn(newMedia.dateModified)
     }
 
     private enum class MediaColumnOfIndex(private val i: Int) {
@@ -94,7 +95,7 @@ class MediaFixture {
         return gson.fromJson<List<FakeMedia>>(json, fakeMediaType)
     }
 
-    private data class FakeMedia(val dateModified: Int,
+    private data class FakeMedia(val dateModified: Long,
                                  val data: String,
                                  val displayName: String,
                                  val size: Long,
