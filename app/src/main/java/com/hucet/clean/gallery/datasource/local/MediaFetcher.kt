@@ -3,8 +3,8 @@ package com.hucet.clean.gallery.datasource.local
 import android.content.Context
 import android.database.Cursor
 import android.provider.MediaStore
-import com.hucet.clean.gallery.config.*
-import com.hucet.clean.gallery.extension.*
+import com.hucet.clean.gallery.config.ApplicationConfig
+import com.hucet.clean.gallery.extension.getFilenameFromPath
 import com.hucet.clean.gallery.model.Medium
 import java.io.File
 
@@ -13,6 +13,9 @@ import java.io.File
  */
 
 class MediaFetcher constructor(private val context: Context, private val applcationConfig: ApplicationConfig) {
+    enum class CategoryType {
+        DIR
+    }
 
     val sortOption = MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC"
     val imageProjection = arrayOf(MediaStore.Images.Media._ID,
@@ -41,6 +44,7 @@ class MediaFetcher constructor(private val context: Context, private val applcat
                         val dateModified = cur.getInt(cur.getColumnIndex(MediaStore.Images.Media.DATE_MODIFIED)) * 1000L
 
                         val medium = Medium(filename, path, false, dateModified, dateTaken, size)
+
                         curMedia.add(medium)
 
                     } catch (e: IllegalArgumentException) {
@@ -50,5 +54,15 @@ class MediaFetcher constructor(private val context: Context, private val applcat
             }
         }
         return curMedia
+    }
+
+    fun category(categoryType: CategoryType, mediums: List<Medium>): Map<String, List<Medium>> {
+        return when (categoryType) {
+            CategoryType.DIR -> {
+                mediums.groupBy { medium ->
+                    File(medium.path)?.parentFile.name
+                }
+            }
+        }
     }
 }

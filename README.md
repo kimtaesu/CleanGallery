@@ -185,6 +185,7 @@ Refactroing이 필요하다고 생각됬다.
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/cAsL72Mj-kc/0.jpg)](https://www.youtube.com/watch?v=cAsL72Mj-kc)
 
-지금까지의 구현이다.
+Detail과 관련된 내용은 여기서 살펴보자.
+
 
 <img src="https://github.com/kimtaesu/CleanGallery/blob/master/document/gallery1.gif" alt="Smiley face" height="510" width="300">
