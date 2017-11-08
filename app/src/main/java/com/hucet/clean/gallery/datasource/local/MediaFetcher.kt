@@ -58,9 +58,7 @@ class MediaFetcher constructor(private val context: Context, private val applcat
                         var size = cur.getLong(cur.getColumnIndex(MediaStore.Images.Media.SIZE))
                         val dateTaken = cur.getLong(cur.getColumnIndex(MediaStore.Images.Media.DATE_TAKEN))
                         val dateModified = cur.getLong(cur.getColumnIndex(MediaStore.Images.Media.DATE_MODIFIED)) * 1000L
-
                         val medium = Medium(filename, path, false, dateModified, dateTaken, size)
-
                         curMedia.add(medium)
 
                     } catch (e: IllegalArgumentException) {

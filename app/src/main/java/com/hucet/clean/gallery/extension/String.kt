@@ -1,10 +1,25 @@
 package com.hucet.clean.gallery.extension
 
+import android.os.Environment
+import java.io.File
 import java.util.*
 
 /**
  * Created by taesu on 2017-10-30.
  */
+
+fun externalStorageDirectory() = Environment.getExternalStorageDirectory().absolutePath
+
+fun String.isExternalStorageDir() = this == externalStorageDirectory()
+
+fun String.parentDirPath(): String {
+    return File(this)?.parentFile.path
+}
+
+fun String.parentDirName(): String {
+    return File(this)?.parentFile.name
+}
+
 fun String.isGif() = endsWith(".gif", true)
 
 fun String.isPng() = endsWith(".png", true)

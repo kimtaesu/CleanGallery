@@ -11,7 +11,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.activity.MainActivity
+import com.hucet.clean.gallery.extension.isExternalStorageDir
+import com.hucet.clean.gallery.extension.parentDirName
+import com.hucet.clean.gallery.extension.parentDirPath
 import com.hucet.clean.gallery.gallery.list.presenter.Gallery
+import com.hucet.clean.gallery.model.Medium
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_gallery.*
 import javax.inject.Inject
@@ -24,6 +28,8 @@ class ListGalleryFragment : Fragment(), Gallery.View {
     @Inject lateinit var adapter: GalleryAdapter
     @Inject lateinit var presenter: Gallery.Presenter
 
+    var curPath = Environment.getExternalStorageDirectory().absolutePath
+
     companion object {
         fun newInstance() = ListGalleryFragment()
     }
@@ -34,7 +40,7 @@ class ListGalleryFragment : Fragment(), Gallery.View {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initRecyclerView()
-        presenter.fetchItems(Environment.getExternalStorageDirectory().absolutePath)
+        presenter.fetchItems(curPath)
     }
 
     override fun onAttach(context: Context?) {
@@ -42,9 +48,18 @@ class ListGalleryFragment : Fragment(), Gallery.View {
         super.onAttach(context)
     }
 
+    private val onGalleryClicked: (Medium) -> Unit = { medium ->
+        if (curPath.isExternalStorageDir()) {
+            presenter.fetchItems(medium.path.parentDirPath())
+        } else {
+            (activity as MainActivity)?.onGalleryClicked
+        }
+        curPath = medium.path.parentDirPath()
+    }
+
     private fun initRecyclerView() {
         gallery_list.apply {
-            this@ListGalleryFragment.adapter.setOnClickListener(this, (activity as MainActivity)?.onGalleryClicked)
+            this@ListGalleryFragment.adapter.setOnClickListener(this, onGalleryClicked)
             adapter = this@ListGalleryFragment.adapter
             layoutManager = LinearLayoutManager(context)
         }
