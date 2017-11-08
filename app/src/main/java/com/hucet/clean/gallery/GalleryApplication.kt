@@ -3,6 +3,7 @@ package com.hucet.clean.gallery
 import android.app.Activity
 import android.app.Application
 import android.os.StrictMode
+import com.facebook.stetho.Stetho
 import com.hucet.clean.gallery.debug.OptionalTree
 import com.hucet.clean.gallery.inject.DaggerApplicationComponent
 import dagger.android.AndroidInjector
@@ -23,6 +24,13 @@ class GalleryApplication : Application(), HasActivityInjector {
         initDagger()
         initStrictMode()
         initTimber()
+        initStetho()
+    }
+
+    private fun initStetho() {
+        if (BuildConfig.DEBUG) {
+            Stetho.initializeWithDefaults(this)
+        }
     }
 
     private fun initStrictMode() {

@@ -81,6 +81,10 @@ ext {
             glideCompiler                 : "com.github.bumptech.glide:compiler:${glideVersion}",
     ]
 
+    debugDependencies = [
+            stetho      : 'com.facebook.stetho:stetho:1.5.0',
+            stethoOkHttp: 'com.facebook.stetho:stetho-okhttp3:1.5.0',
+    ]
     daggerDependencies = [
             daggerCompiler : "com.google.dagger:dagger-compiler:${daggerVersion}",
             daggerProcessor: "com.google.dagger:dagger-android-processor:${daggerVersion}",
