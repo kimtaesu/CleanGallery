@@ -21,10 +21,17 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<GalleryAdapter
         DIRECTORY, MEDIUM
     }
 
+    //     TODO Dependencies Injection
+//    @Inject lateinit var viewHolderCreator:
+//            Map<GalleryType, AbstractGalleryCreator>
+    val viewHolderDelegater = mapOf(
+            GalleryType.DIRECTORY to DirectoryViewHolderCreator(),
+            GalleryType.MEDIUM to MediumViewHolderCreator()
+    )
+
     //    @Inject
 //    lateinit var a: MediumViewHolderCreator
-    @Inject lateinit var viewHolderCreator:
-            Map<GalleryType, AbstractGalleryCreator>
+
     //    @Inject lateinit var glideRequests: GlideRequests
     private var mediums: ArrayList<Basic> = arrayListOf()
     private var onClick: ((Basic) -> Unit)? = null
