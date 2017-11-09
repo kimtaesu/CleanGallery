@@ -10,6 +10,7 @@ import org.buffer.android.boilerplate.ui.injection.scopes.PerActivity
  */
 @Module
 abstract class MainAcitivtyModule {
+    @PerActivity
     @ContributesAndroidInjector(modules = arrayOf(FragmentProviderModule::class))
     abstract fun bindMainActivity(): MainActivity
 }

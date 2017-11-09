@@ -14,7 +14,6 @@ class GalleryPresenter constructor(private val view: Gallery.View,
                                    private val repository: GalleryRepository,
                                    private val schedulerProvider: SchedulerProvider = DefaultSchedulerProvider()
 ) : Gallery.Presenter {
-
     override fun fetchItems(curPath: String) {
         repository
                 .getGalleries(curPath)
@@ -31,7 +30,10 @@ class GalleryPresenter constructor(private val view: Gallery.View,
                 }
                 .subscribe(
                         { next ->
-                            Timber.d("Next[${next}]")
+                            next.forEach {
+                                Timber.d("Key : ${it.key}")
+                                Timber.d("Value : ${it.value}")
+                            }
                             adapter.updateData(next)
                         },
                         { error ->
