@@ -6,13 +6,6 @@
     android:layout_height="wrap_content">
 
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline_v"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="303dp" />
-
     <ImageView
         android:id="@+id/thumbnail"
         android:layout_width="@dimen/list_view_folder_thumbnail_size"
@@ -24,6 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline_v"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/thumbnail"
+         />
 </android.support.constraint.ConstraintLayout>

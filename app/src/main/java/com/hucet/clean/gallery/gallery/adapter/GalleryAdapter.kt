@@ -30,6 +30,7 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
     override fun getItemViewType(position: Int): Int {
         return this.Items[position].viewType.value
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
         val viewHoler = viewTypeDelegateAdapter[viewType]?.onCreateViewHolder(parent, viewType)
         viewHoler?.itemView?.setOnClickListener({

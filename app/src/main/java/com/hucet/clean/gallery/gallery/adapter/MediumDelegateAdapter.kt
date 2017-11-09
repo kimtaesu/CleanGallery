@@ -7,27 +7,23 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.hucet.clean.gallery.R
-import com.hucet.clean.gallery.inject.scopes.PerFragment
+import com.hucet.clean.gallery.gallery.list.GlideRequests
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Medium
-import javax.inject.Inject
 
 /**
  * Created by taesu on 2017-11-09.
  */
-@PerFragment
-class MediumDelegateAdapter @Inject constructor() : AbstractDelegateAdapter {
+class MediumDelegateAdapter(val glideRequests: GlideRequests) : AbstractDelegateAdapter {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int, item: Basic?) {
-        holder as ViewHolder?
-        item as Medium?
-
-        holder?.name?.text = item?.name
-        //TODO thumbnail
-//        glideRequests
-//                .asDrawable()
-//                .centerCrop()
-//                .load(medium.path)
-//                .into(holder.thumbnail)
+        holder as ViewHolder
+        item as Medium
+        holder.name.text = item.name
+        glideRequests
+                .asDrawable()
+                .centerCrop()
+                .load(item.path)
+                .into(holder.thumbnail)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {

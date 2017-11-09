@@ -28,7 +28,6 @@ import javax.inject.Inject
 class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     @Inject lateinit var adapter: GalleryAdapter
     @Inject lateinit var presenter: Gallery.Presenter
-
     var curPath = Environment.getExternalStorageDirectory().absolutePath
 
     companion object {

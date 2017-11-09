@@ -12,7 +12,7 @@ import dagger.android.ContributesAndroidInjector
 @Module(includes = arrayOf())
 abstract class FragmentProviderModule {
     @PerFragment
-    @ContributesAndroidInjector(modules = arrayOf(AdapterDelegationModule::class, GalleryPresenterModule::class))
+    @ContributesAndroidInjector(modules = arrayOf(AdapterDelegationModule::class, GalleryPresenterModule::class, ListGalleryFragmentModule::class))
     abstract fun bindGalleryFragment(): ListGalleryFragment
 
     @PerFragment
