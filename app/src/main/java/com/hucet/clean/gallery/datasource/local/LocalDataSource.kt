@@ -19,9 +19,11 @@ class LocalDataSource constructor(private val madiaFetcher: MediaFetcher) : Gall
             val cursor = madiaFetcher.queryImage(curPath)
             val result = madiaFetcher.category(MediaFetcher.CategoryType.DIR, madiaFetcher.parseCursor(cursor))
             if (curPath.isExternalStorageDir()) {
-                Flowable.just(result.map {
-                    it.key to listOf(Directory(File(it.key).name, it.key, it.value.first(), it.value.size))
-                }.toMap())
+                val map = result.map {
+                    val first = it.value.first()
+                    it.key to listOf(Directory(first.id, File(it.key).name, it.key, first, it.value.size) as Basic)
+                }.toMap()
+                Flowable.just(map)
             } else {
                 Flowable.just(result)
             }

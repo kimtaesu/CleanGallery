@@ -57,12 +57,14 @@ class MediaFixture {
     }
 
     private fun mockColumnIndex(c: Cursor) {
+        whenever(c.getColumnIndex(MediaStore.Images.Media._ID)).thenReturn(MediaColumnOfIndex.ID.getValue())
         whenever(c.getColumnIndex(MediaStore.Images.Media.DATA)).thenReturn(MediaColumnOfIndex.DATA.getValue())
         whenever(c.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)).thenReturn(MediaColumnOfIndex.DISPLAY_NAME.getValue())
         whenever(c.getColumnIndex(MediaStore.Images.Media.SIZE)).thenReturn(MediaColumnOfIndex.SIZE.getValue())
         whenever(c.getColumnIndex(MediaStore.Images.Media.DATE_TAKEN)).thenReturn(MediaColumnOfIndex.DATE_TAKEN.getValue())
         whenever(c.getColumnIndex(MediaStore.Images.Media.DATE_MODIFIED)).thenReturn(MediaColumnOfIndex.DATE_MODIFIED.getValue())
 
+        whenever(c.getColumnIndexOrThrow(MediaStore.Images.Media._ID)).thenReturn(MediaColumnOfIndex.ID.getValue())
         whenever(c.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)).thenReturn(MediaColumnOfIndex.DATA.getValue())
         whenever(c.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME)).thenReturn(MediaColumnOfIndex.DISPLAY_NAME.getValue())
         whenever(c.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE)).thenReturn(MediaColumnOfIndex.SIZE.getValue())
@@ -81,6 +83,7 @@ class MediaFixture {
     }
 
     private enum class MediaColumnOfIndex(private val i: Int) {
+        ID(0),
         DISPLAY_NAME(1),
         DATE_TAKEN(2),
         DATE_MODIFIED(3),
@@ -95,10 +98,11 @@ class MediaFixture {
         return gson.fromJson<List<FakeMedia>>(json, fakeMediaType)
     }
 
-    private data class FakeMedia(val dateModified: Long,
-                                 val data: String,
-                                 val displayName: String,
-                                 val size: Long,
-                                 val dateTaken: Long)
-
+    private data class FakeMedia(
+            val id: Long,
+            val dateModified: Long,
+            val data: String,
+            val displayName: String,
+            val size: Long,
+            val dateTaken: Long)
 }

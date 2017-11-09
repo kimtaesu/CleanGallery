@@ -53,15 +53,17 @@ class MediaFetcher constructor(private val context: Context, private val applcat
             if (cur.moveToFirst()) {
                 do {
                     try {
+                        val id = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media._ID))
                         val path = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)).trim()
                         var filename = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))?.trim() ?: path.getFilenameFromPath()
-                        var size = cur.getLong(cur.getColumnIndex(MediaStore.Images.Media.SIZE))
-                        val dateTaken = cur.getLong(cur.getColumnIndex(MediaStore.Images.Media.DATE_TAKEN))
-                        val dateModified = cur.getLong(cur.getColumnIndex(MediaStore.Images.Media.DATE_MODIFIED)) * 1000L
-                        val medium = Medium(filename, path, false, dateModified, dateTaken, size)
+                        var size = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE))
+                        val dateTaken = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN))
+                        val dateModified = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED)) * 1000L
+                        val medium = Medium(id, filename, path, false, dateModified, dateTaken, size)
                         curMedia.add(medium)
 
                     } catch (e: IllegalArgumentException) {
+                        e.printStackTrace()
                         continue
                     }
                 } while (cur.moveToNext())
@@ -74,7 +76,7 @@ class MediaFetcher constructor(private val context: Context, private val applcat
         return when (categoryType) {
             CategoryType.DIR -> {
                 mediums.groupBy { medium ->
-                    File(medium.path)?.parentFile.name
+                    File(medium.path)?.parentFile.absolutePath
                 }
             }
             CategoryType.UPDATE_DATE -> {
