@@ -7,13 +7,9 @@ import com.hucet.clean.gallery.model.Basic
 /**
  * Created by taesu on 2017-11-09.
  */
-interface AbstractGalleryCreator {
-
-
+interface AbstractDelegateAdapter {
 
     fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int, item: Basic?)
 
     fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder
 }
-
-

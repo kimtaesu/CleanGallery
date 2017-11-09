@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.hucet.clean.gallery.R
+import com.hucet.clean.gallery.inject.scopes.PerFragment
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Medium
 import javax.inject.Inject
@@ -14,7 +15,8 @@ import javax.inject.Inject
 /**
  * Created by taesu on 2017-11-09.
  */
-class MediumViewHolderCreator @Inject constructor() : AbstractGalleryCreator {
+@PerFragment
+class MediumDelegateAdapter @Inject constructor() : AbstractDelegateAdapter {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int, item: Basic?) {
         holder as ViewHolder?
         item as Medium?
@@ -30,7 +32,7 @@ class MediumViewHolderCreator @Inject constructor() : AbstractGalleryCreator {
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         val v = LayoutInflater
                 .from(parent?.context)
-                .inflate(R.layout.list_item_gallery, parent, false)
+                .inflate(R.layout.medium_item_gallery, parent, false)
 
         return ViewHolder(v)
     }

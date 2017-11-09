@@ -1,8 +1,8 @@
 package com.hucet.clean.gallery.inject.modules
 
-import com.hucet.clean.gallery.gallery.adapter.AbstractGalleryCreator
-import com.hucet.clean.gallery.gallery.adapter.DirectoryViewHolderCreator
-import com.hucet.clean.gallery.gallery.adapter.MediumViewHolderCreator
+import com.hucet.clean.gallery.gallery.adapter.AbstractDelegateAdapter
+import com.hucet.clean.gallery.gallery.adapter.DirectoryDelegateAdapter
+import com.hucet.clean.gallery.gallery.adapter.MediumDelegateAdapter
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import dagger.Binds
 import dagger.MapKey
@@ -20,14 +20,14 @@ abstract class AdapterDelegationModule {
     @Binds
     @IntoMap
     @GalleryEnumKey(GalleryAdapter.GalleryType.DIRECTORY)
-    abstract fun bindDirectoryViewHolderCreator(conCreate: DirectoryViewHolderCreator)
-            : AbstractGalleryCreator
+    abstract fun bindDirectoryViewHolderCreator(conCreate: DirectoryDelegateAdapter)
+            : AbstractDelegateAdapter
 
     @Binds
     @IntoMap
     @GalleryEnumKey(GalleryAdapter.GalleryType.MEDIUM)
-    abstract fun bindMediumViewHolderCreator(conCreate: MediumViewHolderCreator)
-            : AbstractGalleryCreator
+    abstract fun bindMediumViewHolderCreator(conCreate: MediumDelegateAdapter)
+            : AbstractDelegateAdapter
 
     @Documented
     @Target(ElementType.METHOD)
