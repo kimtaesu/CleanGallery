@@ -21,7 +21,8 @@ class MediumDelegateAdapter @Inject constructor() : AbstractDelegateAdapter {
         holder as ViewHolder?
         item as Medium?
 
-        holder?.fileName?.text = item?.path
+        holder?.name?.text = item?.name
+        //TODO thumbnail
 //        glideRequests
 //                .asDrawable()
 //                .centerCrop()
@@ -33,13 +34,12 @@ class MediumDelegateAdapter @Inject constructor() : AbstractDelegateAdapter {
         val v = LayoutInflater
                 .from(parent?.context)
                 .inflate(R.layout.medium_item_gallery, parent, false)
-
         return ViewHolder(v)
     }
 
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val fileName: TextView = view.findViewById(R.id.filename)
+        val name: TextView = view.findViewById(R.id.name)
         val thumbnail: ImageView = view.findViewById(R.id.thumbnail)
     }
 }

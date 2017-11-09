@@ -29,7 +29,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="dir_name"
         app:layout_constraintStart_toStartOf="@+id/guideline_v"
         app:layout_constraintTop_toTopOf="@+id/guideline_h" />
 
@@ -38,7 +37,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="dir_count"
         app:layout_constraintStart_toEndOf="@+id/dir_name"
         app:layout_constraintTop_toTopOf="@+id/guideline_h" />
 
@@ -48,7 +46,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="dir_path"
         app:layout_constraintStart_toStartOf="@+id/guideline_v"
         app:layout_constraintTop_toBottomOf="@+id/dir_name" />
 </android.support.constraint.ConstraintLayout>

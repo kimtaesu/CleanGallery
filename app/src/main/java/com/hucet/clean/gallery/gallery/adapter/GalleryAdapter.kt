@@ -27,6 +27,9 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
         this.onClick = onGalleryClicked
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return this.Items[position].viewType.value
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
         val viewHoler = viewTypeDelegateAdapter[viewType]?.onCreateViewHolder(parent, viewType)
         viewHoler?.itemView?.setOnClickListener({
@@ -47,10 +50,18 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
         val allItems = newItems.flatMap {
             it.value
         }
-        val diffCallback = MediumDiffCallback(this.Items, allItems)
+        updateByDiff(allItems)
+    }
+
+    fun clearItems() {
+        updateByDiff(emptyList())
+    }
+
+    private fun <T : Basic> updateByDiff(newItems: List<T>) {
+        val diffCallback = MediumDiffCallback(this.Items, newItems)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         this.Items.clear()
-        this.Items.addAll(allItems)
+        this.Items.addAll(newItems)
         diffResult.dispatchUpdatesTo(this)
     }
 }
