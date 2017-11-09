@@ -1,6 +1,5 @@
 package com.hucet.clean.gallery.gallery.list
 
-import android.content.Context
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.app.Fragment
@@ -10,12 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.hucet.clean.gallery.R
-import com.hucet.clean.gallery.activity.MainActivity
 import com.hucet.clean.gallery.extension.isExternalStorageDir
 import com.hucet.clean.gallery.extension.parentDirPath
-import com.hucet.clean.gallery.gallery.list.presenter.Gallery
+import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
+import com.hucet.clean.gallery.presenter.Gallery
+import com.hucet.clean.gallery.inject.Injectable
+import com.hucet.clean.gallery.model.Basic
+import com.hucet.clean.gallery.model.Directory
 import com.hucet.clean.gallery.model.Medium
-import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_gallery.*
 import javax.inject.Inject
 
@@ -23,7 +24,7 @@ import javax.inject.Inject
 /**
  * Created by taesu on 2017-10-30.
  */
-class ListGalleryFragment : Fragment(), Gallery.View {
+class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     @Inject lateinit var adapter: GalleryAdapter
     @Inject lateinit var presenter: Gallery.Presenter
 
@@ -42,17 +43,16 @@ class ListGalleryFragment : Fragment(), Gallery.View {
         presenter.fetchItems(curPath)
     }
 
-    override fun onAttach(context: Context?) {
-        AndroidSupportInjection.inject(this);
-        super.onAttach(context)
-    }
 
-    private val onGalleryClicked: (Medium) -> Unit = { medium ->
-        if (curPath.isExternalStorageDir()) {
-            curPath = medium.path.parentDirPath()
-            presenter.fetchItems(curPath)
-        } else {
-            (activity as MainActivity)?.onGalleryClicked.invoke(medium)
+    private val onGalleryClicked: (Basic) -> Unit = { medium ->
+        when (medium) {
+            is Medium -> {
+                curPath = medium.path.parentDirPath()
+                presenter.fetchItems(curPath)
+            }
+            is Directory -> {
+//                (activity as MainActivity)?.onGalleryClicked.invoke(medium)
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-package com.hucet.clean.gallery.gallery.list
+package com.hucet.clean.gallery.gallery.adapter
 
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
@@ -8,33 +8,49 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.hucet.clean.gallery.R
-import com.hucet.clean.gallery.inject.scopes.PerFragment
+import com.hucet.clean.gallery.model.Basic
+import com.hucet.clean.gallery.model.Directory
 import com.hucet.clean.gallery.model.Medium
 import javax.inject.Inject
 
 /**
  * Created by taesu on 2017-10-31.
  */
-@PerFragment
 class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
-    @Inject lateinit var glideRequests: GlideRequests
-    private var mediums: ArrayList<Medium> = arrayListOf()
-    private var onClick: ((Medium) -> Unit)? = null
+    enum class GalleryType {
+        DIRECTORY, MEDIUM
+    }
+
+    //    @Inject
+//    lateinit var a: MediumViewHolderCreator
+    @Inject lateinit var viewHolderCreator:
+            Map<GalleryType, AbstractGalleryCreator>
+    //    @Inject lateinit var glideRequests: GlideRequests
+    private var mediums: ArrayList<Basic> = arrayListOf()
+    private var onClick: ((Basic) -> Unit)? = null
     private var recyclerView: RecyclerView? = null
 
-    fun setOnClickListener(recyclerView: RecyclerView, onGalleryClicked: (Medium) -> Unit) {
+    fun setOnClickListener(recyclerView: RecyclerView, onGalleryClicked: (Basic) -> Unit) {
         this.recyclerView = recyclerView
         this.onClick = onGalleryClicked
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val medium = mediums[position]
-        holder.fileName.text = medium.path
-        glideRequests
-                .asDrawable()
-                .centerCrop()
-                .load(medium.path)
-                .into(holder.thumbnail)
+        when (medium) {
+            is Medium -> {
+                holder.fileName.text = medium.path
+//                glideRequests
+//                        .asDrawable()
+//                        .centerCrop()
+//                        .load(medium.path)
+//                        .into(holder.thumbnail)
+            }
+            is Directory -> {
+
+            }
+        }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -51,7 +67,7 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<GalleryAdapter
 
     override fun getItemCount() = mediums.size
 
-    fun updateData(newItems: Map<String, List<Medium>>) {
+    fun <T : Basic> updateData(newItems: Map<String, List<T>>) {
         val allItems = newItems.flatMap {
             it.value
         }

@@ -5,7 +5,7 @@ import android.app.Application
 import android.os.StrictMode
 import com.facebook.stetho.Stetho
 import com.hucet.clean.gallery.debug.OptionalTree
-import com.hucet.clean.gallery.inject.DaggerApplicationComponent
+import com.hucet.clean.gallery.inject.AppInjector
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
@@ -57,11 +57,7 @@ class GalleryApplication : Application(), HasActivityInjector {
     }
 
     private fun initDagger() {
-        DaggerApplicationComponent
-                .builder()
-                .application(this)
-                .build()
-                .inject(this)
+        AppInjector.init(this)
     }
 
     override fun activityInjector(): AndroidInjector<Activity> {

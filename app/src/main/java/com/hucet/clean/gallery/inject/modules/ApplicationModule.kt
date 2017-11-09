@@ -5,21 +5,21 @@ import android.content.Context
 import com.hucet.clean.gallery.config.ApplicationConfig
 import dagger.Module
 import dagger.Provides
-import org.buffer.android.boilerplate.ui.injection.scopes.PerApplication
+import javax.inject.Singleton
 
 /**
  * Module used to provide dependencies at an application-level.
  */
-@Module
+@Module(includes = arrayOf(RepositoryServiceModule::class))
 open class ApplicationModule {
     @Provides
-    @PerApplication
+    @Singleton
     fun provideContext(application: Application): Context {
         return application
     }
 
     @Provides
-    @PerApplication
+    @Singleton
     fun provideConfig(application: Application): ApplicationConfig {
         return ApplicationConfig(application)
     }

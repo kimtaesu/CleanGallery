@@ -1,4 +1,4 @@
-package com.hucet.clean.gallery.gallery.list.presenter
+package com.hucet.clean.gallery.presenter
 
 /**
  * Created by taesu on 2017-10-31.

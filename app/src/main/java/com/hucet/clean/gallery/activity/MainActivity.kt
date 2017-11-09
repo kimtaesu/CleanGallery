@@ -10,7 +10,6 @@ import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.gallery.detail.GalleryDetailFragment
 import com.hucet.clean.gallery.gallery.list.ListGalleryFragment
 import com.hucet.clean.gallery.model.Medium
-import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -31,7 +30,6 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     val galleryFragment: ListGalleryFragment = ListGalleryFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         showGallaeryWithPermissionCheck()
@@ -67,13 +65,18 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         Timber.d("onGalleryClicked ${medium}")
         supportFragmentManager.beginTransaction()
                 .hide(galleryFragment)
-                .add(android.R.id.content, GalleryDetailFragment.newInstance(medium))
+                .add(android.R.id.content, GalleryDetailFragment.newInstance(medium), GalleryDetailFragment.TAG)
                 .addToBackStack(null)
                 .commit()
 
     }
 
     override fun onBackPressed() {
+        if (GalleryDetailFragment.isVisible(supportFragmentManager)) {
+            supportFragmentManager.popBackStackImmediate()
+            return
+        }
+
         if (!galleryFragment.onBackPressed())
             return
 

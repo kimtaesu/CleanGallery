@@ -3,19 +3,22 @@ package com.hucet.clean.gallery.gallery.detail
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.hucet.clean.gallery.R
+import com.hucet.clean.gallery.inject.Injectable
 import com.hucet.clean.gallery.model.Medium
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_gallery_detail.*
+import javax.inject.Inject
 
 /**
  * Created by taesu on 2017-11-03.
  */
-class GalleryDetailFragment : Fragment() {
+class GalleryDetailFragment : Fragment(), Injectable {
     val medium by lazy {
         arguments.getSerializable(BUNDLE_KEY_MEDIUM) as Medium
     }
@@ -34,12 +37,8 @@ class GalleryDetailFragment : Fragment() {
         Glide.with(this).load(medium.path).into(content)
     }
 
-    override fun onAttach(context: Context?) {
-        AndroidSupportInjection.inject(this);
-        super.onAttach(context)
-    }
-
     companion object {
+        val TAG = GalleryDetailFragment.javaClass.name
         private val BUNDLE_KEY_MEDIUM = "BUNDLE_KEY_MEDIUM"
 
         fun newInstance(medium: Medium): GalleryDetailFragment {
@@ -49,5 +48,7 @@ class GalleryDetailFragment : Fragment() {
             fragment.setArguments(bundle)
             return fragment
         }
+
+        fun isVisible(supportFragmentManager: FragmentManager) = supportFragmentManager.findFragmentByTag(TAG)?.isVisible == true
     }
 }

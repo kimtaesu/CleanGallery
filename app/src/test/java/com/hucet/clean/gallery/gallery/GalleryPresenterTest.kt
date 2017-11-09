@@ -1,9 +1,8 @@
 package com.hucet.clean.gallery.gallery
 
-import android.os.Environment
-import com.hucet.clean.gallery.gallery.list.GalleryAdapter
-import com.hucet.clean.gallery.gallery.list.presenter.Gallery
-import com.hucet.clean.gallery.gallery.list.presenter.GalleryPresenter
+import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
+import com.hucet.clean.gallery.presenter.Gallery
+import com.hucet.clean.gallery.presenter.GalleryPresenter
 import com.hucet.clean.gallery.repository.GalleryRepository
 import com.hucet.clean.gallery.repository.testMediumData
 import com.hucet.clean.gallery.scheduler.TestSchedulerProvider

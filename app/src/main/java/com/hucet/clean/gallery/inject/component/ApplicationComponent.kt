@@ -1,20 +1,20 @@
-package com.hucet.clean.gallery.inject
+package com.hucet.clean.gallery.inject.component
 
 import android.app.Application
 import com.hucet.clean.gallery.GalleryApplication
-import com.hucet.clean.gallery.inject.module.ActivityBindingModule
+import com.hucet.clean.gallery.inject.modules.MainAcitivtyModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
 import org.buffer.android.boilerplate.ui.injection.module.ApplicationModule
-import org.buffer.android.boilerplate.ui.injection.scopes.PerApplication
+import javax.inject.Singleton
 
 /**
  * Created by taesu on 2017-10-30.
  */
-@PerApplication
+@Singleton
 @Component(modules = arrayOf(
-        ActivityBindingModule::class,
+        MainAcitivtyModule::class,
         ApplicationModule::class,
         AndroidSupportInjectionModule::class))
 interface ApplicationComponent {
