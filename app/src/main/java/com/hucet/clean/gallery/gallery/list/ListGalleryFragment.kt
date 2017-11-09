@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.hucet.clean.gallery.R
+import com.hucet.clean.gallery.activity.MainActivity
 import com.hucet.clean.gallery.extension.isExternalStorageDir
 import com.hucet.clean.gallery.extension.parentDirPath
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
@@ -47,7 +48,7 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     private val onGalleryClicked: (Basic) -> Unit = {
         when (it) {
             is Medium -> {
-
+                (activity as MainActivity)?.onGalleryClicked.invoke(it)
             }
             is Directory -> {
                 curPath = it.absolutePath
