@@ -2,7 +2,7 @@ package com.hucet.clean.gallery.inject
 
 import android.app.Application
 import com.hucet.clean.gallery.GalleryApplication
-import com.hucet.clean.gallery.inject.module.ActivityBindingModule
+import com.hucet.clean.gallery.inject.binder.ActivityBindingModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule

@@ -10,10 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.hucet.clean.gallery.R
-import com.hucet.clean.gallery.activity.MainActivity
 import com.hucet.clean.gallery.extension.isExternalStorageDir
 import com.hucet.clean.gallery.extension.parentDirPath
+import com.hucet.clean.gallery.gallery.A
 import com.hucet.clean.gallery.gallery.list.presenter.Gallery
+import com.hucet.clean.gallery.model.Basic
+import com.hucet.clean.gallery.model.Directory
 import com.hucet.clean.gallery.model.Medium
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_gallery.*
@@ -26,7 +28,8 @@ import javax.inject.Inject
 class ListGalleryFragment : Fragment(), Gallery.View {
     @Inject lateinit var adapter: GalleryAdapter
     @Inject lateinit var presenter: Gallery.Presenter
-
+    @Inject lateinit var viewHolderCreator:
+            Map<String, A>
     var curPath = Environment.getExternalStorageDirectory().absolutePath
 
     companion object {
@@ -47,12 +50,15 @@ class ListGalleryFragment : Fragment(), Gallery.View {
         super.onAttach(context)
     }
 
-    private val onGalleryClicked: (Medium) -> Unit = { medium ->
-        if (curPath.isExternalStorageDir()) {
-            curPath = medium.path.parentDirPath()
-            presenter.fetchItems(curPath)
-        } else {
-            (activity as MainActivity)?.onGalleryClicked.invoke(medium)
+    private val onGalleryClicked: (Basic) -> Unit = { medium ->
+        when (medium) {
+            is Medium -> {
+                curPath = medium.path.parentDirPath()
+                presenter.fetchItems(curPath)
+            }
+            is Directory -> {
+//                (activity as MainActivity)?.onGalleryClicked.invoke(medium)
+            }
         }
     }
 

@@ -11,7 +11,7 @@ import java.io.Serializable
  * Created by taesu on 2017-10-30.
  */
 
-data class Medium(var name: String, var path: String, val video: Boolean, val modified: Long, val taken: Long, val size: Long) : Serializable, Comparable<Medium> {
+data class Medium(var name: String, var path: String, val video: Boolean, val modified: Long, val taken: Long, val size: Long) : Basic(), Serializable, Comparable<Medium> {
     companion object {
         private val serialVersionUID = -6553149366975455L
         var sorting: Int = 0

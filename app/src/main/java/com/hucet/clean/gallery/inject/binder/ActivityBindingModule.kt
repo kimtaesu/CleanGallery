@@ -1,4 +1,4 @@
-package com.hucet.clean.gallery.inject.module
+package com.hucet.clean.gallery.inject.binder
 
 import com.hucet.clean.gallery.activity.MainActivity
 import com.hucet.clean.gallery.gallery.GalleryFragmentProviderModule

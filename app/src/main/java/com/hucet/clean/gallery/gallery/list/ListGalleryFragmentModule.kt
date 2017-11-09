@@ -1,5 +1,6 @@
 package com.hucet.clean.gallery.gallery.list
 
+import com.hucet.clean.gallery.gallery.GalleryAdapterModule
 import com.hucet.clean.gallery.gallery.list.presenter.Gallery
 import com.hucet.clean.gallery.gallery.list.presenter.GalleryPresenter
 import com.hucet.clean.gallery.inject.scopes.PerFragment
@@ -10,7 +11,7 @@ import dagger.Provides
 /**
  * Created by taesu on 2017-11-01.
  */
-@Module
+@Module(includes = arrayOf(GalleryAdapterModule::class))
 class ListGalleryFragmentModule {
 
     @PerFragment

@@ -3,6 +3,7 @@ package com.hucet.clean.gallery.gallery.detail
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,6 +41,7 @@ class GalleryDetailFragment : Fragment() {
     }
 
     companion object {
+        val TAG = GalleryDetailFragment.javaClass.name
         private val BUNDLE_KEY_MEDIUM = "BUNDLE_KEY_MEDIUM"
 
         fun newInstance(medium: Medium): GalleryDetailFragment {
@@ -49,5 +51,7 @@ class GalleryDetailFragment : Fragment() {
             fragment.setArguments(bundle)
             return fragment
         }
+
+        fun isVisible(supportFragmentManager: FragmentManager) = supportFragmentManager.findFragmentByTag(TAG)?.isVisible == true
     }
 }

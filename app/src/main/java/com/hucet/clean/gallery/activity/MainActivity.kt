@@ -67,13 +67,18 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         Timber.d("onGalleryClicked ${medium}")
         supportFragmentManager.beginTransaction()
                 .hide(galleryFragment)
-                .add(android.R.id.content, GalleryDetailFragment.newInstance(medium))
+                .add(android.R.id.content, GalleryDetailFragment.newInstance(medium), GalleryDetailFragment.TAG)
                 .addToBackStack(null)
                 .commit()
 
     }
 
     override fun onBackPressed() {
+        if (GalleryDetailFragment.isVisible(supportFragmentManager)) {
+            supportFragmentManager.popBackStackImmediate()
+            return
+        }
+
         if (!galleryFragment.onBackPressed())
             return
 
