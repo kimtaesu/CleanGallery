@@ -27,7 +27,7 @@ class MediaFetcherTest {
 
     @Test
     fun `curosr parser 검증`() {
-        val result = getParseCursorFromPath("default_medium.json")
+        val result = getParseCursorFromPath("test_default.json")
         assertThat(result.size, `is`(2))
         assertThat(result.get(0).name, `is`("3_Forest.jpg"))
         assertThat(result.get(1).name, `is`("4_Structure.jpg"))
@@ -49,7 +49,7 @@ class MediaFetcherTest {
     }
 
     private fun getParseCursorFromPath(path: String): List<Medium> {
-        val cursor = CursorFixture.getCursor(path)
+        val cursor = CursorFixture.getCursor(path, "media/test")
         return mediaFetcher.parseCursor(cursor)
     }
 }

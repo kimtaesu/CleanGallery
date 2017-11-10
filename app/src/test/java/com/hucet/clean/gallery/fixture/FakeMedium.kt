@@ -13,13 +13,13 @@ object FakeMedium {
     private val gson = GsonBuilder()
             .create()
 
-    fun deserializeResource(path: String): List<Medium> {
-        val json = readJson(path)
+    fun deserializeResource(path: String, parent: String): List<Medium> {
+        val json = readJson("${parent}/${path}")
         return deserialize(json)
     }
 
-    private fun readJson(path: String, parent: String = "media"): String {
-        val url = this.javaClass.classLoader.getResource("${parent}/${path}")
+    private fun readJson(path: String): String {
+        val url = this.javaClass.classLoader.getResource("${path}")
         val file = File(url.file)
         return file.readText()
     }

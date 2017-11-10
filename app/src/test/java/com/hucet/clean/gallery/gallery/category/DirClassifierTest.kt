@@ -7,17 +7,17 @@ import org.junit.Test
 /**
  * Created by taesu on 2017-11-10.
  */
-class DateClassifierTest {
-    var dateClassification = DateClassifier()
-    val testData = FakeMedium.deserializeResource("medium_category_date.json", "media/test")
+class DirClassifierTest {
+    val testData = FakeMedium.deserializeResource("test_category_dir.json", "media/test")
+    var dirClassifier = DirClassifier()
+
     @Before
     fun setUp() {
-        dateClassification = DateClassifier()
+        dirClassifier = DirClassifier()
     }
 
     @Test
     fun `aa`() {
+        val result = dirClassifier.category(testData)
     }
-
-
 }

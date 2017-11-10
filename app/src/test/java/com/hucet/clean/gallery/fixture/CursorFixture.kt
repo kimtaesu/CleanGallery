@@ -2,12 +2,9 @@ package com.hucet.clean.gallery.fixture
 
 import android.database.Cursor
 import android.provider.MediaStore
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
 import com.hucet.clean.gallery.model.Medium
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
-import java.io.File
 
 /**
  * Created by taesu on 2017-10-31.
@@ -17,9 +14,9 @@ import java.io.File
 private var currentIndex = 0
 
 object CursorFixture {
-    fun getCursor(path: String): Cursor {
+    fun getCursor(path: String, parent: String): Cursor {
         currentIndex = 0
-        return mockCursor(FakeMedium.deserializeResource(path))
+        return mockCursor(FakeMedium.deserializeResource(path, parent))
     }
 
 

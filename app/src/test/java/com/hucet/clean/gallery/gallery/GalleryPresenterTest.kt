@@ -25,7 +25,7 @@ class GalleryPresenterTest {
     @Mock lateinit var repository: GalleryRepository
     @Mock lateinit var presenter: GalleryPresenter
     var testScheduler = TestScheduler()
-    val testData = FakeMedium.deserializeResource("default_medium.json")
+    val testData = FakeMedium.deserializeResource("test_default.json", "media/test")
     @Before
     fun setUp() {
         view = mock()
