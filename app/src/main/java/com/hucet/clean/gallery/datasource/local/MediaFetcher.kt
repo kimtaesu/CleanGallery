@@ -71,19 +71,4 @@ class MediaFetcher constructor(private val context: Context, private val applcat
         }
         return curMedia
     }
-
-    fun category(categoryType: CategoryType, mediums: List<Medium>): Map<String, List<Medium>> {
-        return when (categoryType) {
-            CategoryType.DIR -> {
-                mediums.groupBy { medium ->
-                    File(medium.path)?.parentFile.absolutePath
-                }
-            }
-            CategoryType.UPDATE_DATE -> {
-                mediums.groupBy { medium ->
-                    format.format(medium.modified)
-                }
-            }
-        }
-    }
 }

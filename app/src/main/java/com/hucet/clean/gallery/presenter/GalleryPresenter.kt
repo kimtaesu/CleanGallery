@@ -30,10 +30,7 @@ class GalleryPresenter constructor(private val view: Gallery.View,
                 }
                 .subscribe(
                         { next ->
-                            next.forEach {
-                                Timber.d("Key : ${it.key}")
-                                Timber.d("Value : ${it.value}")
-                            }
+                            Timber.d("subscribe ${next}")
                             adapter.updateData(next)
                         },
                         { error ->

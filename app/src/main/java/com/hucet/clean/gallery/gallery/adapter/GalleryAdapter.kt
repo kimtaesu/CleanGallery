@@ -47,11 +47,8 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
 
     override fun getItemCount() = Items.size
 
-    fun <T : Basic> updateData(newItems: Map<String, List<T>>) {
-        val allItems = newItems.flatMap {
-            it.value
-        }
-        updateByDiff(allItems)
+    fun updateData(newItems: List<Basic>) {
+        updateByDiff(newItems)
     }
 
     fun clearItems() {

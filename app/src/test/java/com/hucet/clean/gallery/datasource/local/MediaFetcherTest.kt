@@ -35,26 +35,6 @@ class MediaFetcherTest {
         assertThat(result.get(1).name, `is`("4_Structure.jpg"))
     }
 
-    @Test
-    fun `Category Dir Type  분류 검증`() {
-        val result = getParseCursorFromPath("media/category_dir_media.json")
-        val category: Map<String, List<Medium>> = mediaFetcher.category(MediaFetcher.CategoryType.DIR, result)
-        assertThat(category.size, `is`(3))
-        assertThat(category.get("KakaoTalk")?.size, `is`(2))
-    }
-
-    @Test
-    fun `Category Update Date Type  분류 검증`() {
-        val testKeys = listOf("2017-02-23", "2017-11-06")
-        val result = getParseCursorFromPath("media/category_date_media.json")
-        val category: Map<String, List<Medium>> = mediaFetcher.category(MediaFetcher.CategoryType.UPDATE_DATE, result)
-        assertThat(category.size, `is`(2))
-        assertThat(category.containsKey(testKeys.get(0)), `is`(true))
-        assertThat(category.containsKey(testKeys.get(1)), `is`(true))
-        assertThat(category.get(testKeys.get(0))?.size, `is`(2))
-        assertThat(category.get(testKeys.get(1))?.size, `is`(3))
-    }
-
     @After
     fun after() {
     }
