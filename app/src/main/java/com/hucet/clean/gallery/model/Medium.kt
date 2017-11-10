@@ -13,11 +13,11 @@ import java.io.Serializable
  */
 
 data class Medium(
-        val id: Long,
-        val name: String,
-        val path: String,
+        override val id: Long,
+        override val name: String,
+        override val path: String,
         val modified: Long,
         val taken: Long,
         val size: Long,
-        val viewType: GalleryAdapter.GalleryType = GalleryAdapter.GalleryType.MEDIUM
-) : Serializable
+        override val viewType: GalleryAdapter.GalleryType = GalleryAdapter.GalleryType.MEDIUM
+) : Basic(), Serializable

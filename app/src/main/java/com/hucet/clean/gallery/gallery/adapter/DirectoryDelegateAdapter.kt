@@ -22,13 +22,13 @@ class DirectoryDelegateAdapter(val glideRequests: GlideRequests) : AbstractDeleg
 //         TODO casting
         holder as ViewHolder
         item as Directory
-        holder.name.text = item.dirName
-        holder.path.text = item.absolutePath
+        holder.name.text = item.name
+        holder.path.text = item.path
         holder.count.text = item.count.toString()
         glideRequests
                 .asDrawable()
                 .centerCrop()
-                .load(item.firstMedium.path)
+                .load(item.thumbnail)
                 .into(holder.thumbnail)
 //        TODO thumbnail
     }

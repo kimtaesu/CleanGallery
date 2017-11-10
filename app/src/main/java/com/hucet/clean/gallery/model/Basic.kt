@@ -7,5 +7,7 @@ import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
  */
 abstract class Basic() {
     abstract val id: Long
+    abstract val name: String
+    abstract val path: String
     abstract val viewType: GalleryAdapter.GalleryType
 }
