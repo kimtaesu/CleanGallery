@@ -11,13 +11,15 @@ import com.hucet.clean.gallery.gallery.list.GlideRequests
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Directory
+import com.hucet.clean.gallery.model.Medium
 import javax.inject.Inject
 
 /**
  * Created by taesu on 2017-11-09.
  */
 class DirectoryDelegateAdapter(val glideRequests: GlideRequests) : AbstractDelegateAdapter {
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int, item: Basic?) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int, item: Medium) {
+//         TODO casting
         holder as ViewHolder
         item as Directory
         holder.name.text = item.dirName

@@ -44,16 +44,17 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     }
 
 
-    private val onGalleryClicked: (Basic) -> Unit = {
+    private val onGalleryClicked: (Medium) -> Unit = {
         when (it) {
             is Medium -> {
                 (activity as MainActivity)?.onGalleryClicked.invoke(it)
             }
-            is Directory -> {
-                curPath = it.absolutePath
-                adapter.clearItems()
-                presenter.fetchItems(curPath)
-            }
+//            TODO
+//            is Directory -> {
+//                curPath = it.absolutePath
+//                adapter.clearItems()
+//                presenter.fetchItems(curPath)
+//            }
         }
     }
 

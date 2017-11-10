@@ -12,12 +12,12 @@ import java.io.Serializable
  * Created by taesu on 2017-10-30.
  */
 
-data class Medium(override val id: Long,
-                  val name: String,
-                  val path: String,
-                  val video: Boolean,
-                  val modified: Long,
-                  val taken: Long,
-                  val size: Long,
-                  override val viewType: GalleryAdapter.GalleryType = GalleryAdapter.GalleryType.MEDIUM
-) : Basic(), Serializable
+data class Medium(
+        val id: Long,
+        val name: String,
+        val path: String,
+        val modified: Long,
+        val taken: Long,
+        val size: Long,
+        val viewType: GalleryAdapter.GalleryType = GalleryAdapter.GalleryType.MEDIUM
+) : Serializable

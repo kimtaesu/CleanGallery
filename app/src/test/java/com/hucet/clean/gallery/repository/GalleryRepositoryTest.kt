@@ -1,6 +1,7 @@
 package com.hucet.clean.gallery.repository
 
 import com.hucet.clean.gallery.datasource.local.LocalDataSource
+import com.hucet.clean.gallery.fixture.FakeMedium
 import com.hucet.clean.gallery.model.Medium
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
@@ -16,7 +17,7 @@ import org.mockito.Mock
 class GalleryRepositoryTest {
     var mockLocalDataSource = mock<LocalDataSource>()
     var repository = GalleryRepository(mockLocalDataSource)
-
+    val testData = FakeMedium.deserializeResource("default_medium.json")
     @Before
     fun setUp() {
         mockLocalDataSource = mock<LocalDataSource>()
@@ -25,7 +26,7 @@ class GalleryRepositoryTest {
 
     @Test
     fun `subscriber State Completed 확인`() {
-        whenever(mockLocalDataSource.getGalleries(any())).thenReturn(Flowable.just(testMediumData()))
+        whenever(mockLocalDataSource.getGalleries(any())).thenReturn(Flowable.just(testData))
 
         val testSubscriber = repository.getGalleries("").test()
         testSubscriber.assertNoErrors()
@@ -34,16 +35,11 @@ class GalleryRepositoryTest {
 
     @Test
     fun `subscriber assert value`() {
-        whenever(mockLocalDataSource.getGalleries(any())).thenReturn(Flowable.just(testMediumData()))
-
+        whenever(mockLocalDataSource.getGalleries(any())).thenReturn(Flowable.just(testData))
         val testSubscriber = repository.getGalleries("").test()
         testSubscriber.assertComplete()
         testSubscriber.assertValue { data ->
-            data.first().id == testMediumData().first().id
+            data.first().id == testData.first().id
         }
     }
-}
-
-fun testMediumData(): List<Medium> {
-    return listOf(Medium(1, "tyler", "/tyler", false, System.currentTimeMillis(), System.currentTimeMillis(), 10))
 }

@@ -4,6 +4,7 @@ import android.database.Cursor
 import android.provider.MediaStore
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import com.hucet.clean.gallery.model.Medium
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import java.io.File
@@ -15,28 +16,14 @@ import java.io.File
 // for non local var
 private var currentIndex = 0
 
-class MediaFixture {
-
-    private val gson = GsonBuilder()
-            .create()
-
-    fun getMediaFromJson(path: String): Cursor {
+object CursorFixture {
+    fun getCursor(path: String): Cursor {
         currentIndex = 0
-        return getCursor(readJson(path))
+        return mockCursor(FakeMedium.deserializeResource(path))
     }
 
-    private fun readJson(path: String): String {
-        val url = this.javaClass.classLoader.getResource(path)
-        val file = File(url.file)
-        return file.readText()
-    }
 
-    private fun getCursor(json: String): Cursor {
-        val medias = fakeMedia(json)
-        return mockCursor(medias)
-    }
-
-    private fun mockCursor(medias: List<FakeMedia>): Cursor {
+    private fun mockCursor(medias: List<Medium>): Cursor {
         var cursor = mock<Cursor>()
         changeCursorProperties(cursor, medias[currentIndex])
 
@@ -73,13 +60,13 @@ class MediaFixture {
     }
 
 
-    private fun changeCursorProperties(cursor: Cursor, newMedia: FakeMedia) {
+    private fun changeCursorProperties(cursor: Cursor, newMedia: Medium) {
         mockColumnIndex(cursor)
-        whenever(cursor?.getString(MediaColumnOfIndex.DATA.getValue())).thenReturn(newMedia.data)
-        whenever(cursor?.getString(MediaColumnOfIndex.DISPLAY_NAME.getValue())).thenReturn(newMedia.displayName)
+        whenever(cursor?.getString(MediaColumnOfIndex.DATA.getValue())).thenReturn(newMedia.path)
+        whenever(cursor?.getString(MediaColumnOfIndex.DISPLAY_NAME.getValue())).thenReturn(newMedia.name)
         whenever(cursor?.getLong(MediaColumnOfIndex.SIZE.getValue())).thenReturn(newMedia.size)
-        whenever(cursor?.getLong(MediaColumnOfIndex.DATE_TAKEN.getValue())).thenReturn(newMedia.dateTaken)
-        whenever(cursor?.getLong(MediaColumnOfIndex.DATE_MODIFIED.getValue())).thenReturn(newMedia.dateModified)
+        whenever(cursor?.getLong(MediaColumnOfIndex.DATE_TAKEN.getValue())).thenReturn(newMedia.taken)
+        whenever(cursor?.getLong(MediaColumnOfIndex.DATE_MODIFIED.getValue())).thenReturn(newMedia.modified)
     }
 
     private enum class MediaColumnOfIndex(private val i: Int) {
@@ -93,16 +80,5 @@ class MediaFixture {
         fun getValue() = i
     }
 
-    private fun fakeMedia(json: String): List<FakeMedia> {
-        val fakeMediaType = object : TypeToken<List<FakeMedia>>() {}.type
-        return gson.fromJson<List<FakeMedia>>(json, fakeMediaType)
-    }
 
-    private data class FakeMedia(
-            val id: Long,
-            val dateModified: Long,
-            val data: String,
-            val displayName: String,
-            val size: Long,
-            val dateTaken: Long)
 }

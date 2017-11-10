@@ -15,9 +15,8 @@ import com.hucet.clean.gallery.model.Medium
  * Created by taesu on 2017-11-09.
  */
 class MediumDelegateAdapter(val glideRequests: GlideRequests) : AbstractDelegateAdapter {
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int, item: Basic?) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int, item: Medium) {
         holder as ViewHolder
-        item as Medium
         holder.name.text = item.name
         glideRequests
                 .asDrawable()

@@ -1,10 +1,10 @@
 package com.hucet.clean.gallery.gallery
 
+import com.hucet.clean.gallery.fixture.FakeMedium
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.presenter.Gallery
 import com.hucet.clean.gallery.presenter.GalleryPresenter
 import com.hucet.clean.gallery.repository.GalleryRepository
-import com.hucet.clean.gallery.repository.testMediumData
 import com.hucet.clean.gallery.scheduler.TestSchedulerProvider
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Flowable
@@ -25,6 +25,7 @@ class GalleryPresenterTest {
     @Mock lateinit var repository: GalleryRepository
     @Mock lateinit var presenter: GalleryPresenter
     var testScheduler = TestScheduler()
+    val testData = FakeMedium.deserializeResource("default_medium.json")
     @Before
     fun setUp() {
         view = mock()
@@ -36,7 +37,7 @@ class GalleryPresenterTest {
 
     @Test
     fun `presenter Next Complete 검증`() {
-        whenever(repository.getGalleries(any())).thenReturn(Flowable.just(testMediumData()))
+        whenever(repository.getGalleries(any())).thenReturn(Flowable.just(testData))
 
         presenter.fetchItems("")
 
@@ -52,7 +53,7 @@ class GalleryPresenterTest {
 
     @Test
     fun `presenter Error 검증`() {
-        whenever(repository.getGalleries(any())).thenReturn(Flowable.just(testMediumData())
+        whenever(repository.getGalleries(any())).thenReturn(Flowable.just(testData)
                 .map {
                     throw MockitoException("")
                 })
