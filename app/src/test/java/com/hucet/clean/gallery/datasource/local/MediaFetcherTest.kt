@@ -4,7 +4,6 @@ import android.content.Context
 import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.config.IMAGES
 import com.hucet.clean.gallery.fixture.CursorFixture
-import com.hucet.clean.gallery.fixture.FakeMedium
 import com.hucet.clean.gallery.model.Medium
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever

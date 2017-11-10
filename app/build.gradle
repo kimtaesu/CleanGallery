@@ -54,6 +54,5 @@ dependencies {
     testImplementation testDependencies.mock
     testImplementation testDependencies.mockInline
     testImplementation testDependencies.robolectric
-
     implementation debugDependencies.stetho
 }

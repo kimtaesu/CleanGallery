@@ -16,7 +16,7 @@ private var currentIndex = 0
 object CursorFixture {
     fun getCursor(path: String, parent: String): Cursor {
         currentIndex = 0
-        return mockCursor(FakeMedium.deserializeResource(path, parent))
+        return mockCursor(DeserializerFixture.deserializeMedium(path, parent))
     }
 
 

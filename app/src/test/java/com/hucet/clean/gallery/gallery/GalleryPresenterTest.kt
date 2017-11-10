@@ -1,6 +1,6 @@
 package com.hucet.clean.gallery.gallery
 
-import com.hucet.clean.gallery.fixture.FakeMedium
+import com.hucet.clean.gallery.fixture.DeserializerFixture
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.presenter.Gallery
 import com.hucet.clean.gallery.presenter.GalleryPresenter
@@ -25,7 +25,7 @@ class GalleryPresenterTest {
     @Mock lateinit var repository: GalleryRepository
     @Mock lateinit var presenter: GalleryPresenter
     var testScheduler = TestScheduler()
-    val testData = FakeMedium.deserializeResource("test_default.json", "media/test")
+    val testData = DeserializerFixture.deserializeMedium("test_default.json", "media/test")
     @Before
     fun setUp() {
         view = mock()

@@ -1,5 +1,6 @@
 package com.hucet.clean.gallery.model
 
+import android.support.annotation.VisibleForTesting
 import com.hucet.clean.gallery.config.SORT_BY_DATE_MODIFIED
 import com.hucet.clean.gallery.config.SORT_BY_NAME
 import com.hucet.clean.gallery.config.SORT_BY_SIZE
@@ -11,12 +12,12 @@ import java.io.Serializable
  * Created by taesu on 2017-10-30.
  */
 
-class Directory(
+data class Directory(
         val count: Int,
         val thumbnail: String,
         override val id: Long,
         override val name: String,
         override val path: String,
         override val viewType: GalleryAdapter.GalleryType = GalleryAdapter.GalleryType.DIRECTORY
-) : Basic()
-
+) : Basic() {
+}

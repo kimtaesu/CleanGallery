@@ -1,7 +1,8 @@
 package com.hucet.clean.gallery.repository
 
 import com.hucet.clean.gallery.datasource.local.LocalDataSource
-import com.hucet.clean.gallery.fixture.FakeMedium
+import com.hucet.clean.gallery.fixture.DeserializerFixture
+import com.hucet.clean.gallery.model.Medium
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
@@ -15,7 +16,7 @@ import org.junit.Test
 class GalleryRepositoryTest {
     var mockLocalDataSource = mock<LocalDataSource>()
     var repository = GalleryRepository(mockLocalDataSource)
-    val testData = FakeMedium.deserializeResource("test_default.json", "media/test")
+    val testData : List<Medium> = DeserializerFixture.deserializeMedium("test_default.json", "media/test")
     @Before
     fun setUp() {
         mockLocalDataSource = mock<LocalDataSource>()

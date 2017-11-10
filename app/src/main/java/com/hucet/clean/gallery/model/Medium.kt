@@ -16,8 +16,11 @@ data class Medium(
         override val id: Long,
         override val name: String,
         override val path: String,
-        val modified: Long,
+        private val _modified: Long,
         val taken: Long,
         val size: Long,
         override val viewType: GalleryAdapter.GalleryType = GalleryAdapter.GalleryType.MEDIUM
-) : Basic(), Serializable
+) : Basic(), Serializable {
+    var modified: Long = _modified
+        get() = _modified * 1000L
+}

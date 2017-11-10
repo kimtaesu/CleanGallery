@@ -14,11 +14,10 @@ import javax.inject.Inject
 @PerFragment
 class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     enum class GalleryType(val value: Int) {
-        DIRECTORY(0), MEDIUM(1);
+        DIRECTORY(0), MEDIUM(1), DATE(2);
     }
 
     @Inject lateinit var viewTypeDelegateAdapter: ViewTypeDelegateAdapter
-    //    @Inject lateinit var glideRequests: GlideRequests
     private var Items: ArrayList<Medium> = arrayListOf()
     private var onClick: ((Medium) -> Unit)? = null
     private var recyclerView: RecyclerView? = null
@@ -56,7 +55,7 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
         updateByDiff(emptyList())
     }
 
-    private fun  updateByDiff(newItems: List<Medium>) {
+    private fun updateByDiff(newItems: List<Medium>) {
         val diffCallback = MediumDiffCallback(this.Items, newItems)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         this.Items.clear()
