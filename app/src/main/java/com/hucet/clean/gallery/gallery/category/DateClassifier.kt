@@ -12,7 +12,7 @@ import java.util.*
  */
 class DateClassifier(val appConfig: ApplicationConfig) : CategoryStrategy<Basic> {
     enum class DATE_SORT_TYPE(private val format: String, private val index: Int) {
-        DAILY("yyyy-MM-dd", 1), WEEKLY("yyyy-MM", 2), MONTHLY("yyyy", 3);
+        DAILY("yyyy-MM-dd", 1), MONTHLY("yyyy-MM", 2), YEARLY("yyyy", 3);
 
         fun value(): Int {
             return index
@@ -29,11 +29,11 @@ class DateClassifier(val appConfig: ApplicationConfig) : CategoryStrategy<Basic>
             DATE_SORT_TYPE.DAILY.value() -> {
                 DATE_SORT_TYPE.DAILY.format()
             }
-            DATE_SORT_TYPE.WEEKLY.value() -> {
-                DATE_SORT_TYPE.WEEKLY.format()
-            }
             DATE_SORT_TYPE.MONTHLY.value() -> {
                 DATE_SORT_TYPE.MONTHLY.format()
+            }
+            DATE_SORT_TYPE.YEARLY.value() -> {
+                DATE_SORT_TYPE.YEARLY.format()
             }
             else -> {
                 throw IllegalArgumentException()
