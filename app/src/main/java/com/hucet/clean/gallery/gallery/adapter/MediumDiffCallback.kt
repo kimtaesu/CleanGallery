@@ -2,7 +2,6 @@ package com.hucet.clean.gallery.gallery.adapter
 
 import android.support.v7.util.DiffUtil
 import com.hucet.clean.gallery.model.Basic
-import com.hucet.clean.gallery.model.Medium
 
 
 /**
@@ -18,7 +17,7 @@ import com.hucet.clean.gallery.model.Medium
  * getChangePayload(int oldItemPosition, int newItemPosition):
  * areItemTheSame()이 true를 반환하고 areContentsTheSame()이 false를 반환하면 이 메서드가 호출되어 변경 내용에 대한 페이로드를 가져옵니다.
  */
-class MediumDiffCallback(private val oldList: List<Medium>, private val newList: List<Medium>) : DiffUtil.Callback() {
+class MediumDiffCallback(private val oldList: List<Basic>, private val newList: List<Basic>) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int {
         return oldList.size

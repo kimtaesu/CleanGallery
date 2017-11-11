@@ -1,6 +1,7 @@
 package com.hucet.clean.gallery.config
 
 import android.app.Application
+import com.hucet.clean.gallery.gallery.category.DateClassifier
 import javax.inject.Inject
 
 /**
@@ -9,6 +10,9 @@ import javax.inject.Inject
 class ApplicationConfig @Inject constructor(
         val application: Application
 ) {
+
+    val dateSortType = PreferenceHelper.defaultPrefs(application)[key_date_sorting, DateClassifier.DATE_SORT_TYPE.DAILY.value()]!!
+
     val excludedFolders: Set<String>
         get() {
             return PreferenceHelper.defaultPrefs(application)[key_exclude_folders, ""]?.split(";")?.toSet()!!

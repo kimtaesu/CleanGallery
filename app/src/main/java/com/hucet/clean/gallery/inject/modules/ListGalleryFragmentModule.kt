@@ -1,6 +1,8 @@
 package com.hucet.clean.gallery.inject.modules
 
-import com.hucet.clean.gallery.gallery.adapter.*
+import com.hucet.clean.gallery.gallery.adapter.DirectoryDelegateAdapter
+import com.hucet.clean.gallery.gallery.adapter.MediumDelegateAdapter
+import com.hucet.clean.gallery.gallery.adapter.ViewTypeDelegateAdapter
 import com.hucet.clean.gallery.gallery.list.GlideApp
 import com.hucet.clean.gallery.gallery.list.GlideRequests
 import com.hucet.clean.gallery.gallery.list.ListGalleryFragment
@@ -23,17 +25,5 @@ class ListGalleryFragmentModule {
     @PerFragment
     fun provideViewTypeDelegateApdater(d: DirectoryDelegateAdapter, m: MediumDelegateAdapter): ViewTypeDelegateAdapter {
         return ViewTypeDelegateAdapter(d, m)
-    }
-
-    @Provides
-    @PerFragment
-    fun provideDirectoryDelegateAdapter(glideRequests: GlideRequests): DirectoryDelegateAdapter {
-        return DirectoryDelegateAdapter(glideRequests)
-    }
-
-    @Provides
-    @PerFragment
-    fun provideMediumDelegateAdapter(glideRequests: GlideRequests): MediumDelegateAdapter {
-        return MediumDelegateAdapter(glideRequests)
     }
 }

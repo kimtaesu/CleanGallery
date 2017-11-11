@@ -11,13 +11,12 @@ import android.widget.Toast
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.activity.MainActivity
 import com.hucet.clean.gallery.extension.isExternalStorageDir
-import com.hucet.clean.gallery.extension.parentDirPath
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
-import com.hucet.clean.gallery.presenter.Gallery
 import com.hucet.clean.gallery.inject.Injectable
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Directory
 import com.hucet.clean.gallery.model.Medium
+import com.hucet.clean.gallery.presenter.Gallery
 import kotlinx.android.synthetic.main.fragment_gallery.*
 import javax.inject.Inject
 
@@ -44,17 +43,16 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     }
 
 
-    private val onGalleryClicked: (Medium) -> Unit = {
+    private val onGalleryClicked: (Basic) -> Unit = {
         when (it) {
             is Medium -> {
                 (activity as MainActivity)?.onGalleryClicked.invoke(it)
             }
-//            TODO
-//            is Directory -> {
-//                curPath = it.absolutePath
-//                adapter.clearItems()
-//                presenter.fetchItems(curPath)
-//            }
+            is Directory -> {
+                curPath = it.path
+                adapter.clearItems()
+                presenter.fetchItems(curPath)
+            }
         }
     }
 

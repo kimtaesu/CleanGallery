@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import com.hucet.clean.gallery.model.Basic
-import com.hucet.clean.gallery.model.Medium
 import javax.inject.Inject
 
 /**
@@ -18,11 +17,11 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
     }
 
     @Inject lateinit var viewTypeDelegateAdapter: ViewTypeDelegateAdapter
-    private var Items: ArrayList<Medium> = arrayListOf()
-    private var onClick: ((Medium) -> Unit)? = null
+    private var Items: ArrayList<Basic> = arrayListOf()
+    private var onClick: ((Basic) -> Unit)? = null
     private var recyclerView: RecyclerView? = null
 
-    fun setOnClickListener(recyclerView: RecyclerView, onGalleryClicked: (Medium) -> Unit) {
+    fun setOnClickListener(recyclerView: RecyclerView, onGalleryClicked: (Basic) -> Unit) {
         this.recyclerView = recyclerView
         this.onClick = onGalleryClicked
     }
@@ -47,7 +46,7 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
 
     override fun getItemCount() = Items.size
 
-    fun updateData(newItems: List<Medium>) {
+    fun updateData(newItems: List<Basic>) {
         updateByDiff(newItems)
     }
 
@@ -55,7 +54,7 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
         updateByDiff(emptyList())
     }
 
-    private fun updateByDiff(newItems: List<Medium>) {
+    private fun updateByDiff(newItems: List<Basic>) {
         val diffCallback = MediumDiffCallback(this.Items, newItems)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         this.Items.clear()

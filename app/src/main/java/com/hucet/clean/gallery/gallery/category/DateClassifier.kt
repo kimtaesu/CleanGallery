@@ -1,27 +1,55 @@
 package com.hucet.clean.gallery.gallery.category
 
-import com.google.gson.Gson
+import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Date
 import com.hucet.clean.gallery.model.Medium
 import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Created by taesu on 2017-11-10.
  */
-class DateClassifier : CategoryStrategy<Basic> {
+class DateClassifier(val appConfig: ApplicationConfig) : CategoryStrategy<Basic> {
+    enum class DATE_SORT_TYPE(private val format: String, private val index: Int) {
+        DAILY("yyyy-MM-dd", 1), WEEKLY("yyyy-MM", 2), MONTHLY("yyyy", 3);
 
-    val format: SimpleDateFormat by lazy {
-        SimpleDateFormat("yyyy-MM-dd")
+        fun value(): Int {
+            return index
+        }
+
+        fun format(): String {
+            return format
+        }
+    }
+
+
+    fun getConfigFormat(): String {
+        return when (appConfig.dateSortType) {
+            DATE_SORT_TYPE.DAILY.value() -> {
+                DATE_SORT_TYPE.DAILY.format()
+            }
+            DATE_SORT_TYPE.WEEKLY.value() -> {
+                DATE_SORT_TYPE.WEEKLY.format()
+            }
+            DATE_SORT_TYPE.MONTHLY.value() -> {
+                DATE_SORT_TYPE.MONTHLY.format()
+            }
+            else -> {
+                throw IllegalArgumentException()
+            }
+        }
     }
 
     override fun category(items: List<Medium>): List<Basic> {
+        val format = SimpleDateFormat(getConfigFormat())
+
         return items.groupBy {
             format.format(it.modified)
         }
                 .flatMap {
                     val temp = ArrayList<Basic>()
-                    val date = Date(it.key)
+                    val date = Date(date = it.key, id = UUID.randomUUID().mostSignificantBits and Long.MAX_VALUE)
                     temp.add(date)
                     temp.addAll(it.value)
                     temp
