@@ -3,39 +3,20 @@ package com.hucet.clean.gallery.datasource.local
 import android.content.Context
 import android.database.Cursor
 import android.provider.MediaStore
-import com.hucet.clean.gallery.config.ApplicationConfig
+import com.hucet.clean.gallery.config.*
 import com.hucet.clean.gallery.extension.getFilenameFromPath
 import com.hucet.clean.gallery.model.Medium
-import java.io.File
-import java.text.SimpleDateFormat
 import java.util.*
 
 /**
  * Created by taesu on 2017-10-30.
  */
 
-class MediaFetcher constructor(private val context: Context, private val applcationConfig: ApplicationConfig) {
-    val sortOption = MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC"
-    val imageProjection = arrayOf(MediaStore.Images.Media._ID,
-            MediaStore.Images.Media.DISPLAY_NAME,
-            MediaStore.Images.Media.DATE_TAKEN,
-            MediaStore.Images.Media.DATE_MODIFIED,
-            MediaStore.Images.Media.DATA,
-            MediaStore.Images.Media.SIZE)
+class MediaFetcher constructor(private val context: Context) {
 
-    fun queryImage(curPath: String): Cursor {
-        val uri = MediaStore.Files.getContentUri("external")
-        val selectionClause = getSelectionClause()
-        val selectionArgs = getSelectionArgs(curPath)
-        return context.contentResolver.query(uri, imageProjection, selectionClause, selectionArgs, sortOption)
-    }
 
-    private fun getSelectionClause(): String {
-        return "${MediaStore.Images.Media.DATA} LIKE ?"
-    }
-
-    private fun getSelectionArgs(curPath: String): Array<out String> {
-        return arrayOf("${curPath}/%")
+    fun query(curPath: String, sortOption: String = MediaStore.Images.ImageColumns.DATE_MODIFIED + " DESC"): Cursor {
+        return MediaQuery().query(context, curPath, sortOption)
     }
 
     fun parseCursor(cur: Cursor?): List<Medium> {
@@ -63,4 +44,30 @@ class MediaFetcher constructor(private val context: Context, private val applcat
         }
         return curMedia
     }
+
+
+    private class MediaQuery {
+        private val projection = arrayOf(MediaStore.Images.Media._ID,
+                MediaStore.Images.Media.DISPLAY_NAME,
+                MediaStore.Images.Media.DATE_TAKEN,
+                MediaStore.Images.Media.DATE_MODIFIED,
+                MediaStore.Images.Media.DATA,
+                MediaStore.Images.Media.SIZE)
+
+        fun query(context: Context, curPath: String, sortOption: String): Cursor {
+            val uri = MediaStore.Files.getContentUri("external")
+            val selectionClause = getSelectionClause()
+            val selectionArgs = getSelectionArgs(curPath)
+            return context.contentResolver.query(uri, projection, selectionClause, selectionArgs, sortOption)
+        }
+
+        private fun getSelectionClause(): String {
+            return "${MediaStore.Images.Media.DATA} LIKE ?"
+        }
+
+        private fun getSelectionArgs(curPath: String): Array<out String> {
+            return arrayOf("${curPath}/%")
+        }
+    }
+
 }

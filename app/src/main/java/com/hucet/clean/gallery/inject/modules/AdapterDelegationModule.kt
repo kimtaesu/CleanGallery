@@ -2,6 +2,7 @@ package com.hucet.clean.gallery.inject.modules
 
 import com.hucet.clean.gallery.gallery.adapter.DirectoryDelegateAdapter
 import com.hucet.clean.gallery.gallery.adapter.MediumDelegateAdapter
+import com.hucet.clean.gallery.gallery.adapter.ViewTypeDelegateAdapter
 import com.hucet.clean.gallery.gallery.list.GlideRequests
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import dagger.Module
@@ -39,5 +40,12 @@ class AdapterDelegationModule {
     @PerFragment
     fun provideMediumDelegateAdapter(glideRequests: GlideRequests): MediumDelegateAdapter {
         return MediumDelegateAdapter(glideRequests)
+    }
+
+
+    @Provides
+    @PerFragment
+    fun provideViewTypeDelegateApdater(d: DirectoryDelegateAdapter, m: MediumDelegateAdapter): ViewTypeDelegateAdapter {
+        return ViewTypeDelegateAdapter(d, m)
     }
 }

@@ -21,7 +21,7 @@ class RepositoryServiceModule {
 
     @Provides
     fun provideLocalDataSource(context: Context, appConfig: ApplicationConfig): LocalDataSource {
-        return LocalDataSource(MediaFetcher(context, appConfig))
+        return LocalDataSource(MediaFetcher(context), appConfig)
     }
 
 }

@@ -21,9 +21,4 @@ class ListGalleryFragmentModule {
         return GlideApp.with(listGalleryFragment)
     }
 
-    @Provides
-    @PerFragment
-    fun provideViewTypeDelegateApdater(d: DirectoryDelegateAdapter, m: MediumDelegateAdapter): ViewTypeDelegateAdapter {
-        return ViewTypeDelegateAdapter(d, m)
-    }
 }
