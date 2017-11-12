@@ -15,10 +15,6 @@ import java.util.*
  */
 
 class MediaFetcher constructor(private val context: Context, private val applcationConfig: ApplicationConfig) {
-    val format: SimpleDateFormat by lazy {
-        SimpleDateFormat("yyyy-MM-dd")
-    }
-
     enum class CategoryType {
         DIR, UPDATE_DATE
     }
@@ -32,7 +28,7 @@ class MediaFetcher constructor(private val context: Context, private val applcat
             MediaStore.Images.Media.SIZE)
 
     fun queryImage(curPath: String): Cursor {
-        val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        val uri = MediaStore.Files.getContentUri("external")
         val selectionClause = getSelectionClause()
         val selectionArgs = getSelectionArgs(curPath)
         return context.contentResolver.query(uri, imageProjection, selectionClause, selectionArgs, sortOption)

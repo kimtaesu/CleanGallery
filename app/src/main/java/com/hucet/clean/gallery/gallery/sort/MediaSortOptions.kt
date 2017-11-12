@@ -12,12 +12,12 @@ class MediaSortOptions(val strategy: STRATEGY, var order: ORDER = ORDER.DESC) {
         DESC, ASC
     }
 
-    enum class STRATEGY(val fieldName: String) {
-        NAME(Basic::name.name),
-        SIZE(Medium::size.name),
-        TAKEN(Medium::taken.name),
-        PATH(Basic::path.name),
-        MODIFIED(Medium::modified.name)
+    enum class STRATEGY {
+        NAME,
+        SIZE,
+        TAKEN,
+        PATH,
+        MODIFIED
     }
 
     infix fun with(order: ORDER): MediaSortOptions {
