@@ -15,39 +15,70 @@ class MediumSortFactoryTest {
     val testData = DeserializerFixture.deserializeMedium("test_sort.json", "media/test")
 
     @Test
-    fun `Strategy NAME 검증`() {
+    fun `Strategy NAME ASC 검증 `() {
         val option = MediaSortOptions(MediaSortOptions.STRATEGY.NAME, MediaSortOptions.ORDER.ASC)
-        sortTest(option, "test_sort_name.json", "media/correct")
+        sortTest(option, "test_sort_name_asc.json", "media/correct")
     }
 
     @Test
-    fun `Strategy MODIFIED 검증`() {
+    fun `Strategy NAME DESC 검증 `() {
+        val option = MediaSortOptions(MediaSortOptions.STRATEGY.NAME, MediaSortOptions.ORDER.DESC)
+        sortTest(option, "test_sort_name_desc.json", "media/correct")
+    }
+
+    @Test
+    fun `Strategy MODIFIED ASC 검증`() {
         val option = MediaSortOptions(MediaSortOptions.STRATEGY.MODIFIED, MediaSortOptions.ORDER.ASC)
-        sortTest(option, "test_sort_modified.json", "media/correct")
+        sortTest(option, "test_sort_modified_asc.json", "media/correct")
     }
 
     @Test
-    fun `Strategy PATH 검증`() {
+    fun `Strategy MODIFIED DESC 검증`() {
+        val option = MediaSortOptions(MediaSortOptions.STRATEGY.MODIFIED, MediaSortOptions.ORDER.DESC)
+        sortTest(option, "test_sort_modified_desc.json", "media/correct")
+    }
+
+    @Test
+    fun `Strategy PATH ASC 검증`() {
         val option = MediaSortOptions(MediaSortOptions.STRATEGY.PATH, MediaSortOptions.ORDER.ASC)
-        sortTest(option, "test_sort_path.json", "media/correct")
+        sortTest(option, "test_sort_path_asc.json", "media/correct")
     }
 
     @Test
-    fun `Strategy SIZE 검증`() {
+    fun `Strategy PATH DESC 검증`() {
+        val option = MediaSortOptions(MediaSortOptions.STRATEGY.PATH, MediaSortOptions.ORDER.DESC)
+        sortTest(option, "test_sort_path_desc.json", "media/correct")
+    }
+
+    @Test
+    fun `Strategy SIZE ASC 검증`() {
         val option = MediaSortOptions(MediaSortOptions.STRATEGY.SIZE, MediaSortOptions.ORDER.ASC)
-        sortTest(option, "test_sort_size.json", "media/correct")
+        sortTest(option, "test_sort_size_asc.json", "media/correct")
     }
 
     @Test
-    fun `Strategy TAKEN 검증`() {
+    fun `Strategy SIZE DESC 검증`() {
+        val option = MediaSortOptions(MediaSortOptions.STRATEGY.SIZE, MediaSortOptions.ORDER.DESC)
+        sortTest(option, "test_sort_size_desc.json", "media/correct")
+    }
+
+    @Test
+    fun `Strategy TAKEN ASC 검증`() {
         val option = MediaSortOptions(MediaSortOptions.STRATEGY.TAKEN, MediaSortOptions.ORDER.ASC)
-        sortTest(option, "test_sort_taken.json", "media/correct")
+        sortTest(option, "test_sort_taken_asc.json", "media/correct")
+    }
+
+    @Test
+    fun `Strategy TAKEN DESC 검증`() {
+        val option = MediaSortOptions(MediaSortOptions.STRATEGY.TAKEN, MediaSortOptions.ORDER.DESC)
+        sortTest(option, "test_sort_taken_desc.json", "media/correct")
     }
 
     private fun sortTest(option: MediaSortOptions, path: String, parent: String) {
         var correctData: List<Medium> = DeserializerFixture.deserializeMedium(path, parent)
-        val comparator = MediumSortFactory.createComparator(option)
+        val comparator = MediumSortFactory.createComparator(option, option.order)
         Collections.sort(testData, comparator)
+        println(Gson().toJson(testData))
         when (option.strategy) {
             MediaSortOptions.STRATEGY.NAME -> {
                 testData.forEachIndexed { index, medium ->

@@ -52,13 +52,13 @@ class MediumSortFactory {
         private fun planSortWithOrderLong(order: MediaSortOptions.ORDER, s1: Long, s2: Long): Int {
             return when (order) {
                 MediaSortOptions.ORDER.DESC -> {
-                    if (s1 > s2) 1
-                    else if (s1 < s2) -1
+                    if (s1 > s2) -1
+                    else if (s1 < s2) 1
                     else 0
                 }
                 MediaSortOptions.ORDER.ASC -> {
-                    if (s1 > s2) -1
-                    else if (s1 < s2) 1
+                    if (s1 > s2) 1
+                    else if (s1 < s2) -1
                     else 0
                 }
             }
@@ -67,13 +67,13 @@ class MediumSortFactory {
         private fun planSortWithOrderString(order: MediaSortOptions.ORDER, s1: String, s2: String): Int {
             return when (order) {
                 MediaSortOptions.ORDER.DESC -> {
-                    if (s1 > s2) 1
-                    else if (s1 < s2) -1
+                    if (s1 > s2) -1
+                    else if (s1 < s2) 1
                     else 0
                 }
                 MediaSortOptions.ORDER.ASC -> {
-                    if (s1 > s2) -1
-                    else if (s1 < s2) 1
+                    if (s1 > s2) 1
+                    else if (s1 < s2) -1
                     else 0
                 }
             }

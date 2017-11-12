@@ -15,10 +15,6 @@ import java.util.*
  */
 
 class MediaFetcher constructor(private val context: Context, private val applcationConfig: ApplicationConfig) {
-    enum class CategoryType {
-        DIR, UPDATE_DATE
-    }
-
     val sortOption = MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC"
     val imageProjection = arrayOf(MediaStore.Images.Media._ID,
             MediaStore.Images.Media.DISPLAY_NAME,
