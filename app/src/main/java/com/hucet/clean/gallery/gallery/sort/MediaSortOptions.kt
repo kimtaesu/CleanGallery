@@ -1,29 +1,28 @@
 package com.hucet.clean.gallery.gallery.sort
 
-import com.hucet.clean.gallery.model.Basic
-import com.hucet.clean.gallery.model.Medium
+import android.provider.MediaStore
+import com.hucet.clean.gallery.config.*
 
 /**
  * Created by taesu on 2017-11-12.
  */
-class MediaSortOptions(val strategy: STRATEGY, var order: ORDER = ORDER.DESC) {
+class MediaSortOptions {
+    companion object {
+        fun getSortOptions(curPath: String, config: ApplicationConfig): String {
+            val sort = config.getDirSortType(curPath)
+            val options = when {
+                sort and SORT_BY_NAME > 0 -> MediaStore.Images.Media.DISPLAY_NAME
+                sort and SORT_BY_DATE_TAKEN > 0 -> MediaStore.Images.Media.DATE_TAKEN
+                sort and SORT_BY_PATH > 0 -> MediaStore.Images.Media.DATA
+                sort and SORT_BY_SIZE > 0 -> MediaStore.Images.Media.SIZE
+                sort and SORT_BY_DATE_MODIFIED > 0 -> MediaStore.Images.Media.DATE_MODIFIED
+                else -> MediaStore.Images.Media.DATE_MODIFIED
+            }
 
-    enum class ORDER {
-        DESC, ASC
+            val order = if (sort and SORT_DESCENDING > 0) "DESC"
+            else "ASC"
+
+            return "${options} ${order}"
+        }
     }
-
-    enum class STRATEGY {
-        NAME,
-        SIZE,
-        TAKEN,
-        PATH,
-        MODIFIED
-    }
-
-    infix fun with(order: ORDER): MediaSortOptions {
-        this.order = order
-        return this
-    }
-
-
 }

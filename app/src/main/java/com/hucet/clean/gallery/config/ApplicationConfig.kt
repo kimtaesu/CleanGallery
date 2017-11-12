@@ -27,7 +27,11 @@ class ApplicationConfig @Inject constructor(
 
     val isThirdPartyIntent: Boolean = false
 
+
     var fileSorting: Int = PreferenceHelper.defaultPrefs(application)[key_file_sorting, SORT_BY_DATE_MODIFIED or SORT_DESCENDING]!!
 
-    fun getFileSorting(path: String) = PreferenceHelper.defaultPrefs(application)[key_file_sorting + path.toLowerCase(), fileSorting]!!
+    val defaultDirSortType = SORT_BY_DATE_MODIFIED or SORT_DESCENDING
+    fun getDirSortType(path: String): Int {
+        return PreferenceHelper.defaultPrefs(application)[key_file_sorting + path.toLowerCase(), defaultDirSortType]
+    }
 }

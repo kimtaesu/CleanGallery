@@ -9,8 +9,6 @@ import android.widget.Toast
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.gallery.detail.GalleryDetailFragment
 import com.hucet.clean.gallery.gallery.list.ListGalleryFragment
-import com.hucet.clean.gallery.gallery.sort.MediumSortFactory
-import com.hucet.clean.gallery.gallery.sort.MediaSortOptions
 import com.hucet.clean.gallery.model.Medium
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector

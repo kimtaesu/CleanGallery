@@ -18,10 +18,10 @@ import org.junit.Test
  */
 
 class MediaFetcherTest {
-    var mediaFetcher = MediaFetcher(mockContext(), mockConfig())
+    var mediaFetcher = MediaFetcher(mockContext())
     @Before
     fun setUp() {
-        mediaFetcher = MediaFetcher(mockContext(), mockConfig())
+        mediaFetcher = MediaFetcher(mockContext())
     }
 
     @Test
@@ -34,12 +34,6 @@ class MediaFetcherTest {
 
     @After
     fun after() {
-    }
-
-    private fun mockConfig(): ApplicationConfig {
-        val config = mock<ApplicationConfig>()
-        whenever(config.filterMedia).thenReturn(IMAGES)
-        return config
     }
 
     private fun mockContext(): Context {
