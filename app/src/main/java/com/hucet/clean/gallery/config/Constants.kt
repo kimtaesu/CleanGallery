@@ -19,12 +19,22 @@ val IMAGES = 1
 val VIDEOS = 2
 val GIFS = 4
 
-// sorting
+
+// base sort types
+val SORT_ASCENDING = 256
+val SORT_DESCENDING = 512
+
+// date sort types
+val SORT_BY_DAILY = 1
+val SORT_BY_MONTHLY = 2
+val SORT_BY_YEARLY = 4
+
+// dir sort types
 val SORT_BY_NAME = 1
 val SORT_BY_DATE_MODIFIED = 2
 val SORT_BY_SIZE = 4
 val SORT_BY_DATE_TAKEN = 8
 val SORT_BY_EXTENSION = 16
 val SORT_BY_PATH = 32
-val SORT_ASCENDING = 256
-val SORT_DESCENDING = 512  
+
+

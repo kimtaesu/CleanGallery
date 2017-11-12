@@ -4,6 +4,7 @@ import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.fixture.DeserializerFixture
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.model.Date
+import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import org.hamcrest.core.Is.*
@@ -74,7 +75,7 @@ class DateClassifierTest {
 
     private fun mockConfig(type: DateClassifier.DATE_SORT_TYPE): ApplicationConfig {
         val config = mock<ApplicationConfig>()
-        whenever(config.dateSortType).thenReturn(type.value())
+        whenever(config.getDateSortType(any())).thenReturn(type.value())
         return config
     }
 }

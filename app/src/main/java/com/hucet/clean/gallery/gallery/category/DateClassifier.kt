@@ -1,6 +1,7 @@
 package com.hucet.clean.gallery.gallery.category
 
 import com.hucet.clean.gallery.config.ApplicationConfig
+import com.hucet.clean.gallery.config.SORT_BY_DAILY
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Date
 import com.hucet.clean.gallery.model.Medium
@@ -12,7 +13,7 @@ import java.util.*
  */
 class DateClassifier(val appConfig: ApplicationConfig) : CategoryStrategy<Basic> {
     enum class DATE_SORT_TYPE(private val format: String, private val index: Int) {
-        DAILY("yyyy-MM-dd", 1), MONTHLY("yyyy-MM", 2), YEARLY("yyyy", 3);
+        DAILY("yyyy-MM-dd", 1), MONTHLY("yyyy-MM", 2), YEARLY("yyyy", 4);
 
         fun value(): Int {
             return index
@@ -24,8 +25,8 @@ class DateClassifier(val appConfig: ApplicationConfig) : CategoryStrategy<Basic>
     }
 
 
-    private fun getConfigFormat(): String {
-        return when (appConfig.dateSortType) {
+    private fun getConfigFormat(curPath: String): String {
+        return when (appConfig.getDateSortType(curPath)) {
             DATE_SORT_TYPE.DAILY.value() -> {
                 DATE_SORT_TYPE.DAILY.format()
             }
@@ -41,8 +42,8 @@ class DateClassifier(val appConfig: ApplicationConfig) : CategoryStrategy<Basic>
         }
     }
 
-    override fun category(items: List<Medium>): List<Basic> {
-        val format = SimpleDateFormat(getConfigFormat())
+    override fun category(items: List<Medium>, curPath: String): List<Basic> {
+        val format = SimpleDateFormat(getConfigFormat(curPath))
 
         return items.groupBy {
             format.format(it.modified)

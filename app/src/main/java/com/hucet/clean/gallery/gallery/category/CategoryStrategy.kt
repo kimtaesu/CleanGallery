@@ -7,5 +7,5 @@ import com.hucet.clean.gallery.model.Medium
  * Created by taesu on 2017-11-10.
  */
 interface CategoryStrategy<R> {
-    fun category(items: List<Medium>): List<R>
+    fun category(items: List<Medium>, curPath: String = ""): List<R>
 }
