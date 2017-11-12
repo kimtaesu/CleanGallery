@@ -15,7 +15,7 @@ import org.junit.Test
  */
 class DirClassifierTest {
     val testData = DeserializerFixture.deserializeMedium("test_category_dir.json", "media/test")
-    val correctData = DeserializerFixture.deserializeDirectory("correct_category_dir.json", "media/correct")
+    val correctData = DeserializerFixture.deserializeDirectory("test_category_dir.json", "media/correct")
     var dirClassifier = DirClassifier()
 
     @Before
