@@ -5,6 +5,7 @@ import com.hucet.clean.gallery.gallery.list.ListGalleryFragment
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
+import org.buffer.android.boilerplate.ui.injection.module.RepositoryServiceModule
 
 /**
  * Created by taesu on 2017-11-01.
@@ -16,7 +17,9 @@ abstract class FragmentProviderModule {
             AdapterDelegationModule::class,
             GalleryPresenterModule::class,
             ClassifierModule::class,
-            ListGalleryFragmentModule::class
+            ListGalleryFragmentModule::class,
+            RepositoryServiceModule::class,
+            FilterModule::class
     ))
     abstract fun bindGalleryFragment(): ListGalleryFragment
 

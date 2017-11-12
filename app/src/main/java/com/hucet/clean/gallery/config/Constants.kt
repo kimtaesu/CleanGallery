@@ -14,7 +14,7 @@ val key_date_sorting = "key_date_sorting"
 
 val NOMEDIA = ".nomedia"
 
-// filter media
+// filterd media
 val IMAGES = 1
 val VIDEOS = 2
 val GIFS = 4

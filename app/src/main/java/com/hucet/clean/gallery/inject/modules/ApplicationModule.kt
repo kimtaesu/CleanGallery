@@ -10,7 +10,7 @@ import javax.inject.Singleton
 /**
  * Module used to provide dependencies at an application-level.
  */
-@Module(includes = arrayOf(RepositoryServiceModule::class))
+@Module(includes = arrayOf())
 open class ApplicationModule {
     @Provides
     @Singleton
