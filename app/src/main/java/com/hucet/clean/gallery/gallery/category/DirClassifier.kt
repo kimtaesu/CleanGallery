@@ -12,7 +12,7 @@ import java.util.*
  * Created by taesu on 2017-11-10.
  */
 class DirClassifier : CategoryStrategy<Directory> {
-    override fun category(items: List<Medium>, curPath: String): List<Directory> {
+    override fun classify(items: List<Medium>, curPath: String): List<Directory> {
         return items.groupBy {
             File(it.path)?.parentFile.path
         }.map {

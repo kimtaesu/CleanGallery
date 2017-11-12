@@ -3,6 +3,7 @@ package com.hucet.clean.gallery.inject.modules
 import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.gallery.category.DateClassifier
 import com.hucet.clean.gallery.gallery.category.DirClassifier
+import com.hucet.clean.gallery.gallery.category.MediumTransformer
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import dagger.Module
 import dagger.Provides
@@ -24,4 +25,11 @@ class ClassifierModule {
     fun provideDirClassifier(): DirClassifier {
         return DirClassifier()
     }
+
+    @Provides
+    @PerFragment
+    fun provideMediumTransformer(date: DateClassifier, dir: DirClassifier): MediumTransformer {
+        return MediumTransformer(date, dir)
+    }
+
 }

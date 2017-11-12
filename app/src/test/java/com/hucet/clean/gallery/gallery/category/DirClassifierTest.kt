@@ -1,11 +1,8 @@
 package com.hucet.clean.gallery.gallery.category
 
-import com.google.gson.Gson
 import com.hucet.clean.gallery.fixture.DeserializerFixture
 import com.hucet.clean.gallery.model.Directory
-import org.hamcrest.core.Is
 import org.hamcrest.core.Is.*
-import org.junit.Assert
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -25,7 +22,7 @@ class DirClassifierTest {
 
     @Test
     fun `Dir Category 검증`() {
-        var result = dirClassifier.category(testData)
+        var result = dirClassifier.classify(testData)
         result = convertFileSeperator2Linux(result)
         assertThat(result == correctData, `is`(true))
     }

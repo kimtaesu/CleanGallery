@@ -29,7 +29,7 @@ class DateClassifierTest {
     @Test
     fun `Date Daily Category 검증`() {
         val dateClassifier = DateClassifier(mockConfig(DateClassifier.DATE_SORT_TYPE.DAILY))
-        var result = dateClassifier.category(testData)
+        var result = dateClassifier.classify(testData)
         val temp = result.filter {
             it.viewType == GalleryAdapter.GalleryType.DATE
         }.map {
@@ -44,7 +44,7 @@ class DateClassifierTest {
     @Test
     fun `Date Monthly Category 검증`() {
         val dateClassifier = DateClassifier(mockConfig(DateClassifier.DATE_SORT_TYPE.MONTHLY))
-        var result = dateClassifier.category(testData)
+        var result = dateClassifier.classify(testData)
         val temp = result.filter {
             it.viewType == GalleryAdapter.GalleryType.DATE
         }.map {
@@ -60,7 +60,7 @@ class DateClassifierTest {
     @Test
     fun `Date Yearly Category 검증`() {
         val dateClassifier = DateClassifier(mockConfig(DateClassifier.DATE_SORT_TYPE.YEARLY))
-        var result = dateClassifier.category(testData)
+        var result = dateClassifier.classify(testData)
         val temp = result.filter {
             it.viewType == GalleryAdapter.GalleryType.DATE
         }.map {

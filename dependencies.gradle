@@ -33,6 +33,7 @@ ext {
 
     //Testing
     robolectricVersion = '3.4.2'
+    powerMockitoVersion = '1.7.3'
     jUnitVersion = '4.12'
     assertJVersion = '3.8.0'
     mockitoVersion = '1.9.5'
@@ -61,10 +62,12 @@ ext {
     ]
 
     testDependencies = [
-            junit      : "junit:junit:${jUnitVersion}",
-            mock       : "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
-            mockInline : "org.mockito:mockito-inline:+",
-            robolectric: "org.robolectric:robolectric:${robolectricVersion}",
+            junit          : "junit:junit:${jUnitVersion}",
+            mock           : "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
+            mockInline     : "org.mockito:mockito-inline:2.12.0",
+            robolectric    : "org.robolectric:robolectric:${robolectricVersion}",
+            powerMockModule: "org.powermock:powermock-module-junit4:${powerMockitoVersion}",
+            powerMockApi   : "org.powermock:powermock-api-mockito:${powerMockitoVersion}",
     ]
 
     rxDependencies = [

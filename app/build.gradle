@@ -54,5 +54,7 @@ dependencies {
     testImplementation testDependencies.mock
     testImplementation testDependencies.mockInline
     testImplementation testDependencies.robolectric
+//    testImplementation testDependencies.powerMockModule
+//    testImplementation testDependencies.powerMockApi
     implementation debugDependencies.stetho
 }
