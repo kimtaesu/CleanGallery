@@ -12,10 +12,10 @@ import timber.log.Timber
  */
 
 class LocalDataSource constructor(private val madiaFetcher: MediaFetcher, private val config: ApplicationConfig) : GalleryDataSource {
-    override fun getGalleries(curPath: String): Flowable<List<Medium>> {
+    override fun getGalleries(curPath: String, isDirType: Boolean): Flowable<List<Medium>> {
         return Flowable.defer {
             Timber.d("GalleryPresenter getGalleries")
-            val cursor = madiaFetcher.query(curPath, MediaSortOptions.getSortOptions(curPath, config))
+            val cursor = madiaFetcher.query(curPath, MediaSortOptions.getSortOptions(curPath, config, isDirType))
             Flowable.just(madiaFetcher.parseCursor(cursor))
         }
     }

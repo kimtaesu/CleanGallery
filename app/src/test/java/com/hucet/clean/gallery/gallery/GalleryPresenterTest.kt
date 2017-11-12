@@ -37,13 +37,13 @@ class GalleryPresenterTest {
 
     @Test
     fun `presenter Next Complete 검증`() {
-        whenever(repository.getGalleries(any())).thenReturn(Flowable.just(testData))
+        whenever(repository.getGalleries(any(), any())).thenReturn(Flowable.just(testData))
 
-        presenter.fetchItems("")
+        presenter.fetchItems("", true)
 
         testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
 
-        verify(repository, times(1)).getGalleries(any())
+        verify(repository, times(1)).getGalleries(any(), any())
 
         verify(adapter, times(1)).updateData(any())
 
@@ -53,16 +53,16 @@ class GalleryPresenterTest {
 
     @Test
     fun `presenter Error 검증`() {
-        whenever(repository.getGalleries(any())).thenReturn(Flowable.just(testData)
+        whenever(repository.getGalleries(any(), any())).thenReturn(Flowable.just(testData)
                 .map {
                     throw MockitoException("")
                 })
 
-        presenter.fetchItems("")
+        presenter.fetchItems("", true)
 
         testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
 
-        verify(repository, times(1)).getGalleries(any())
+        verify(repository, times(1)).getGalleries(any(), any())
 
         verify(adapter, never()).updateData(any())
 

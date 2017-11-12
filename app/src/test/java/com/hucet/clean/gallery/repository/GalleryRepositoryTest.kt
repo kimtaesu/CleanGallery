@@ -16,7 +16,7 @@ import org.junit.Test
 class GalleryRepositoryTest {
     var mockLocalDataSource = mock<LocalDataSource>()
     var repository = GalleryRepository(mockLocalDataSource)
-    val testData : List<Medium> = DeserializerFixture.deserializeMedium("test_default.json", "media/test")
+    val testData: List<Medium> = DeserializerFixture.deserializeMedium("test_default.json", "media/test")
     @Before
     fun setUp() {
         mockLocalDataSource = mock<LocalDataSource>()
@@ -25,17 +25,17 @@ class GalleryRepositoryTest {
 
     @Test
     fun `subscriber State Completed 확인`() {
-        whenever(mockLocalDataSource.getGalleries(any())).thenReturn(Flowable.just(testData))
+        whenever(mockLocalDataSource.getGalleries(any(), any())).thenReturn(Flowable.just(testData))
 
-        val testSubscriber = repository.getGalleries("").test()
+        val testSubscriber = repository.getGalleries("", true).test()
         testSubscriber.assertNoErrors()
         testSubscriber.assertComplete()
     }
 
     @Test
     fun `subscriber assert value`() {
-        whenever(mockLocalDataSource.getGalleries(any())).thenReturn(Flowable.just(testData))
-        val testSubscriber = repository.getGalleries("").test()
+        whenever(mockLocalDataSource.getGalleries(any(), any())).thenReturn(Flowable.just(testData))
+        val testSubscriber = repository.getGalleries("", true).test()
         testSubscriber.assertComplete()
         testSubscriber.assertValue { data ->
             data.first().id == testData.first().id

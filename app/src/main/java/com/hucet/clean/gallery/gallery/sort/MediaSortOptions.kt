@@ -8,7 +8,10 @@ import com.hucet.clean.gallery.config.*
  */
 class MediaSortOptions {
     companion object {
-        fun getSortOptions(curPath: String, config: ApplicationConfig): String {
+        fun getSortOptions(curPath: String, config: ApplicationConfig, isDirType: Boolean): String {
+            if (!isDirType)
+                return "${SORT_BY_DATE_MODIFIED} DESC"
+
             val sort = config.getDirSortType(curPath)
             val options = when {
                 sort and SORT_BY_NAME > 0 -> MediaStore.Images.Media.DISPLAY_NAME

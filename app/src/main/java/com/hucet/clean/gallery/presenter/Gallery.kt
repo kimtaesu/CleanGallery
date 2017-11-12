@@ -12,6 +12,6 @@ interface Gallery {
     }
 
     interface Presenter {
-        fun fetchItems(curPath: String)
+        fun fetchItems(curPath: String, isDirType: Boolean)
     }
 }

@@ -24,7 +24,7 @@ class DateClassifier(val appConfig: ApplicationConfig) : CategoryStrategy<Basic>
     }
 
 
-    fun getConfigFormat(): String {
+    private fun getConfigFormat(): String {
         return when (appConfig.dateSortType) {
             DATE_SORT_TYPE.DAILY.value() -> {
                 DATE_SORT_TYPE.DAILY.format()

@@ -28,6 +28,7 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     @Inject lateinit var adapter: GalleryAdapter
     @Inject lateinit var presenter: Gallery.Presenter
     var curPath = Environment.getExternalStorageDirectory().absolutePath
+    var isDirType = true
 
     companion object {
         fun newInstance() = ListGalleryFragment()
@@ -39,7 +40,7 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initRecyclerView()
-        presenter.fetchItems(curPath)
+        presenter.fetchItems(curPath, isDirType)
     }
 
 
@@ -51,7 +52,7 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
             is Directory -> {
                 curPath = it.path
                 adapter.clearItems()
-                presenter.fetchItems(curPath)
+                presenter.fetchItems(curPath, isDirType)
             }
         }
     }
@@ -59,7 +60,7 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     fun onBackPressed(): Boolean {
         if (!curPath.isExternalStorageDir()) {
             curPath = Environment.getExternalStorageDirectory().absolutePath
-            presenter.fetchItems(curPath)
+            presenter.fetchItems(curPath, isDirType)
             return false
         }
         return true
