@@ -36,6 +36,6 @@ class NoMediaFolderProviderTest {
     }
 }
 
-fun testAddingifExsist(noMediaList: ArrayList<String>, path: String) {
+fun testAddingifExsist(noMediaList: HashSet<String>, path: String) {
     noMediaList.add(path)
 }

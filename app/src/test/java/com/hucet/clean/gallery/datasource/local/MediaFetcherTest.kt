@@ -1,13 +1,10 @@
 package com.hucet.clean.gallery.datasource.local
 
 import android.content.Context
-import com.hucet.clean.gallery.config.ApplicationConfig
-import com.hucet.clean.gallery.config.IMAGES
 import com.hucet.clean.gallery.fixture.CursorFixture
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter
 import com.hucet.clean.gallery.model.Medium
 import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.whenever
 import org.hamcrest.core.Is.*
 import org.junit.After
 import org.junit.Assert.*
@@ -48,7 +45,7 @@ class MediaFetcherTest {
 
     private fun getParseCursorFromPath(path: String): List<Medium> {
         val cursor = CursorFixture.getCursor(path, "media/test")
-        return mediaFetcher.parseCursor(cursor)
+        return mediaFetcher.parseCursor(cursor, emptySet())
     }
 }
 

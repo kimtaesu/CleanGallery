@@ -4,11 +4,12 @@ import android.content.Context
 import android.database.Cursor
 import android.provider.MediaStore
 import java.io.File
+import javax.inject.Inject
 
 /**
  * Created by taesu on 2017-11-13.
  */
-class NoMediaFolderProvider(private val context: Context) {
+class NoMediaFolderProvider @Inject constructor(private val context: Context) {
     private val projection = arrayOf(
             MediaStore.Images.Media.DATA
     )
@@ -30,10 +31,10 @@ class NoMediaFolderProvider(private val context: Context) {
     }
 
     fun parseCursor(cur: Cursor?,
-                    noMediaList: (ArrayList<String>, String) -> Unit = ::addingifExsist
-    ): List<String> {
-        cur ?: return emptyList()
-        val noMediaFolders = ArrayList<String>()
+                    noMediaList: (HashSet<String>, String) -> Unit = ::addingifExsist
+    ): Set<String> {
+        cur ?: return emptySet()
+        val noMediaFolders = HashSet<String>()
         cur.use {
             if (cur.moveToFirst()) {
                 do {
@@ -46,7 +47,7 @@ class NoMediaFolderProvider(private val context: Context) {
     }
 }
 
-fun addingifExsist(noMediaList: ArrayList<String>, path: String) {
+fun addingifExsist(noMediaList: HashSet<String>, path: String) {
     val noMediaFile = File(path)
     if (noMediaFile.exists())
         noMediaList.add("${noMediaFile.parent}/")

@@ -19,7 +19,7 @@ class MediaFetcher constructor(private val context: Context,
         return MediaProvider().query(context, curPath, sortOption)
     }
 
-    fun parseCursor(cur: Cursor?): List<Medium> {
+    fun parseCursor(cur: Cursor?, noMediaFolders: Set<String>): List<Medium> {
         cur ?: return emptyList()
         val curMedia = ArrayList<Medium>()
         cur.use {
@@ -34,7 +34,7 @@ class MediaFetcher constructor(private val context: Context,
                         val dateModified = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED))
                         val medium = Medium(id, filename, path, dateModified, dateTaken, size)
                         filters.forEach {
-                            it.filterd(medium)
+                            it.filterd(medium, noMediaFolders)
                         }
                         curMedia.add(medium)
 

@@ -4,6 +4,7 @@ import android.content.Context
 import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.datasource.local.LocalDataSource
 import com.hucet.clean.gallery.datasource.local.MediaFetcher
+import com.hucet.clean.gallery.datasource.local.NoMediaFolderProvider
 import com.hucet.clean.gallery.gallery.filter.HiddenFileFilter
 import com.hucet.clean.gallery.gallery.filter.ImageVideoGifFilter
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter
@@ -26,7 +27,13 @@ class RepositoryServiceModule {
 
     @Provides
     @PerFragment
-    fun provideLocalDataSource(context: Context, appConfig: ApplicationConfig, filters : Set<@JvmSuppressWildcards MediaTypeFilter>): LocalDataSource {
-        return LocalDataSource(MediaFetcher(context, filters), appConfig)
+    fun provideMediaFetcher(context: Context, filters: Set<@JvmSuppressWildcards MediaTypeFilter>): MediaFetcher {
+        return MediaFetcher(context, filters)
+    }
+
+    @Provides
+    @PerFragment
+    fun provideLocalDataSource(context: Context, appConfig: ApplicationConfig, mediaFetcher: MediaFetcher, noMediaFolderProvider: NoMediaFolderProvider): LocalDataSource {
+        return LocalDataSource(mediaFetcher, appConfig, noMediaFolderProvider)
     }
 }

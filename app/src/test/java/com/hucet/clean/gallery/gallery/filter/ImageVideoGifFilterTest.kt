@@ -23,7 +23,7 @@ class ImageVideoGifFilterTest {
     }
 
     private fun testFilter(fileName: String, result: Boolean) {
-        assertThat(filter.filterd(getTestMedium(fileName)), Is.`is`(result))
+        assertThat(filter.filterd(getTestMedium(fileName), emptySet()), Is.`is`(result))
     }
 
     @Test

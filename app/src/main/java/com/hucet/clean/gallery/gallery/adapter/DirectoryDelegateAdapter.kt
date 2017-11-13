@@ -17,7 +17,6 @@ import javax.inject.Inject
  */
 class DirectoryDelegateAdapter @Inject constructor(val glideRequests: GlideRequests) : AbstractDelegateAdapter {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int, item: Basic) {
-//         TODO casting
         holder as ViewHolder
         item as Directory
         holder.name.text = item.name
@@ -28,7 +27,6 @@ class DirectoryDelegateAdapter @Inject constructor(val glideRequests: GlideReque
                 .centerCrop()
                 .load(item.thumbnail)
                 .into(holder.thumbnail)
-//        TODO thumbnail
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {

@@ -12,7 +12,7 @@ import javax.inject.Inject
  * Created by taesu on 2017-11-13.
  */
 class ImageVideoGifFilter @Inject constructor(private val config: ApplicationConfig) : MediaTypeFilter {
-    override fun filterd(medium: Medium): Boolean {
+    override fun filterd(medium: Medium, noMedia: Set<String>): Boolean {
         val isImage = MediaTypeHelper.isImage(medium.name) && config.filterdType and IMAGES > 0
         if (isImage) return false
         val isVideo = MediaTypeHelper.isVideo(medium.name) && config.filterdType and VIDEOS > 0
