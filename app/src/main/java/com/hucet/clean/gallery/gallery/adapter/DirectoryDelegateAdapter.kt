@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.gallery.list.GlideRequests
+import com.hucet.clean.gallery.inject.scopes.PerFragment
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Directory
 import javax.inject.Inject
@@ -15,6 +16,7 @@ import javax.inject.Inject
 /**
  * Created by taesu on 2017-11-09.
  */
+@PerFragment
 class DirectoryDelegateAdapter @Inject constructor(val glideRequests: GlideRequests) : AbstractDelegateAdapter {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int, item: Basic) {
         holder as ViewHolder

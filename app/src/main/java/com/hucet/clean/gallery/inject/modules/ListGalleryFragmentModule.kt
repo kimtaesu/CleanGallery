@@ -14,8 +14,8 @@ import org.buffer.android.boilerplate.ui.injection.scopes.PerActivity
 @Module
 class ListGalleryFragmentModule {
     @Provides
+    @PerFragment
     fun provideGlideRequests(listGalleryFragment: ListGalleryFragment): GlideRequests {
         return GlideApp.with(listGalleryFragment)
     }
-
 }

@@ -18,12 +18,14 @@ import java.lang.annotation.RetentionPolicy
 abstract class AdapterDelegationModule {
     @Binds
     @IntoMap
+    @PerFragment
     @GalleryEnumKey(GalleryType.DIRECTORY)
     abstract fun bindDirectoryViewHolderCreator(conCreate: DirectoryDelegateAdapter)
             : AbstractDelegateAdapter
 
     @Binds
     @IntoMap
+    @PerFragment
     @GalleryEnumKey(GalleryType.MEDIUM)
     abstract fun bindMediumViewHolderCreator(conCreate: MediumDelegateAdapter)
             : AbstractDelegateAdapter
