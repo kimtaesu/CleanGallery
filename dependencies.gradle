@@ -74,6 +74,8 @@ ext {
             powerMockApi       : "org.powermock:powermock-api-mockito:${powerMockitoVersion}",
             spekApi            : "org.jetbrains.spek:spek-api:$spekVersion",
             spekJunitEngine    : "org.jetbrains.spek:spek-junit-platform-engine:$spekVersion",
+            spekSubject        : "org.jetbrains.spek:spek-subject-extension:$spekVersion",
+
             junitPlatformEngine: "org.junit.platform:junit-platform-engine:${junitPlatformVersion}",
             kluent             : "org.amshove.kluent:kluent:${kluentVersion}",
             kluentAndroid      : "org.amshove.kluent:kluent-android:${kluentVersion}",

@@ -19,6 +19,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+    }
+
 }
 
 dependencies {
@@ -66,10 +71,12 @@ dependencies {
         exclude group: "org.junit.platform"
         exclude group: "org.jetbrains.kotlin"
     }
+    testImplementation testDeps.spekSubject
+
     testImplementation testDeps.junitPlatformEngine
     testImplementation testDeps.kluent
     testImplementation testDeps.kluentAndroid
-
+    testImplementation "org.junit.platform:junit-platform-runner:1.0.0"
     implementation debugDeps.stetho
 }
 afterEvaluate {
