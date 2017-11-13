@@ -9,7 +9,7 @@ val key_exclude_folders = "key_exclude_folders"
 val key_include_folders = "key_include_folders"
 val key_show_hidden = "key_show_hidden"
 val key_filter_media = "key_filter_media"
-val key_file_sorting = "key_file_sorting"
+val key_dir_sorting = "key_dir_sorting"
 val key_date_sorting = "key_date_sorting"
 
 // filterd media
