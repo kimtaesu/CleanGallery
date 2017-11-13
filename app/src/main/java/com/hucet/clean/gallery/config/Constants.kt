@@ -12,8 +12,6 @@ val key_filter_media = "key_filter_media"
 val key_file_sorting = "key_file_sorting"
 val key_date_sorting = "key_date_sorting"
 
-val NOMEDIA = ".nomedia"
-
 // filterd media
 val IMAGES = 1
 val VIDEOS = 2

@@ -4,6 +4,8 @@ import android.content.Context
 import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.datasource.local.LocalDataSource
 import com.hucet.clean.gallery.datasource.local.MediaFetcher
+import com.hucet.clean.gallery.gallery.filter.HiddenFileFilter
+import com.hucet.clean.gallery.gallery.filter.ImageVideoGifFilter
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import dagger.Module
@@ -16,7 +18,13 @@ import dagger.Provides
 class FilterModule {
     @Provides
     @PerFragment
-    fun provideMediaTypeFilter(appConfig: ApplicationConfig): MediaTypeFilter {
-        return MediaTypeFilter(appConfig)
+    fun provideMediaTypeFilter(appConfig: ApplicationConfig): ImageVideoGifFilter {
+        return ImageVideoGifFilter(appConfig)
+    }
+
+    @Provides
+    @PerFragment
+    fun provideHiddenFileFilter(appConfig: ApplicationConfig): HiddenFileFilter {
+        return HiddenFileFilter(appConfig)
     }
 }

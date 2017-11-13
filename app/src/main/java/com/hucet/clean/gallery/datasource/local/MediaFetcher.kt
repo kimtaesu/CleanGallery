@@ -16,10 +16,10 @@ class MediaFetcher constructor(private val context: Context) {
 
 
     fun query(curPath: String, sortOption: String = MediaStore.Images.ImageColumns.DATE_MODIFIED + " DESC"): Cursor {
-        return MediaQuery().query(context, curPath, sortOption)
+        return MediaProvider().query(context, curPath, sortOption)
     }
 
-    fun parseCursor(cur: Cursor?, filter: MediaTypeFilter): List<Medium> {
+    fun parseCursor(cur: Cursor?, filters: List<MediaTypeFilter>): List<Medium> {
         cur ?: return emptyList()
         val curMedia = ArrayList<Medium>()
         cur.use {
@@ -29,14 +29,13 @@ class MediaFetcher constructor(private val context: Context) {
                         val id = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media._ID))
                         val path = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)).trim()
                         var filename = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))?.trim() ?: path.getFilenameFromPath()
-
-                        if (filter.filterd(filename))
-                            continue
-
                         var size = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE))
                         val dateTaken = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN))
                         val dateModified = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED))
                         val medium = Medium(id, filename, path, dateModified, dateTaken, size)
+                        filters.forEach {
+                            it.filterd(medium)
+                        }
                         curMedia.add(medium)
 
                     } catch (e: IllegalArgumentException) {
@@ -50,7 +49,7 @@ class MediaFetcher constructor(private val context: Context) {
     }
 
 
-    private class MediaQuery {
+    private class MediaProvider {
         private val projection = arrayOf(MediaStore.Images.Media._ID,
                 MediaStore.Images.Media.DISPLAY_NAME,
                 MediaStore.Images.Media.DATE_TAKEN,

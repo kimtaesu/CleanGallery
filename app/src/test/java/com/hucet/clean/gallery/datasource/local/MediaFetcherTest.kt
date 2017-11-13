@@ -44,8 +44,7 @@ class MediaFetcherTest {
 
     private fun getParseCursorFromPath(path: String): List<Medium> {
         val cursor = CursorFixture.getCursor(path, "media/test")
-        val filter = mock<MediaTypeFilter>()
-        return mediaFetcher.parseCursor(cursor, filter)
+        return mediaFetcher.parseCursor(cursor, listOf(mock<MediaTypeFilter>(), mock<MediaTypeFilter>()))
     }
 }
 

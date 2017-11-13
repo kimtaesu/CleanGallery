@@ -19,6 +19,10 @@ object CursorFixture {
         return mockCursor(DeserializerFixture.deserializeMedium(path, parent))
     }
 
+    fun getCursor(medias: List<Medium>): Cursor {
+        currentIndex = 0
+        return mockCursor(medias)
+    }
 
     private fun mockCursor(medias: List<Medium>): Cursor {
         var cursor = mock<Cursor>()
