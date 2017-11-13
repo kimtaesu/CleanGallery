@@ -3,6 +3,7 @@ package com.hucet.clean.gallery.gallery.category
 import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.fixture.DeserializerFixture
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
+import com.hucet.clean.gallery.gallery.adapter.GalleryType
 import com.hucet.clean.gallery.model.Date
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
@@ -31,7 +32,7 @@ class DateClassifierTest {
         val dateClassifier = DateClassifier(mockConfig(DateClassifier.DATE_SORT_TYPE.DAILY))
         var result = dateClassifier.classify(testData)
         val temp = result.filter {
-            it.viewType == GalleryAdapter.GalleryType.DATE
+            it.viewType == GalleryType.DATE
         }.map {
             it as Date
         }
@@ -46,7 +47,7 @@ class DateClassifierTest {
         val dateClassifier = DateClassifier(mockConfig(DateClassifier.DATE_SORT_TYPE.MONTHLY))
         var result = dateClassifier.classify(testData)
         val temp = result.filter {
-            it.viewType == GalleryAdapter.GalleryType.DATE
+            it.viewType == GalleryType.DATE
         }.map {
             it as Date
         }
@@ -62,7 +63,7 @@ class DateClassifierTest {
         val dateClassifier = DateClassifier(mockConfig(DateClassifier.DATE_SORT_TYPE.YEARLY))
         var result = dateClassifier.classify(testData)
         val temp = result.filter {
-            it.viewType == GalleryAdapter.GalleryType.DATE
+            it.viewType == GalleryType.DATE
         }.map {
             it as Date
         }

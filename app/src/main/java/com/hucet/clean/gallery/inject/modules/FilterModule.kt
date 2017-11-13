@@ -8,23 +8,23 @@ import com.hucet.clean.gallery.gallery.filter.HiddenFileFilter
 import com.hucet.clean.gallery.gallery.filter.ImageVideoGifFilter
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter
 import com.hucet.clean.gallery.inject.scopes.PerFragment
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import dagger.multibindings.IntoSet
 
 /**
  * Created by taesu on 2017-11-13.
  */
-@Module
-class FilterModule {
-    @Provides
+@Module(includes = arrayOf())
+abstract class FilterModule {
+    @Binds
+    @IntoSet
     @PerFragment
-    fun provideMediaTypeFilter(appConfig: ApplicationConfig): ImageVideoGifFilter {
-        return ImageVideoGifFilter(appConfig)
-    }
+    abstract fun provideHiddenFileFilter(config: HiddenFileFilter): MediaTypeFilter
 
-    @Provides
+    @Binds
+    @IntoSet
     @PerFragment
-    fun provideHiddenFileFilter(appConfig: ApplicationConfig): HiddenFileFilter {
-        return HiddenFileFilter(appConfig)
-    }
+    abstract fun provideImageVideoGifFilter(config: ImageVideoGifFilter): ImageVideoGifFilter
 }

@@ -1,51 +1,34 @@
 package com.hucet.clean.gallery.inject.modules
 
-import com.hucet.clean.gallery.gallery.adapter.DirectoryDelegateAdapter
-import com.hucet.clean.gallery.gallery.adapter.MediumDelegateAdapter
-import com.hucet.clean.gallery.gallery.adapter.ViewTypeDelegateAdapter
-import com.hucet.clean.gallery.gallery.list.GlideRequests
+import com.hucet.clean.gallery.gallery.adapter.*
 import com.hucet.clean.gallery.inject.scopes.PerFragment
+import dagger.Binds
+import dagger.MapKey
 import dagger.Module
 import dagger.Provides
+import dagger.multibindings.IntoMap
+import java.lang.annotation.Documented
+import java.lang.annotation.ElementType
+import java.lang.annotation.RetentionPolicy
 
 /**
  * Created by taesu on 2017-11-09.
  */
 @Module
-class AdapterDelegationModule {
-    //    @Binds
-//    @IntoMap
-//    @GalleryEnumKey(GalleryAdapter.GalleryType.DIRECTORY)
-//    abstract fun bindDirectoryViewHolderCreator(conCreate: DirectoryDelegateAdapter)
-//            : AbstractDelegateAdapter
-//
-//    @Binds
-//    @IntoMap
-//    @GalleryEnumKey(GalleryAdapter.GalleryType.MEDIUM)
-//    abstract fun bindMediumViewHolderCreator(conCreate: MediumDelegateAdapter)
-//            : AbstractDelegateAdapter
-//
-//    @Documented
-//    @Target(ElementType.METHOD)
-//    @Retention(RetentionPolicy.RUNTIME)
-//    @MapKey
-//    annotation class GalleryEnumKey(val value: GalleryAdapter.GalleryType)
-    @Provides
-    @PerFragment
-    fun provideDirectoryDelegateAdapter(glideRequests: GlideRequests): DirectoryDelegateAdapter {
-        return DirectoryDelegateAdapter(glideRequests)
-    }
+abstract class AdapterDelegationModule {
+    @Binds
+    @IntoMap
+    @GalleryEnumKey(GalleryType.DIRECTORY)
+    abstract fun bindDirectoryViewHolderCreator(conCreate: DirectoryDelegateAdapter)
+            : AbstractDelegateAdapter
 
-    @Provides
-    @PerFragment
-    fun provideMediumDelegateAdapter(glideRequests: GlideRequests): MediumDelegateAdapter {
-        return MediumDelegateAdapter(glideRequests)
-    }
+    @Binds
+    @IntoMap
+    @GalleryEnumKey(GalleryType.MEDIUM)
+    abstract fun bindMediumViewHolderCreator(conCreate: MediumDelegateAdapter)
+            : AbstractDelegateAdapter
 
-
-    @Provides
-    @PerFragment
-    fun provideViewTypeDelegateApdater(d: DirectoryDelegateAdapter, m: MediumDelegateAdapter): ViewTypeDelegateAdapter {
-        return ViewTypeDelegateAdapter(d, m)
-    }
+    @Documented
+    @MapKey
+    annotation class GalleryEnumKey(val value: GalleryType)
 }

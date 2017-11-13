@@ -26,7 +26,7 @@ class RepositoryServiceModule {
 
     @Provides
     @PerFragment
-    fun provideLocalDataSource(context: Context, appConfig: ApplicationConfig, filter: ImageVideoGifFilter, filter2 : HiddenFileFilter): LocalDataSource {
-        return LocalDataSource(MediaFetcher(context), appConfig, filter, filter2)
+    fun provideLocalDataSource(context: Context, appConfig: ApplicationConfig, filters : Set<@JvmSuppressWildcards MediaTypeFilter>): LocalDataSource {
+        return LocalDataSource(MediaFetcher(context, filters), appConfig)
     }
 }

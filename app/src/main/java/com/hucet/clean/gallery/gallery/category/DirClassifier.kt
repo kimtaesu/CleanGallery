@@ -2,6 +2,7 @@ package com.hucet.clean.gallery.gallery.category
 
 import com.hucet.clean.gallery.datasource.local.MediaFetcher
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
+import com.hucet.clean.gallery.gallery.adapter.GalleryType
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Directory
 import com.hucet.clean.gallery.model.Medium
@@ -24,7 +25,7 @@ class DirClassifier : CategoryStrategy<Directory> {
                     path = dirFile.path,
                     name = dirFile.name,
                     id = first.id,
-                    viewType = GalleryAdapter.GalleryType.DIRECTORY
+                    viewType = GalleryType.DIRECTORY
             )
         }
     }

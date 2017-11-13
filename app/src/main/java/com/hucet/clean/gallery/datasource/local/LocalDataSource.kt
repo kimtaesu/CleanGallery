@@ -17,16 +17,13 @@ import timber.log.Timber
 
 class LocalDataSource constructor(
         private val mediaFetcher: MediaFetcher,
-        private val config: ApplicationConfig,
-        private val filter: ImageVideoGifFilter,
-        private val filter2: HiddenFileFilter
+        private val config: ApplicationConfig
 ) : GalleryDataSource {
     override fun getGalleries(curPath: String, isDirType: Boolean): Flowable<List<Medium>> {
         return Flowable.defer {
             Timber.d("GalleryPresenter getGalleries")
             val cursor = mediaFetcher.query(curPath, MediaSortOptions.getSortOptions(curPath, config, isDirType))
-
-            Flowable.just(mediaFetcher.parseCursor(cursor, listOf(filter, filter2)))
+            Flowable.just(mediaFetcher.parseCursor(cursor))
         }
     }
 }

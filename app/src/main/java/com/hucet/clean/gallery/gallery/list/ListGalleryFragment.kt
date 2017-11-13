@@ -12,6 +12,7 @@ import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.activity.MainActivity
 import com.hucet.clean.gallery.extension.isExternalStorageDir
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
+import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter
 import com.hucet.clean.gallery.inject.Injectable
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Directory
@@ -27,6 +28,7 @@ import javax.inject.Inject
 class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     @Inject lateinit var adapter: GalleryAdapter
     @Inject lateinit var presenter: Gallery.Presenter
+
     var curPath = Environment.getExternalStorageDirectory().absolutePath
     var isDirType = true
 

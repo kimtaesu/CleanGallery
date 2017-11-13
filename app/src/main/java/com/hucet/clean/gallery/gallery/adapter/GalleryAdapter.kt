@@ -12,11 +12,9 @@ import javax.inject.Inject
  */
 @PerFragment
 class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    enum class GalleryType(val value: Int) {
-        DIRECTORY(0), MEDIUM(1), DATE(2);
-    }
 
-    @Inject lateinit var viewTypeDelegateAdapter: ViewTypeDelegateAdapter
+    @Inject lateinit var delegateMap: Map<GalleryType, @JvmSuppressWildcards AbstractDelegateAdapter>
+
     private var Items: ArrayList<Basic> = arrayListOf()
     private var onClick: ((Basic) -> Unit)? = null
     private var recyclerView: RecyclerView? = null
@@ -31,7 +29,7 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
-        val viewHoler = viewTypeDelegateAdapter[viewType]?.onCreateViewHolder(parent, viewType)
+        val viewHoler = delegateMap[GalleryType.galleryType(viewType)]?.onCreateViewHolder(parent, viewType)
         viewHoler?.itemView?.setOnClickListener({
             val position = recyclerView?.getChildAdapterPosition(it)
             onClick?.invoke(Items.get(position!!))
@@ -41,7 +39,7 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         val item = Items[position]
-        viewTypeDelegateAdapter[item.viewType.value]?.onBindViewHolder(holder, position, item)
+        delegateMap[item.viewType]?.onBindViewHolder(holder, position, item)
     }
 
     override fun getItemCount() = Items.size

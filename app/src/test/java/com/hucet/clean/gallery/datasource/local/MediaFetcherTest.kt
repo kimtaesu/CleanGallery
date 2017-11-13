@@ -19,10 +19,10 @@ import org.junit.Test
  */
 
 class MediaFetcherTest {
-    var mediaFetcher = MediaFetcher(mockContext())
+    var mediaFetcher = MediaFetcher(mockContext(), mockFilters())
     @Before
     fun setUp() {
-        mediaFetcher = MediaFetcher(mockContext())
+        mediaFetcher = MediaFetcher(mockContext(), mockFilters())
     }
 
     @Test
@@ -42,9 +42,13 @@ class MediaFetcherTest {
         return context
     }
 
+    private fun mockFilters(): Set<MediaTypeFilter> {
+        return setOf(mock<MediaTypeFilter>(), mock<MediaTypeFilter>())
+    }
+
     private fun getParseCursorFromPath(path: String): List<Medium> {
         val cursor = CursorFixture.getCursor(path, "media/test")
-        return mediaFetcher.parseCursor(cursor, listOf(mock<MediaTypeFilter>(), mock<MediaTypeFilter>()))
+        return mediaFetcher.parseCursor(cursor)
     }
 }
 

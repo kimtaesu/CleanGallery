@@ -9,11 +9,12 @@ import android.widget.TextView
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.gallery.list.GlideRequests
 import com.hucet.clean.gallery.model.Basic
+import javax.inject.Inject
 
 /**
  * Created by taesu on 2017-11-09.
  */
-class MediumDelegateAdapter(val glideRequests: GlideRequests) : AbstractDelegateAdapter {
+class MediumDelegateAdapter @Inject constructor(val glideRequests: GlideRequests) : AbstractDelegateAdapter {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int, item: Basic) {
         holder as ViewHolder
         holder.name.text = item.name

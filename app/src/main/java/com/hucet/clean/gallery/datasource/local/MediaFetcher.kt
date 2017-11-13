@@ -12,14 +12,14 @@ import java.util.*
  * Created by taesu on 2017-10-30.
  */
 
-class MediaFetcher constructor(private val context: Context) {
-
-
+class MediaFetcher constructor(private val context: Context,
+                               private val filters: Set<MediaTypeFilter>
+) {
     fun query(curPath: String, sortOption: String = MediaStore.Images.ImageColumns.DATE_MODIFIED + " DESC"): Cursor {
         return MediaProvider().query(context, curPath, sortOption)
     }
 
-    fun parseCursor(cur: Cursor?, filters: List<MediaTypeFilter>): List<Medium> {
+    fun parseCursor(cur: Cursor?): List<Medium> {
         cur ?: return emptyList()
         val curMedia = ArrayList<Medium>()
         cur.use {

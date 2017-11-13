@@ -6,6 +6,7 @@ import com.hucet.clean.gallery.config.SORT_BY_SIZE
 import com.hucet.clean.gallery.config.SORT_DESCENDING
 import com.hucet.clean.gallery.extension.*
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
+import com.hucet.clean.gallery.gallery.adapter.GalleryType
 import java.io.Serializable
 
 /**
@@ -19,7 +20,7 @@ data class Medium(
         private val _modified: Long,
         val taken: Long,
         val size: Long,
-        override val viewType: GalleryAdapter.GalleryType = GalleryAdapter.GalleryType.MEDIUM
+        override val viewType: GalleryType = GalleryType.MEDIUM
 ) : Basic(), Serializable {
     var modified: Long = _modified
         get() = _modified * 1000L

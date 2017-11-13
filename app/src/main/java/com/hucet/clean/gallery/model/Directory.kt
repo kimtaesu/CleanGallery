@@ -6,6 +6,7 @@ import com.hucet.clean.gallery.config.SORT_BY_NAME
 import com.hucet.clean.gallery.config.SORT_BY_SIZE
 import com.hucet.clean.gallery.config.SORT_DESCENDING
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
+import com.hucet.clean.gallery.gallery.adapter.GalleryType
 import java.io.Serializable
 
 /**
@@ -18,6 +19,6 @@ data class Directory(
         override val id: Long,
         override val name: String,
         override val path: String,
-        override val viewType: GalleryAdapter.GalleryType = GalleryAdapter.GalleryType.DIRECTORY
+        override val viewType: GalleryType = GalleryType.DIRECTORY
 ) : Basic() {
 }

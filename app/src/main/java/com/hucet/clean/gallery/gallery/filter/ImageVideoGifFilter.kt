@@ -4,12 +4,14 @@ import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.config.GIFS
 import com.hucet.clean.gallery.config.IMAGES
 import com.hucet.clean.gallery.config.VIDEOS
+import com.hucet.clean.gallery.inject.scopes.PerFragment
 import com.hucet.clean.gallery.model.Medium
+import javax.inject.Inject
 
 /**
  * Created by taesu on 2017-11-13.
  */
-class ImageVideoGifFilter(private val config: ApplicationConfig) : MediaTypeFilter {
+class ImageVideoGifFilter @Inject constructor(private val config: ApplicationConfig) : MediaTypeFilter {
     override fun filterd(medium: Medium): Boolean {
         val isImage = MediaTypeHelper.isImage(medium.name) && config.filterdType and IMAGES > 0
         if (isImage) return false
