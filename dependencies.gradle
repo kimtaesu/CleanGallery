@@ -47,11 +47,15 @@ ext {
     dexmakerMockitoversion = '2.2.0'
     runnerVersion = '0.5'
     permissionDispatcherVersion = '3.0.1'
-    kotlinDependencies = [
-            kotlin: "org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}"
+    spekVersion = '1.1.5'
+    junitPlatformVersion = '1.0.2'
+    kluentVersion = '1.30'
+    kotlinDeps = [
+            kotlin       : "org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}",
+            kotlinReflect: "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
     ]
 
-    androidSupportDependencies = [
+    androidSupportDeps = [
             androidSupportV7   : "com.android.support:appcompat-v7:${supportLibraryVersion}",
             constraintLayout   : "com.android.support.constraint:constraint-layout:1.0.2",
             supportRecyclerView: "com.android.support:recyclerview-v7:${supportLibraryVersion}",
@@ -61,20 +65,27 @@ ext {
             archCompiler       : "android.arch.lifecycle:compiler:${roomVersion}",
     ]
 
-    testDependencies = [
-            junit          : "junit:junit:${jUnitVersion}",
-            mock           : "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
-            mockInline     : "org.mockito:mockito-inline:2.12.0",
-            robolectric    : "org.robolectric:robolectric:${robolectricVersion}",
-            powerMockModule: "org.powermock:powermock-module-junit4:${powerMockitoVersion}",
-            powerMockApi   : "org.powermock:powermock-api-mockito:${powerMockitoVersion}",
+    testDeps = [
+            junit              : "junit:junit:${jUnitVersion}",
+            mock               : "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
+            mockInline         : "org.mockito:mockito-inline:2.12.0",
+            robolectric        : "org.robolectric:robolectric:${robolectricVersion}",
+            powerMockModule    : "org.powermock:powermock-module-junit4:${powerMockitoVersion}",
+            powerMockApi       : "org.powermock:powermock-api-mockito:${powerMockitoVersion}",
+            spekApi            : "org.jetbrains.spek:spek-api:$spekVersion",
+            spekJunitEngine    : "org.jetbrains.spek:spek-junit-platform-engine:$spekVersion",
+            junitPlatformEngine: "org.junit.platform:junit-platform-engine:${junitPlatformVersion}",
+            kluent             : "org.amshove.kluent:kluent:${kluentVersion}",
+            kluentAndroid      : "org.amshove.kluent:kluent-android:${kluentVersion}",
+
+
     ]
 
-    rxDependencies = [
+    rxDeps = [
             rxKotlin : 'io.reactivex.rxjava2:rxkotlin:2.1.0',
             rxAndroid: "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
     ]
-    opensourceDependencies = [
+    opensourceDeps = [
             permissionDispatcher          : "com.github.hotchemi:permissionsdispatcher:${permissionDispatcherVersion}",
             permissionsDispatcherProcessor: "com.github.hotchemi:permissionsdispatcher-processor:${permissionDispatcherVersion}",
             timber                        : 'com.jakewharton.timber:timber:4.5.1',
@@ -84,11 +95,11 @@ ext {
             glideCompiler                 : "com.github.bumptech.glide:compiler:${glideVersion}",
     ]
 
-    debugDependencies = [
+    debugDeps = [
             stetho      : 'com.facebook.stetho:stetho:1.5.0',
             stethoOkHttp: 'com.facebook.stetho:stetho-okhttp3:1.5.0',
     ]
-    daggerDependencies = [
+    daggerDeps = [
             daggerCompiler : "com.google.dagger:dagger-compiler:${daggerVersion}",
             daggerProcessor: "com.google.dagger:dagger-android-processor:${daggerVersion}",
             daggerSupport  : "com.google.dagger:dagger-android-support:${daggerVersion}",

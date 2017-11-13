@@ -23,38 +23,67 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation kotlinDependencies.kotlin
-    implementation androidSupportDependencies.androidSupportV7
-    implementation androidSupportDependencies.constraintLayout
-    implementation androidSupportDependencies.supportRecyclerView
-    implementation androidSupportDependencies.supportDesign
 
-    implementation rxDependencies.rxKotlin
-    implementation rxDependencies.rxAndroid
-    implementation opensourceDependencies.timber
-    implementation opensourceDependencies.gson
+    implementation kotlinDeps.kotlin
+    testImplementation kotlinDeps.kotlinReflect
 
-    kapt opensourceDependencies.permissionsDispatcherProcessor
-    implementation(opensourceDependencies.permissionDispatcher) {
+    implementation androidSupportDeps.androidSupportV7
+    implementation androidSupportDeps.constraintLayout
+    implementation androidSupportDeps.supportRecyclerView
+    implementation androidSupportDeps.supportDesign
+
+    implementation rxDeps.rxKotlin
+    implementation rxDeps.rxAndroid
+    implementation opensourceDeps.timber
+    implementation opensourceDeps.gson
+
+    kapt opensourceDeps.permissionsDispatcherProcessor
+    implementation(opensourceDeps.permissionDispatcher) {
         // if you don't use android.app.Fragment you can exclude support for them
         exclude module: "support-v13"
     }
 
-    implementation daggerDependencies.dagger
-    implementation daggerDependencies.daggerSupport
-    kapt daggerDependencies.daggerCompiler
-    kapt daggerDependencies.daggerProcessor
-    compileOnly daggerDependencies.javaxAnnotation
+    implementation daggerDeps.dagger
+    implementation daggerDeps.daggerSupport
+    kapt daggerDeps.daggerCompiler
+    kapt daggerDeps.daggerProcessor
+    compileOnly daggerDeps.javaxAnnotation
 
-    kapt opensourceDependencies.glideCompiler
-    implementation opensourceDependencies.glide
+    kapt opensourceDeps.glideCompiler
+    implementation opensourceDeps.glide
 
 
-    testImplementation testDependencies.junit
-    testImplementation testDependencies.mock
-    testImplementation testDependencies.mockInline
-    testImplementation testDependencies.robolectric
-//    testImplementation testDependencies.powerMockModule
-//    testImplementation testDependencies.powerMockApi
-    implementation debugDependencies.stetho
+    testImplementation testDeps.junit
+    testImplementation testDeps.mock
+    testImplementation testDeps.mockInline
+    testImplementation testDeps.robolectric
+
+
+    testImplementation(testDeps.spekApi) {
+        exclude group: "org.jetbrains.kotlin"
+    }
+    testImplementation(testDeps.spekJunitEngine) {
+        exclude group: "org.junit.platform"
+        exclude group: "org.jetbrains.kotlin"
+    }
+    testImplementation testDeps.junitPlatformEngine
+    testImplementation testDeps.kluent
+    testImplementation testDeps.kluentAndroid
+
+    implementation debugDeps.stetho
+}
+afterEvaluate {
+    android.buildTypes.all {
+        def name = it.name
+
+        def copyTask = project.task(type: Copy, "copyKotlin${name.capitalize()}UnitTestClasses") {
+            from "build/tmp/kotlin-classes/debug"
+            into "build/intermediates/classes/debug"
+
+            from "build/tmp/kotlin-classes/${name}UnitTest"
+            into "build/intermediates/classes/test/$name"
+        }
+
+        project.tasks.getByName("compile${name.capitalize()}UnitTestSources").finalizedBy copyTask
+    }
 }
