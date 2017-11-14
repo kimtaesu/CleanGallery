@@ -21,8 +21,16 @@ class HiddenFileFilter @Inject constructor(private val config: ApplicationConfig
     }
 
     private fun isHidden(medium: Medium, noMedia: Set<String>): Boolean {
+        return matchNoMedia(medium, noMedia) || isHiddenFolder(medium)
+    }
+
+    private fun matchNoMedia(medium: Medium, noMedia: Set<String>): Boolean {
         return noMedia.any {
-            medium.path.startsWith(it) || medium.name.startsWith(".")
+            medium.path.startsWith(it)
         }
+    }
+
+    private fun isHiddenFolder(medium: Medium): Boolean {
+        return medium.path.contains("/.")
     }
 }
