@@ -22,11 +22,11 @@ class MediaFetcher constructor(private val context: Context,
     }
 
     fun isFilter(filters: Set<MediaTypeFilter>, medium: Medium, noMediaFolders: Set<String>): Boolean {
-        for (filter in filters) {
-            if (filter.filterd(medium, noMediaFolders) == FILTERED) {
-                return FILTERED
-            }
+        val isFilter = filters.any {
+            it.filterd(medium, noMediaFolders) == FILTERED
         }
+        if (isFilter)
+            return FILTERED
         return NOT_FILTERED
     }
 
