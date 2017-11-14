@@ -9,7 +9,7 @@ import javax.inject.Inject
  */
 class HiddenFileFilter @Inject constructor(private val config: ApplicationConfig) : MediaTypeFilter {
     override fun filterd(medium: Medium, noMedia: Set<String>): Boolean {
-        val isHiddenFile = isHidden(medium.path, noMedia)
+        val isHiddenFile = isHidden(medium, noMedia)
 
         if (!isHiddenFile)
             return MediaTypeFilter.NOT_FILTERED
@@ -20,9 +20,9 @@ class HiddenFileFilter @Inject constructor(private val config: ApplicationConfig
         return MediaTypeFilter.FILTERED
     }
 
-    private fun isHidden(path: String, noMedia: Set<String>): Boolean {
+    private fun isHidden(medium: Medium, noMedia: Set<String>): Boolean {
         return noMedia.any {
-            path.startsWith(it) || path.startsWith(".")
+            medium.path.startsWith(it) || medium.name.startsWith(".")
         }
     }
 }

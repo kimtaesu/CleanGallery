@@ -52,33 +52,43 @@ object MediumFixture {
             return TestData(
                     listOf(
                             medium(
-                                    path = "/storage/emulated/0/.SPenSDK30/asd.jpg"
+                                    path = "/storage/emulated/0/.SPenSDK30/asd.jpg",
+                                    name = "asd.jpg"
                             ),
                             medium(
-                                    path = "/storage/emulated/0/KakaoNavi/aaa.mp4"
+                                    path = "/storage/emulated/0/KakaoNavi/aaa.mp4",
+                                    name = "aaa.mp4"
                             ),
                             medium(
-                                    path = "/storage/emulated/0/KakaoNaviSDK/symbol/asdas.gif"
+                                    path = "/storage/emulated/0/KakaoNaviSDK/symbol/asdas.gif",
+                                    name = "asdas.gif"
                             ),
                             medium(
-                                    path = "/storage/emulated/0/WhoWho/asdas.aaa"
+                                    path = "/storage/emulated/0/WhoWho/asdas.aaa",
+                                    name = "asdas.aaa"
                             ),
                             medium(
-                                    path = "/storage/emulated/0/asdas.aaa"
+                                    path = "/storage/emulated/0/asdas.aaa",
+                                    name = "asdas.aaa"
                             ),
                             medium(
-                                    path = "/storage/emulated/0/Camera/asdas.jpg"
+                                    path = "/storage/emulated/0/Camera/asdas.jpg",
+                                    name = "asdas.jpg"
                             ),
                             medium(
-                                    path = "./storage/emulated/0/Camera/asdas.jpg"
+                                    path = "/storage/emulated/0/Camera/.asdas.jpg",
+                                    name = ".asdas.jpg"
+
                             )
                     ),
                     listOf(
                             medium(
-                                    path = "/storage/emulated/0/asdas.aaa"
+                                    path = "/storage/emulated/0/asdas.aaa",
+                                    name = "asdas.aaa"
                             ),
                             medium(
-                                    path = "/storage/emulated/0/Camera/asdas.jpg"
+                                    path = "/storage/emulated/0/Camera/asdas.jpg",
+                                    name = "asdas.jpg"
                             ))
             )
         }
