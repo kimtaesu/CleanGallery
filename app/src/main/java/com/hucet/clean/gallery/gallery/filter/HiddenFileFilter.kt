@@ -22,7 +22,7 @@ class HiddenFileFilter @Inject constructor(private val config: ApplicationConfig
 
     private fun isHidden(path: String, noMedia: Set<String>): Boolean {
         return noMedia.any {
-            path.startsWith(it)
+            path.startsWith(it) || path.startsWith(".")
         }
     }
 }

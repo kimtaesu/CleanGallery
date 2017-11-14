@@ -68,7 +68,11 @@ object MediumFixture {
                             ),
                             medium(
                                     path = "/storage/emulated/0/Camera/asdas.jpg"
-                            )),
+                            ),
+                            medium(
+                                    path = "./storage/emulated/0/Camera/asdas.jpg"
+                            )
+                    ),
                     listOf(
                             medium(
                                     path = "/storage/emulated/0/asdas.aaa"
