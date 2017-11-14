@@ -26,5 +26,5 @@ abstract class FilterModule {
     @Binds
     @IntoSet
     @PerFragment
-    abstract fun provideImageVideoGifFilter(config: ImageVideoGifFilter): ImageVideoGifFilter
+    abstract fun provideImageVideoGifFilter(config: ImageVideoGifFilter): MediaTypeFilter
 }
