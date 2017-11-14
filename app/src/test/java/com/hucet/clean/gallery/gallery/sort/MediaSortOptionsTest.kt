@@ -23,36 +23,84 @@ class MediaSortOptionsTest : Spek({
     val desc = "DESC"
     val asc = "ASC"
 
-    describe("")
+    describe("sortOption [SORT_BY_NAME or SORT_DESCENDING]")
     {
         val sortString = getSortString(SORT_BY_NAME or SORT_DESCENDING)
-        it("")
+        it("sortString == _display_name DESC")
         {
             sortString `should equal to` "${MediaStore.Images.Media.DISPLAY_NAME} ${desc}"
         }
     }
-    describe("")
+    describe("sortOption [SORT_BY_NAME or SORT_ASCENDING]")
     {
         val sortString = getSortString(SORT_BY_NAME or SORT_ASCENDING)
-        it("")
+        it("sortString == _display_name ASC")
         {
             sortString `should equal to` "${MediaStore.Images.Media.DISPLAY_NAME} ${asc}"
         }
     }
-    describe("")
+    describe("sortOption [SORT_BY_DATE_MODIFIED or SORT_DESCENDING]")
     {
         val sortString = getSortString(SORT_BY_DATE_MODIFIED or SORT_DESCENDING)
-        it("")
+        it("sortString == date_modified DESC")
         {
             sortString `should equal to` "${MediaStore.Images.Media.DATE_MODIFIED} ${desc}"
         }
     }
-    describe("")
+    describe("sortOption [SORT_BY_DATE_MODIFIED or SORT_ASCENDING]")
     {
         val sortString = getSortString(SORT_BY_DATE_MODIFIED or SORT_ASCENDING)
-        it("")
+        it("sortString == date_modified ASC")
         {
             sortString `should equal to` "${MediaStore.Images.Media.DATE_MODIFIED} ${asc}"
+        }
+    }
+    describe("sortOption [SORT_BY_SIZE or SORT_DESCENDING]")
+    {
+        val sortString = getSortString(SORT_BY_SIZE or SORT_DESCENDING)
+        it("sortString == _size DESC")
+        {
+            sortString `should equal to` "${MediaStore.Images.Media.SIZE} ${desc}"
+        }
+    }
+    describe("sortOption [SORT_BY_SIZE or SORT_ASCENDING]")
+    {
+        val sortString = getSortString(SORT_BY_SIZE or SORT_ASCENDING)
+        it("sortString == _size ASC")
+        {
+            sortString `should equal to` "${MediaStore.Images.Media.SIZE} ${asc}"
+        }
+    }
+    describe("sortOption [SORT_BY_PATH or SORT_DESCENDING]")
+    {
+        val sortString = getSortString(SORT_BY_PATH or SORT_DESCENDING)
+        it("sortString == _data DESC")
+        {
+            sortString `should equal to` "${MediaStore.Images.Media.DATA} ${desc}"
+        }
+    }
+    describe("sortOption [SORT_BY_PATH or SORT_ASCENDING]")
+    {
+        val sortString = getSortString(SORT_BY_PATH or SORT_ASCENDING)
+        it("sortString == _data ASC")
+        {
+            sortString `should equal to` "${MediaStore.Images.Media.DATA} ${asc}"
+        }
+    }
+    describe("sortOption [SORT_BY_DATE_TAKEN or SORT_DESCENDING]")
+    {
+        val sortString = getSortString(SORT_BY_DATE_TAKEN or SORT_DESCENDING)
+        it("sortString == datetaken DESC")
+        {
+            sortString `should equal to` "${MediaStore.Images.Media.DATE_TAKEN} ${desc}"
+        }
+    }
+    describe("sortOption [SORT_BY_DATE_TAKEN or SORT_ASCENDING]")
+    {
+        val sortString = getSortString(SORT_BY_DATE_TAKEN or SORT_ASCENDING)
+        it("sortString == datetaken ASC")
+        {
+            sortString `should equal to` "${MediaStore.Images.Media.DATE_TAKEN} ${asc}"
         }
     }
 })
