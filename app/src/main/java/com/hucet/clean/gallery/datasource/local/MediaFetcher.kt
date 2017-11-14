@@ -5,6 +5,8 @@ import android.database.Cursor
 import android.provider.MediaStore
 import com.hucet.clean.gallery.extension.getFilenameFromPath
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter
+import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter.Companion.FILTERED
+import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter.Companion.NOT_FILTERED
 import com.hucet.clean.gallery.model.Medium
 import java.util.*
 
@@ -13,10 +15,19 @@ import java.util.*
  */
 
 class MediaFetcher constructor(private val context: Context,
-                               private val filters: Set<MediaTypeFilter>
+                               val filters: Set<MediaTypeFilter>
 ) {
     fun query(curPath: String, sortOption: String = MediaStore.Images.ImageColumns.DATE_MODIFIED + " DESC"): Cursor {
         return MediaProvider().query(context, curPath, sortOption)
+    }
+
+    fun isFilter(filters: Set<MediaTypeFilter>, medium: Medium, noMediaFolders: Set<String>): Boolean {
+        for (filter in filters) {
+            if (filter.filterd(medium, noMediaFolders) == FILTERED) {
+                return FILTERED
+            }
+        }
+        return NOT_FILTERED
     }
 
     fun parseCursor(cur: Cursor?, noMediaFolders: Set<String>): List<Medium> {
@@ -33,9 +44,8 @@ class MediaFetcher constructor(private val context: Context,
                         val dateTaken = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN))
                         val dateModified = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED))
                         val medium = Medium(id, filename, path, dateModified, dateTaken, size)
-                        filters.forEach {
-                            it.filterd(medium, noMediaFolders)
-                        }
+                        if (isFilter(filters, medium, noMediaFolders) == MediaTypeFilter.FILTERED)
+                            continue
                         curMedia.add(medium)
 
                     } catch (e: IllegalArgumentException) {
