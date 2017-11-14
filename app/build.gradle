@@ -23,6 +23,9 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
         test.java.srcDirs += 'src/test/kotlin'
     }
+    packagingOptions {
+        exclude 'META-INF/app_debug.kotlin_module'
+    }
 }
 
 // junit5 doesn't support android projects out of the box
@@ -88,17 +91,18 @@ dependencies {
     implementation debugDeps.stetho
 }
 afterEvaluate {
-    android.buildTypes.all {
-        def name = it.name
-
-        def copyTask = project.task(type: Copy, "copyKotlin${name.capitalize()}UnitTestClasses") {
-            from "build/tmp/kotlin-classes/debug"
-            into "build/intermediates/classes/debug"
-
-            from "build/tmp/kotlin-classes/${name}UnitTest"
-            into "build/intermediates/classes/test/$name"
-        }
-
-        project.tasks.getByName("compile${name.capitalize()}UnitTestSources").finalizedBy copyTask
+    compileDebugUnitTestKotlin {
+        finalizedBy copyKotlinDebugUnitTestClasses
+        finalizedBy copyKotlinDebugClasses
     }
+}
+
+task copyKotlinDebugUnitTestClasses(type: Copy) {
+    from "build/tmp/kotlin-classes/debugUnitTest"
+    into "build/intermediates/classes/test/debug"
+}
+
+task copyKotlinDebugClasses(type: Copy) {
+    from "build/tmp/kotlin-classes/debug"
+    into "build/intermediates/classes/debug"
 }
