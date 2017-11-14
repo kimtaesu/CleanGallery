@@ -23,7 +23,16 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
         test.java.srcDirs += 'src/test/kotlin'
     }
+}
 
+// junit5 doesn't support android projects out of the box
+apply plugin: "de.mannodermaus.android-junit5"
+junitPlatform {
+    filters {
+        engines {
+            include 'spek'
+        }
+    }
 }
 
 dependencies {
@@ -76,7 +85,6 @@ dependencies {
     testImplementation testDeps.junitPlatformEngine
     testImplementation testDeps.kluent
     testImplementation testDeps.kluentAndroid
-    testImplementation "org.junit.platform:junit-platform-runner:1.0.0"
     implementation debugDeps.stetho
 }
 afterEvaluate {

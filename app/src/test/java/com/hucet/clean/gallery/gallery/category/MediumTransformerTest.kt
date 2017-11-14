@@ -22,15 +22,11 @@ import org.mockito.Mock
 val externalStoragePath = "ROOT"
 
 class MediumTransformerTest : SubjectSpek<MediumTransformer>({
-    val dirMock = mock<DirClassifier>()
-    val dateMock = mock<DateClassifier>()
+    val dirMock by memoized { mock<DirClassifier>() }
+    val dateMock by memoized { mock<DateClassifier>() }
 
     given("a mediumTransformer")
     {
-        beforeEachTest {
-            reset(dirMock)
-            reset(dateMock)
-        }
         subject {
             TestMediumTransformer(dateMock, dirMock)
         }

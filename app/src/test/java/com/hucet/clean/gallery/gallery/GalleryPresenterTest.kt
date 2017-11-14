@@ -1,6 +1,7 @@
 package com.hucet.clean.gallery.gallery
 
 import com.hucet.clean.gallery.fixture.DeserializerFixture
+import com.hucet.clean.gallery.fixture.MediumFixture
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.category.MediumTransformer
 import com.hucet.clean.gallery.presenter.Gallery
@@ -10,6 +11,9 @@ import com.hucet.clean.gallery.scheduler.TestSchedulerProvider
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Flowable
 import io.reactivex.schedulers.TestScheduler
+import org.jetbrains.spek.api.Spek
+import org.jetbrains.spek.api.dsl.*
+import org.jetbrains.spek.subject.SubjectSpek
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -19,58 +23,50 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by taesu on 2017-11-01.
  */
-class GalleryPresenterTest {
-
-    @Mock lateinit var view: Gallery.View
-    @Mock lateinit var adapter: GalleryAdapter
-    @Mock lateinit var repository: GalleryRepository
-    @Mock lateinit var presenter: GalleryPresenter
-    @Mock lateinit var tranformer: MediumTransformer
-    var testScheduler = TestScheduler()
-    val testData = DeserializerFixture.deserializeMedium("test_default.json", "media/test")
-    @Before
-    fun setUp() {
-        view = mock()
-        adapter = mock()
-        repository = mock()
-        tranformer = mock()
-        testScheduler = TestScheduler()
-        presenter = GalleryPresenter(view, adapter, repository, tranformer, TestSchedulerProvider(testScheduler))
+class GalleryPresenterTest : SubjectSpek<GalleryPresenter>({
+    val test = MediumFixture.DEFAULT
+    val view by memoized { mock<Gallery.View>() }
+    val adapter by memoized { mock<GalleryAdapter>() }
+    val repository by memoized { mock<GalleryRepository>() }
+    val tranformer by memoized { mock<MediumTransformer>() }
+    val testScheduler by memoized { TestScheduler() }
+    given("a galleryPresenter") {
+        subject {
+            GalleryPresenter(view, adapter, repository, tranformer, TestSchedulerProvider(testScheduler))
+        }
+        on("presenter next - complete 검증")
+        {
+            whenever(repository.getGalleries(any(), any())).thenReturn(Flowable.just(test))
+            whenever(tranformer.transform(any(), any(), any())).thenReturn(test)
+            subject.fetchItems("", true)
+            testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
+            it("call one [repository.getGalleries, adapter.updateData, view, view.showProgress, view.hideProgress]")
+            {
+                verify(repository, times(1)).getGalleries(any(), any())
+                verify(adapter, times(1)).updateData(any())
+                verify(view, times(1)).showProgress()
+                verify(view, times(1)).hideProgress()
+                verify(tranformer, times(1)).transform(any(), any(), any())
+            }
+        }
+        on("presenter error 검증")
+        {
+            whenever(repository.getGalleries(any(), any())).thenReturn(Flowable.just(test)
+                    .map {
+                        throw MockitoException("")
+                    })
+            whenever(tranformer.transform(any(), any(), any())).thenReturn(test)
+            subject.fetchItems("", true)
+            testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
+            it("call never [adapter.updateData]")
+            {
+                verify(repository, times(1)).getGalleries(any(), any())
+                verify(adapter, never()).updateData(any())
+                verify(view, times(1)).showProgress()
+                verify(view, times(1)).hideProgress()
+                verify(view, times(1)).showError()
+                verify(tranformer, never()).transform(any(), any(), any())
+            }
+        }
     }
-
-    @Test
-    fun `presenter Next Complete 검증`() {
-        whenever(repository.getGalleries(any(), any())).thenReturn(Flowable.just(testData))
-
-        presenter.fetchItems("", true)
-
-        testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
-
-        verify(repository, times(1)).getGalleries(any(), any())
-
-        verify(adapter, times(1)).updateData(any())
-
-        verify(view, times(1)).showProgress()
-        verify(view, times(1)).hideProgress()
-    }
-
-    @Test
-    fun `presenter Error 검증`() {
-        whenever(repository.getGalleries(any(), any())).thenReturn(Flowable.just(testData)
-                .map {
-                    throw MockitoException("")
-                })
-
-        presenter.fetchItems("", true)
-
-        testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
-
-        verify(repository, times(1)).getGalleries(any(), any())
-
-        verify(adapter, never()).updateData(any())
-
-        verify(view, times(1)).showProgress()
-        verify(view, times(1)).hideProgress()
-        verify(view, times(1)).showError()
-    }
-}
+})
