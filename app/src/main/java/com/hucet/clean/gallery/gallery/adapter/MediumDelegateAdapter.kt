@@ -10,6 +10,7 @@ import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.gallery.list.GlideRequests
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import com.hucet.clean.gallery.model.Basic
+import com.hucet.clean.gallery.model.Medium
 import javax.inject.Inject
 
 /**
@@ -19,7 +20,13 @@ import javax.inject.Inject
 class MediumDelegateAdapter @Inject constructor(val glideRequests: GlideRequests) : AbstractDelegateAdapter {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int, item: Basic) {
         holder as ViewHolder
+        item as Medium
         holder.name.text = item.name
+        if (item.isVideo) {
+            holder.indicator.visibility = View.VISIBLE
+        } else {
+            holder.indicator.visibility = View.GONE
+        }
         glideRequests
                 .asDrawable()
                 .centerCrop()
@@ -38,6 +45,7 @@ class MediumDelegateAdapter @Inject constructor(val glideRequests: GlideRequests
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val name: TextView = view.findViewById(R.id.name)
         val thumbnail: ImageView = view.findViewById(R.id.thumbnail)
+        val indicator: ImageView = view.findViewById(R.id.video)
     }
 }
 

@@ -7,6 +7,7 @@ import com.hucet.clean.gallery.extension.getFilenameFromPath
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter.Companion.FILTERED
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter.Companion.NOT_FILTERED
+import com.hucet.clean.gallery.gallery.filter.MediaTypeHelper
 import com.hucet.clean.gallery.model.Medium
 import java.util.*
 
@@ -43,7 +44,7 @@ class MediaFetcher constructor(private val context: Context,
                         var size = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE))
                         val dateTaken = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN))
                         val dateModified = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED))
-                        val medium = Medium(id, filename, path, dateModified, dateTaken, size)
+                        val medium = Medium(id, filename, path, dateModified, dateTaken, size, MediaTypeHelper.isVideo(filename))
                         if (isFilter(filters, medium, noMediaFolders) == MediaTypeFilter.FILTERED)
                             continue
                         curMedia.add(medium)

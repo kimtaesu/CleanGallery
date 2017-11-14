@@ -20,6 +20,7 @@ data class Medium(
         private val _modified: Long,
         val taken: Long,
         val size: Long,
+        val isVideo: Boolean = false,
         override val viewType: GalleryType = GalleryType.MEDIUM
 ) : Basic(), Serializable {
     var modified: Long = _modified
