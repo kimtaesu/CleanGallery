@@ -33,7 +33,6 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     @Inject lateinit var presenter: Gallery.Presenter
     @Inject lateinit var config: ApplicationConfig
     var curPath = Environment.getExternalStorageDirectory().absolutePath
-    var isDirType = true
 
     companion object {
         fun newInstance() = ListGalleryFragment()

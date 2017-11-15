@@ -16,6 +16,8 @@ import dagger.android.support.HasSupportFragmentInjector
 import permissions.dispatcher.*
 import timber.log.Timber
 import javax.inject.Inject
+import android.content.Intent
+import android.net.Uri
 
 
 @RuntimePermissions
@@ -63,11 +65,18 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     val onGalleryClicked: (Medium) -> Unit = { medium: Medium ->
         Timber.d("onGalleryClicked ${medium}")
-        supportFragmentManager.beginTransaction()
-                .hide(galleryFragment)
-                .add(android.R.id.content, GalleryDetailFragment.newInstance(medium), GalleryDetailFragment.TAG)
-                .addToBackStack(null)
-                .commit()
+        if (medium.isVideo) {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(medium.path))
+            intent.setDataAndType(Uri.parse(medium.path), "video/*")
+            startActivity(intent)
+        } else {
+            supportFragmentManager.beginTransaction()
+                    .hide(galleryFragment)
+                    .add(android.R.id.content, GalleryDetailFragment.newInstance(medium), GalleryDetailFragment.TAG)
+                    .addToBackStack(null)
+                    .commit()
+        }
+
 
     }
 
