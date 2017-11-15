@@ -24,37 +24,40 @@ val externalStoragePath = "ROOT"
 class MediumTransformerTest : SubjectSpek<MediumTransformer>({
     val dirMock by memoized { mock<DirClassifier>() }
     val dateMock by memoized { mock<DateClassifier>() }
-
+    val config by memoized { mock<ApplicationConfig>() }
     given("a mediumTransformer")
     {
         subject {
-            TestMediumTransformer(dateMock, dirMock)
+            TestMediumTransformer(dateMock, dirMock, config)
         }
 
         on("a dateClaasifier call 검증 ")
         {
+            whenever(config.categoryType).thenReturn(CategoryType.DATE)
+            subject.transform(listOf(), externalStoragePath)
             it("one calll dateCalssify, never call dirClassify")
             {
-                subject.transform(listOf(), externalStoragePath, false)
+
                 verify(dirMock, never()).classify(any(), any())
                 verify(dateMock, times(1)).classify(any(), any())
             }
         }
         on("a dirClaasifier call 검증 ")
         {
-
+            whenever(config.categoryType).thenReturn(CategoryType.DIRECTORY)
+            subject.transform(listOf(), externalStoragePath)
             it("one calll dirClassify, never call dateClassify")
             {
-                subject.transform(listOf(), externalStoragePath, true)
                 verify(dirMock, times(1)).classify(any(), any())
                 verify(dateMock, never()).classify(any(), any())
             }
         }
         on("a medium call 검증")
         {
+            whenever(config.categoryType).thenReturn(CategoryType.DIRECTORY)
+            subject.transform(listOf(), "Not matchs to the external storae")
             it("never calll dirClassify, never call dateClassify")
             {
-                subject.transform(listOf(), "Not matchs to the external storae", true)
                 verify(dirMock, never()).classify(any(), any())
                 verify(dateMock, never()).classify(any(), any())
             }
@@ -63,7 +66,8 @@ class MediumTransformerTest : SubjectSpek<MediumTransformer>({
 })
 
 class TestMediumTransformer(dateClassifier: DateClassifier,
-                            dirClassifier: DirClassifier) : MediumTransformer(dateClassifier, dirClassifier) {
+                            dirClassifier: DirClassifier,
+                            config: ApplicationConfig) : MediumTransformer(dateClassifier, dirClassifier, config) {
     override fun isExternalStorage(curPath: String): Boolean {
         return curPath == externalStoragePath
     }

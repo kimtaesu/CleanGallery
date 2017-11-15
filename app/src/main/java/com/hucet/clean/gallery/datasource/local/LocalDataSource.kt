@@ -16,7 +16,7 @@ class LocalDataSource constructor(
         private val config: ApplicationConfig,
         private val noMediaFolderProvider: NoMediaFolderProvider
 ) : GalleryDataSource {
-    override fun getGalleries(curPath: String, isDirType: Boolean): Flowable<List<Medium>> {
+    override fun getGalleries(curPath: String): Flowable<List<Medium>> {
 
         return Flowable
                 .defer {
@@ -26,7 +26,7 @@ class LocalDataSource constructor(
                 }
                 .concatMap { noMediaFolder ->
                     Timber.d("GalleryPresenter getGalleries")
-                    val cursor = mediaFetcher.query(curPath, MediaSortOptions.getSortOptions(curPath, config, isDirType))
+                    val cursor = mediaFetcher.query(curPath, MediaSortOptions.getSortOptions(curPath, config))
                     Flowable.just(mediaFetcher.parseCursor(cursor, noMediaFolder))
                 }
     }

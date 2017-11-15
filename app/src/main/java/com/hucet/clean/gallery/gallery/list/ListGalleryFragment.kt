@@ -14,6 +14,7 @@ import com.hucet.clean.gallery.activity.MainActivity
 import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.extension.isExternalStorageDir
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
+import com.hucet.clean.gallery.gallery.category.CategoryType
 import com.hucet.clean.gallery.inject.Injectable
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Directory
@@ -43,12 +44,18 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initRecyclerView()
-        presenter.fetchItems(curPath, isDirType)
+        presenter.fetchItems(curPath)
 
 //        TODO Remove TEST CODE
         btn.setOnClickListener {
             config.layoutType = LayoutType.toggle(config.layoutType)
             setUpLayoutManager(config.layoutType)
+        }
+        category.text = config.categoryType.name
+        category.setOnClickListener {
+            config.categoryType = CategoryType.toggle(config.categoryType)
+            category.text = config.categoryType.name
+            presenter.fetchItems(curPath)
         }
     }
 
@@ -61,7 +68,7 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
             is Directory -> {
                 curPath = it.path
                 adapter.clearItems()
-                presenter.fetchItems(curPath, isDirType)
+                presenter.fetchItems(curPath)
             }
         }
     }
@@ -69,7 +76,7 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     fun onBackPressed(): Boolean {
         if (!curPath.isExternalStorageDir()) {
             curPath = Environment.getExternalStorageDirectory().absolutePath
-            presenter.fetchItems(curPath, isDirType)
+            presenter.fetchItems(curPath)
             return false
         }
         return true

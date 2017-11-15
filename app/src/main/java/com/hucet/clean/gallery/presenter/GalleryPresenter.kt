@@ -21,11 +21,11 @@ class GalleryPresenter constructor(private val view: Gallery.View,
 
 
 ) : Gallery.Presenter {
-    override fun fetchItems(curPath: String, isDirType: Boolean) {
+    override fun fetchItems(curPath: String) {
         repository
-                .getGalleries(curPath, isDirType)
+                .getGalleries(curPath)
                 .map {
-                    transformer.transform(it, curPath, isDirType)
+                    transformer.transform(it, curPath)
                 }
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.main())

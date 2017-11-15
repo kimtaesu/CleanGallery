@@ -28,8 +28,8 @@ class ClassifierModule {
 
     @Provides
     @PerFragment
-    fun provideMediumTransformer(date: DateClassifier, dir: DirClassifier): MediumTransformer {
-        return MediumTransformer(date, dir)
+    fun provideMediumTransformer(date: DateClassifier, dir: DirClassifier, config : ApplicationConfig): MediumTransformer {
+        return MediumTransformer(date, dir, config)
     }
 
 }

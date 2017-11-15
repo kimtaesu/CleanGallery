@@ -2,15 +2,16 @@ package com.hucet.clean.gallery.gallery.sort
 
 import android.provider.MediaStore
 import com.hucet.clean.gallery.config.*
+import com.hucet.clean.gallery.gallery.category.CategoryType
 
 /**
  * Created by taesu on 2017-11-12.
  */
 class MediaSortOptions {
     companion object {
-        fun getSortOptions(curPath: String, config: ApplicationConfig, isDirType: Boolean): String {
-            if (!isDirType)
-                return "${SORT_BY_DATE_MODIFIED} DESC"
+        fun getSortOptions(curPath: String, config: ApplicationConfig): String {
+            if (config.categoryType == CategoryType.DATE)
+                return "${MediaStore.Images.Media.DATE_MODIFIED} DESC"
 
             val sort = config.getDirSortType(curPath)
             val options = when {

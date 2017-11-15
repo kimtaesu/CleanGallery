@@ -2,6 +2,7 @@ package com.hucet.clean.gallery.gallery.sort
 
 import android.provider.MediaStore
 import com.hucet.clean.gallery.config.*
+import com.hucet.clean.gallery.gallery.category.CategoryType
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
@@ -103,15 +104,25 @@ class MediaSortOptionsTest : Spek({
             sortString `should equal to` "${MediaStore.Images.Media.DATE_TAKEN} ${asc}"
         }
     }
+    describe("sortOption [SORT_BY_DATE_MODIFIED or SORT_ASCENDING] with CategoryType")
+    {
+        val sortString = getSortString(SORT_BY_DATE_TAKEN or SORT_ASCENDING, CategoryType.DATE)
+        println(sortString)
+        it("sortString == date_modified DESC")
+        {
+            sortString `should equal to` "${MediaStore.Images.Media.DATE_MODIFIED} ${desc}"
+        }
+    }
 })
 
-fun getSortString(sortOption: Int): String {
-    return MediaSortOptions.getSortOptions("", mockConfig(sortOption), true)
+fun getSortString(sortOption: Int, categoryType: CategoryType = CategoryType.DIRECTORY): String {
+    return MediaSortOptions.getSortOptions("", mockConfig(sortOption, categoryType))
 }
 
-fun mockConfig(options: Int): ApplicationConfig {
+fun mockConfig(options: Int, type: CategoryType = CategoryType.DIRECTORY): ApplicationConfig {
     val config = mock<ApplicationConfig>()
     return config.apply {
+        whenever(categoryType).thenReturn(type)
         whenever(getDirSortType(any())).thenReturn(options)
     }
 }

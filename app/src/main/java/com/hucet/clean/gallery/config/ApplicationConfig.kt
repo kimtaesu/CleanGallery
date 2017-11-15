@@ -1,6 +1,7 @@
 package com.hucet.clean.gallery.config
 
 import android.app.Application
+import com.hucet.clean.gallery.gallery.category.CategoryType
 import com.hucet.clean.gallery.gallery.list.LayoutType
 import javax.inject.Inject
 
@@ -23,6 +24,15 @@ class ApplicationConfig @Inject constructor(
     val showHidden: Boolean
         get() {
             return PreferenceHelper.defaultPrefs(application)[key_show_hidden, false]
+        }
+
+    var categoryType: CategoryType
+        set(value) {
+            PreferenceHelper.defaultPrefs(application)[key_category_type] = value.name
+        }
+        get() {
+            val name = PreferenceHelper.defaultPrefs(application)[key_category_type, CategoryType.DIRECTORY.name]
+            return CategoryType.valueOf(name)
         }
 
     var layoutType: LayoutType
