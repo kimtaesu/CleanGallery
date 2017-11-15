@@ -1,6 +1,5 @@
-package com.hucet.clean.gallery.gallery.detail
+package com.hucet.clean.gallery.gallery.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -11,9 +10,7 @@ import com.bumptech.glide.Glide
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.inject.Injectable
 import com.hucet.clean.gallery.model.Medium
-import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_gallery_detail.*
-import javax.inject.Inject
 
 /**
  * Created by taesu on 2017-11-03.

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.hucet.clean.gallery.R
-import com.hucet.clean.gallery.gallery.list.GlideRequests
+import com.hucet.clean.gallery.gallery.fragment.GlideRequests
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Directory

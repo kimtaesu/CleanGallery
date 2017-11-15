@@ -1,5 +1,6 @@
-package com.hucet.clean.gallery.gallery.list
+package com.hucet.clean.gallery.gallery.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.app.Fragment
@@ -20,6 +21,7 @@ import com.hucet.clean.gallery.inject.Injectable
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Directory
 import com.hucet.clean.gallery.model.Medium
+import com.hucet.clean.gallery.preference.SettingActivity
 import com.hucet.clean.gallery.presenter.Gallery
 import kotlinx.android.synthetic.main.fragment_gallery.*
 import javax.inject.Inject
@@ -57,8 +59,16 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
             category.text = config.categoryType.name
             presenter.fetchItems(curPath)
         }
+
+        setting.setOnClickListener {
+            startSettingActivity()
+        }
+
     }
 
+    private fun startSettingActivity() {
+        startActivity(Intent(context, SettingActivity::class.java))
+    }
 
     private val onGalleryClicked: (Basic) -> Unit = {
         when (it) {

@@ -1,11 +1,9 @@
 package com.hucet.clean.gallery.config
 
 import android.app.Application
-import android.provider.MediaStore
 import com.hucet.clean.gallery.gallery.category.CategoryType
 import com.hucet.clean.gallery.gallery.category.DateClassifier
-import com.hucet.clean.gallery.gallery.list.LayoutType
-import java.util.*
+import com.hucet.clean.gallery.gallery.fragment.LayoutType
 import javax.inject.Inject
 
 /**

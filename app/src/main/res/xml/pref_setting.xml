@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Category">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="autoUpdate"
+            android:summary="자동 업데이트를 설정합니다"
+            android:switchTextOff="OFF"
+            android:switchTextOn="ON"
+            android:title="자동 업데이트" />
+    </PreferenceCategory>
+</PreferenceScreen>

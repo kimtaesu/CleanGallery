@@ -7,8 +7,8 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.hucet.clean.gallery.R
-import com.hucet.clean.gallery.gallery.detail.GalleryDetailFragment
-import com.hucet.clean.gallery.gallery.list.ListGalleryFragment
+import com.hucet.clean.gallery.gallery.fragment.GalleryDetailFragment
+import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment
 import com.hucet.clean.gallery.model.Medium
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -76,8 +76,6 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                     .addToBackStack(null)
                     .commit()
         }
-
-
     }
 
     override fun onBackPressed() {

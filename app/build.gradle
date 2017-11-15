@@ -54,6 +54,7 @@ dependencies {
     implementation rxDeps.rxAndroid
     implementation opensourceDeps.timber
     implementation opensourceDeps.gson
+    implementation opensourceDeps.materialPerference
 
     kapt opensourceDeps.permissionsDispatcherProcessor
     implementation(opensourceDeps.permissionDispatcher) {

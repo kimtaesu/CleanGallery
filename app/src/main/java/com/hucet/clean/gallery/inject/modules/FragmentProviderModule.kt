@@ -1,7 +1,7 @@
 package com.hucet.clean.gallery.inject.modules
 
-import com.hucet.clean.gallery.gallery.detail.GalleryDetailFragment
-import com.hucet.clean.gallery.gallery.list.ListGalleryFragment
+import com.hucet.clean.gallery.gallery.fragment.GalleryDetailFragment
+import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector

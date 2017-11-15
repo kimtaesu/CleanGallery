@@ -1,4 +1,4 @@
-package com.hucet.clean.gallery.gallery.list;
+package com.hucet.clean.gallery.gallery.fragment;
 
 import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.AppGlideModule;

@@ -2,7 +2,7 @@ package com.hucet.clean.gallery.inject.modules
 
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.category.MediumTransformer
-import com.hucet.clean.gallery.gallery.list.ListGalleryFragment
+import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import com.hucet.clean.gallery.presenter.Gallery
 import com.hucet.clean.gallery.presenter.GalleryPresenter
