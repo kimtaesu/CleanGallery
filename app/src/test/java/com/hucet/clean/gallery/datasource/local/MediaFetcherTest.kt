@@ -23,9 +23,11 @@ import org.junit.Assert
 
 
 class MediaFetcherTest : SubjectSpek<MediaFetcher>({
+
+
     given("a mediaFetcher") {
         subject {
-            MediaFetcher(mock<Context>(), emptySet())
+            MediaFetcher(mock<Context>(), mock())
         }
         on("MediumFixture.DEFAULT 검증")
         {

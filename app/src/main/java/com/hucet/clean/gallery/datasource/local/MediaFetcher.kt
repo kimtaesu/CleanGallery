@@ -8,6 +8,7 @@ import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter.Companion.FILTERED
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter.Companion.NOT_FILTERED
 import com.hucet.clean.gallery.gallery.filter.MediaTypeHelper
+import com.hucet.clean.gallery.gallery.filter.OrderedFilterContext
 import com.hucet.clean.gallery.model.Medium
 import java.util.*
 
@@ -16,14 +17,14 @@ import java.util.*
  */
 
 class MediaFetcher constructor(private val context: Context,
-                               val filters: Set<MediaTypeFilter>
+                               val orderedFilter: OrderedFilterContext
 ) {
     fun query(curPath: String, sortOption: String = MediaStore.Images.ImageColumns.DATE_MODIFIED + " DESC"): Cursor {
         return MediaProvider().query(context, curPath, sortOption)
     }
 
-    fun isFilter(filters: Set<MediaTypeFilter>, medium: Medium, noMediaFolders: Set<String>): Boolean {
-        val isFilter = filters.any {
+    fun isFilter(filters: OrderedFilterContext, medium: Medium, noMediaFolders: Set<String>): Boolean {
+        val isFilter = filters.iterator().any {
             it.filterd(medium, noMediaFolders) == FILTERED
         }
         if (isFilter)
@@ -45,7 +46,7 @@ class MediaFetcher constructor(private val context: Context,
                         val dateTaken = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN))
                         val dateModified = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED))
                         val medium = Medium(id, filename, path, dateModified, dateTaken, size, MediaTypeHelper.isVideo(filename))
-                        if (isFilter(filters, medium, noMediaFolders) == MediaTypeFilter.FILTERED)
+                        if (isFilter(orderedFilter, medium, noMediaFolders) == MediaTypeFilter.FILTERED)
                             continue
                         curMedia.add(medium)
 
