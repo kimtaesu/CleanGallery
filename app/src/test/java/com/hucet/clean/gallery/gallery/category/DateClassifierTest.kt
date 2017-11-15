@@ -23,7 +23,7 @@ import org.jetbrains.spek.subject.SubjectSpek
 
 fun mockConfig(type: DateClassifier.DATE_SORT_TYPE): ApplicationConfig {
     val config = mock<ApplicationConfig>()
-    whenever(config.getDateSortType(any())).thenReturn(type.value())
+    whenever(config.getDateSortType(any())).thenReturn(type)
     return config
 }
 
@@ -51,20 +51,24 @@ fun classify(d: DateClassifier, test: List<Medium>): List<Date> {
 }
 
 class DateClassifierTest : SubjectSpek<DateClassifier>({
+    val config by memoized { mock<ApplicationConfig>() }
+
     given("a dateClassifier")
     {
+        subject {
+            DateClassifier(config)
+        }
         on("daily")
         {
-            subject {
-                DateClassifier(mockConfig(DAILY))
-            }
             val (test, correct) = getTestDate(DAILY)
             correct as List<Date>
 
+            whenever(config.getDateSortType(any())).thenReturn(DAILY)
+
             var result = classify(subject, test)
+
             it("daily [2016-01-01, 2017-02-23, 2017-11-06]")
             {
-
                 result.forEachIndexed { index, it ->
                     it.date `should equal to` correct[index].date
                 }
@@ -72,11 +76,10 @@ class DateClassifierTest : SubjectSpek<DateClassifier>({
         }
         on("monthly")
         {
-            subject {
-                DateClassifier(mockConfig(MONTHLY))
-            }
             val (test, correct) = getTestDate(MONTHLY)
             correct as List<Date>
+
+            whenever(config.getDateSortType(any())).thenReturn(MONTHLY)
 
             var result = classify(subject, test)
             it("monthly [2016-01, 2017-02, 2017-11]")
@@ -89,11 +92,10 @@ class DateClassifierTest : SubjectSpek<DateClassifier>({
         }
         on("yearly")
         {
-            subject {
-                DateClassifier(mockConfig(YEARLY))
-            }
             val (test, correct) = getTestDate(YEARLY)
             correct as List<Date>
+
+            whenever(config.getDateSortType(any())).thenReturn(YEARLY)
 
             var result = classify(subject, test)
             it("yearly [2016, 2017]")

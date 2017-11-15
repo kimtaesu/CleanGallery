@@ -26,6 +26,13 @@ abstract class AdapterDelegationModule {
     @Binds
     @IntoMap
     @PerFragment
+    @GalleryEnumKey(GalleryType.DATE)
+    abstract fun bindDateDelegateAdapter(conCreate: DateDelegateAdapter)
+            : AbstractDelegateAdapter
+
+    @Binds
+    @IntoMap
+    @PerFragment
     @GalleryEnumKey(GalleryType.MEDIUM)
     abstract fun bindMediumViewHolderCreator(conCreate: MediumDelegateAdapter)
             : AbstractDelegateAdapter

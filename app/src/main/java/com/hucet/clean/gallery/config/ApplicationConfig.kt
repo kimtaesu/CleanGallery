@@ -1,8 +1,11 @@
 package com.hucet.clean.gallery.config
 
 import android.app.Application
+import android.provider.MediaStore
 import com.hucet.clean.gallery.gallery.category.CategoryType
+import com.hucet.clean.gallery.gallery.category.DateClassifier
 import com.hucet.clean.gallery.gallery.list.LayoutType
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -17,8 +20,25 @@ class ApplicationConfig @Inject constructor(
         return PreferenceHelper.defaultPrefs(application)[key_dir_sorting + path.toLowerCase(), SORT_BY_DATE_MODIFIED or SORT_DESCENDING]
     }
 
-    fun getDateSortType(path: String): Int {
-        return PreferenceHelper.defaultPrefs(application)[key_date_sorting + path.toLowerCase(), SORT_BY_DAILY or SORT_DESCENDING]
+
+    fun getDateSortType(path: String): DateClassifier.DATE_SORT_TYPE {
+        val sort = PreferenceHelper.defaultPrefs(application)[key_date_sorting + path.toLowerCase(), SORT_BY_DAILY]
+        return mapDateSortType(sort)
+    }
+
+    private fun mapDateSortType(sort: Int): DateClassifier.DATE_SORT_TYPE {
+        return when {
+            sort and SORT_BY_DAILY > 0 -> {
+                DateClassifier.DATE_SORT_TYPE.DAILY
+            }
+            sort and SORT_BY_MONTHLY > 0 -> {
+                DateClassifier.DATE_SORT_TYPE.MONTHLY
+            }
+            sort and SORT_BY_YEARLY > 0 -> {
+                DateClassifier.DATE_SORT_TYPE.YEARLY
+            }
+            else -> throw IllegalArgumentException()
+        }
     }
 
     val showHidden: Boolean

@@ -26,25 +26,11 @@ class DateClassifier(private val appConfig: ApplicationConfig) : CategoryStrateg
 
 
     private fun getConfigFormat(curPath: String): String {
-        return when (appConfig.getDateSortType(curPath)) {
-            DATE_SORT_TYPE.DAILY.value() -> {
-                DATE_SORT_TYPE.DAILY.format()
-            }
-            DATE_SORT_TYPE.MONTHLY.value() -> {
-                DATE_SORT_TYPE.MONTHLY.format()
-            }
-            DATE_SORT_TYPE.YEARLY.value() -> {
-                DATE_SORT_TYPE.YEARLY.format()
-            }
-            else -> {
-                throw IllegalArgumentException()
-            }
-        }
+        return appConfig.getDateSortType(curPath).format()
     }
 
     override fun classify(items: List<Medium>, curPath: String): List<Basic> {
         val format = SimpleDateFormat(getConfigFormat(curPath))
-
         return items.groupBy {
             format.format(it.modified)
         }

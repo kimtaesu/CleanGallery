@@ -14,6 +14,7 @@ import com.hucet.clean.gallery.activity.MainActivity
 import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.extension.isExternalStorageDir
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
+import com.hucet.clean.gallery.gallery.adapter.GalleryType
 import com.hucet.clean.gallery.gallery.category.CategoryType
 import com.hucet.clean.gallery.inject.Injectable
 import com.hucet.clean.gallery.model.Basic
@@ -93,7 +94,18 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
         btn.setText("grid")
         gallery_list.apply {
             layoutManager = null
-            layoutManager = GridLayoutManager(context, 3)
+            val gridLayoutManager = GridLayoutManager(context, 3)
+            gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    if (adapter.getItemViewType(position) == GalleryType.DATE.value)
+                        return gridLayoutManager.spanCount
+                    else
+                        return 1
+                }
+
+            }
+            layoutManager = gridLayoutManager
+
         }
     }
 
