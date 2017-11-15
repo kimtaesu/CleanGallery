@@ -2,7 +2,6 @@ package org.buffer.android.boilerplate.ui.injection.module
 
 import android.content.Context
 import com.hucet.clean.gallery.config.ApplicationConfig
-import com.hucet.clean.gallery.datasource.local.DirectoryGroupDistinguisher
 import com.hucet.clean.gallery.datasource.local.LocalDataSource
 import com.hucet.clean.gallery.datasource.local.MediaFetcher
 import com.hucet.clean.gallery.datasource.local.NoMediaFolderProvider
@@ -33,14 +32,8 @@ class RepositoryServiceModule {
 
     @Provides
     @PerFragment
-    fun provideDirectoryGroupContainer(appConfig: ApplicationConfig): DirectoryGroupDistinguisher {
-        return DirectoryGroupDistinguisher(appConfig)
-    }
-
-    @Provides
-    @PerFragment
-    fun provideMediaFetcher(context: Context, orderedFilterContext: OrderedFilterContext, distinguisher: DirectoryGroupDistinguisher): MediaFetcher {
-        return MediaFetcher(context, orderedFilterContext, distinguisher)
+    fun provideMediaFetcher(context: Context, orderedFilterContext: OrderedFilterContext): MediaFetcher {
+        return MediaFetcher(context, orderedFilterContext)
     }
 
     @Provides
