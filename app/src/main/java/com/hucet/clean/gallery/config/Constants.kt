@@ -7,6 +7,7 @@ package com.hucet.clean.gallery.config
 // preference keys
 val key_exclude_folders = "key_exclude_folders"
 val key_include_folders = "key_include_folders"
+val key_layout_type = "key_layout_type"
 val key_show_hidden = "key_show_hidden"
 val key_filter_media = "key_filter_media"
 val key_dir_sorting = "key_dir_sorting"

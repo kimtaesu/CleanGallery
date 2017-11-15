@@ -3,6 +3,7 @@ package com.hucet.clean.gallery.gallery.list
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.app.Fragment
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +11,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.activity.MainActivity
+import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.extension.isExternalStorageDir
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
-import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter
 import com.hucet.clean.gallery.inject.Injectable
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Directory
@@ -28,7 +29,7 @@ import javax.inject.Inject
 class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     @Inject lateinit var adapter: GalleryAdapter
     @Inject lateinit var presenter: Gallery.Presenter
-
+    @Inject lateinit var config: ApplicationConfig
     var curPath = Environment.getExternalStorageDirectory().absolutePath
     var isDirType = true
 
@@ -43,6 +44,12 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
         super.onActivityCreated(savedInstanceState)
         initRecyclerView()
         presenter.fetchItems(curPath, isDirType)
+
+//        TODO Remove TEST CODE
+        btn.setOnClickListener {
+            config.layoutType = LayoutType.toggle(config.layoutType)
+            setUpLayoutManager(config.layoutType)
+        }
     }
 
 
@@ -68,12 +75,35 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
         return true
     }
 
+    private fun setUpLayoutManager(type: LayoutType) {
+        when (type) {
+            LayoutType.GRID -> setUpGrid()
+            LayoutType.LINEAR -> setUpLinear()
+        }
+    }
+
+    private fun setUpGrid() {
+        btn.setText("grid")
+        gallery_list.apply {
+            layoutManager = null
+            layoutManager = GridLayoutManager(context, 3)
+        }
+    }
+
+    private fun setUpLinear() {
+        btn.setText("linear")
+        gallery_list.apply {
+            layoutManager = null
+            layoutManager = LinearLayoutManager(context)
+        }
+    }
+
     private fun initRecyclerView() {
         gallery_list.apply {
             this@ListGalleryFragment.adapter.setOnClickListener(this, onGalleryClicked)
             adapter = this@ListGalleryFragment.adapter
-            layoutManager = LinearLayoutManager(context)
         }
+        setUpLayoutManager(config.layoutType)
     }
 
     override fun showProgress() {

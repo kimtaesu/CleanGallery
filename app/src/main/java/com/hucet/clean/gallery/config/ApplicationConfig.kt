@@ -1,6 +1,7 @@
 package com.hucet.clean.gallery.config
 
 import android.app.Application
+import com.hucet.clean.gallery.gallery.list.LayoutType
 import javax.inject.Inject
 
 /**
@@ -20,7 +21,16 @@ class ApplicationConfig @Inject constructor(
     }
 
     val showHidden: Boolean
-    get() {
-        return PreferenceHelper.defaultPrefs(application)[key_show_hidden, false]
-    }
+        get() {
+            return PreferenceHelper.defaultPrefs(application)[key_show_hidden, false]
+        }
+
+    var layoutType: LayoutType
+        set(value) {
+            PreferenceHelper.defaultPrefs(application)[key_layout_type] = value.name
+        }
+        get() {
+            val name = PreferenceHelper.defaultPrefs(application)[key_layout_type, LayoutType.LINEAR.name]
+            return LayoutType.valueOf(name)
+        }
 }
