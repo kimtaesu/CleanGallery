@@ -274,6 +274,76 @@ object MediumFixture {
             )
         }
 
+    val TEST_DIRECTORY_GROUP: TestData
+        get() {
+            return TestData(
+                    listOf(
+                            medium(
+                                    1,
+                                    "3_Forest.jpg",
+                                    "/storage/emulated/0/Samsung/Image/3_Forest.jpg",
+                                    1451574083,
+                                    1406902694000,
+                                    4112102
+                            ),
+                            medium(
+                                    32,
+                                    "41_Forest.jpg",
+                                    "/storage/emulated/0/Samsung/Image/41_Forest.jpg",
+                                    1451574083,
+                                    1406902694000,
+                                    4112102
+                            ),
+                            medium(
+                                    441,
+                                    "Screenshot_2017-08-02-09-35-33.jpg",
+                                    "/storage/emulated/0/Pictures/Screenshots/Screenshot_2017-08-02-09-35-33.png",
+                                    1451574083,
+                                    1406902694000,
+                                    2729456
+                            ),
+                            medium(
+                                    1124,
+                                    "14845794522132.png",
+                                    "/storage/emulated/0/Samsung/Image/4_Structure.jpg",
+                                    1451574083,
+                                    1406902694000,
+                                    2729456
+                            ),
+                            medium(
+                                    32,
+                                    "4_Structure.png",
+                                    "/storage/emulated/0/Pictures/KakaoTalk/14845794522132.png",
+                                    1451574083,
+                                    1406902694000,
+                                    2729456
+                            )
+                    ),
+                    listOf(
+                            directory(
+                                    3,
+                                    "/storage/emulated/0/Samsung/Image/3_Forest.jpg",
+                                    1,
+                                    "Image",
+                                    "/storage/emulated/0/Samsung/Image"
+                            ),
+                            directory(
+                                    1,
+                                    "/storage/emulated/0/Pictures/Screenshots/Screenshot_2017-08-02-09-35-33.png",
+                                    441,
+                                    "Screenshots",
+                                    "/storage/emulated/0/Pictures/Screenshots"
+                            ),
+                            directory(
+                                    1,
+                                    "/storage/emulated/0/Pictures/KakaoTalk/14845794522132.png",
+                                    32,
+                                    "KakaoTalk",
+                                    "/storage/emulated/0/Pictures/KakaoTalk"
+                            ))
+            )
+        }
+
     fun date(
             id: Long = 0,
             date: String = "",

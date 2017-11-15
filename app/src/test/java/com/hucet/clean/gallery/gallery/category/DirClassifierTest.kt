@@ -1,6 +1,7 @@
 package com.hucet.clean.gallery.gallery.category
 
 import com.google.gson.Gson
+import com.hucet.clean.gallery.convertFileSeperator2Linux
 import com.hucet.clean.gallery.fixture.DeserializerFixture
 import com.hucet.clean.gallery.fixture.MediumFixture
 import com.hucet.clean.gallery.model.Directory
@@ -27,7 +28,10 @@ class DirClassifierTest : SubjectSpek<DirClassifier>({
         {
             val (test, correct) = MediumFixture.TEST_CATEGORY_DIR
             var result = subject.classify(test)
-            result = convertFileSeperator2Linux(result)
+
+            result = result.map {
+                it.copy(path = it.path.convertFileSeperator2Linux())
+            }
 
             it("result == correct")
             {
@@ -37,9 +41,3 @@ class DirClassifierTest : SubjectSpek<DirClassifier>({
 
     }
 })
-
-fun convertFileSeperator2Linux(items: List<Directory>): List<Directory> {
-    return items.map {
-        it.copy(path = it.path.replace("\\", "/"))
-    }
-}

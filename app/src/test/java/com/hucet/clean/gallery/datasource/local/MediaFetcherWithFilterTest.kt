@@ -22,7 +22,7 @@ class MediaFetcherWithFilterTest : SubjectSpek<MediaFetcher>({
     describe("filter [NOT_FILTERED, NOT_FILTERED]")
     {
         subject {
-            MediaFetcher(mock<Context>(), mockOrderedFilterContext(MediaTypeFilter.NOT_FILTERED, MediaTypeFilter.NOT_FILTERED))
+            MediaFetcher(mock<Context>(), mockOrderedFilterContext(MediaTypeFilter.NOT_FILTERED, MediaTypeFilter.NOT_FILTERED), mock())
         }
 
         val items = parseCursor(subject, MediumFixture.DEFAULT)
@@ -36,7 +36,7 @@ class MediaFetcherWithFilterTest : SubjectSpek<MediaFetcher>({
     describe("filter [FILTERED, NOT_FILTERED]")
     {
         subject {
-            MediaFetcher(mock<Context>(), mockOrderedFilterContext(MediaTypeFilter.FILTERED, MediaTypeFilter.NOT_FILTERED))
+            MediaFetcher(mock<Context>(), mockOrderedFilterContext(MediaTypeFilter.FILTERED, MediaTypeFilter.NOT_FILTERED), mock())
         }
 
         val items = parseCursor(subject, MediumFixture.DEFAULT)
@@ -50,7 +50,7 @@ class MediaFetcherWithFilterTest : SubjectSpek<MediaFetcher>({
     describe("filter [FILTERED, FILTERED]")
     {
         subject {
-            MediaFetcher(mock<Context>(), mockOrderedFilterContext(MediaTypeFilter.FILTERED, MediaTypeFilter.FILTERED))
+            MediaFetcher(mock<Context>(), mockOrderedFilterContext(MediaTypeFilter.FILTERED, MediaTypeFilter.FILTERED), mock())
         }
         val items = parseCursor(subject, MediumFixture.DEFAULT)
 
@@ -58,6 +58,7 @@ class MediaFetcherWithFilterTest : SubjectSpek<MediaFetcher>({
         {
             Assert.assertThat(0, Is.`is`(items.size))
         }
+
     }
 })
 

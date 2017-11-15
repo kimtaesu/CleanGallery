@@ -17,7 +17,8 @@ import java.util.*
  */
 
 class MediaFetcher constructor(private val context: Context,
-                               val orderedFilter: OrderedFilterContext
+                               private val orderedFilter: OrderedFilterContext,
+                               private val directoryGroupDistinguisher: DirectoryGroupDistinguisher
 ) {
     fun query(curPath: String, sortOption: String = MediaStore.Images.ImageColumns.DATE_MODIFIED + " DESC"): Cursor {
         return MediaProvider().query(context, curPath, sortOption)
@@ -32,11 +33,13 @@ class MediaFetcher constructor(private val context: Context,
         return NOT_FILTERED
     }
 
-    fun parseCursor(cur: Cursor?, noMediaFolders: Set<String>): List<Medium> {
+
+    fun parseCursor(cur: Cursor?, noMediaFolders: Set<String>, curPath: String): List<Medium> {
         cur ?: return emptyList()
         val curMedia = ArrayList<Medium>()
         cur.use {
             if (cur.moveToFirst()) {
+                directoryGroupDistinguisher.clear()
                 do {
                     try {
                         val id = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media._ID))
@@ -48,8 +51,14 @@ class MediaFetcher constructor(private val context: Context,
                         val medium = Medium(id, filename, path, dateModified, dateTaken, size, MediaTypeHelper.isVideo(filename))
                         if (isFilter(orderedFilter, medium, noMediaFolders) == MediaTypeFilter.FILTERED)
                             continue
-                        curMedia.add(medium)
 
+                        if (directoryGroupDistinguisher.isDirectoryRoot(curPath)) {
+                            directoryGroupDistinguisher += medium
+                            println("!!!!!!!! continue ${medium.path}")
+                            continue
+                        }
+                        println("!!!!!!!! ${medium.path}")
+                        curMedia.add(medium)
                     } catch (e: IllegalArgumentException) {
                         e.printStackTrace()
                         continue
