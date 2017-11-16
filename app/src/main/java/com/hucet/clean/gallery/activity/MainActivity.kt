@@ -18,6 +18,8 @@ import timber.log.Timber
 import javax.inject.Inject
 import android.content.Intent
 import android.net.Uri
+import android.view.Menu
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 @RuntimePermissions
@@ -34,13 +36,23 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        initToolbar()
         showGallaeryWithPermissionCheck()
+
     }
 
+    private fun initToolbar() {
+        setSupportActionBar(toolbar)
+        supportActionBar?.setTitle(R.string.app_name)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        return super.onCreateOptionsMenu(menu)
+    }
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
     fun showGallaery() {
         supportFragmentManager.beginTransaction()
-                .add(android.R.id.content, galleryFragment)
+                .add(R.id.content, galleryFragment)
                 .commit()
     }
 
@@ -72,7 +84,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         } else {
             supportFragmentManager.beginTransaction()
                     .hide(galleryFragment)
-                    .add(android.R.id.content, GalleryDetailFragment.newInstance(medium), GalleryDetailFragment.TAG)
+                    .add(R.id.content, GalleryDetailFragment.newInstance(medium), GalleryDetailFragment.TAG)
                     .addToBackStack(null)
                     .commit()
         }
