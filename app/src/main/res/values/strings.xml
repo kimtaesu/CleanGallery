@@ -19,4 +19,10 @@
     <string name="sort_option_last_modified">Last modified</string>
     <string name="sort_option_filename">File name</string>
 
+    <string name="filter_images">Images</string>
+    <string name="filter_videos">Videos</string>
+    <string name="filter_gifs">Gifs</string>
+
+    <string name="dialog_sort_title">Sort by</string>
+    <string name="dialog_filter_title">Filter</string>
 </resources>

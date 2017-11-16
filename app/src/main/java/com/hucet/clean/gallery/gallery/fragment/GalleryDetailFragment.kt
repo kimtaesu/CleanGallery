@@ -17,10 +17,10 @@ import kotlinx.android.synthetic.main.fragment_gallery_detail.*
  */
 class GalleryDetailFragment : Fragment(), Injectable {
     val medium by lazy {
-        arguments.getSerializable(BUNDLE_KEY_MEDIUM) as Medium
+        arguments?.getSerializable(BUNDLE_KEY_MEDIUM) as Medium
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflater?.inflate(R.layout.fragment_gallery_detail, null)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

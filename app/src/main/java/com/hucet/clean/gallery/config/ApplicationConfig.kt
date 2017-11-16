@@ -12,7 +12,10 @@ import javax.inject.Inject
 class ApplicationConfig @Inject constructor(
         val application: Application
 ) {
-    val filterdType: Int = PreferenceHelper.defaultPrefs(application)[key_filter_media, VIDEOS or IMAGES or GIFS]
+    var filterdType: Int = PreferenceHelper.defaultPrefs(application)[key_filter_media, VIDEOS or IMAGES or GIFS]
+        set(value) {
+            PreferenceHelper.defaultPrefs(application)[key_filter_media] = value
+        }
 
     fun getDirSortType(path: String): Int {
         return PreferenceHelper.defaultPrefs(application)[key_dir_sorting + path.toLowerCase(), SORT_BY_DATE_MODIFIED or SORT_DESCENDING]

@@ -15,7 +15,7 @@ class MemoryCacheDrawable {
             var drawable = drawableMap[drawableId]
             if (drawable == null) {
                 drawable = ContextCompat.getDrawable(context.applicationContext, drawableId)
-                drawableMap.put(drawableId, drawable);
+                drawableMap.put(drawableId, drawable!!);
             }
             return drawable!!
         }

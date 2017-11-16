@@ -38,7 +38,7 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
         fun newInstance() = ListGalleryFragment()
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflater?.inflate(R.layout.fragment_gallery, null)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

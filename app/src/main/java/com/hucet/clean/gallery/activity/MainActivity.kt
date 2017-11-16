@@ -20,10 +20,11 @@ import android.content.Intent
 import android.net.Uri
 import android.view.Menu
 import android.view.MenuItem
+import com.afollestad.materialdialogs.MaterialDialog
 import com.hucet.clean.gallery.activity.cache.MemoryCacheDrawable
 import com.hucet.clean.gallery.config.ApplicationConfig
-import com.hucet.clean.gallery.extension.showFilterDialog
-import com.hucet.clean.gallery.extension.showSortDialog
+import com.hucet.clean.gallery.extension.createFilterDialog
+import com.hucet.clean.gallery.extension.createSortDialog
 import com.hucet.clean.gallery.extension.startAsAnimatable
 import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
@@ -115,11 +116,13 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             true
         }
         R.id.action_sort -> {
-            AlertDialog.Builder(this).showSortDialog()
+            AlertDialog.Builder(this).createSortDialog(config).show()
             true
         }
         R.id.action_filter -> {
-            AlertDialog.Builder(this).showFilterDialog()
+            AlertDialog.Builder(this).createFilterDialog(config.filterdType, {
+                config.filterdType = it
+            }).show()
             true
         }
         else -> {

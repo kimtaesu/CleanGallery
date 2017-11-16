@@ -55,6 +55,8 @@ dependencies {
     implementation opensourceDeps.timber
     implementation opensourceDeps.gson
     implementation opensourceDeps.materialPerference
+    implementation opensourceDeps.materialDialogCore
+    implementation opensourceDeps.materialDialogCommon
 
     kapt opensourceDeps.permissionsDispatcherProcessor
     implementation(opensourceDeps.permissionDispatcher) {
