@@ -3,46 +3,49 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/list_view_item_margin_top">
 
-    <!--<android.support.constraint.Guideline-->
-    <!--android:id="@+id/guideline_h"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:orientation="horizontal"-->
-    <!--app:layout_constraintGuide_begin="15dp" />-->
 
     <ImageView
         android:id="@+id/dir_thumbnail"
         android:layout_width="@dimen/list_view_folder_thumbnail_size"
         android:layout_height="@dimen/list_view_folder_thumbnail_size" />
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/dir_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/dir_thumbnail"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_marginStart="@dimen/list_view_item_thumbnail_margin_left"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toEndOf="@+id/dir_thumbnail">
 
         <TextView
             android:id="@+id/dir_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="#616161"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/dir_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_toRightOf="@+id/dir_name" />
+            android:layout_marginStart="5dp"
+            android:layout_toRightOf="@+id/dir_name"
+            android:textColor="@color/colorAccent" />
+    </LinearLayout>
 
-        <TextView
-            android:id="@+id/dir_path"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/dir_name"
-            android:layout_marginTop="8dp" />
-    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/dir_path"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dir_layout"
+        android:layout_marginStart="@dimen/list_view_item_thumbnail_margin_left"
+        android:layout_marginTop="3dp"
+        android:textColor="#BDBDBD"
+        app:layout_constraintStart_toEndOf="@+id/dir_thumbnail"
+        app:layout_constraintTop_toBottomOf="@+id/dir_layout" />
 
 </android.support.constraint.ConstraintLayout>

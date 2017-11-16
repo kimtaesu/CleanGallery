@@ -58,6 +58,11 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         initCategory()
     }
 
+    private fun requestFetch() {
+        if (galleryFragment.isVisible)
+            galleryFragment.requestFetch()
+    }
+
     private fun initCategory() {
         fun updateCategory(categoryType: CategoryType) {
             when (categoryType) {
@@ -79,10 +84,6 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         }
     }
 
-    private fun requestFetch() {
-        if (galleryFragment.isVisible)
-            galleryFragment.requestFetch()
-    }
 
     private fun initViewMode() {
         fun updateViewMode(viewModeType: ViewModeType) {
