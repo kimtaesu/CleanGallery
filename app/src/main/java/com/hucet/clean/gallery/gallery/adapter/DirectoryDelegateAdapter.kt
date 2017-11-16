@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.gallery.fragment.GlideRequests
+import com.hucet.clean.gallery.gallery.fragment.ViewModeType
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Directory
@@ -32,9 +33,10 @@ class DirectoryDelegateAdapter @Inject constructor(val glideRequests: GlideReque
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
+
         val v = LayoutInflater
                 .from(parent?.context)
-                .inflate(R.layout.directory_item_gallery, parent, false)
+                .inflate(R.layout.directory_list_item_gallery, parent, false)
 
         return ViewHolder(v)
     }

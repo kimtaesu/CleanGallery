@@ -1,5 +1,6 @@
 package com.hucet.clean.gallery.presenter
 
+import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.category.DateClassifier
 import com.hucet.clean.gallery.gallery.category.DirClassifier
@@ -16,7 +17,6 @@ class GalleryPresenter constructor(private val view: Gallery.View,
                                    private val adapter: GalleryAdapter,
                                    private val repository: GalleryRepository,
                                    private val transformer: MediumTransformer,
-
                                    private val schedulerProvider: SchedulerProvider = DefaultSchedulerProvider()
 
 

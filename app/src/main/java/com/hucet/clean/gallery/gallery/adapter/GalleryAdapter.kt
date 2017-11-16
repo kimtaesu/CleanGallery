@@ -3,6 +3,7 @@ package com.hucet.clean.gallery.gallery.adapter
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import com.hucet.clean.gallery.gallery.fragment.ViewModeType
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import com.hucet.clean.gallery.model.Basic
 import javax.inject.Inject
@@ -53,6 +54,7 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
     }
 
     private fun updateByDiff(newItems: List<Basic>) {
+
         val diffCallback = MediumDiffCallback(this.Items, newItems)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         this.Items.clear()

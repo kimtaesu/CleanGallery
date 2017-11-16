@@ -3,7 +3,7 @@ package com.hucet.clean.gallery.datasource.local
 import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.datasource.GalleryDataSource
 import com.hucet.clean.gallery.extension.isExternalStorageDir
-import com.hucet.clean.gallery.gallery.category.CategoryType
+import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.sort.MediaSortOptions
 import com.hucet.clean.gallery.model.Medium
 import io.reactivex.Flowable
@@ -34,5 +34,5 @@ class LocalDataSource constructor(
 }
 
 fun isDirectoryRoot(curPath: String, config: ApplicationConfig): Boolean {
-    return curPath.isExternalStorageDir() && config.categoryType == CategoryType.DIRECTORY
+    return curPath.isExternalStorageDir() && config.categoryMode == CategoryMode.DIRECTORY
 }

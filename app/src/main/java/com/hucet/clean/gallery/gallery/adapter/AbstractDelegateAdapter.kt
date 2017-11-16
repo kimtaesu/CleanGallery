@@ -2,6 +2,7 @@ package com.hucet.clean.gallery.gallery.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import com.hucet.clean.gallery.gallery.fragment.ViewModeType
 import com.hucet.clean.gallery.model.Basic
 
 /**

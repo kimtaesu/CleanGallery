@@ -7,6 +7,9 @@
     <string name="menu_setting_title">Setting</string>
     <string name="menu_sort_option">Sort</string>
     <string name="menu_filter_option">Filter</string>
+    <string name="menu_view_mode">View mode</string>
+    <string name="menu_category_mode">Category mode</string>
+
     <string name="sort_option_descending">Descending</string>
     <string name="sort_option_ascending">Ascending</string>
 

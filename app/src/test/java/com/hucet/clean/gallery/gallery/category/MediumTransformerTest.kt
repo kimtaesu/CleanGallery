@@ -1,20 +1,11 @@
 package com.hucet.clean.gallery.gallery.category
 
-import android.os.Environment
 import com.hucet.clean.gallery.config.ApplicationConfig
-import com.hucet.clean.gallery.extension.externalStorageDirectory
-import com.hucet.clean.gallery.model.Date
-import com.hucet.clean.gallery.model.Medium
 import com.nhaarman.mockito_kotlin.*
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 import org.jetbrains.spek.subject.SubjectSpek
-import org.junit.Assert.*
-import org.junit.Before
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
 
 /**
  * Created by taesu on 2017-11-12.
@@ -33,7 +24,7 @@ class MediumTransformerTest : SubjectSpek<MediumTransformer>({
 
         on("a dateClaasifier call 검증 ")
         {
-            whenever(config.categoryType).thenReturn(CategoryType.DATE)
+            whenever(config.categoryMode).thenReturn(CategoryMode.DATE)
             subject.transform(listOf(), externalStoragePath)
             it("one calll dateCalssify, never call dirClassify")
             {
@@ -44,7 +35,7 @@ class MediumTransformerTest : SubjectSpek<MediumTransformer>({
         }
         on("a dirClaasifier call 검증 ")
         {
-            whenever(config.categoryType).thenReturn(CategoryType.DIRECTORY)
+            whenever(config.categoryMode).thenReturn(CategoryMode.DIRECTORY)
             subject.transform(listOf(), externalStoragePath)
             it("one calll dirClassify, never call dateClassify")
             {
@@ -54,7 +45,7 @@ class MediumTransformerTest : SubjectSpek<MediumTransformer>({
         }
         on("a medium call 검증")
         {
-            whenever(config.categoryType).thenReturn(CategoryType.DIRECTORY)
+            whenever(config.categoryMode).thenReturn(CategoryMode.DIRECTORY)
             subject.transform(listOf(), "Not matchs to the external storae")
             it("never calll dirClassify, never call dateClassify")
             {

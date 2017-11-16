@@ -15,7 +15,7 @@ import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.extension.isExternalStorageDir
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.adapter.GalleryType
-import com.hucet.clean.gallery.gallery.category.CategoryType
+import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.inject.Injectable
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Directory
@@ -49,8 +49,6 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
 
 
     fun requestFetch() {
-//         TODO 매번 실행 되는 거 방지 필요
-        setUpLayoutManager(config.viewModeType)
         presenter.fetchItems(curPath)
     }
 
@@ -86,7 +84,7 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     private fun setUpGrid() {
         gallery_list.apply {
             layoutManager = null
-            val gridLayoutManager = GridLayoutManager(context, 3)
+            val gridLayoutManager = GridLayoutManager(context, 2)
             gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     if (adapter.getItemViewType(position) == GalleryType.DATE.value)
@@ -94,10 +92,8 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
                     else
                         return 1
                 }
-
             }
             layoutManager = gridLayoutManager
-
         }
     }
 
@@ -116,6 +112,17 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
         setUpLayoutManager(config.viewModeType)
     }
 
+    fun onViewModeChanged(viewModeType: ViewModeType) {
+        config.viewModeType = viewModeType
+        requestFetch()
+        setUpLayoutManager(config.viewModeType)
+    }
+
+    fun onCategoryModeChanged(categoryMode: CategoryMode) {
+        config.categoryMode = categoryMode
+        requestFetch()
+    }
+
     override fun showProgress() {
         Toast.makeText(context, "showProgress", Toast.LENGTH_SHORT).show()
     }
@@ -127,4 +134,5 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     override fun showError() {
         Toast.makeText(context, "showError", Toast.LENGTH_SHORT).show()
     }
+
 }

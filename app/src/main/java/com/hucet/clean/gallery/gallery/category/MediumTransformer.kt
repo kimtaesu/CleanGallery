@@ -4,7 +4,6 @@ import android.support.annotation.VisibleForTesting
 import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.extension.isExternalStorageDir
 import com.hucet.clean.gallery.model.Basic
-import com.hucet.clean.gallery.model.Directory
 import com.hucet.clean.gallery.model.Medium
 
 /**
@@ -15,11 +14,11 @@ open class MediumTransformer(private val dateClassifier: DateClassifier,
                              private val dirClassifier: DirClassifier,
                              private val config: ApplicationConfig) {
     fun transform(items: List<Medium>, curPath: String): List<Basic> {
-        when (config.categoryType) {
-            CategoryType.DATE -> {
+        when (config.categoryMode) {
+            CategoryMode.DATE -> {
                 return dateClassifier.classify(items, curPath)
             }
-            CategoryType.DIRECTORY -> {
+            CategoryMode.DIRECTORY -> {
                 if (isExternalStorage(curPath)) {
                     return dirClassifier.classify(items, curPath)
                 }

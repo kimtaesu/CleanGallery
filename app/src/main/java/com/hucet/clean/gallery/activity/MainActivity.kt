@@ -24,20 +24,18 @@ import com.hucet.clean.gallery.activity.cache.MemoryCacheDrawable
 import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.extension.showFilterDialog
 import com.hucet.clean.gallery.extension.showSortDialog
-import com.hucet.clean.gallery.gallery.category.CategoryType
+import com.hucet.clean.gallery.extension.startAsAnimatable
+import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
 import com.hucet.clean.gallery.preference.SettingActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.layout_options_view.*
 
 
 @RuntimePermissions
 class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     @Inject
     lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
-
     @Inject lateinit var config: ApplicationConfig
-
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
         return fragmentDispatchingAndroidInjector
@@ -48,61 +46,33 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        initView()
-        initToolbar()
         showGallaeryWithPermissionCheck()
+        initToolbar()
     }
 
-    private fun initView() {
-        initViewMode()
-        initCategory()
-    }
-
-    private fun requestFetch() {
-        if (galleryFragment.isVisible)
-            galleryFragment.requestFetch()
-    }
-
-    private fun initCategory() {
-        fun updateCategory(categoryType: CategoryType) {
-            when (categoryType) {
-                CategoryType.DIRECTORY -> {
-                    category_mode.startAsAnimatable(MemoryCacheDrawable.getDrawable(R.drawable.ic_directory2date_animation, this))
-                    requestFetch()
-                }
-                CategoryType.DATE -> {
-                    category_mode.startAsAnimatable(MemoryCacheDrawable.getDrawable(R.drawable.ic_date2directory_animation, this))
-                    requestFetch()
-                }
+    private fun updateCategory(item: MenuItem, categoryMode: CategoryMode) {
+        when (categoryMode) {
+            CategoryMode.DIRECTORY -> {
+                item.setIcon(MemoryCacheDrawable.getDrawable(R.drawable.ic_directory2date_animation, this))
+                item.icon.startAsAnimatable()
+            }
+            CategoryMode.DATE -> {
+                item.setIcon(MemoryCacheDrawable.getDrawable(R.drawable.ic_date2directory_animation, this))
+                item.icon.startAsAnimatable()
             }
         }
-        updateCategory(config.categoryType)
-        lifecycle.addObserver(category_mode)
-        category_mode.setOnClickListener {
-            config.categoryType = config.categoryType.toggle()
-            updateCategory(config.categoryType)
-        }
     }
 
-
-    private fun initViewMode() {
-        fun updateViewMode(viewModeType: ViewModeType) {
-            when (viewModeType) {
-                ViewModeType.GRID -> {
-                    view_mode.startAsAnimatable(MemoryCacheDrawable.getDrawable(R.drawable.ic_grid_to_list_animation, this))
-                    requestFetch()
-                }
-                ViewModeType.LINEAR -> {
-                    view_mode.startAsAnimatable(MemoryCacheDrawable.getDrawable(R.drawable.ic_list2grid_animation, this))
-                    requestFetch()
-                }
+    private fun updateViewMode(item: MenuItem, viewMode: ViewModeType) {
+        when (viewMode) {
+            ViewModeType.GRID -> {
+                item.setIcon(MemoryCacheDrawable.getDrawable(R.drawable.ic_grid_to_list_animation, this))
+                item.icon.startAsAnimatable()
             }
-        }
-        updateViewMode(config.viewModeType)
-        lifecycle.addObserver(view_mode)
-        view_mode.setOnClickListener {
-            config.viewModeType = config.viewModeType.toggle()
-            updateViewMode(config.viewModeType)
+            ViewModeType.LINEAR -> {
+                item.setIcon(MemoryCacheDrawable.getDrawable(R.drawable.ic_list2grid_animation, this))
+                item.icon.startAsAnimatable()
+            }
         }
     }
 
@@ -113,12 +83,35 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+        val viewMode = menu?.findItem(R.id.action_view_mode)
+        if (viewMode != null)
+            updateViewMode(viewMode, config.viewModeType)
+        val categoryMode = menu?.findItem(R.id.action_category_mode)
+        if (categoryMode != null)
+            updateCategory(categoryMode, config.categoryMode)
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean = when (item?.itemId) {
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item?.itemId) {
         R.id.action_settings -> {
             startSettingActivity()
+            true
+        }
+        R.id.action_category_mode -> {
+            if (isFragmentShown(galleryFragment)) {
+                val categoryMode = config.categoryMode.toggle()
+                galleryFragment.onCategoryModeChanged(categoryMode)
+                updateCategory(item, categoryMode)
+            }
+            true
+        }
+        R.id.action_view_mode -> {
+            if (isFragmentShown(galleryFragment)) {
+                val viewMode = config.viewModeType.toggle()
+                galleryFragment.onViewModeChanged(viewMode)
+                updateViewMode(item, viewMode)
+            }
             true
         }
         R.id.action_sort -> {
@@ -132,6 +125,14 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         else -> {
             super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun startSettingActivity() {
+        startActivity(Intent(this, SettingActivity::class.java))
+    }
+
+    private fun isFragmentShown(fragment: Fragment): Boolean {
+        return fragment != null && fragment.isVisible
     }
 
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -163,9 +164,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     val onGalleryClicked: (Medium) -> Unit = { medium: Medium ->
         Timber.d("onGalleryClicked ${medium}")
         if (medium.isVideo) {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(medium.path))
-            intent.setDataAndType(Uri.parse(medium.path), "video/*")
-            startActivity(intent)
+            startVideoPlayer(medium)
         } else {
             supportFragmentManager.beginTransaction()
                     .hide(galleryFragment)
@@ -175,8 +174,12 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         }
     }
 
-    private fun startSettingActivity() {
-        startActivity(Intent(this, SettingActivity::class.java))
+
+    private fun startVideoPlayer(medium: Medium) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(medium.path))
+        intent.setDataAndType(Uri.parse(medium.path), "video/*")
+        startActivity(intent)
+
     }
 
     override fun onBackPressed() {

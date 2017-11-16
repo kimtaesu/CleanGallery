@@ -1,5 +1,6 @@
 package com.hucet.clean.gallery.inject.modules
 
+import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.category.MediumTransformer
 import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment

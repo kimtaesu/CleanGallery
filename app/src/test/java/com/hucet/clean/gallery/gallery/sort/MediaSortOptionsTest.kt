@@ -2,18 +2,14 @@ package com.hucet.clean.gallery.gallery.sort
 
 import android.provider.MediaStore
 import com.hucet.clean.gallery.config.*
-import com.hucet.clean.gallery.gallery.category.CategoryType
+import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import org.amshove.kluent.`should equal to`
-import org.hamcrest.core.Is.*
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.subject.SubjectSpek
-import org.junit.Assert.*
-import org.junit.Test
 
 /**
  * Created by taesu on 2017-11-12.
@@ -104,9 +100,9 @@ class MediaSortOptionsTest : Spek({
             sortString `should equal to` "${MediaStore.Images.Media.DATE_TAKEN} ${asc}"
         }
     }
-    describe("sortOption [SORT_BY_DATE_MODIFIED or SORT_ASCENDING] with CategoryType")
+    describe("sortOption [SORT_BY_DATE_MODIFIED or SORT_ASCENDING] with CategoryMode")
     {
-        val sortString = getSortString(SORT_BY_DATE_TAKEN or SORT_ASCENDING, CategoryType.DATE)
+        val sortString = getSortString(SORT_BY_DATE_TAKEN or SORT_ASCENDING, CategoryMode.DATE)
         it("sortString == date_modified DESC")
         {
             sortString `should equal to` "${MediaStore.Images.Media.DATE_MODIFIED} ${desc}"
@@ -114,14 +110,14 @@ class MediaSortOptionsTest : Spek({
     }
 })
 
-fun getSortString(sortOption: Int, categoryType: CategoryType = CategoryType.DIRECTORY): String {
-    return MediaSortOptions.getSortOptions("", mockConfig(sortOption, categoryType))
+fun getSortString(sortOption: Int, categoryMode: CategoryMode = CategoryMode.DIRECTORY): String {
+    return MediaSortOptions.getSortOptions("", mockConfig(sortOption, categoryMode))
 }
 
-fun mockConfig(options: Int, type: CategoryType = CategoryType.DIRECTORY): ApplicationConfig {
+fun mockConfig(options: Int, mode: CategoryMode = CategoryMode.DIRECTORY): ApplicationConfig {
     val config = mock<ApplicationConfig>()
     return config.apply {
-        whenever(categoryType).thenReturn(type)
+        whenever(categoryMode).thenReturn(mode)
         whenever(getDirSortType(any())).thenReturn(options)
     }
 }
