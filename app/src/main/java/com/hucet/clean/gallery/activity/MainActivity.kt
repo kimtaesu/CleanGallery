@@ -27,6 +27,7 @@ import com.hucet.clean.gallery.extension.showSortDialog
 import com.hucet.clean.gallery.gallery.category.CategoryType
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
 import com.hucet.clean.gallery.preference.SettingActivity
+import com.hucet.clean.gallery.presenter.GalleryPresenter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_options_view.*
 
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
     @Inject lateinit var config: ApplicationConfig
+
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
         return fragmentDispatchingAndroidInjector
@@ -62,9 +64,11 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             when (categoryType) {
                 CategoryType.DIRECTORY -> {
                     category_mode.startAsAnimatable(MemoryCacheDrawable.getDrawable(R.drawable.ic_directory2date_animation, this))
+                    requestFetch()
                 }
                 CategoryType.DATE -> {
                     category_mode.startAsAnimatable(MemoryCacheDrawable.getDrawable(R.drawable.ic_date2directory_animation, this))
+                    requestFetch()
                 }
             }
         }
@@ -76,14 +80,21 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         }
     }
 
+    private fun requestFetch() {
+        if (galleryFragment.isVisible)
+            galleryFragment.requestFetch()
+    }
+
     private fun initViewMode() {
         fun updateViewMode(viewModeType: ViewModeType) {
             when (viewModeType) {
                 ViewModeType.GRID -> {
                     view_mode.startAsAnimatable(MemoryCacheDrawable.getDrawable(R.drawable.ic_grid_to_list_animation, this))
+                    requestFetch()
                 }
                 ViewModeType.LINEAR -> {
                     view_mode.startAsAnimatable(MemoryCacheDrawable.getDrawable(R.drawable.ic_list2grid_animation, this))
+                    requestFetch()
                 }
             }
         }

@@ -44,10 +44,15 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initRecyclerView()
-        presenter.fetchItems(curPath)
+        requestFetch()
     }
 
 
+    fun requestFetch() {
+//         TODO 매번 실행 되는 거 방지 필요
+        setUpLayoutManager(config.viewModeType)
+        presenter.fetchItems(curPath)
+    }
 
     private val onGalleryClicked: (Basic) -> Unit = {
         when (it) {
@@ -57,7 +62,7 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
             is Directory -> {
                 curPath = it.path
                 adapter.clearItems()
-                presenter.fetchItems(curPath)
+                requestFetch()
             }
         }
     }
@@ -65,18 +70,17 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     fun onBackPressed(): Boolean {
         if (!curPath.isExternalStorageDir()) {
             curPath = Environment.getExternalStorageDirectory().absolutePath
-            presenter.fetchItems(curPath)
+            requestFetch()
             return false
         }
         return true
     }
 
     private fun setUpLayoutManager(type: ViewModeType) {
-//        when (type) {
-//            ViewModeType.GRID -> setUpGrid()
-//            ViewModeType.LINEAR -> setUpLinear()
-//        }
-        setUpGrid()
+        when (type) {
+            ViewModeType.GRID -> setUpGrid()
+            ViewModeType.LINEAR -> setUpLinear()
+        }
     }
 
     private fun setUpGrid() {
