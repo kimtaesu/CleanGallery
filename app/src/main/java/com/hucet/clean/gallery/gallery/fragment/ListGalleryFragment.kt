@@ -1,6 +1,5 @@
 package com.hucet.clean.gallery.gallery.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.app.Fragment
@@ -21,7 +20,6 @@ import com.hucet.clean.gallery.inject.Injectable
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Directory
 import com.hucet.clean.gallery.model.Medium
-import com.hucet.clean.gallery.preference.SettingActivity
 import com.hucet.clean.gallery.presenter.Gallery
 import kotlinx.android.synthetic.main.fragment_gallery.*
 import javax.inject.Inject
@@ -47,19 +45,6 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
         super.onActivityCreated(savedInstanceState)
         initRecyclerView()
         presenter.fetchItems(curPath)
-
-//        TODO Remove TEST CODE
-        btn.setOnClickListener {
-            config.layoutType = LayoutType.toggle(config.layoutType)
-            setUpLayoutManager(config.layoutType)
-        }
-        category.text = config.categoryType.name
-        category.setOnClickListener {
-            config.categoryType = CategoryType.toggle(config.categoryType)
-            category.text = config.categoryType.name
-            presenter.fetchItems(curPath)
-        }
-
     }
 
 
@@ -86,10 +71,10 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
         return true
     }
 
-    private fun setUpLayoutManager(type: LayoutType) {
+    private fun setUpLayoutManager(type: ViewModeType) {
         when (type) {
-            LayoutType.GRID -> setUpGrid()
-            LayoutType.LINEAR -> setUpLinear()
+            ViewModeType.GRID -> setUpGrid()
+            ViewModeType.LINEAR -> setUpLinear()
         }
     }
 
@@ -125,7 +110,7 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
             this@ListGalleryFragment.adapter.setOnClickListener(this, onGalleryClicked)
             adapter = this@ListGalleryFragment.adapter
         }
-        setUpLayoutManager(config.layoutType)
+        setUpLayoutManager(config.viewModeType)
     }
 
     override fun showProgress() {

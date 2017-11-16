@@ -20,14 +20,21 @@ import android.content.Intent
 import android.net.Uri
 import android.view.Menu
 import android.view.MenuItem
+import com.hucet.clean.gallery.config.ApplicationConfig
+import com.hucet.clean.gallery.gallery.category.CategoryType
+import com.hucet.clean.gallery.gallery.fragment.ViewModeType
 import com.hucet.clean.gallery.preference.SettingActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_gallery.*
+import kotlinx.android.synthetic.main.layout_options_view.*
 
 
 @RuntimePermissions
 class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     @Inject
     lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+
+    @Inject lateinit var config: ApplicationConfig
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
         return fragmentDispatchingAndroidInjector
@@ -38,9 +45,47 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        initViewMode()
+        initCategory()
         initToolbar()
         showGallaeryWithPermissionCheck()
 
+    }
+
+    private fun initCategory() {
+        fun updateCategory(categoryType: CategoryType) {
+            when (categoryType) {
+                CategoryType.DIRECTORY -> {
+                    category_mode.setImageResource(R.drawable.ic_category_directory_black_24dp)
+                }
+                CategoryType.DATE -> {
+                    category_mode.setImageResource(R.drawable.ic_category_date_black_24dp)
+                }
+            }
+        }
+        updateCategory(config.categoryType)
+        category_mode.setOnClickListener {
+            config.categoryType = config.categoryType.toggle()
+            updateCategory(config.categoryType)
+        }
+    }
+
+    private fun initViewMode() {
+        fun updateViewMode(viewModeType: ViewModeType) {
+            when (viewModeType) {
+                ViewModeType.GRID -> {
+                    view_mode.setImageResource(R.drawable.ic_view_grid_black_24dp)
+                }
+                ViewModeType.LINEAR -> {
+                    view_mode.setImageResource(R.drawable.ic_view_list_black_24dp)
+                }
+            }
+        }
+        updateViewMode(config.viewModeType)
+        view_mode.setOnClickListener {
+            config.viewModeType = config.viewModeType.toggle()
+            updateViewMode(config.viewModeType)
+        }
     }
 
     private fun initToolbar() {

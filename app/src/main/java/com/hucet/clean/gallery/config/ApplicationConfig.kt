@@ -3,7 +3,7 @@ package com.hucet.clean.gallery.config
 import android.app.Application
 import com.hucet.clean.gallery.gallery.category.CategoryType
 import com.hucet.clean.gallery.gallery.category.DateClassifier
-import com.hucet.clean.gallery.gallery.fragment.LayoutType
+import com.hucet.clean.gallery.gallery.fragment.ViewModeType
 import javax.inject.Inject
 
 /**
@@ -53,12 +53,12 @@ class ApplicationConfig @Inject constructor(
             return CategoryType.valueOf(name)
         }
 
-    var layoutType: LayoutType
+    var viewModeType: ViewModeType
         set(value) {
             PreferenceHelper.defaultPrefs(application)[key_layout_type] = value.name
         }
         get() {
-            val name = PreferenceHelper.defaultPrefs(application)[key_layout_type, LayoutType.LINEAR.name]
-            return LayoutType.valueOf(name)
+            val name = PreferenceHelper.defaultPrefs(application)[key_layout_type, ViewModeType.LINEAR.name]
+            return ViewModeType.valueOf(name)
         }
 }

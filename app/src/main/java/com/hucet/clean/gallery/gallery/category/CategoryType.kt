@@ -6,12 +6,10 @@ package com.hucet.clean.gallery.gallery.category
 enum class CategoryType {
     DIRECTORY, DATE;
 
-    companion object {
-        fun toggle(type: CategoryType): CategoryType {
-            return when (type) {
-                DIRECTORY -> DATE
-                DATE -> DIRECTORY
-            }
+    fun toggle(): CategoryType {
+        return when (this) {
+            DIRECTORY -> DATE
+            DATE -> DIRECTORY
         }
     }
 
