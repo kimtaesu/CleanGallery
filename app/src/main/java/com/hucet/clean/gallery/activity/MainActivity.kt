@@ -20,6 +20,7 @@ import android.content.Intent
 import android.net.Uri
 import android.view.Menu
 import android.view.MenuItem
+import com.hucet.clean.gallery.activity.cache.MemoryCacheDrawable
 import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.extension.showFilterDialog
 import com.hucet.clean.gallery.extension.showSortDialog
@@ -27,7 +28,6 @@ import com.hucet.clean.gallery.gallery.category.CategoryType
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
 import com.hucet.clean.gallery.preference.SettingActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_gallery.*
 import kotlinx.android.synthetic.main.layout_options_view.*
 
 
@@ -47,24 +47,29 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        initViewMode()
-        initCategory()
+        initView()
         initToolbar()
         showGallaeryWithPermissionCheck()
+    }
+
+    private fun initView() {
+        initViewMode()
+        initCategory()
     }
 
     private fun initCategory() {
         fun updateCategory(categoryType: CategoryType) {
             when (categoryType) {
                 CategoryType.DIRECTORY -> {
-                    category_mode.setImageResource(R.drawable.ic_category_directory_black_24dp)
+                    category_mode.startAsAnimatable(MemoryCacheDrawable.getDrawable(R.drawable.ic_directory2date_animation, this))
                 }
                 CategoryType.DATE -> {
-                    category_mode.setImageResource(R.drawable.ic_category_date_black_24dp)
+                    category_mode.startAsAnimatable(MemoryCacheDrawable.getDrawable(R.drawable.ic_date2directory_animation, this))
                 }
             }
         }
         updateCategory(config.categoryType)
+        lifecycle.addObserver(category_mode)
         category_mode.setOnClickListener {
             config.categoryType = config.categoryType.toggle()
             updateCategory(config.categoryType)
@@ -75,14 +80,15 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         fun updateViewMode(viewModeType: ViewModeType) {
             when (viewModeType) {
                 ViewModeType.GRID -> {
-                    view_mode.setImageResource(R.drawable.ic_view_grid_black_24dp)
+                    view_mode.startAsAnimatable(MemoryCacheDrawable.getDrawable(R.drawable.ic_grid_to_list_animation, this))
                 }
                 ViewModeType.LINEAR -> {
-                    view_mode.setImageResource(R.drawable.ic_view_list_black_24dp)
+                    view_mode.startAsAnimatable(MemoryCacheDrawable.getDrawable(R.drawable.ic_list2grid_animation, this))
                 }
             }
         }
         updateViewMode(config.viewModeType)
+        lifecycle.addObserver(view_mode)
         view_mode.setOnClickListener {
             config.viewModeType = config.viewModeType.toggle()
             updateViewMode(config.viewModeType)

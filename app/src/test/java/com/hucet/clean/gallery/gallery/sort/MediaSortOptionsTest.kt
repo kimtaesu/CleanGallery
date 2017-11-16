@@ -107,7 +107,6 @@ class MediaSortOptionsTest : Spek({
     describe("sortOption [SORT_BY_DATE_MODIFIED or SORT_ASCENDING] with CategoryType")
     {
         val sortString = getSortString(SORT_BY_DATE_TAKEN or SORT_ASCENDING, CategoryType.DATE)
-        println(sortString)
         it("sortString == date_modified DESC")
         {
             sortString `should equal to` "${MediaStore.Images.Media.DATE_MODIFIED} ${desc}"

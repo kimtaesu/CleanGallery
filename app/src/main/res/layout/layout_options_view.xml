@@ -5,21 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <com.hucet.clean.gallery.view.ViewModeImageView
         android:id="@+id/view_mode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="3dp"
         android:layout_marginTop="3dp"
-        android:tint="@color/colorAccent"
-        app:srcCompat="@drawable/ic_view_list_black_24dp" />
+        android:tint="@color/colorAccent" />
 
-    <ImageView
+    <com.hucet.clean.gallery.view.ViewModeImageView
         android:id="@+id/category_mode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:tint="@color/colorAccent"
-        app:layout_constraintStart_toEndOf="@+id/view_mode"
-        app:srcCompat="@drawable/ic_category_directory_black_24dp" />
+        app:layout_constraintStart_toEndOf="@+id/view_mode" />
 </android.support.constraint.ConstraintLayout>

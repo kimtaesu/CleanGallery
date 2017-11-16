@@ -44,7 +44,7 @@ class ImageVideoGifFilterTest : SubjectSpek<ImageVideoGifFilter>({
             }
             it("image tpye FILTERED")
             {
-                testFilter(subject, ".abc", FILTERED)
+                testFilter(subject, ".ic_grid_to_list_animation", FILTERED)
                 testFilter(subject, ".mp4", FILTERED)
                 testFilter(subject, ".gif", FILTERED)
             }

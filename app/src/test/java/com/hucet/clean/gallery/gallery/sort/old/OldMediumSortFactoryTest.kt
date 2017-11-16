@@ -80,7 +80,6 @@ class OldMediumSortFactoryTest {
         var correctData: List<Medium> = DeserializerFixture.deserializeMedium(path, parent)
         val comparator = OldMediumSortFactory.createComparator(option, option.order)
         Collections.sort(testData, comparator)
-        println(Gson().toJson(testData))
         when (option.strategy) {
             OldMediaSortOptions.STRATEGY.NAME -> {
                 testData.forEachIndexed { index, medium ->

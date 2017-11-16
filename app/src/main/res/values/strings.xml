@@ -15,4 +15,5 @@
     <string name="sort_option_date_taken">Date taken</string>
     <string name="sort_option_last_modified">Last modified</string>
     <string name="sort_option_filename">File name</string>
+
 </resources>
