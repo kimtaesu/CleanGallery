@@ -5,4 +5,14 @@
     <string name="permission_access_storage_rationale">Accessing storage permissions are needed to demonstrate access to the local storage</string>
 
     <string name="menu_setting_title">Setting</string>
+    <string name="menu_sort_option">Sort</string>
+    <string name="menu_filter_option">Filter</string>
+    <string name="sort_option_descending">Descending</string>
+    <string name="sort_option_ascending">Ascending</string>
+
+    <string name="sort_option_path">Path</string>
+    <string name="sort_option_size">Size</string>
+    <string name="sort_option_date_taken">Date taken</string>
+    <string name="sort_option_last_modified">Last modified</string>
+    <string name="sort_option_filename">File name</string>
 </resources>

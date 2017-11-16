@@ -21,6 +21,8 @@ import android.net.Uri
 import android.view.Menu
 import android.view.MenuItem
 import com.hucet.clean.gallery.config.ApplicationConfig
+import com.hucet.clean.gallery.extension.showFilterDialog
+import com.hucet.clean.gallery.extension.showSortDialog
 import com.hucet.clean.gallery.gallery.category.CategoryType
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
 import com.hucet.clean.gallery.preference.SettingActivity
@@ -49,7 +51,6 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         initCategory()
         initToolbar()
         showGallaeryWithPermissionCheck()
-
     }
 
     private fun initCategory() {
@@ -101,6 +102,14 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean = when (item?.itemId) {
         R.id.action_settings -> {
             startSettingActivity()
+            true
+        }
+        R.id.action_sort -> {
+            AlertDialog.Builder(this).showSortDialog()
+            true
+        }
+        R.id.action_filter -> {
+            AlertDialog.Builder(this).showFilterDialog()
             true
         }
         else -> {

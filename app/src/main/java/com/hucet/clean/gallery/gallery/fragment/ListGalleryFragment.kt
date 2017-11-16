@@ -72,14 +72,14 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     }
 
     private fun setUpLayoutManager(type: ViewModeType) {
-        when (type) {
-            ViewModeType.GRID -> setUpGrid()
-            ViewModeType.LINEAR -> setUpLinear()
-        }
+//        when (type) {
+//            ViewModeType.GRID -> setUpGrid()
+//            ViewModeType.LINEAR -> setUpLinear()
+//        }
+        setUpGrid()
     }
 
     private fun setUpGrid() {
-        btn.setText("grid")
         gallery_list.apply {
             layoutManager = null
             val gridLayoutManager = GridLayoutManager(context, 3)
@@ -98,7 +98,6 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     }
 
     private fun setUpLinear() {
-        btn.setText("linear")
         gallery_list.apply {
             layoutManager = null
             layoutManager = LinearLayoutManager(context)
