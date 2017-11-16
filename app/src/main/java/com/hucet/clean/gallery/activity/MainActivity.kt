@@ -19,6 +19,8 @@ import javax.inject.Inject
 import android.content.Intent
 import android.net.Uri
 import android.view.Menu
+import android.view.MenuItem
+import com.hucet.clean.gallery.preference.SettingActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -47,8 +49,20 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        return super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
     }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean = when (item?.itemId) {
+        R.id.action_settings -> {
+            startSettingActivity()
+            true
+        }
+        else -> {
+            super.onOptionsItemSelected(item)
+        }
+    }
+
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
     fun showGallaery() {
         supportFragmentManager.beginTransaction()
@@ -88,6 +102,10 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                     .addToBackStack(null)
                     .commit()
         }
+    }
+
+    private fun startSettingActivity() {
+        startActivity(Intent(this, SettingActivity::class.java))
     }
 
     override fun onBackPressed() {

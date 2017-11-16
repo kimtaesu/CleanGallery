@@ -60,15 +60,9 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
             presenter.fetchItems(curPath)
         }
 
-        setting.setOnClickListener {
-            startSettingActivity()
-        }
-
     }
 
-    private fun startSettingActivity() {
-        startActivity(Intent(context, SettingActivity::class.java))
-    }
+
 
     private val onGalleryClicked: (Basic) -> Unit = {
         when (it) {

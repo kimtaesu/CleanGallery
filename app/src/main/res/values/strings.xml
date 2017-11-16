@@ -4,4 +4,5 @@
     <string name="permission_access_storage_denied">Accessing storage permissions were denied. Please consider granting it in order to access the storage!</string>
     <string name="permission_access_storage_rationale">Accessing storage permissions are needed to demonstrate access to the local storage</string>
 
+    <string name="menu_setting_title">Setting</string>
 </resources>
