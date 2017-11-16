@@ -27,7 +27,6 @@ import com.hucet.clean.gallery.extension.showSortDialog
 import com.hucet.clean.gallery.gallery.category.CategoryType
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
 import com.hucet.clean.gallery.preference.SettingActivity
-import com.hucet.clean.gallery.presenter.GalleryPresenter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_options_view.*
 
