@@ -8,6 +8,7 @@ import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.gallery.category.CategoryMode
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import android.widget.RadioGroup
 import com.afollestad.materialdialogs.MaterialDialog
 import com.hucet.clean.gallery.config.GIFS
 import com.hucet.clean.gallery.config.IMAGES
@@ -17,25 +18,31 @@ import com.hucet.clean.gallery.config.VIDEOS
 /**
  * Created by taesu on 2017-11-16.
  */
-fun AlertDialog.Builder.createSortDialog(config: ApplicationConfig): AlertDialog {
+fun AlertDialog.Builder.createSortDialog(config: ApplicationConfig): MaterialDialog {
     val v = LayoutInflater.from(context).inflate(R.layout.dialog_sorting, null)
-    val items = when (config.categoryMode) {
+    val sortGroup = v.findViewById<RadioGroup>(R.id.sorting_dialog_sort_group)
+
+    val items = getSortItems(context, config.categoryMode)
+
+    val callback = MaterialDialog.ListCallbackSingleChoice { dialog, itemView, which, text ->
+        true
+    }
+
+    return MaterialDialog.Builder(this.context)
+            .title(R.string.dialog_sort_title)
+            .items(R.array.array_date_sort_option)
+            .build()
+}
+
+private fun getSortItems(context: Context, categoryMode: CategoryMode) {
+    val items = when (categoryMode) {
         CategoryMode.DATE -> {
-            this.context.resources.getStringArray(R.array.array_date_sort_option)
+            context.resources.getStringArray(R.array.array_date_sort_option)
         }
         CategoryMode.DIRECTORY -> {
-            this.context.resources.getStringArray(R.array.array_file_sort_option)
+            context.resources.getStringArray(R.array.array_file_sort_option)
         }
     }
-    val adapter = ArrayAdapter<String>(
-            this.context,
-            android.R.layout.select_dialog_singlechoice)
-    adapter.addAll(items.toList())
-    val listView = v.findViewById<ListView>(R.id.list)
-    listView.adapter = adapter
-    return this.setTitle(R.string.dialog_sort_title)
-            .setView(v)
-            .create()
 }
 
 fun AlertDialog.Builder.createFilterDialog(configFilter: Int, fp: (Int) -> Unit): MaterialDialog {
@@ -52,7 +59,7 @@ fun AlertDialog.Builder.createFilterDialog(configFilter: Int, fp: (Int) -> Unit)
             .items(filterConfigMap.keys)
             .itemsCallbackMultiChoice(getFilterCheckArray(filterConfigMap), callback)
             .positiveText(android.R.string.ok)
-            .show()
+            .build()
 }
 
 private fun getFilterMap(context: Context, configFilter: Int): Map<Int, FilterContext> {

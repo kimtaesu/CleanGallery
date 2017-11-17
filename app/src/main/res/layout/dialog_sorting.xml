@@ -10,10 +10,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ListView
-            android:id="@+id/list"
+        <RadioGroup
+            android:id="@+id/sorting_dialog_sort_group"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></ListView>
+            android:layout_height="wrap_content">
+
+        </RadioGroup>
 
         <include layout="@layout/divider" />
 
