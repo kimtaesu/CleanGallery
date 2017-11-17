@@ -13,7 +13,7 @@
         android:id="@+id/action_sort"
         android:icon="@drawable/ic_sort_black_24dp"
         android:title="@string/menu_sort_option"
-        app:showAsAction="ifRoom"></item>
+        app:showAsAction="never"></item>
     <item
         android:id="@+id/action_filter"
         android:icon="@drawable/ic_filter_list_black_24dp"
