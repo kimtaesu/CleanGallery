@@ -20,6 +20,18 @@ enum class SortOptionType(val option: String, val title: Int, val bitAttr: Int) 
     BY_YEARLY("yyyy", R.string.sort_option_yearly, SORT_BY_YEARLY);
 
 
+    companion object {
+        val DIRECTORY_TYPES = listOf(BY_NAME, BY_MODIFIED, BY_TAKEN, BY_PATH, BY_SIZE)
+        val DATE_TYPES = listOf(BY_DAILY, BY_MONTHLY, BY_YEARLY)
+        fun isDirecotryType(sortType: SortOptionType): Boolean {
+            return sortType in DIRECTORY_TYPES
+        }
+
+        fun isDateType(sortType: SortOptionType): Boolean {
+            return sortType in DATE_TYPES
+        }
+    }
+
     infix fun byOrder(sort: Int): ByOrder {
         val order = ByOrder.values().find { sort and it.bitAttr > 0 }
         order ?: throw IllegalArgumentException()
@@ -29,18 +41,12 @@ enum class SortOptionType(val option: String, val title: Int, val bitAttr: Int) 
     infix fun validate(categoryMode: CategoryMode) {
         when (categoryMode) {
             CategoryMode.DATE -> {
-                when (this) {
-                    BY_DAILY, BY_MONTHLY, BY_YEARLY -> {
-                    }
-                    else -> throw UnsupportedOperationException(this.option)
-                }
+                if (this !in DATE_TYPES)
+                    throw UnsupportedOperationException(this.option)
             }
             CategoryMode.DIRECTORY -> {
-                when (this) {
-                    BY_NAME, BY_MODIFIED, BY_TAKEN, BY_PATH, BY_SIZE -> {
-                    }
-                    else -> throw UnsupportedOperationException(this.option)
-                }
+                if (this !in DIRECTORY_TYPES)
+                    throw UnsupportedOperationException(this.option)
             }
         }
     }
@@ -52,8 +58,6 @@ enum class ByOrder(val option: String, val title: Int, val bitAttr: Int) {
 }
 
 data class SortOptions(val sortOptionType: SortOptionType, val byOrder: ByOrder) {
-    fun getDateFormat() = sortOptionType.option
-
     fun getSortOptionString(): String {
         return "${sortOptionType.option} ${byOrder.option}"
     }

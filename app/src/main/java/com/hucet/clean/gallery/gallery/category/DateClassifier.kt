@@ -12,7 +12,7 @@ import java.util.*
  */
 class DateClassifier(private val appConfig: ApplicationConfig) : CategoryStrategy<Basic> {
     private fun getConfigFormat(): String {
-        return appConfig.getDateSortType().getDateFormat()
+        return appConfig.getDateSortType().sortOptionType.option
     }
 
     override fun classify(items: List<Medium>): List<Basic> {

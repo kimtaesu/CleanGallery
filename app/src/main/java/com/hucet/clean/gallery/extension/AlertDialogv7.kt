@@ -11,17 +11,27 @@ import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.config.GIFS
 import com.hucet.clean.gallery.config.IMAGES
 import com.hucet.clean.gallery.config.VIDEOS
-import com.hucet.clean.gallery.gallery.category.CategoryMode
+import com.hucet.clean.gallery.gallery.mapper.DialogListItemMapper
+import com.hucet.clean.gallery.gallery.sort.ByOrder
+import com.hucet.clean.gallery.gallery.sort.SortOptionType
+import com.hucet.clean.gallery.model.DialogItem
 
 
 /**
  * Created by taesu on 2017-11-16.
  */
 fun AlertDialog.Builder.createSortDialog(config: ApplicationConfig): MaterialDialog {
+    val mapper = DialogListItemMapper()
     val v = LayoutInflater.from(context).inflate(R.layout.dialog_sorting, null)
-    val sortGroup = v.findViewById<RadioGroup>(R.id.sorting_dialog_sort_group)
-    val items = getSortItems(context, config)
-    addRadioChilden(sortGroup, items)
+    val items = mapper.sortItemsMap(context, config)
+    val sortItems = items[SortOptionType::class.java.name]
+    val orderItems = items[ByOrder::class.java.name]
+
+    val sortGroup = v.findViewById<RadioGroup>(R.id.group_sort)
+    addRadioChilden(sortGroup, sortItems)
+
+    val orderGroup = v.findViewById<RadioGroup>(R.id.group_order)
+    addRadioChilden(orderGroup, orderItems)
 
     return MaterialDialog.Builder(this.context)
             .title(R.string.dialog_sort_title)
@@ -30,26 +40,15 @@ fun AlertDialog.Builder.createSortDialog(config: ApplicationConfig): MaterialDia
             .build()
 }
 
-private fun addRadioChilden(radioGroup: RadioGroup, items: List<DialogItem>) {
-    items.forEach {
+private fun addRadioChilden(radioGroup: RadioGroup, items: List<DialogItem>?) {
+    items?.forEach {
         val radioButton = RadioButton(radioGroup.context)
-        radioButton.setText(it.title)
+        radioButton.text = it.title
         radioButton.isChecked = it.isCheck
         radioGroup.addView(radioButton)
     }
 }
 
-private fun getSortItems(context: Context, config: ApplicationConfig): List<DialogItem> {
-    val items = when (config.categoryMode) {
-        CategoryMode.DATE -> {
-            context.resources.getStringArray(R.array.array_date_sort_option)
-        }
-        CategoryMode.DIRECTORY -> {
-            context.resources.getStringArray(R.array.array_file_sort_option)
-        }
-    }
-    return emptyList()
-}
 
 fun AlertDialog.Builder.createFilterDialog(configFilter: Int, fp: (Int) -> Unit): MaterialDialog {
     val filterConfigMap = getFilterMap(context, configFilter)
@@ -93,5 +92,4 @@ private enum class FilterType(private val stringId: Int, val bitAtt: Int) {
     fun isCheck(configFilter: Int) = configFilter and bitAtt > 0
 }
 
-private data class DialogItem(val index: Int, val title: String, val isCheck: Boolean, val bitAtt: Int)
 
