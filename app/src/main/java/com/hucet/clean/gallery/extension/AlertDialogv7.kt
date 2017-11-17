@@ -3,16 +3,15 @@ package com.hucet.clean.gallery.extension
 import android.content.Context
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
-import com.hucet.clean.gallery.R
-import com.hucet.clean.gallery.config.ApplicationConfig
-import com.hucet.clean.gallery.gallery.category.CategoryMode
-import android.widget.ArrayAdapter
-import android.widget.ListView
+import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.afollestad.materialdialogs.MaterialDialog
+import com.hucet.clean.gallery.R
+import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.config.GIFS
 import com.hucet.clean.gallery.config.IMAGES
 import com.hucet.clean.gallery.config.VIDEOS
+import com.hucet.clean.gallery.gallery.category.CategoryMode
 
 
 /**
@@ -21,21 +20,27 @@ import com.hucet.clean.gallery.config.VIDEOS
 fun AlertDialog.Builder.createSortDialog(config: ApplicationConfig): MaterialDialog {
     val v = LayoutInflater.from(context).inflate(R.layout.dialog_sorting, null)
     val sortGroup = v.findViewById<RadioGroup>(R.id.sorting_dialog_sort_group)
-
-    val items = getSortItems(context, config.categoryMode)
-
-    val callback = MaterialDialog.ListCallbackSingleChoice { dialog, itemView, which, text ->
-        true
-    }
+    val items = getSortItems(context, config)
+    addRadioChilden(sortGroup, items)
 
     return MaterialDialog.Builder(this.context)
             .title(R.string.dialog_sort_title)
-            .items(R.array.array_date_sort_option)
+            .customView(v, true)
+            .positiveText(android.R.string.ok)
             .build()
 }
 
-private fun getSortItems(context: Context, categoryMode: CategoryMode) {
-    val items = when (categoryMode) {
+private fun addRadioChilden(radioGroup: RadioGroup, items: List<DialogItem>) {
+    items.forEach {
+        val radioButton = RadioButton(radioGroup.context)
+        radioButton.setText(it.title)
+        radioButton.isChecked = it.isCheck
+        radioGroup.addView(radioButton)
+    }
+}
+
+private fun getSortItems(context: Context, config: ApplicationConfig): List<DialogItem> {
+    val items = when (config.categoryMode) {
         CategoryMode.DATE -> {
             context.resources.getStringArray(R.array.array_date_sort_option)
         }
@@ -43,6 +48,7 @@ private fun getSortItems(context: Context, categoryMode: CategoryMode) {
             context.resources.getStringArray(R.array.array_file_sort_option)
         }
     }
+    return emptyList()
 }
 
 fun AlertDialog.Builder.createFilterDialog(configFilter: Int, fp: (Int) -> Unit): MaterialDialog {
@@ -56,19 +62,19 @@ fun AlertDialog.Builder.createFilterDialog(configFilter: Int, fp: (Int) -> Unit)
     }
     return MaterialDialog.Builder(this.context)
             .title(R.string.dialog_filter_title)
-            .items(filterConfigMap.keys)
+            .items(filterConfigMap.values.map { it.title })
             .itemsCallbackMultiChoice(getFilterCheckArray(filterConfigMap), callback)
             .positiveText(android.R.string.ok)
             .build()
 }
 
-private fun getFilterMap(context: Context, configFilter: Int): Map<Int, FilterContext> {
+private fun getFilterMap(context: Context, configFilter: Int): Map<Int, DialogItem> {
     return FilterType.values().mapIndexed { index, filterType ->
-        index to FilterContext(index, filterType.getString(context), filterType.isCheck(configFilter), filterType.bitAtt)
+        index to DialogItem(index, filterType.getString(context), filterType.isCheck(configFilter), filterType.bitAtt)
     }.toMap()
 }
 
-private fun getFilterCheckArray(filterConfigMap: Map<Int, FilterContext>): Array<Int> {
+private fun getFilterCheckArray(filterConfigMap: Map<Int, DialogItem>): Array<Int> {
     return filterConfigMap.values.filter {
         it.isCheck
     }.map {
@@ -87,5 +93,5 @@ private enum class FilterType(private val stringId: Int, val bitAtt: Int) {
     fun isCheck(configFilter: Int) = configFilter and bitAtt > 0
 }
 
-private data class FilterContext(val index: Int, val title: String, val isCheck: Boolean, val bitAtt: Int)
+private data class DialogItem(val index: Int, val title: String, val isCheck: Boolean, val bitAtt: Int)
 

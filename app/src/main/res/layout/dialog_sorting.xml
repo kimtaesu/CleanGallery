@@ -13,16 +13,18 @@
         <RadioGroup
             android:id="@+id/sorting_dialog_sort_group"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </RadioGroup>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"></RadioGroup>
 
         <include layout="@layout/divider" />
 
         <RadioGroup
             android:id="@+id/sorting_dialog_radio_order"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
 
             <RadioButton
                 android:id="@+id/sorting_dialog_radio_ascending"
@@ -38,7 +40,5 @@
                 android:text="@string/sort_option_descending"
                 android:textColor="#616161" />
         </RadioGroup>
-
-        <include layout="@layout/divider" />
     </LinearLayout>
 </ScrollView>

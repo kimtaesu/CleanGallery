@@ -1,6 +1,7 @@
 package com.hucet.clean.gallery.activity.cache
 
 import android.content.Context
+import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
 import android.support.v4.content.ContextCompat
 
@@ -13,11 +14,21 @@ class MemoryCacheDrawable {
 
         fun getDrawable(drawableId: Int, context: Context): Drawable {
             var drawable = drawableMap[drawableId]
-            if (drawable == null) {
-                drawable = ContextCompat.getDrawable(context.applicationContext, drawableId)
-                drawableMap.put(drawableId, drawable!!);
+            synchronized(MemoryCacheDrawable.javaClass)
+            {
+                if (drawable == null) {
+                    drawable = ContextCompat.getDrawable(context.applicationContext, drawableId)
+                    drawableMap.put(drawableId, drawable!!);
+                }
             }
             return drawable!!
+        }
+
+        fun allStopAnimations() {
+            drawableMap.values.forEach {
+                if (it is Animatable)
+                    it.stop()
+            }
         }
     }
 }

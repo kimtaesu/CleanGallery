@@ -92,7 +92,7 @@ dependencies {
     testImplementation testDeps.junitPlatformEngine
     testImplementation testDeps.kluent
     testImplementation testDeps.kluentAndroid
-    implementation debugDeps.stetho
+    debugImplementation debugDeps.stetho
 }
 afterEvaluate {
     compileDebugUnitTestKotlin {

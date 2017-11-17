@@ -20,12 +20,11 @@ import android.content.Intent
 import android.net.Uri
 import android.view.Menu
 import android.view.MenuItem
-import com.afollestad.materialdialogs.MaterialDialog
 import com.hucet.clean.gallery.activity.cache.MemoryCacheDrawable
 import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.extension.createFilterDialog
 import com.hucet.clean.gallery.extension.createSortDialog
-import com.hucet.clean.gallery.extension.startAsAnimatable
+import com.hucet.clean.gallery.extension.startAsAnimation
 import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
 import com.hucet.clean.gallery.preference.SettingActivity
@@ -51,15 +50,18 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         initToolbar()
     }
 
+    override fun onDestroy() {
+        MemoryCacheDrawable.allStopAnimations()
+        super.onDestroy()
+    }
+
     private fun updateCategory(item: MenuItem, categoryMode: CategoryMode) {
         when (categoryMode) {
             CategoryMode.DIRECTORY -> {
-                item.setIcon(MemoryCacheDrawable.getDrawable(R.drawable.ic_directory2date_animation, this))
-                item.icon.startAsAnimatable()
+                item.startAsAnimation(MemoryCacheDrawable.getDrawable(R.drawable.ic_directory2date_animation, this))
             }
             CategoryMode.DATE -> {
-                item.setIcon(MemoryCacheDrawable.getDrawable(R.drawable.ic_date2directory_animation, this))
-                item.icon.startAsAnimatable()
+                item.startAsAnimation(MemoryCacheDrawable.getDrawable(R.drawable.ic_date2directory_animation, this))
             }
         }
     }
@@ -67,15 +69,14 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     private fun updateViewMode(item: MenuItem, viewMode: ViewModeType) {
         when (viewMode) {
             ViewModeType.GRID -> {
-                item.setIcon(MemoryCacheDrawable.getDrawable(R.drawable.ic_grid_to_list_animation, this))
-                item.icon.startAsAnimatable()
+                item.startAsAnimation(MemoryCacheDrawable.getDrawable(R.drawable.ic_grid2list_animation, this))
             }
             ViewModeType.LINEAR -> {
-                item.setIcon(MemoryCacheDrawable.getDrawable(R.drawable.ic_list2grid_animation, this))
-                item.icon.startAsAnimatable()
+                item.startAsAnimation(MemoryCacheDrawable.getDrawable(R.drawable.ic_list2grid_animation, this))
             }
         }
     }
+
 
     private fun initToolbar() {
         setSupportActionBar(toolbar)

@@ -29,8 +29,8 @@ class MediumTransformerTest : SubjectSpek<MediumTransformer>({
             it("one calll dateCalssify, never call dirClassify")
             {
 
-                verify(dirMock, never()).classify(any(), any())
-                verify(dateMock, times(1)).classify(any(), any())
+                verify(dirMock, never()).classify(any())
+                verify(dateMock, times(1)).classify(any())
             }
         }
         on("a dirClaasifier call 검증 ")
@@ -39,8 +39,8 @@ class MediumTransformerTest : SubjectSpek<MediumTransformer>({
             subject.transform(listOf(), externalStoragePath)
             it("one calll dirClassify, never call dateClassify")
             {
-                verify(dirMock, times(1)).classify(any(), any())
-                verify(dateMock, never()).classify(any(), any())
+                verify(dirMock, times(1)).classify(any())
+                verify(dateMock, never()).classify(any())
             }
         }
         on("a medium call 검증")
@@ -49,8 +49,8 @@ class MediumTransformerTest : SubjectSpek<MediumTransformer>({
             subject.transform(listOf(), "Not matchs to the external storae")
             it("never calll dirClassify, never call dateClassify")
             {
-                verify(dirMock, never()).classify(any(), any())
-                verify(dateMock, never()).classify(any(), any())
+                verify(dirMock, never()).classify(any())
+                verify(dateMock, never()).classify(any())
             }
         }
     }

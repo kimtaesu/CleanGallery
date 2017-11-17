@@ -16,11 +16,11 @@ open class MediumTransformer(private val dateClassifier: DateClassifier,
     fun transform(items: List<Medium>, curPath: String): List<Basic> {
         when (config.categoryMode) {
             CategoryMode.DATE -> {
-                return dateClassifier.classify(items, curPath)
+                return dateClassifier.classify(items)
             }
             CategoryMode.DIRECTORY -> {
                 if (isExternalStorage(curPath)) {
-                    return dirClassifier.classify(items, curPath)
+                    return dirClassifier.classify(items)
                 }
             }
         }

@@ -1,14 +1,16 @@
 package com.hucet.clean.gallery.gallery.category
 
-import com.google.gson.Gson
 import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.fixture.MediumFixture
 import com.hucet.clean.gallery.fixture.TestData
 import com.hucet.clean.gallery.gallery.adapter.GalleryType
-import com.hucet.clean.gallery.gallery.category.DateClassifier.DATE_SORT_TYPE.*
+import com.hucet.clean.gallery.gallery.sort.ByOrder
+import com.hucet.clean.gallery.gallery.sort.ByOrder.*
+import com.hucet.clean.gallery.gallery.sort.SortOptionType
+import com.hucet.clean.gallery.gallery.sort.SortOptionType.*
+import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.hucet.clean.gallery.model.Date
 import com.hucet.clean.gallery.model.Medium
-import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import org.amshove.kluent.`should equal to`
@@ -21,22 +23,19 @@ import org.jetbrains.spek.subject.SubjectSpek
  * Created by taesu on 2017-11-10.
  */
 
-fun mockConfig(type: DateClassifier.DATE_SORT_TYPE): ApplicationConfig {
-    val config = mock<ApplicationConfig>()
-    whenever(config.getDateSortType(any())).thenReturn(type)
-    return config
-}
-
-fun getTestDate(type: DateClassifier.DATE_SORT_TYPE): TestData {
+fun getTestDate(type: SortOptionType): TestData {
     when (type) {
-        DAILY -> {
+        BY_DAILY -> {
             return MediumFixture.TEST_CATEGORY_DAILY
         }
-        DateClassifier.DATE_SORT_TYPE.MONTHLY -> {
+        BY_MONTHLY -> {
             return MediumFixture.TEST_CATEGORY_MONTHLY
         }
-        DateClassifier.DATE_SORT_TYPE.YEARLY -> {
+        BY_YEARLY -> {
             return MediumFixture.TEST_CATEGORY_YEARLY
+        }
+        else -> {
+            throw IllegalArgumentException()
         }
     }
 }
@@ -60,10 +59,10 @@ class DateClassifierTest : SubjectSpek<DateClassifier>({
         }
         on("daily")
         {
-            val (test, correct) = getTestDate(DAILY)
+            val (test, correct) = getTestDate(BY_DAILY)
             correct as List<Date>
 
-            whenever(config.getDateSortType(any())).thenReturn(DAILY)
+            whenever(config.getDateSortType()).thenReturn(SortOptions(BY_DAILY, BY_DESC))
 
             var result = classify(subject, test)
 
@@ -76,10 +75,10 @@ class DateClassifierTest : SubjectSpek<DateClassifier>({
         }
         on("monthly")
         {
-            val (test, correct) = getTestDate(MONTHLY)
+            val (test, correct) = getTestDate(BY_MONTHLY)
             correct as List<Date>
 
-            whenever(config.getDateSortType(any())).thenReturn(MONTHLY)
+            whenever(config.getDateSortType()).thenReturn(SortOptions(BY_MONTHLY, BY_DESC))
 
             var result = classify(subject, test)
             it("monthly [2016-01, 2017-02, 2017-11]")
@@ -92,10 +91,10 @@ class DateClassifierTest : SubjectSpek<DateClassifier>({
         }
         on("yearly")
         {
-            val (test, correct) = getTestDate(YEARLY)
+            val (test, correct) = getTestDate(BY_YEARLY)
             correct as List<Date>
 
-            whenever(config.getDateSortType(any())).thenReturn(YEARLY)
+            whenever(config.getDateSortType()).thenReturn(SortOptions(BY_YEARLY, BY_DESC))
 
             var result = classify(subject, test)
             it("yearly [2016, 2017]")

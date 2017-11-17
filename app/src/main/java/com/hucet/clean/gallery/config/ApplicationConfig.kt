@@ -2,8 +2,9 @@ package com.hucet.clean.gallery.config
 
 import android.app.Application
 import com.hucet.clean.gallery.gallery.category.CategoryMode
-import com.hucet.clean.gallery.gallery.category.DateClassifier
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
+import com.hucet.clean.gallery.gallery.sort.SortOptionType
+import com.hucet.clean.gallery.gallery.sort.SortOptions
 import javax.inject.Inject
 
 /**
@@ -17,29 +18,28 @@ class ApplicationConfig @Inject constructor(
             PreferenceHelper.defaultPrefs(application)[key_filter_media] = value
         }
 
-    fun getDirSortType(path: String): Int {
-        return PreferenceHelper.defaultPrefs(application)[key_dir_sorting + path.toLowerCase(), SORT_BY_DATE_MODIFIED or SORT_DESCENDING]
+    fun getDirSortType(): SortOptions {
+        //         TODO each sort
+//        return PreferenceHelper.defaultPrefs(application)[key_dir_sorting + path.toLowerCase(), SORT_BY_DATE_MODIFIED or SORT_DESCENDING]
+        val sort = PreferenceHelper.defaultPrefs(application)[key_dir_sorting, SORT_BY_DATE_MODIFIED or SORT_DESCENDING]
+        return wrapSortOptionType(sort)
     }
 
 
-    fun getDateSortType(path: String): DateClassifier.DATE_SORT_TYPE {
-        val sort = PreferenceHelper.defaultPrefs(application)[key_date_sorting + path.toLowerCase(), SORT_BY_DAILY]
-        return mapDateSortType(sort)
+    fun getDateSortType(): SortOptions {
+//         TODO each sort
+//        val sort = PreferenceHelper.defaultPrefs(application)[key_date_sorting + path.toLowerCase(), SORT_BY_DAILY]
+        val sort = PreferenceHelper.defaultPrefs(application)[key_date_sorting, SORT_BY_DAILY]
+        return wrapSortOptionType(sort)
     }
 
-    private fun mapDateSortType(sort: Int): DateClassifier.DATE_SORT_TYPE {
-        return when {
-            sort and SORT_BY_DAILY > 0 -> {
-                DateClassifier.DATE_SORT_TYPE.DAILY
-            }
-            sort and SORT_BY_MONTHLY > 0 -> {
-                DateClassifier.DATE_SORT_TYPE.MONTHLY
-            }
-            sort and SORT_BY_YEARLY > 0 -> {
-                DateClassifier.DATE_SORT_TYPE.YEARLY
-            }
-            else -> throw IllegalArgumentException()
+    private fun wrapSortOptionType(bitSort: Int): SortOptions {
+        val sortOptionType = SortOptionType.values().first {
+            bitSort and it.bitAttr > 0
         }
+        sortOptionType validate categoryMode
+        val byOrder = sortOptionType byOrder bitSort
+        return SortOptions(sortOptionType, byOrder)
     }
 
     val showHidden: Boolean
