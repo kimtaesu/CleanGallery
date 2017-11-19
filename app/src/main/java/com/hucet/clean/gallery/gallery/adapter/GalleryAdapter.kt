@@ -3,24 +3,29 @@ package com.hucet.clean.gallery.gallery.adapter
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import android.widget.ImageView
+import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import com.hucet.clean.gallery.model.Basic
+import kotlinx.android.synthetic.main.medium_item_gallery.view.*
 import javax.inject.Inject
 
 /**
  * Created by taesu on 2017-10-31.
  */
+
+
 @PerFragment
 class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     @Inject lateinit var delegateMap: Map<GalleryType, @JvmSuppressWildcards AbstractDelegateAdapter>
 
     private var Items: ArrayList<Basic> = arrayListOf()
-    private var onClick: ((Basic) -> Unit)? = null
+    private var onClick: ((Basic, ImageView?) -> Unit)? = null
     private var recyclerView: RecyclerView? = null
 
-    fun setOnClickListener(recyclerView: RecyclerView, onGalleryClicked: (Basic) -> Unit) {
+    fun setOnClickListener(recyclerView: RecyclerView, onGalleryClicked: (Basic, ImageView?) -> Unit) {
         this.recyclerView = recyclerView
         this.onClick = onGalleryClicked
     }
@@ -33,7 +38,8 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
         val viewHoler = delegateMap[GalleryType.galleryType(viewType)]?.onCreateViewHolder(parent, viewType)
         viewHoler?.itemView?.setOnClickListener({
             val position = recyclerView?.getChildAdapterPosition(it)
-            onClick?.invoke(Items.get(position!!))
+
+            onClick?.invoke(Items.get(position!!), viewHoler?.itemView?.findViewById(R.id.thumbnail))
         })
         return viewHoler
     }

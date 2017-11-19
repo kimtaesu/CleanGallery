@@ -5,10 +5,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.view.ViewCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageView
 import android.widget.Toast
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.activity.cache.MemoryCacheDrawable
@@ -42,7 +44,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         return fragmentDispatchingAndroidInjector
     }
 
-    val galleryFragment: ListGalleryFragment = ListGalleryFragment.newInstance()
+    private val galleryFragment: ListGalleryFragment = ListGalleryFragment.newInstance()
 
     lateinit var readOnlyConfigs: ReadOnlyConfigs
 
@@ -173,14 +175,15 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         Toast.makeText(this, R.string.permission_access_storage_never_ask_again, Toast.LENGTH_SHORT).show()
     }
 
-    val onGalleryClicked: (Medium) -> Unit = { medium: Medium ->
+    val onGalleryClicked: (Medium, ImageView?) -> Unit = { medium: Medium, imageView: ImageView? ->
         Timber.d("onGalleryClicked ${medium}")
         if (medium.isVideo) {
             startVideoPlayer(medium)
         } else {
+            val transitionName = ViewCompat.getTransitionName(imageView)
             supportFragmentManager.beginTransaction()
-                    .hide(galleryFragment)
-                    .add(R.id.content, GalleryDetailFragment.newInstance(medium), GalleryDetailFragment.TAG)
+                    .addSharedElement(imageView, transitionName)
+                    .replace(R.id.content, GalleryDetailFragment.newInstance(medium, transitionName), GalleryDetailFragment.TAG)
                     .addToBackStack(null)
                     .commit()
         }

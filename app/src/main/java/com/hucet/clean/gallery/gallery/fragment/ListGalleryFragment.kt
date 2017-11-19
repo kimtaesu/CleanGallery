@@ -3,11 +3,13 @@ package com.hucet.clean.gallery.gallery.fragment
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.app.Fragment
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.activity.MainActivity
@@ -48,6 +50,7 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         initRecyclerView()
         requestFetch(readOnlyFunction.invoke())
     }
@@ -57,13 +60,14 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
         presenter.fetchItems(curPath, readOnlyConfigs)
     }
 
-    private val onGalleryClicked: (Basic) -> Unit = {
-        when (it) {
+    private val onGalleryClicked: (Basic, ImageView?) -> Unit = { basic: Basic, imageView: ImageView? ->
+        when (basic) {
             is Medium -> {
-                (activity as MainActivity)?.onGalleryClicked.invoke(it)
+                ViewCompat.setTransitionName(imageView, basic.name)
+                (activity as MainActivity)?.onGalleryClicked.invoke(basic, imageView)
             }
             is Directory -> {
-                curPath = it.path
+                curPath = basic.path
                 adapter.clearItems()
                 requestFetch(readOnlyFunction.invoke())
             }

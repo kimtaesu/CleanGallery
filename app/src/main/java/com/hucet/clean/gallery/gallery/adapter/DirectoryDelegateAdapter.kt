@@ -45,7 +45,7 @@ class DirectoryDelegateAdapter @Inject constructor(val glideRequests: GlideReque
         val name: TextView = view.findViewById(R.id.dir_name)
         val path: TextView = view.findViewById(R.id.dir_path)
         val count: TextView = view.findViewById(R.id.dir_count)
-        val thumbnail: ImageView = view.findViewById(R.id.dir_thumbnail)
+        val thumbnail: ImageView = view.findViewById(R.id.thumbnail)
     }
 
 }
