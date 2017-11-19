@@ -7,10 +7,7 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.afollestad.materialdialogs.MaterialDialog
 import com.hucet.clean.gallery.R
-import com.hucet.clean.gallery.config.GIFS
-import com.hucet.clean.gallery.config.IMAGES
-import com.hucet.clean.gallery.config.ReadOnlyConfigs
-import com.hucet.clean.gallery.config.VIDEOS
+import com.hucet.clean.gallery.config.*
 import com.hucet.clean.gallery.gallery.mapper.DialogRadioItemMapper
 import com.hucet.clean.gallery.gallery.sort.ByOrder
 import com.hucet.clean.gallery.gallery.sort.SortOptionType
@@ -21,7 +18,7 @@ import com.hucet.clean.gallery.model.DialogRadioItem
  * Created by taesu on 2017-11-16.
  */
 fun AlertDialog.Builder.createSortDialog(readOnlyConfigs: ReadOnlyConfigs, callback: (SortOptionType) -> Unit): MaterialDialog {
-    val mapper = DialogRadioItemMapper()
+    val mapper = DialogRadioItemMapper.SortMapper()
     val v = LayoutInflater.from(context).inflate(R.layout.dialog_sorting, null)
     val items = mapper.map(context, readOnlyConfigs)
     val sortItems = items[SortOptionType.KEY]!!
@@ -54,46 +51,26 @@ private fun addRadioChilden(radioGroup: RadioGroup, radioItems: List<DialogRadio
 }
 
 
-fun AlertDialog.Builder.createFilterDialog(configFilter: Int, fp: (Int) -> Unit): MaterialDialog {
-    val filterConfigMap = getFilterMap(context, configFilter)
+fun AlertDialog.Builder.createFilterDialog(readOnlyConfigs: ReadOnlyConfigs, fp: (Int) -> Unit): MaterialDialog {
+    val mapper = DialogRadioItemMapper.FilterMapper()
+    val resultMap = mapper.map(context, readOnlyConfigs)
+    val listItem = resultMap.values.flatMap { it }
     val callback = MaterialDialog.ListCallbackMultiChoice { dialog, which, text ->
-        val filterType = which?.sumBy {
-            filterConfigMap[it]?.bitAtt!!
+        val filterType = which.sumBy { which ->
+            listItem
+                    .first { it.index == which }
+                    .bitAtt
         }
-        fp.invoke(filterType!!)
+        fp.invoke(filterType)
         true
     }
+
+    val checkedIndexs = listItem.filter { it.isCheck }.map { it.index }.toTypedArray()
     return MaterialDialog.Builder(this.context)
             .title(R.string.dialog_filter_title)
-            .items(filterConfigMap.values.map { it.title })
-            .itemsCallbackMultiChoice(getFilterCheckArray(filterConfigMap), callback)
+            .items(listItem.map { it.title })
+            .itemsCallbackMultiChoice(checkedIndexs, callback)
             .positiveText(android.R.string.ok)
             .build()
 }
-
-private fun getFilterMap(context: Context, configFilter: Int): Map<Int, DialogRadioItem> {
-    return FilterType.values().mapIndexed { index, filterType ->
-        index to DialogRadioItem(index, filterType.getString(context), filterType.isCheck(configFilter), filterType.bitAtt)
-    }.toMap()
-}
-
-private fun getFilterCheckArray(filterConfigMap: Map<Int, DialogRadioItem>): Array<Int> {
-    return filterConfigMap.values.filter {
-        it.isCheck
-    }.map {
-        it.index
-    }.toTypedArray()
-}
-
-
-private enum class FilterType(private val stringId: Int, val bitAtt: Int) {
-    IMAGE(R.string.filter_images, IMAGES), VIDEO(R.string.filter_videos, VIDEOS), GIF(R.string.filter_gifs, GIFS);
-
-    fun getString(context: Context): String {
-        return context.getString(stringId)
-    }
-
-    fun isCheck(configFilter: Int) = configFilter and bitAtt > 0
-}
-
 

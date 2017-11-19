@@ -14,14 +14,14 @@ import org.junit.Assert.*
  */
 class OrderedFilterContextTest : SubjectSpek<OrderedFilterContext>({
     val filters = setOf(
-            HiddenFileFilter(mock()),
-            HiddenFileFilter(mock()),
-            HiddenFileFilter(mock()),
-            HiddenFileFilter(mock()),
-            HiddenFileFilter(mock()),
-            ImageVideoGifFilter(mock()),
-            HiddenFileFilter(mock())
-            )
+            HiddenFileFilter(),
+            HiddenFileFilter(),
+            HiddenFileFilter(),
+            HiddenFileFilter(),
+            HiddenFileFilter(),
+            ImageVideoGifFilter(),
+            HiddenFileFilter()
+    )
 
     val correctFilterNames = setOf(
             ImageVideoGifFilter::class

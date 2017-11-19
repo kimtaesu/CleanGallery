@@ -74,7 +74,7 @@ fun mockFilters(isFilters: BooleanArray): Set<MediaTypeFilter> {
     val mocks = HashSet<MediaTypeFilter>()
     isFilters.forEach {
         val mock = mock<MediaTypeFilter>()
-        whenever(mock.filterd(any(), any())).thenReturn(it)
+        whenever(mock.filterd(any(), any(), any())).thenReturn(it)
         mocks.add(mock)
     }
     return mocks

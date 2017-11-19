@@ -3,6 +3,7 @@ package com.hucet.clean.gallery.datasource.local
 import android.content.Context
 import android.database.Cursor
 import android.provider.MediaStore
+import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.extension.getFilenameFromPath
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter.Companion.FILTERED
@@ -23,9 +24,9 @@ class MediaFetcher constructor(private val context: Context,
         return MediaProvider().query(context, curPath, sortOption)
     }
 
-    fun isFilter(filters: OrderedFilterContext, medium: Medium, noMediaFolders: Set<String>): Boolean {
+    private fun isFilter(filters: OrderedFilterContext, medium: Medium, noMediaFolders: Set<String>, readOnlyConfigs: ReadOnlyConfigs): Boolean {
         val isFilter = filters.iterator().any {
-            it.filterd(medium, noMediaFolders) == FILTERED
+            it.filterd(medium, noMediaFolders, readOnlyConfigs) == FILTERED
         }
         if (isFilter)
             return FILTERED
@@ -33,7 +34,7 @@ class MediaFetcher constructor(private val context: Context,
     }
 
 
-    fun parseCursor(cur: Cursor?, noMediaFolders: Set<String>): List<Medium> {
+    fun parseCursor(cur: Cursor?, noMediaFolders: Set<String>, readOnlyConfigs: ReadOnlyConfigs): List<Medium> {
         cur ?: return emptyList()
         val curMedia = ArrayList<Medium>()
         cur.use {
@@ -47,7 +48,7 @@ class MediaFetcher constructor(private val context: Context,
                         val dateTaken = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN))
                         val dateModified = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED))
                         val medium = Medium(id, filename, path, dateModified, dateTaken, size, MediaTypeHelper.isVideo(filename))
-                        if (isFilter(orderedFilter, medium, noMediaFolders) == MediaTypeFilter.FILTERED)
+                        if (isFilter(orderedFilter, medium, noMediaFolders, readOnlyConfigs) == MediaTypeFilter.FILTERED)
                             continue
 
                         curMedia.add(medium)

@@ -28,7 +28,7 @@ class DialogListItemMapperTest : SubjectSpek<DialogRadioItemMapper>({
     given("a dialogListItemMapper")
     {
         subject {
-            DialogRadioItemMapper()
+            DialogRadioItemMapper.SortMapper()
         }
         on("directory check item")
         {
@@ -91,6 +91,7 @@ class DialogListItemMapperTest : SubjectSpek<DialogRadioItemMapper>({
                 checkOrder `should equal` order
             }
         }
+
     }
 })
 

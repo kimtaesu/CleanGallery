@@ -22,7 +22,6 @@ enum class SortOptionType(val option: String, val title: Int, val bitAttr: Int) 
     private var orderBy: ByOrder = ByOrder.BY_DESC
 
     fun media(categoryMode: CategoryMode): String {
-// TODO TEst code
         if (categoryMode == CategoryMode.DATE)
             return "${BY_MODIFIED.option} ${orderBy.option}"
         return "${this.option} ${orderBy.option}"

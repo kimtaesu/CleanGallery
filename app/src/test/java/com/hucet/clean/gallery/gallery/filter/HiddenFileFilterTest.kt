@@ -3,6 +3,7 @@ package com.hucet.clean.gallery.gallery.filter
 import com.google.gson.Gson
 import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.fixture.MediumFixture
+import com.hucet.clean.gallery.fixture.ReadOnlyConfigsFixture
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import org.amshove.kluent.`should be`
@@ -24,16 +25,16 @@ class HiddenFileFilterTest : SubjectSpek<HiddenFileFilter>({
     describe("a hiddenFileFilter1")
     {
         subject {
-            HiddenFileFilter(mockConfig(true))
+            HiddenFileFilter()
         }
         context("config showHidden [true] ")
         {
             val result = test.filter {
-                !subject.filterd(it, noMediaData)
+                !subject.filterd(it, noMediaData, ReadOnlyConfigsFixture.mockReadOnlyConfigs(showHidden = true))
             }
             it("test == result")
             {
-                test  `should equal` result
+                test `should equal` result
             }
         }
 
@@ -41,11 +42,11 @@ class HiddenFileFilterTest : SubjectSpek<HiddenFileFilter>({
     describe("a hiddenFileFilter2")
     {
         subject {
-            HiddenFileFilter(mockConfig(false))
+            HiddenFileFilter()
         }
         context("config showHidden [false] ") {
             val result = test.filter {
-                !subject.filterd(it, noMediaData)
+                !subject.filterd(it, noMediaData, ReadOnlyConfigsFixture.mockReadOnlyConfigs(showHidden = false))
             }
             it("correct == result")
             {
@@ -56,9 +57,3 @@ class HiddenFileFilterTest : SubjectSpek<HiddenFileFilter>({
     }
 
 })
-
-fun mockConfig(showHidden: Boolean): ApplicationConfig {
-    val config = mock<ApplicationConfig>()
-    whenever(config.showHidden).thenReturn(showHidden)
-    return config
-}

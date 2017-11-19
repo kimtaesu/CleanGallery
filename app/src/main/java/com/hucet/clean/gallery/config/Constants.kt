@@ -15,6 +15,7 @@ val key_dir_sorting = "key_dir_sorting"
 val key_date_sorting = "key_date_sorting"
 
 // filterd media
+val NONE = 0
 val IMAGES = 1
 val VIDEOS = 2
 val GIFS = 4

@@ -24,7 +24,7 @@ class LocalDataSource constructor(
                 .map { noMediaFolder ->
                     Timber.d("GalleryPresenter getGalleries")
                     val cursor = mediaFetcher.query(curPath, readOnlyConfigs.getSortOptionType().media(readOnlyConfigs.getCategoryMode()))
-                    mediaFetcher.parseCursor(cursor, noMediaFolder)
+                    mediaFetcher.parseCursor(cursor, noMediaFolder, readOnlyConfigs)
                 }
     }
 }

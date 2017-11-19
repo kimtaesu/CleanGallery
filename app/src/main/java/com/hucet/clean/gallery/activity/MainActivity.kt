@@ -129,8 +129,8 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             true
         }
         R.id.action_filter -> {
-            AlertDialog.Builder(this).createFilterDialog(config.filterdType, {
-                config.filterdType = it
+            AlertDialog.Builder(this).createFilterDialog(readOnlyConfigs, {
+                readOnlyConfigs = config.setReadOnlyConfigs(this, it)
             }).show()
             true
         }

@@ -1,5 +1,6 @@
 package com.hucet.clean.gallery.gallery.filter
 
+import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.model.Medium
 
 /**
@@ -11,5 +12,5 @@ interface MediaTypeFilter {
         val NOT_FILTERED = false
     }
 
-    fun filterd(medium: Medium, noMedia: Set<String>): Boolean
+    fun filterd(medium: Medium, noMedia: Set<String>, readOnlyConfigs: ReadOnlyConfigs): Boolean
 }

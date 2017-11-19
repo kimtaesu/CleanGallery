@@ -13,7 +13,7 @@ import javax.inject.Inject
 class ApplicationConfig @Inject constructor(
         val application: Application
 ) {
-    var filterdType: Int = PreferenceHelper.defaultPrefs(application)[key_filter_media, VIDEOS or IMAGES or GIFS]
+    private var filterdType: Int = PreferenceHelper.defaultPrefs(application)[key_filter_media, VIDEOS or IMAGES or GIFS]
         set(value) {
             PreferenceHelper.defaultPrefs(application)[key_filter_media] = value
         }
@@ -75,7 +75,9 @@ class ApplicationConfig @Inject constructor(
         return ReadOnlyConfigs(
                 this.categoryMode,
                 this.viewModeType,
-                this.sortOptionType
+                this.sortOptionType,
+                this.filterdType,
+                this.showHidden
         )
     }
 
@@ -110,5 +112,12 @@ class ApplicationConfig @Inject constructor(
         if (mainActivity !is MainActivity)
             throw IllegalArgumentException()
     }
+
+    fun setReadOnlyConfigs(activity: MainActivity, filterBit: Int): ReadOnlyConfigs {
+        validateSetGetter(activity)
+        this.filterdType = filterBit
+        return getReadOnlyConfigs(activity)
+    }
+
 }
 
