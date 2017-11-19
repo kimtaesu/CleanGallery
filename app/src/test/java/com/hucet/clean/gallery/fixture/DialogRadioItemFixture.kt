@@ -9,13 +9,7 @@ import com.hucet.clean.gallery.model.DialogRadioItem
  * Created by taesu on 2017-11-14.
  */
 object DialogRadioItemFixture {
-    private val DEFAULT_ORDER: List<DialogRadioItem>
-        get() {
-            return listOf(
-
-            )
-        }
-    private val DEFAULT: Map<String, List<DialogRadioItem>>
+    private val TEST_DIRECTORY: Map<String, List<DialogRadioItem>>
         get() {
             return mapOf(
                     SortOptionType.KEY to
@@ -51,34 +45,71 @@ object DialogRadioItemFixture {
                                             bitAttr = SORT_BY_SIZE
                                     )
                             ),
+                    TEST_ORDER
+            )
+        }
 
-                    ByOrder.KEY to
+
+    private val TEST_DATE: Map<String, List<DialogRadioItem>>
+        get() {
+            return mapOf(
+                    SortOptionType.KEY to
                             listOf(
                                     dialog(
                                             index = 0,
-                                            title = "ASC",
+                                            title = "Daily",
                                             isCheck = false,
-                                            bitAttr = SORT_ASCENDING
+                                            bitAttr = SORT_BY_DAILY
                                     ),
                                     dialog(
                                             index = 1,
-                                            title = "DESC",
+                                            title = "Monthly",
                                             isCheck = false,
-                                            bitAttr = SORT_DESCENDING
-                                    ))
+                                            bitAttr = SORT_BY_MONTHLY
+                                    ),
+                                    dialog(
+                                            index = 2,
+                                            title = "Yearly",
+                                            isCheck = false,
+                                            bitAttr = SORT_BY_YEARLY
+                                    )
+                            ),
+
+                    TEST_ORDER
 
 
             )
         }
 
-    fun getCorrectFromCheckItems(checkedSortItem: SortOptionType, checkedOrderItem: ByOrder): TestDialogItem {
-        val items = DEFAULT
+    private val TEST_ORDER = ByOrder.KEY to
+            listOf(
+                    dialog(
+                            index = 0,
+                            title = "ASC",
+                            isCheck = false,
+                            bitAttr = SORT_ASCENDING
+                    ),
+                    dialog(
+                            index = 1,
+                            title = "DESC",
+                            isCheck = false,
+                            bitAttr = SORT_DESCENDING
+                    ))
+
+
+    fun getCorrectFromCheckItems(checkedSortItem: SortOptionType): TestDialogItem {
+        val items = if (SortOptionType.isDateType(checkedSortItem))
+            TEST_DATE
+        else
+            TEST_DIRECTORY
+
         return TestDialogItem(
                 items[SortOptionType.KEY]?.first {
                     it.bitAtt and checkedSortItem.bitAttr > 0
                 }?.copy(isCheck = true, title = "")!!,
+
                 items[ByOrder.KEY]?.first {
-                    it.bitAtt and checkedOrderItem.bitAttr > 0
+                    it.bitAtt and checkedSortItem.getOrder().bitAttr > 0
                 }?.copy(isCheck = true, title = "")!!
         )
     }
