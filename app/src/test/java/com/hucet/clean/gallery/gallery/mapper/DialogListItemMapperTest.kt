@@ -5,11 +5,13 @@ import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.config.SORT_BY_DATE_MODIFIED
 import com.hucet.clean.gallery.config.SORT_DESCENDING
 import com.hucet.clean.gallery.fixture.DialogRadioItemFixture
+import com.hucet.clean.gallery.fixture.ReadOnlyConfigsFixture
 import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.sort.ByOrder
 import com.hucet.clean.gallery.gallery.sort.ByOrder.*
 import com.hucet.clean.gallery.gallery.sort.SortOptionType
 import com.hucet.clean.gallery.gallery.sort.SortOptionType.BY_MODIFIED
+import com.hucet.clean.gallery.gallery.sort.SortOptionType.BY_PATH
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.whenever
 import org.amshove.kluent.`should equal`
@@ -31,14 +33,14 @@ class DialogListItemMapperTest : SubjectSpek<DialogRadioItemMapper>({
         }
         on("directory check item")
         {
-            val (sort, order) = DialogRadioItemFixture.getCorrectFromCheckItems(BY_MODIFIED, BY_DESC)
-            val dialogItems = subject.map(mockContext(),
-                    mockConfig(SortOptionType.get(SORT_BY_DATE_MODIFIED or SORT_DESCENDING)))
+            val (sort, order) = DialogRadioItemFixture.getCorrectFromCheckItems(BY_PATH, BY_DESC)
+            val dialogItems = subject.map(mockContext(), ReadOnlyConfigsFixture.readOnlyConfigs(CategoryMode.DIRECTORY, sortOptionType = BY_PATH))
 
             val checkedSortOption = dialogItems[SortOptionType.KEY]?.find { it.isCheck }
             val checkedOrder = dialogItems[ByOrder.KEY]?.find { it.isCheck }
             it("isCheck item must equal test_checked_item")
             {
+
                 checkedSortOption `should equal` sort
                 checkedOrder `should equal` order
             }
@@ -50,17 +52,4 @@ fun mockContext(): Context {
     val mock = mock<Context>()
     whenever(mock.getString(any())).thenReturn("")
     return mock
-}
-
-fun mockConfig(sortOptions: SortOptionType): ApplicationConfig {
-    val config = com.nhaarman.mockito_kotlin.mock<ApplicationConfig>()
-    if (SortOptionType.isDirecotryType(sortOptions)) {
-        whenever(config.sortOptionType).thenReturn(sortOptions)
-        whenever(config.categoryMode).thenReturn(CategoryMode.DIRECTORY)
-    } else {
-        whenever(config.sortOptionType).thenReturn(sortOptions)
-        whenever(config.categoryMode).thenReturn(CategoryMode.DATE)
-    }
-
-    return config
 }

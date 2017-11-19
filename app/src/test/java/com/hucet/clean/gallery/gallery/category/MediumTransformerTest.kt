@@ -1,6 +1,7 @@
 package com.hucet.clean.gallery.gallery.category
 
 import com.hucet.clean.gallery.config.ApplicationConfig
+import com.hucet.clean.gallery.fixture.ReadOnlyConfigsFixture
 import com.hucet.clean.gallery.gallery.sort.SortOptionType
 import com.nhaarman.mockito_kotlin.*
 import org.jetbrains.spek.api.dsl.given
@@ -16,18 +17,16 @@ val externalStoragePath = "ROOT"
 class MediumTransformerTest : SubjectSpek<MediumTransformer>({
     val dirMock by memoized { mock<DirClassifier>() }
     val dateMock by memoized { mock<DateClassifier>() }
-    val config by memoized { mock<ApplicationConfig>() }
     given("a mediumTransformer")
     {
         subject {
-            TestMediumTransformer(dateMock, dirMock, config)
+            TestMediumTransformer(dateMock, dirMock)
         }
 
         on("a dateClaasifier call 검증 ")
         {
-            whenever(config.categoryMode).thenReturn(CategoryMode.DATE)
-            whenever(config.sortOptionType).thenReturn(SortOptionType.BY_DAILY)
-            subject.transform(listOf(), externalStoragePath)
+            val mock = ReadOnlyConfigsFixture.mockReadOnlyConfigs(CategoryMode.DATE, sortOptionType = SortOptionType.BY_DAILY)
+            subject.transform(listOf(), externalStoragePath, mock)
             it("one calll dateCalssify, never call dirClassify")
             {
 
@@ -37,9 +36,9 @@ class MediumTransformerTest : SubjectSpek<MediumTransformer>({
         }
         on("a dirClaasifier call 검증 ")
         {
-            whenever(config.categoryMode).thenReturn(CategoryMode.DIRECTORY)
-            whenever(config.sortOptionType).thenReturn(SortOptionType.BY_NAME)
-            subject.transform(listOf(), externalStoragePath)
+            val mock = ReadOnlyConfigsFixture.mockReadOnlyConfigs(CategoryMode.DIRECTORY, sortOptionType = SortOptionType.BY_NAME)
+            subject.transform(listOf(), externalStoragePath, mock)
+
             it("one calll dirClassify, never call dateClassify")
             {
                 verify(dirMock, times(1)).classify(any(), any())
@@ -48,9 +47,8 @@ class MediumTransformerTest : SubjectSpek<MediumTransformer>({
         }
         on("a medium call 검증")
         {
-            whenever(config.categoryMode).thenReturn(CategoryMode.DIRECTORY)
-            whenever(config.sortOptionType).thenReturn(SortOptionType.BY_NAME)
-            subject.transform(listOf(), "Not matchs to the external storae")
+            val mock = ReadOnlyConfigsFixture.mockReadOnlyConfigs(CategoryMode.DIRECTORY, sortOptionType = SortOptionType.BY_NAME)
+            subject.transform(listOf(), "Not matchs to the external storae", mock)
             it("never calll dirClassify, never call dateClassify")
             {
                 verify(dirMock, never()).classify(any(), any())
@@ -61,8 +59,7 @@ class MediumTransformerTest : SubjectSpek<MediumTransformer>({
 })
 
 class TestMediumTransformer(dateClassifier: DateClassifier,
-                            dirClassifier: DirClassifier,
-                            config: ApplicationConfig) : MediumTransformer(dateClassifier, dirClassifier, config) {
+                            dirClassifier: DirClassifier) : MediumTransformer(dateClassifier, dirClassifier) {
     override fun isExternalStorage(curPath: String): Boolean {
         return curPath == externalStoragePath
     }

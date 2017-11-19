@@ -54,7 +54,6 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
 
 
     private fun requestFetch(readOnlyConfigs: ReadOnlyConfigs) {
-        println("!!!!!!!!!!!! requestFetch ${readOnlyConfigs.getCategoryMode()}")
         presenter.fetchItems(curPath, readOnlyConfigs)
     }
 

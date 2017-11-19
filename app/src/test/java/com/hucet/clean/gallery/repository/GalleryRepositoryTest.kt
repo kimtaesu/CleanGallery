@@ -2,6 +2,7 @@ package com.hucet.clean.gallery.repository
 
 import com.hucet.clean.gallery.datasource.local.LocalDataSource
 import com.hucet.clean.gallery.fixture.MediumFixture
+import com.hucet.clean.gallery.fixture.ReadOnlyConfigsFixture
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
@@ -24,8 +25,8 @@ class GalleryRepositoryTest : SubjectSpek<GalleryRepository>({
         }
         on("a getGalleries subscriber")
         {
-            whenever(mockLocalDataSource.getGalleries(any())).thenReturn(Flowable.just(test))
-            val testSubscriber = subject.getGalleries("").test()
+            whenever(mockLocalDataSource.getGalleries(any(), any())).thenReturn(Flowable.just(test))
+            val testSubscriber = subject.getGalleries("", ReadOnlyConfigsFixture.readOnlyConfigs()).test()
             it("testSubscriber status [no errors, complete]")
             {
                 testSubscriber.assertNoErrors()

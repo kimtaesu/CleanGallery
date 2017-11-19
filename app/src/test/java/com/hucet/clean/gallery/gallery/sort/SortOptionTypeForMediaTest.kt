@@ -23,7 +23,7 @@ class SortOptionTypeForMediaTest : Spek({
 
     describe("sortOption [SORT_BY_NAME or SORT_DESCENDING]")
     {
-        val sortString = SortOptionType.get(SORT_BY_NAME or SORT_DESCENDING).media()
+        val sortString = SortOptionType.getFromSortOrderBit(SORT_BY_NAME or SORT_DESCENDING).media(CategoryMode.DIRECTORY)
         it("sortString == _display_name DESC")
         {
             sortString `should equal to` "${MediaStore.Images.Media.DISPLAY_NAME} ${desc}"
@@ -31,7 +31,7 @@ class SortOptionTypeForMediaTest : Spek({
     }
     describe("sortOption [SORT_BY_NAME or SORT_ASCENDING]")
     {
-        val sortString = SortOptionType.get(SORT_BY_NAME or SORT_ASCENDING).media()
+        val sortString = SortOptionType.getFromSortOrderBit(SORT_BY_NAME or SORT_ASCENDING).media(CategoryMode.DIRECTORY)
         it("sortString == _display_name ASC")
         {
             sortString `should equal to` "${MediaStore.Images.Media.DISPLAY_NAME} ${asc}"
@@ -39,7 +39,7 @@ class SortOptionTypeForMediaTest : Spek({
     }
     describe("sortOption [SORT_BY_DATE_MODIFIED or SORT_DESCENDING]")
     {
-        val sortString = SortOptionType.get(SORT_BY_DATE_MODIFIED or SORT_DESCENDING).media()
+        val sortString = SortOptionType.getFromSortOrderBit(SORT_BY_DATE_MODIFIED or SORT_DESCENDING).media(CategoryMode.DIRECTORY)
         it("sortString == date_modified DESC")
         {
             sortString `should equal to` "${MediaStore.Images.Media.DATE_MODIFIED} ${desc}"
@@ -47,7 +47,7 @@ class SortOptionTypeForMediaTest : Spek({
     }
     describe("sortOption [SORT_BY_DATE_MODIFIED or SORT_ASCENDING]")
     {
-        val sortString = SortOptionType.get(SORT_BY_DATE_MODIFIED or SORT_ASCENDING).media()
+        val sortString = SortOptionType.getFromSortOrderBit(SORT_BY_DATE_MODIFIED or SORT_ASCENDING).media(CategoryMode.DIRECTORY)
         it("sortString == date_modified ASC")
         {
             sortString `should equal to` "${MediaStore.Images.Media.DATE_MODIFIED} ${asc}"
@@ -55,7 +55,7 @@ class SortOptionTypeForMediaTest : Spek({
     }
     describe("sortOption [SORT_BY_SIZE or SORT_DESCENDING]")
     {
-        val sortString = SortOptionType.get(SORT_BY_SIZE or SORT_DESCENDING).media()
+        val sortString = SortOptionType.getFromSortOrderBit(SORT_BY_SIZE or SORT_DESCENDING).media(CategoryMode.DIRECTORY)
         it("sortString == _size DESC")
         {
             sortString `should equal to` "${MediaStore.Images.Media.SIZE} ${desc}"
@@ -63,7 +63,7 @@ class SortOptionTypeForMediaTest : Spek({
     }
     describe("sortOption [SORT_BY_SIZE or SORT_ASCENDING]")
     {
-        val sortString = SortOptionType.get(SORT_BY_SIZE or SORT_ASCENDING).media()
+        val sortString = SortOptionType.getFromSortOrderBit(SORT_BY_SIZE or SORT_ASCENDING).media(CategoryMode.DIRECTORY)
         it("sortString == _size ASC")
         {
             sortString `should equal to` "${MediaStore.Images.Media.SIZE} ${asc}"
@@ -71,7 +71,7 @@ class SortOptionTypeForMediaTest : Spek({
     }
     describe("sortOption [SORT_BY_PATH or SORT_DESCENDING]")
     {
-        val sortString = SortOptionType.get(SORT_BY_PATH or SORT_DESCENDING).media()
+        val sortString = SortOptionType.getFromSortOrderBit(SORT_BY_PATH or SORT_DESCENDING).media(CategoryMode.DIRECTORY)
         it("sortString == _data DESC")
         {
             sortString `should equal to` "${MediaStore.Images.Media.DATA} ${desc}"
@@ -79,7 +79,7 @@ class SortOptionTypeForMediaTest : Spek({
     }
     describe("sortOption [SORT_BY_PATH or SORT_ASCENDING]")
     {
-        val sortString = SortOptionType.get(SORT_BY_PATH or SORT_ASCENDING).media()
+        val sortString = SortOptionType.getFromSortOrderBit(SORT_BY_PATH or SORT_ASCENDING).media(CategoryMode.DIRECTORY)
         it("sortString == _data ASC")
         {
             sortString `should equal to` "${MediaStore.Images.Media.DATA} ${asc}"
@@ -87,7 +87,7 @@ class SortOptionTypeForMediaTest : Spek({
     }
     describe("sortOption [SORT_BY_DATE_TAKEN or SORT_DESCENDING]")
     {
-        val sortString = SortOptionType.get(SORT_BY_DATE_TAKEN or SORT_DESCENDING).media()
+        val sortString = SortOptionType.getFromSortOrderBit(SORT_BY_DATE_TAKEN or SORT_DESCENDING).media(CategoryMode.DIRECTORY)
         it("sortString == datetaken DESC")
         {
             sortString `should equal to` "${MediaStore.Images.Media.DATE_TAKEN} ${desc}"
@@ -95,10 +95,27 @@ class SortOptionTypeForMediaTest : Spek({
     }
     describe("sortOption [SORT_BY_DATE_TAKEN or SORT_ASCENDING]")
     {
-        val sortString = SortOptionType.get(SORT_BY_DATE_TAKEN or SORT_ASCENDING).media()
+        val sortString = SortOptionType.getFromSortOrderBit(SORT_BY_DATE_TAKEN or SORT_ASCENDING).media(CategoryMode.DIRECTORY)
         it("sortString == datetaken ASC")
         {
             sortString `should equal to` "${MediaStore.Images.Media.DATE_TAKEN} ${asc}"
+        }
+    }
+
+    describe("date sortOption [SORT_BY_DATE_TAKEN or SORT_ASCENDING]")
+    {
+        val sortString = SortOptionType.getFromSortOrderBit(SORT_BY_DATE_TAKEN or SORT_ASCENDING).media(CategoryMode.DATE)
+        it("sortString == DATE_MODIFIED ASC")
+        {
+            sortString `should equal to` "${MediaStore.Images.Media.DATE_MODIFIED} ${asc}"
+        }
+    }
+    describe("date sortOption [SORT_BY_DATE_TAKEN or SORT_ASCENDING]")
+    {
+        val sortString = SortOptionType.getFromSortOrderBit(SORT_BY_DATE_TAKEN or SORT_DESCENDING).media(CategoryMode.DATE)
+        it("sortString == DATE_MODIFIED DESC")
+        {
+            sortString `should equal to` "${MediaStore.Images.Media.DATE_MODIFIED} ${desc}"
         }
     }
 })
