@@ -21,13 +21,13 @@ class ApplicationConfig @Inject constructor(
         get() {
             when (categoryMode) {
                 CategoryMode.DATE -> {
-                    val bitSort = PreferenceHelper.defaultPrefs(application)[key_date_sorting, SORT_BY_DAILY]
+                    val bitSort = PreferenceHelper.defaultPrefs(application)[key_date_sorting, SORT_BY_DAILY or SORT_DESCENDING]
                     val sortType = SortOptionType.get(bitSort)
                     sortType validate categoryMode
                     return sortType
                 }
                 CategoryMode.DIRECTORY -> {
-                    val bitSort = PreferenceHelper.defaultPrefs(application)[key_dir_sorting, SORT_BY_DAILY]
+                    val bitSort = PreferenceHelper.defaultPrefs(application)[key_dir_sorting, SORT_BY_DATE_MODIFIED or SORT_DESCENDING]
                     val sortType = SortOptionType.get(bitSort)
                     sortType validate categoryMode
                     return sortType

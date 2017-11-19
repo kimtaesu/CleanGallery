@@ -4,7 +4,6 @@ import android.provider.MediaStore
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.config.*
 import com.hucet.clean.gallery.gallery.category.CategoryMode
-import com.hucet.clean.gallery.model.DialogRadioItem
 
 /**
  * Created by taesu on 2017-11-17.
@@ -84,8 +83,6 @@ enum class SortOptionType(val option: String, val title: Int, val bitAttr: Int) 
             }
         }
     }
-
-
 }
 
 enum class ByOrder(val option: String, val title: Int, val bitAttr: Int) {
@@ -94,10 +91,5 @@ enum class ByOrder(val option: String, val title: Int, val bitAttr: Int) {
 
     companion object {
         val KEY = ByOrder::class.java.name
-        fun getFromDialogItem(radioItem: DialogRadioItem?): ByOrder {
-            return ByOrder.values().first {
-                it.bitAttr == radioItem?.bitAtt
-            }
-        }
     }
 }
