@@ -12,5 +12,4 @@ enum class CategoryMode {
             DATE -> DIRECTORY
         }
     }
-
 }

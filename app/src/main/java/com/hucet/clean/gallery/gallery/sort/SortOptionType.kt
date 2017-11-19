@@ -4,6 +4,7 @@ import android.provider.MediaStore
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.config.*
 import com.hucet.clean.gallery.gallery.category.CategoryMode
+import com.hucet.clean.gallery.model.DialogRadioItem
 
 /**
  * Created by taesu on 2017-11-17.
@@ -19,8 +20,40 @@ enum class SortOptionType(val option: String, val title: Int, val bitAttr: Int) 
     BY_MONTHLY("yyyy-MM", R.string.sort_option_monthly, SORT_BY_MONTHLY),
     BY_YEARLY("yyyy", R.string.sort_option_yearly, SORT_BY_YEARLY);
 
+    private var orderBy: ByOrder = ByOrder.BY_DESC
+
+    fun media(): String {
+        return "${this.option} ${orderBy.option}"
+    }
+
+    fun bitWithOrder(): Int {
+        return this.bitAttr + orderBy.bitAttr
+    }
+
+    fun getOrder(): ByOrder {
+        return orderBy
+    }
+
+    infix fun order(bit: Int): SortOptionType {
+        orderBy = ByOrder.values().first {
+            it.bitAttr and bit > 0
+        }
+        return this
+    }
+
+    infix fun order(order: ByOrder): SortOptionType {
+        orderBy = order
+        return this
+    }
+
+    fun isDesc(): Boolean {
+        if (orderBy.bitAttr and SORT_ASCENDING > 0)
+            return false
+        return true
+    }
 
     companion object {
+        val KEY = SortOptionType::class.java.name
         val DIRECTORY_TYPES = listOf(BY_NAME, BY_MODIFIED, BY_TAKEN, BY_PATH, BY_SIZE)
         val DATE_TYPES = listOf(BY_DAILY, BY_MONTHLY, BY_YEARLY)
         fun isDirecotryType(sortType: SortOptionType): Boolean {
@@ -30,12 +63,13 @@ enum class SortOptionType(val option: String, val title: Int, val bitAttr: Int) 
         fun isDateType(sortType: SortOptionType): Boolean {
             return sortType in DATE_TYPES
         }
-    }
 
-    infix fun byOrder(sort: Int): ByOrder {
-        val order = ByOrder.values().find { sort and it.bitAttr > 0 }
-        order ?: throw IllegalArgumentException()
-        return order
+        fun get(bit: Int): SortOptionType {
+            val sortType = SortOptionType.values().first {
+                it.bitAttr and bit > 0
+            }
+            return sortType order bit
+        }
     }
 
     infix fun validate(categoryMode: CategoryMode) {
@@ -50,15 +84,20 @@ enum class SortOptionType(val option: String, val title: Int, val bitAttr: Int) 
             }
         }
     }
+
+
 }
 
 enum class ByOrder(val option: String, val title: Int, val bitAttr: Int) {
     BY_ASC("ASC", R.string.sort_option_ascending, SORT_ASCENDING),
-    BY_DESC("DESC", R.string.sort_option_descending, SORT_DESCENDING)
-}
+    BY_DESC("DESC", R.string.sort_option_descending, SORT_DESCENDING);
 
-data class SortOptions(val sortOptionType: SortOptionType, val byOrder: ByOrder) {
-    fun getSortOptionString(): String {
-        return "${sortOptionType.option} ${byOrder.option}"
+    companion object {
+        val KEY = ByOrder::class.java.name
+        fun getFromDialogItem(radioItem: DialogRadioItem?): ByOrder {
+            return ByOrder.values().first {
+                it.bitAttr == radioItem?.bitAtt
+            }
+        }
     }
 }

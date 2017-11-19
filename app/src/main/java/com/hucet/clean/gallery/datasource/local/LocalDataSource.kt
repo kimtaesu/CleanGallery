@@ -2,9 +2,6 @@ package com.hucet.clean.gallery.datasource.local
 
 import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.datasource.GalleryDataSource
-import com.hucet.clean.gallery.extension.isExternalStorageDir
-import com.hucet.clean.gallery.gallery.category.CategoryMode
-import com.hucet.clean.gallery.gallery.sort.MediaSortOptions
 import com.hucet.clean.gallery.model.Medium
 import io.reactivex.Flowable
 import timber.log.Timber
@@ -27,12 +24,8 @@ class LocalDataSource constructor(
                 }
                 .map { noMediaFolder ->
                     Timber.d("GalleryPresenter getGalleries")
-                    val cursor = mediaFetcher.query(curPath, MediaSortOptions.getSortOptions(config))
+                    val cursor = mediaFetcher.query(curPath, config.sortOptionType.media())
                     mediaFetcher.parseCursor(cursor, noMediaFolder)
                 }
     }
-}
-
-fun isDirectoryRoot(curPath: String, config: ApplicationConfig): Boolean {
-    return curPath.isExternalStorageDir() && config.categoryMode == CategoryMode.DIRECTORY
 }

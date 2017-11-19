@@ -15,8 +15,8 @@ import dagger.Provides
 class ClassifierModule {
     @Provides
     @PerFragment
-    fun provideDateClassifier(applicationConfig: ApplicationConfig): DateClassifier {
-        return DateClassifier(applicationConfig)
+    fun provideDateClassifier(): DateClassifier {
+        return DateClassifier()
     }
 
 
@@ -28,7 +28,7 @@ class ClassifierModule {
 
     @Provides
     @PerFragment
-    fun provideMediumTransformer(date: DateClassifier, dir: DirClassifier, config : ApplicationConfig): MediumTransformer {
+    fun provideMediumTransformer(date: DateClassifier, dir: DirClassifier, config: ApplicationConfig): MediumTransformer {
         return MediumTransformer(date, dir, config)
     }
 

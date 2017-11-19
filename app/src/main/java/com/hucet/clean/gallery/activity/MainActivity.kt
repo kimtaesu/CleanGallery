@@ -1,34 +1,34 @@
 package com.hucet.clean.gallery.activity
 
 import android.Manifest
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.widget.Toast
-import com.hucet.clean.gallery.R
-import com.hucet.clean.gallery.gallery.fragment.GalleryDetailFragment
-import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment
-import com.hucet.clean.gallery.model.Medium
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
-import permissions.dispatcher.*
-import timber.log.Timber
-import javax.inject.Inject
-import android.content.Intent
-import android.net.Uri
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
+import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.activity.cache.MemoryCacheDrawable
 import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.extension.createFilterDialog
 import com.hucet.clean.gallery.extension.createSortDialog
 import com.hucet.clean.gallery.extension.startAsAnimation
 import com.hucet.clean.gallery.gallery.category.CategoryMode
+import com.hucet.clean.gallery.gallery.fragment.GalleryDetailFragment
+import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
+import com.hucet.clean.gallery.model.Medium
 import com.hucet.clean.gallery.preference.SettingActivity
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_main.*
+import permissions.dispatcher.*
+import timber.log.Timber
+import javax.inject.Inject
 
 
 @RuntimePermissions
@@ -117,7 +117,9 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             true
         }
         R.id.action_sort -> {
-            AlertDialog.Builder(this).createSortDialog(config).show()
+            AlertDialog.Builder(this).createSortDialog(config, {
+                config.sortOptionType = it
+            }).show()
             true
         }
         R.id.action_filter -> {

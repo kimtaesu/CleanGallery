@@ -4,7 +4,6 @@ import android.app.Application
 import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
 import com.hucet.clean.gallery.gallery.sort.SortOptionType
-import com.hucet.clean.gallery.gallery.sort.SortOptions
 import javax.inject.Inject
 
 /**
@@ -18,29 +17,33 @@ class ApplicationConfig @Inject constructor(
             PreferenceHelper.defaultPrefs(application)[key_filter_media] = value
         }
 
-    fun getDirSortType(): SortOptions {
-        //         TODO each sort
-//        return PreferenceHelper.defaultPrefs(application)[key_dir_sorting + path.toLowerCase(), SORT_BY_DATE_MODIFIED or SORT_DESCENDING]
-        val sort = PreferenceHelper.defaultPrefs(application)[key_dir_sorting, SORT_BY_DATE_MODIFIED or SORT_DESCENDING]
-        return wrapSortOptionType(sort)
-    }
-
-
-    fun getDateSortType(): SortOptions {
-//         TODO each sort
-//        val sort = PreferenceHelper.defaultPrefs(application)[key_date_sorting + path.toLowerCase(), SORT_BY_DAILY]
-        val sort = PreferenceHelper.defaultPrefs(application)[key_date_sorting, SORT_BY_DAILY]
-        return wrapSortOptionType(sort)
-    }
-
-    private fun wrapSortOptionType(bitSort: Int): SortOptions {
-        val sortOptionType = SortOptionType.values().first {
-            bitSort and it.bitAttr > 0
+    var sortOptionType: SortOptionType
+        get() {
+            when (categoryMode) {
+                CategoryMode.DATE -> {
+                    val bitSort = PreferenceHelper.defaultPrefs(application)[key_date_sorting, SORT_BY_DAILY]
+                    val sortType = SortOptionType.get(bitSort)
+                    sortType validate categoryMode
+                    return sortType
+                }
+                CategoryMode.DIRECTORY -> {
+                    val bitSort = PreferenceHelper.defaultPrefs(application)[key_dir_sorting, SORT_BY_DAILY]
+                    val sortType = SortOptionType.get(bitSort)
+                    sortType validate categoryMode
+                    return sortType
+                }
+            }
         }
-        sortOptionType validate categoryMode
-        val byOrder = sortOptionType byOrder bitSort
-        return SortOptions(sortOptionType, byOrder)
-    }
+        set(value) {
+            when (categoryMode) {
+                CategoryMode.DATE -> {
+                    PreferenceHelper.defaultPrefs(application)[key_date_sorting] = value.bitWithOrder()
+                }
+                CategoryMode.DIRECTORY -> {
+                    PreferenceHelper.defaultPrefs(application)[key_dir_sorting] = value.bitWithOrder()
+                }
+            }
+        }
 
     val showHidden: Boolean
         get() {

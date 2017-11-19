@@ -1,14 +1,14 @@
 package com.hucet.clean.gallery.gallery.category
 
-import com.hucet.clean.gallery.config.ApplicationConfig
+import com.hucet.clean.gallery.config.*
 import com.hucet.clean.gallery.fixture.MediumFixture
+import com.hucet.clean.gallery.fixture.SortMediumFixture
 import com.hucet.clean.gallery.fixture.TestData
 import com.hucet.clean.gallery.gallery.adapter.GalleryType
 import com.hucet.clean.gallery.gallery.sort.ByOrder
 import com.hucet.clean.gallery.gallery.sort.ByOrder.*
 import com.hucet.clean.gallery.gallery.sort.SortOptionType
 import com.hucet.clean.gallery.gallery.sort.SortOptionType.*
-import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.hucet.clean.gallery.model.Date
 import com.hucet.clean.gallery.model.Medium
 import com.nhaarman.mockito_kotlin.mock
@@ -26,13 +26,22 @@ import org.jetbrains.spek.subject.SubjectSpek
 fun getTestDate(type: SortOptionType): TestData {
     when (type) {
         BY_DAILY -> {
-            return MediumFixture.TEST_CATEGORY_DAILY
+            return if (type.isDesc())
+                SortMediumFixture.TEST_CATEGORY_DAILY_DESC
+            else
+                SortMediumFixture.TEST_CATEGORY_DAILY_ASC
         }
         BY_MONTHLY -> {
-            return MediumFixture.TEST_CATEGORY_MONTHLY
+            return if (type.isDesc())
+                SortMediumFixture.TEST_CATEGORY_MONTHLY_DESC
+            else
+                SortMediumFixture.TEST_CATEGORY_MONTHLY_ASC
         }
         BY_YEARLY -> {
-            return MediumFixture.TEST_CATEGORY_YEARLY
+            return if (type.isDesc())
+                SortMediumFixture.TEST_CATEGORY_YEARLY_DESC
+            else
+                SortMediumFixture.TEST_CATEGORY_YEARLY_ASC
         }
         else -> {
             throw IllegalArgumentException()
@@ -40,8 +49,8 @@ fun getTestDate(type: SortOptionType): TestData {
     }
 }
 
-fun classify(d: DateClassifier, test: List<Medium>): List<Date> {
-    var result = d.classify(test)
+fun classify(d: DateClassifier, sortType: SortOptionType, test: List<Medium>): List<Date> {
+    var result = d.classify(sortType, test)
     return result.filter {
         it.viewType == GalleryType.DATE
     }.map {
@@ -55,33 +64,46 @@ class DateClassifierTest : SubjectSpek<DateClassifier>({
     given("a dateClassifier")
     {
         subject {
-            DateClassifier(config)
+            DateClassifier()
         }
-        on("daily")
+        on("desc daily")
         {
-            val (test, correct) = getTestDate(BY_DAILY)
+            val (test, correct) = getTestDate(BY_DAILY order BY_DESC)
             correct as List<Date>
 
-            whenever(config.getDateSortType()).thenReturn(SortOptions(BY_DAILY, BY_DESC))
+            val sortType = SortOptionType.BY_DAILY order ByOrder.BY_DESC
+            var result = classify(subject, sortType, test)
 
-            var result = classify(subject, test)
-
-            it("daily [2016-01-01, 2017-02-23, 2017-11-06]")
+            it("daily [2017-11-06, 2017-02-23, 2016-01-01]")
             {
                 result.forEachIndexed { index, it ->
                     it.date `should equal to` correct[index].date
                 }
             }
         }
-        on("monthly")
+        on("asc daily")
         {
-            val (test, correct) = getTestDate(BY_MONTHLY)
+            val (test, correct) = getTestDate(BY_DAILY order BY_ASC)
             correct as List<Date>
 
-            whenever(config.getDateSortType()).thenReturn(SortOptions(BY_MONTHLY, BY_DESC))
+            val sortType = SortOptionType.BY_DAILY order ByOrder.BY_ASC
+            var result = classify(subject, sortType, test)
 
-            var result = classify(subject, test)
-            it("monthly [2016-01, 2017-02, 2017-11]")
+            it("daily [2017-11-06, 2017-02-23, 2016-01-01]")
+            {
+                result.forEachIndexed { index, it ->
+                    it.date `should equal to` correct[index].date
+                }
+            }
+        }
+        on("desc monthly")
+        {
+            val (test, correct) = getTestDate(BY_MONTHLY order BY_DESC)
+            correct as List<Date>
+
+            val sortType = SortOptionType.BY_MONTHLY order ByOrder.BY_DESC
+            var result = classify(subject, sortType, test)
+            it("monthly [2017-11, 2017-02, 2016-01]")
             {
 
                 result.forEachIndexed { index, it ->
@@ -89,17 +111,44 @@ class DateClassifierTest : SubjectSpek<DateClassifier>({
                 }
             }
         }
-        on("yearly")
+        on("asc monthly")
         {
-            val (test, correct) = getTestDate(BY_YEARLY)
+            val (test, correct) = getTestDate(BY_MONTHLY order BY_ASC)
             correct as List<Date>
 
-            whenever(config.getDateSortType()).thenReturn(SortOptions(BY_YEARLY, BY_DESC))
+            val sortType = SortOptionType.BY_MONTHLY order ByOrder.BY_ASC
+            var result = classify(subject, sortType, test)
+            it("monthly [2017-11, 2017-02, 2016-01]")
+            {
 
-            var result = classify(subject, test)
+                result.forEachIndexed { index, it ->
+                    it.date `should equal to` correct[index].date
+                }
+            }
+        }
+        on("desc yearly")
+        {
+            val (test, correct) = getTestDate(BY_YEARLY order BY_DESC)
+            correct as List<Date>
+
+            val sortType = SortOptionType.BY_YEARLY order ByOrder.BY_DESC
+            var result = classify(subject, sortType, test)
+            it("yearly [2017, 2016]")
+            {
+                result.forEachIndexed { index, it ->
+                    it.date `should equal to` correct[index].date
+                }
+            }
+        }
+        on("asc yearly")
+        {
+            val (test, correct) = getTestDate(BY_YEARLY order BY_ASC)
+            correct as List<Date>
+
+            val sortType = SortOptionType.BY_YEARLY order BY_ASC
+            var result = classify(subject, sortType, test)
             it("yearly [2016, 2017]")
             {
-
                 result.forEachIndexed { index, it ->
                     it.date `should equal to` correct[index].date
                 }
