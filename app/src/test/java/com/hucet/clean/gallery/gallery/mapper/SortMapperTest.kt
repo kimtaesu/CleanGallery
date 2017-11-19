@@ -25,7 +25,7 @@ import org.jetbrains.spek.subject.SubjectSpek
  * Created by taesu on 2017-11-17.
  */
 class DialogListItemMapperTest : SubjectSpek<DialogRadioItemMapper>({
-    given("a dialogListItemMapper")
+    given("a sortMapper")
     {
         subject {
             DialogRadioItemMapper.SortMapper()
