@@ -12,6 +12,7 @@ import android.widget.Toast
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.activity.MainActivity
 import com.hucet.clean.gallery.config.ApplicationConfig
+import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.extension.isExternalStorageDir
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.adapter.GalleryType
@@ -38,18 +39,23 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
         fun newInstance() = ListGalleryFragment()
     }
 
+    private val readOnlyFunction: () -> ReadOnlyConfigs = {
+        (activity as MainActivity).readOnlyConfigs
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflater?.inflate(R.layout.fragment_gallery, null)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initRecyclerView()
-        requestFetch()
+        requestFetch(readOnlyFunction.invoke())
     }
 
 
-    fun requestFetch() {
-        presenter.fetchItems(curPath)
+    private fun requestFetch(readOnlyConfigs: ReadOnlyConfigs) {
+        println("!!!!!!!!!!!! requestFetch ${readOnlyConfigs.getCategoryMode()}")
+        presenter.fetchItems(curPath, readOnlyConfigs)
     }
 
     private val onGalleryClicked: (Basic) -> Unit = {
@@ -60,7 +66,7 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
             is Directory -> {
                 curPath = it.path
                 adapter.clearItems()
-                requestFetch()
+                requestFetch(readOnlyFunction.invoke())
             }
         }
     }
@@ -68,7 +74,7 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     fun onBackPressed(): Boolean {
         if (!curPath.isExternalStorageDir()) {
             curPath = Environment.getExternalStorageDirectory().absolutePath
-            requestFetch()
+            requestFetch(readOnlyFunction.invoke())
             return false
         }
         return true
@@ -109,18 +115,17 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
             this@ListGalleryFragment.adapter.setOnClickListener(this, onGalleryClicked)
             adapter = this@ListGalleryFragment.adapter
         }
-        setUpLayoutManager(config.viewModeType)
+
+        setUpLayoutManager((activity as MainActivity).readOnlyConfigs.getViewModeType())
     }
 
     fun onViewModeChanged(viewModeType: ViewModeType) {
-        config.viewModeType = viewModeType
-        requestFetch()
-        setUpLayoutManager(config.viewModeType)
+        requestFetch(readOnlyFunction.invoke())
+        setUpLayoutManager(viewModeType)
     }
 
     fun onCategoryModeChanged(categoryMode: CategoryMode) {
-        config.categoryMode = categoryMode
-        requestFetch()
+        requestFetch(readOnlyFunction.invoke())
     }
 
     override fun showProgress() {

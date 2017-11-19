@@ -1,9 +1,7 @@
 package com.hucet.clean.gallery.presenter
 
-import com.hucet.clean.gallery.config.ApplicationConfig
+import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
-import com.hucet.clean.gallery.gallery.category.DateClassifier
-import com.hucet.clean.gallery.gallery.category.DirClassifier
 import com.hucet.clean.gallery.gallery.category.MediumTransformer
 import com.hucet.clean.gallery.repository.GalleryRepository
 import com.hucet.clean.gallery.scheduler.DefaultSchedulerProvider
@@ -21,11 +19,11 @@ class GalleryPresenter constructor(private val view: Gallery.View,
 
 
 ) : Gallery.Presenter {
-    override fun fetchItems(curPath: String) {
+    override fun fetchItems(curPath: String, readOnlyConfigs: ReadOnlyConfigs) {
         repository
-                .getGalleries(curPath)
+                .getGalleries(curPath, readOnlyConfigs)
                 .map {
-                    transformer.transform(it, curPath)
+                    transformer.transform(it, curPath, readOnlyConfigs)
                 }
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.main())

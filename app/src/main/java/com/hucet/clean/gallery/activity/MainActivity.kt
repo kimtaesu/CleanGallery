@@ -13,6 +13,7 @@ import android.widget.Toast
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.activity.cache.MemoryCacheDrawable
 import com.hucet.clean.gallery.config.ApplicationConfig
+import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.extension.createFilterDialog
 import com.hucet.clean.gallery.extension.createSortDialog
 import com.hucet.clean.gallery.extension.startAsAnimation
@@ -43,9 +44,12 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     val galleryFragment: ListGalleryFragment = ListGalleryFragment.newInstance()
 
+    lateinit var readOnlyConfigs: ReadOnlyConfigs
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        readOnlyConfigs = config.getReadOnlyConfigs(this)
         showGallaeryWithPermissionCheck()
         initToolbar()
     }
@@ -85,12 +89,12 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
-        val viewMode = menu?.findItem(R.id.action_view_mode)
-        if (viewMode != null)
-            updateViewMode(viewMode, config.viewModeType)
-        val categoryMode = menu?.findItem(R.id.action_category_mode)
-        if (categoryMode != null)
-            updateCategory(categoryMode, config.categoryMode)
+        val viewModeItem = menu?.findItem(R.id.action_view_mode)
+        if (viewModeItem != null)
+            updateViewMode(viewModeItem, readOnlyConfigs.getViewModeType())
+        val categoryItem = menu?.findItem(R.id.action_category_mode)
+        if (categoryItem != null)
+            updateCategory(categoryItem, readOnlyConfigs.getCategoryMode())
         return true
     }
 
@@ -102,7 +106,8 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         }
         R.id.action_category_mode -> {
             if (isFragmentShown(galleryFragment)) {
-                val categoryMode = config.categoryMode.toggle()
+                val categoryMode = readOnlyConfigs.getCategoryMode().toggle()
+                readOnlyConfigs = config.setReadOnlyConfigs(this, categoryMode)
                 galleryFragment.onCategoryModeChanged(categoryMode)
                 updateCategory(item, categoryMode)
             }
@@ -110,15 +115,16 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         }
         R.id.action_view_mode -> {
             if (isFragmentShown(galleryFragment)) {
-                val viewMode = config.viewModeType.toggle()
+                val viewMode = readOnlyConfigs.getViewModeType().toggle()
+                readOnlyConfigs = config.setReadOnlyConfigs(this, viewMode)
                 galleryFragment.onViewModeChanged(viewMode)
                 updateViewMode(item, viewMode)
             }
             true
         }
         R.id.action_sort -> {
-            AlertDialog.Builder(this).createSortDialog(config, {
-                config.sortOptionType = it
+            AlertDialog.Builder(this).createSortDialog(readOnlyConfigs, {
+                readOnlyConfigs = config.setReadOnlyConfigs(this, it)
             }).show()
             true
         }

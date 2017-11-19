@@ -1,6 +1,6 @@
 package com.hucet.clean.gallery.datasource.local
 
-import com.hucet.clean.gallery.config.ApplicationConfig
+import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.datasource.GalleryDataSource
 import com.hucet.clean.gallery.model.Medium
 import io.reactivex.Flowable
@@ -12,10 +12,9 @@ import timber.log.Timber
 
 class LocalDataSource constructor(
         private val mediaFetcher: MediaFetcher,
-        private val config: ApplicationConfig,
         private val noMediaFolderProvider: NoMediaFolderProvider
 ) : GalleryDataSource {
-    override fun getGalleries(curPath: String): Flowable<List<Medium>> {
+    override fun getGalleries(curPath: String, readOnlyConfigs: ReadOnlyConfigs): Flowable<List<Medium>> {
         return Flowable
                 .defer {
                     Timber.d("GalleryPresenter noMedia")
@@ -24,7 +23,7 @@ class LocalDataSource constructor(
                 }
                 .map { noMediaFolder ->
                     Timber.d("GalleryPresenter getGalleries")
-                    val cursor = mediaFetcher.query(curPath, config.sortOptionType.media())
+                    val cursor = mediaFetcher.query(curPath, readOnlyConfigs.getSortOptionType().media(readOnlyConfigs.getCategoryMode()))
                     mediaFetcher.parseCursor(cursor, noMediaFolder)
                 }
     }

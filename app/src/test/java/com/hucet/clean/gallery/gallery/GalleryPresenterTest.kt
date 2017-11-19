@@ -1,6 +1,5 @@
 package com.hucet.clean.gallery.gallery
 
-import com.hucet.clean.gallery.fixture.DeserializerFixture
 import com.hucet.clean.gallery.fixture.MediumFixture
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.category.MediumTransformer
@@ -11,12 +10,8 @@ import com.hucet.clean.gallery.scheduler.TestSchedulerProvider
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Flowable
 import io.reactivex.schedulers.TestScheduler
-import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
 import org.jetbrains.spek.subject.SubjectSpek
-import org.junit.Before
-import org.junit.Test
-import org.mockito.Mock
 import org.mockito.exceptions.base.MockitoException
 import java.util.concurrent.TimeUnit
 

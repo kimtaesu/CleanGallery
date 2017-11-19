@@ -1,6 +1,5 @@
 package com.hucet.clean.gallery.inject.modules
 
-import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.gallery.category.DateClassifier
 import com.hucet.clean.gallery.gallery.category.DirClassifier
 import com.hucet.clean.gallery.gallery.category.MediumTransformer
@@ -28,8 +27,8 @@ class ClassifierModule {
 
     @Provides
     @PerFragment
-    fun provideMediumTransformer(date: DateClassifier, dir: DirClassifier, config: ApplicationConfig): MediumTransformer {
-        return MediumTransformer(date, dir, config)
+    fun provideMediumTransformer(date: DateClassifier, dir: DirClassifier): MediumTransformer {
+        return MediumTransformer(date, dir)
     }
 
 }

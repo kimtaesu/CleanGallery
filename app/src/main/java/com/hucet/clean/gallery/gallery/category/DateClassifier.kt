@@ -29,13 +29,13 @@ class DateClassifier : CategoryStrategy<Basic> {
     }
 
     private fun createComparetor(sortOptionType: SortOptionType): Comparator<in String> {
-        if (sortOptionType.isDesc()) {
-            return Comparator { o1: String, o2: String ->
+        return if (sortOptionType.isDesc()) {
+            Comparator { o1: String, o2: String ->
                 if (o1 < o2) 1
                 else -1
             }
         } else {
-            return Comparator { o1: String, o2: String ->
+            Comparator { o1: String, o2: String ->
                 if (o1 < o2) -1
                 else 1
             }

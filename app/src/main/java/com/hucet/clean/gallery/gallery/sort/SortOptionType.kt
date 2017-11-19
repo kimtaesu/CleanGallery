@@ -21,7 +21,10 @@ enum class SortOptionType(val option: String, val title: Int, val bitAttr: Int) 
 
     private var orderBy: ByOrder = ByOrder.BY_DESC
 
-    fun media(): String {
+    fun media(categoryMode: CategoryMode): String {
+// TODO TEst code
+        if (categoryMode == CategoryMode.DATE)
+            return "${BY_MODIFIED.option} ${orderBy.option}"
         return "${this.option} ${orderBy.option}"
     }
 
@@ -63,11 +66,11 @@ enum class SortOptionType(val option: String, val title: Int, val bitAttr: Int) 
             return sortType in DATE_TYPES
         }
 
-        fun get(bit: Int): SortOptionType {
+        fun getFromSortOrderBit(sortBit: Int): SortOptionType {
             val sortType = SortOptionType.values().first {
-                it.bitAttr and bit > 0
+                it.bitAttr and sortBit > 0
             }
-            return sortType order bit
+            return sortType order sortBit
         }
     }
 

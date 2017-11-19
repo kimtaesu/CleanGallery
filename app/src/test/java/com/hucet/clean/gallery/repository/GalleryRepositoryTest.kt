@@ -1,11 +1,8 @@
 package com.hucet.clean.gallery.repository
 
 import com.hucet.clean.gallery.datasource.local.LocalDataSource
-import com.hucet.clean.gallery.fixture.DeserializerFixture
 import com.hucet.clean.gallery.fixture.MediumFixture
-import com.hucet.clean.gallery.model.Medium
 import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.given
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Flowable
@@ -13,8 +10,6 @@ import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 import org.jetbrains.spek.subject.SubjectSpek
-import org.junit.Before
-import org.junit.Test
 
 /**
  * Created by taesu on 2017-11-01.

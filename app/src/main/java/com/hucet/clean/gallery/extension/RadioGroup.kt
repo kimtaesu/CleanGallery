@@ -7,14 +7,14 @@ import com.hucet.clean.gallery.model.DialogRadioItem
 /**
  * Created by taesu on 2017-11-19.
  */
-fun RadioGroup.createSortOptionType(sortRadioItems: List<DialogRadioItem>?, orderRadioItems: List<DialogRadioItem>?): SortOptionType {
-    val checkedSortItem = sortRadioItems?.first {
+fun RadioGroup.createSortOptionType(sortRadioItems: List<DialogRadioItem>, orderRadioItems: List<DialogRadioItem>): SortOptionType {
+    val checkedSortItem = sortRadioItems.first {
         it.index == this.checkedRadioButtonId
     }
 
-    val checkedOrderItem = orderRadioItems?.first {
+    val checkedOrderItem = orderRadioItems.first {
         it.index == this.checkedRadioButtonId
     }
-    val sortType = SortOptionType.get(checkedSortItem?.bitAtt!!)
-    return sortType order checkedOrderItem?.bitAtt!!
+    val sortType = SortOptionType.getFromSortOrderBit(checkedSortItem.bitAtt or checkedOrderItem.bitAtt)
+    return sortType order checkedOrderItem.bitAtt
 }

@@ -1,7 +1,7 @@
 package com.hucet.clean.gallery.gallery.category
 
 import android.support.annotation.VisibleForTesting
-import com.hucet.clean.gallery.config.ApplicationConfig
+import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.extension.isExternalStorageDir
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Medium
@@ -11,16 +11,15 @@ import com.hucet.clean.gallery.model.Medium
  */
 
 open class MediumTransformer(private val dateClassifier: DateClassifier,
-                             private val dirClassifier: DirClassifier,
-                             private val config: ApplicationConfig) {
-    fun transform(items: List<Medium>, curPath: String): List<Basic> {
-        when (config.categoryMode) {
+                             private val dirClassifier: DirClassifier) {
+    fun transform(items: List<Medium>, curPath: String, readOnlyConfigs: ReadOnlyConfigs): List<Basic> {
+        when (readOnlyConfigs.getCategoryMode()) {
             CategoryMode.DATE -> {
-                return dateClassifier.classify(config.sortOptionType, items)
+                return dateClassifier.classify(readOnlyConfigs.getSortOptionType(), items)
             }
             CategoryMode.DIRECTORY -> {
                 if (isExternalStorage(curPath)) {
-                    return dirClassifier.classify(config.sortOptionType, items)
+                    return dirClassifier.classify(readOnlyConfigs.getSortOptionType(), items)
                 }
             }
         }

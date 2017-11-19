@@ -7,9 +7,9 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.afollestad.materialdialogs.MaterialDialog
 import com.hucet.clean.gallery.R
-import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.config.GIFS
 import com.hucet.clean.gallery.config.IMAGES
+import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.config.VIDEOS
 import com.hucet.clean.gallery.gallery.mapper.DialogRadioItemMapper
 import com.hucet.clean.gallery.gallery.sort.ByOrder
@@ -20,12 +20,12 @@ import com.hucet.clean.gallery.model.DialogRadioItem
 /**
  * Created by taesu on 2017-11-16.
  */
-fun AlertDialog.Builder.createSortDialog(config: ApplicationConfig, callback: (SortOptionType) -> Unit): MaterialDialog {
+fun AlertDialog.Builder.createSortDialog(readOnlyConfigs: ReadOnlyConfigs, callback: (SortOptionType) -> Unit): MaterialDialog {
     val mapper = DialogRadioItemMapper()
     val v = LayoutInflater.from(context).inflate(R.layout.dialog_sorting, null)
-    val items = mapper.map(context, config)
-    val sortItems = items[SortOptionType.KEY]
-    val orderItems = items[ByOrder.KEY]
+    val items = mapper.map(context, readOnlyConfigs)
+    val sortItems = items[SortOptionType.KEY]!!
+    val orderItems = items[ByOrder.KEY]!!
 
     val sortGroup = v.findViewById<RadioGroup>(R.id.group_sort)
     addRadioChilden(sortGroup, sortItems)

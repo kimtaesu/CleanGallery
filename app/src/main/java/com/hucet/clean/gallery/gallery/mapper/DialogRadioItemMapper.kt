@@ -1,7 +1,7 @@
 package com.hucet.clean.gallery.gallery.mapper
 
 import android.content.Context
-import com.hucet.clean.gallery.config.ApplicationConfig
+import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.sort.ByOrder
 import com.hucet.clean.gallery.gallery.sort.SortOptionType
@@ -37,9 +37,9 @@ class DialogRadioItemMapper {
         )
     }
 
-    fun map(context: Context, config: ApplicationConfig): Map<String, List<DialogRadioItem>> {
-        val checkedSortType = config.sortOptionType
-        when (config.categoryMode) {
+    fun map(context: Context, readOnlyConfigs: ReadOnlyConfigs): Map<String, List<DialogRadioItem>> {
+        val checkedSortType = readOnlyConfigs.getSortOptionType()
+        when (readOnlyConfigs.getCategoryMode()) {
             CategoryMode.DATE -> {
                 return createDialogRadioItems(context, SortOptionType.DATE_TYPES, checkedSortType)
             }

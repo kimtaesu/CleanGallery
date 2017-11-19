@@ -1,7 +1,6 @@
 package org.buffer.android.boilerplate.ui.injection.module
 
 import android.content.Context
-import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.datasource.local.LocalDataSource
 import com.hucet.clean.gallery.datasource.local.MediaFetcher
 import com.hucet.clean.gallery.datasource.local.NoMediaFolderProvider
@@ -38,7 +37,7 @@ class RepositoryServiceModule {
 
     @Provides
     @PerFragment
-    fun provideLocalDataSource(context: Context, appConfig: ApplicationConfig, mediaFetcher: MediaFetcher, noMediaFolderProvider: NoMediaFolderProvider): LocalDataSource {
-        return LocalDataSource(mediaFetcher, appConfig, noMediaFolderProvider)
+    fun provideLocalDataSource(context: Context, mediaFetcher: MediaFetcher, noMediaFolderProvider: NoMediaFolderProvider): LocalDataSource {
+        return LocalDataSource(mediaFetcher, noMediaFolderProvider)
     }
 }

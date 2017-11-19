@@ -1,10 +1,11 @@
 package com.hucet.clean.gallery.repository
 
+import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.datasource.local.LocalDataSource
 
 /**
  * Created by taesu on 2017-10-30.
  */
 class GalleryRepository(private val localDataSource: LocalDataSource) {
-    fun getGalleries(curPath: String) = localDataSource.getGalleries(curPath)
+    fun getGalleries(curPath: String, readOnlyConfigs: ReadOnlyConfigs) = localDataSource.getGalleries(curPath, readOnlyConfigs)
 }
