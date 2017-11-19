@@ -3,6 +3,7 @@ package com.hucet.clean.gallery.presenter
 import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.category.MediumTransformer
+import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment
 import com.hucet.clean.gallery.repository.GalleryRepository
 import com.hucet.clean.gallery.scheduler.DefaultSchedulerProvider
 import com.hucet.clean.gallery.scheduler.SchedulerProvider
@@ -12,7 +13,7 @@ import timber.log.Timber
  * Created by taesu on 2017-10-31.
  */
 class GalleryPresenter constructor(private val view: Gallery.View,
-                                   private val adapter: GalleryAdapter,
+                                   private val fragment: ListGalleryFragment,
                                    private val repository: GalleryRepository,
                                    private val transformer: MediumTransformer,
                                    private val schedulerProvider: SchedulerProvider = DefaultSchedulerProvider()
@@ -39,7 +40,7 @@ class GalleryPresenter constructor(private val view: Gallery.View,
                 .subscribe(
                         { next ->
                             Timber.d("subscribe ${next}")
-                            adapter.updateData(next)
+                            fragment.getCurrentAdapter().updateData(next)
                         },
                         { error ->
                             error.printStackTrace()

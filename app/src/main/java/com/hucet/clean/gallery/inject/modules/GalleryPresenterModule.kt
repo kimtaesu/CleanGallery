@@ -1,7 +1,5 @@
 package com.hucet.clean.gallery.inject.modules
 
-import com.hucet.clean.gallery.config.ApplicationConfig
-import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.category.MediumTransformer
 import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment
 import com.hucet.clean.gallery.inject.scopes.PerFragment
@@ -18,8 +16,8 @@ import dagger.Provides
 class GalleryPresenterModule {
     @Provides
     @PerFragment
-    fun providesGalleryPresenter(view: Gallery.View, adapter: GalleryAdapter, repository: GalleryRepository, transformer: MediumTransformer): Gallery.Presenter {
-        return GalleryPresenter(view, adapter, repository, transformer)
+    fun providesGalleryPresenter(view: Gallery.View, fragment: ListGalleryFragment, repository: GalleryRepository, transformer: MediumTransformer): Gallery.Presenter {
+        return GalleryPresenter(view, fragment, repository, transformer)
     }
 
     @Provides

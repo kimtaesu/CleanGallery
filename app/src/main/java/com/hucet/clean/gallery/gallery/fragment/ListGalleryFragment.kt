@@ -18,6 +18,8 @@ import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.extension.isExternalStorageDir
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.adapter.GalleryType
+import com.hucet.clean.gallery.gallery.adapter.grid.GridAdapter
+import com.hucet.clean.gallery.gallery.adapter.linear.LinearAdapter
 import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.inject.Injectable
 import com.hucet.clean.gallery.model.Basic
@@ -32,7 +34,8 @@ import javax.inject.Inject
  * Created by taesu on 2017-10-30.
  */
 class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
-    @Inject lateinit var adapter: GalleryAdapter
+    @Inject lateinit var linearAdapter: LinearAdapter
+    @Inject lateinit var gridAdapter: GridAdapter
     @Inject lateinit var presenter: Gallery.Presenter
     @Inject lateinit var config: ApplicationConfig
     var curPath = Environment.getExternalStorageDirectory().absolutePath
@@ -68,7 +71,7 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
             }
             is Directory -> {
                 curPath = basic.path
-                adapter.clearItems()
+                getCurrentAdapter().clearItems()
                 requestFetch(readOnlyFunction.invoke())
             }
         }
@@ -85,14 +88,15 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
 
     private fun setUpLayoutManager(type: ViewModeType) {
         when (type) {
-            ViewModeType.GRID -> setUpGrid()
-            ViewModeType.LINEAR -> setUpLinear()
+            ViewModeType.GRID -> setUpGridAdapter()
+            ViewModeType.LINEAR -> setUpLinearAdapter()
         }
     }
 
-    private fun setUpGrid() {
+    private fun setUpGridAdapter() {
         gallery_list.apply {
             layoutManager = null
+            adapter = null
             val gridLayoutManager = GridLayoutManager(context, 2)
             gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
@@ -103,27 +107,30 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
                 }
             }
             layoutManager = gridLayoutManager
+            gridAdapter.setOnClickListener(this, onGalleryClicked)
+            swapAdapter(gridAdapter, false)
+            gridAdapter.updateData(linearAdapter.Items)
         }
     }
 
-    private fun setUpLinear() {
+    private fun setUpLinearAdapter() {
         gallery_list.apply {
             layoutManager = null
+            adapter = null
             layoutManager = LinearLayoutManager(context)
+            linearAdapter.setOnClickListener(this, onGalleryClicked)
+
+            swapAdapter(linearAdapter, false)
+            linearAdapter.updateData(gridAdapter.Items)
         }
     }
 
-    private fun initRecyclerView() {
-        gallery_list.apply {
-            this@ListGalleryFragment.adapter.setOnClickListener(this, onGalleryClicked)
-            adapter = this@ListGalleryFragment.adapter
-        }
 
+    private fun initRecyclerView() {
         setUpLayoutManager((activity as MainActivity).readOnlyConfigs.getViewModeType())
     }
 
     fun onViewModeChanged(viewModeType: ViewModeType) {
-        requestFetch(readOnlyFunction.invoke())
         setUpLayoutManager(viewModeType)
     }
 
@@ -143,4 +150,5 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
         Toast.makeText(context, "showError", Toast.LENGTH_SHORT).show()
     }
 
+    fun getCurrentAdapter(): GalleryAdapter = gallery_list.adapter as GalleryAdapter
 }

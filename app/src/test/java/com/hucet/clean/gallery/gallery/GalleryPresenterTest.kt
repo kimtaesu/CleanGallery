@@ -4,6 +4,7 @@ import com.hucet.clean.gallery.fixture.MediumFixture
 import com.hucet.clean.gallery.fixture.ReadOnlyConfigsFixture
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.category.MediumTransformer
+import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment
 import com.hucet.clean.gallery.presenter.Gallery
 import com.hucet.clean.gallery.presenter.GalleryPresenter
 import com.hucet.clean.gallery.repository.GalleryRepository
@@ -28,7 +29,9 @@ class GalleryPresenterTest : SubjectSpek<GalleryPresenter>({
     val testScheduler by memoized { TestScheduler() }
     given("a galleryPresenter") {
         subject {
-            GalleryPresenter(view, adapter, repository, tranformer, TestSchedulerProvider(testScheduler))
+            val mockFragment = mock<ListGalleryFragment>()
+            whenever(mockFragment.getCurrentAdapter()).thenReturn(adapter)
+            GalleryPresenter(view, mockFragment, repository, tranformer, TestSchedulerProvider(testScheduler))
         }
         on("presenter next - complete 검증")
         {

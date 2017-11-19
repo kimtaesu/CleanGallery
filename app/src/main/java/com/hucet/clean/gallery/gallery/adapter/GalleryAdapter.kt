@@ -5,10 +5,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.hucet.clean.gallery.R
+import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import com.hucet.clean.gallery.model.Basic
-import kotlinx.android.synthetic.main.medium_item_gallery.view.*
 import javax.inject.Inject
 
 /**
@@ -16,12 +16,8 @@ import javax.inject.Inject
  */
 
 
-@PerFragment
-class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    @Inject lateinit var delegateMap: Map<GalleryType, @JvmSuppressWildcards AbstractDelegateAdapter>
-
-    private var Items: ArrayList<Basic> = arrayListOf()
+abstract class GalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    val Items: ArrayList<Basic> = arrayListOf()
     private var onClick: ((Basic, ImageView?) -> Unit)? = null
     private var recyclerView: RecyclerView? = null
 
@@ -34,19 +30,21 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
         return this.Items[position].viewType.value
     }
 
+    abstract fun createDelegateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder?
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
-        val viewHoler = delegateMap[GalleryType.galleryType(viewType)]?.onCreateViewHolder(parent, viewType)
+        val viewHoler = createDelegateViewHolder(parent, viewType)
         viewHoler?.itemView?.setOnClickListener({
             val position = recyclerView?.getChildAdapterPosition(it)
-
             onClick?.invoke(Items.get(position!!), viewHoler?.itemView?.findViewById(R.id.thumbnail))
         })
         return viewHoler
     }
 
+    abstract fun onBindDelegateViewHolder(holder: RecyclerView.ViewHolder?, position: Int)
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
-        val item = Items[position]
-        delegateMap[item.viewType]?.onBindViewHolder(holder, position, item)
+        onBindDelegateViewHolder(holder, position)
     }
 
     override fun getItemCount() = Items.size
@@ -60,7 +58,6 @@ class GalleryAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
     }
 
     private fun updateByDiff(newItems: List<Basic>) {
-
         val diffCallback = MediumDiffCallback(this.Items, newItems)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         this.Items.clear()

@@ -1,15 +1,18 @@
 package com.hucet.clean.gallery.inject.modules
 
 import com.hucet.clean.gallery.gallery.adapter.*
+import com.hucet.clean.gallery.gallery.adapter.grid.DateGridDelegateAdapter
+import com.hucet.clean.gallery.gallery.adapter.grid.DirectoryGridDelegateAdapter
+import com.hucet.clean.gallery.gallery.adapter.grid.MediumGridDelegateAdapter
+import com.hucet.clean.gallery.gallery.adapter.linear.DirectoryLinearDelegateAdapter
+import com.hucet.clean.gallery.gallery.adapter.linear.MediumLinearDelegateAdapter
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
-import dagger.Provides
 import dagger.multibindings.IntoMap
 import java.lang.annotation.Documented
-import java.lang.annotation.ElementType
-import java.lang.annotation.RetentionPolicy
+import javax.inject.Named
 
 /**
  * Created by taesu on 2017-11-09.
@@ -20,22 +23,46 @@ abstract class AdapterDelegationModule {
     @IntoMap
     @PerFragment
     @GalleryEnumKey(GalleryType.DIRECTORY)
-    abstract fun bindDirectoryViewHolderCreator(conCreate: DirectoryDelegateAdapter)
+    @Named("linear")
+    abstract fun bindDirectoryLinearViewHolderCreator(conCreate: DirectoryLinearDelegateAdapter)
             : AbstractDelegateAdapter
 
-    @Binds
-    @IntoMap
-    @PerFragment
-    @GalleryEnumKey(GalleryType.DATE)
-    abstract fun bindDateDelegateAdapter(conCreate: DateDelegateAdapter)
-            : AbstractDelegateAdapter
 
     @Binds
     @IntoMap
     @PerFragment
     @GalleryEnumKey(GalleryType.MEDIUM)
-    abstract fun bindMediumViewHolderCreator(conCreate: MediumDelegateAdapter)
+    @Named("linear")
+    abstract fun bindMediumLinearViewHolderCreator(conCreate: MediumLinearDelegateAdapter)
             : AbstractDelegateAdapter
+
+
+    @Binds
+    @IntoMap
+    @PerFragment
+    @GalleryEnumKey(GalleryType.DIRECTORY)
+    @Named("grid")
+    abstract fun bindDirectoryGridViewHolderCreator(conCreate: DirectoryGridDelegateAdapter)
+            : AbstractDelegateAdapter
+
+
+    @Binds
+    @IntoMap
+    @PerFragment
+    @GalleryEnumKey(GalleryType.DATE)
+    @Named("grid")
+    abstract fun bindDateDelegateAdapter(conCreate: DateGridDelegateAdapter)
+            : AbstractDelegateAdapter
+
+
+    @Binds
+    @IntoMap
+    @PerFragment
+    @GalleryEnumKey(GalleryType.MEDIUM)
+    @Named("grid")
+    abstract fun bindMediumGridViewHolderCreator(conCreate: MediumGridDelegateAdapter)
+            : AbstractDelegateAdapter
+
 
     @Documented
     @MapKey
