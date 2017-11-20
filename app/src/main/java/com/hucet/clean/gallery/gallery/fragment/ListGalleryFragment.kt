@@ -136,7 +136,8 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
         gallery_list.apply {
             setRecyclerListener({ viewHolder ->
                 val thumbnailView = viewHolder.itemView.findViewById<ImageView>(R.id.thumbnail)
-                GlideApp.with(this).clear(thumbnailView)
+                if (thumbnailView != null)
+                    GlideApp.with(this).clear(thumbnailView)
             })
         }
     }

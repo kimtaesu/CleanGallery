@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.request.target.Target
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.gallery.adapter.AbstractDelegateAdapter
 import com.hucet.clean.gallery.gallery.fragment.GlideRequests
@@ -23,10 +24,11 @@ class DirectoryGridDelegateAdapter @Inject constructor(private val glideRequests
         holder as ViewHolder
         item as Directory
         holder.name.text = item.name
-        holder.path.text = item.path
         holder.count.text = item.count.toString()
         glideRequests
                 .load(item.thumbnail)
+                .thumbnail(0.25f)
+                .override(Target.SIZE_ORIGINAL)
                 .into(holder.thumbnail)
     }
 
@@ -39,7 +41,6 @@ class DirectoryGridDelegateAdapter @Inject constructor(private val glideRequests
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val name: TextView = view.findViewById(R.id.dir_name)
-        val path: TextView = view.findViewById(R.id.dir_path)
         val count: TextView = view.findViewById(R.id.dir_count)
         val thumbnail: ImageView = view.findViewById(R.id.thumbnail)
     }

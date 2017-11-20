@@ -14,7 +14,7 @@ import android.arch.lifecycle.OnLifecycleEvent
 /**
  * Created by taesu on 2017-11-16.
  */
-class SquareImageView : ImageView, LifecycleObserver {
+class SquareImageView : ImageView {
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs, 0) {
     }
 

@@ -19,13 +19,16 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/list_view_item_thumbnail_margin_left"
         android:orientation="horizontal"
+
         app:layout_constraintStart_toEndOf="@+id/thumbnail">
 
         <TextView
             android:id="@+id/dir_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#616161"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="16sp" />
 
         <TextView
@@ -34,6 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_toRightOf="@+id/dir_name"
+
             android:textColor="@color/colorAccent" />
     </LinearLayout>
 
@@ -45,6 +49,8 @@
         android:layout_below="@+id/dir_layout"
         android:layout_marginStart="@dimen/list_view_item_thumbnail_margin_left"
         android:layout_marginTop="3dp"
+        android:ellipsize="start"
+        android:singleLine="true"
         android:textColor="#BDBDBD"
         app:layout_constraintStart_toEndOf="@+id/thumbnail"
         app:layout_constraintTop_toBottomOf="@+id/dir_layout" />

@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     private val galleryFragment: ListGalleryFragment = ListGalleryFragment.newInstance()
 
     lateinit var readOnlyConfigs: ReadOnlyConfigs
-
+    private var viewModeItem: MenuItem? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         supportActionBar?.setTitle(R.string.app_name)
     }
 
-    private var viewModeItem: MenuItem? = null
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         viewModeItem = menu?.findItem(R.id.action_view_mode)
