@@ -24,7 +24,6 @@ class LinearAdapter @Inject constructor() : GalleryAdapter() {
     lateinit var delegateLinearMap: Map<GalleryType, @JvmSuppressWildcards AbstractDelegateAdapter>
 
     override fun createDelegateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
-        println("!!!!!!!!!!!! LinearAdapter createDelegateViewHolder")
         return delegateLinearMap[GalleryType.galleryType(viewType)]?.onCreateViewHolder(parent, viewType)
     }
 

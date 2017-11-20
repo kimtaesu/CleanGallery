@@ -3,9 +3,9 @@ package com.hucet.clean.gallery.gallery.adapter
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import com.hucet.clean.gallery.OnGalleryClickedListener
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.model.Basic
-import com.hucet.clean.gallery.OnGalleryClickedListener
 
 /**
  * Created by taesu on 2017-10-31.
@@ -29,7 +29,6 @@ abstract class GalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
     abstract fun createDelegateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder?
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
-        println("!!!!!!!!!!!!!!!! onCreateViewHolder")
         val viewHoler = createDelegateViewHolder(parent, viewType)
         viewHoler?.itemView?.setOnClickListener({
             val position = recyclerView?.getChildAdapterPosition(it)
