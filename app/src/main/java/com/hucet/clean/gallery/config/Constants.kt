@@ -4,6 +4,8 @@ package com.hucet.clean.gallery.config
  * Created by taesu on 2017-10-30.
  */
 
+const val DAGGER_NAMED_GRID = "grid"
+const val DAGGER_NAMED_LINEAR = "linear"
 // preference keys
 val key_exclude_folders = "key_exclude_folders"
 val key_include_folders = "key_include_folders"

@@ -29,6 +29,7 @@ abstract class GalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
     abstract fun createDelegateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder?
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
+        println("!!!!!!!!!!!!!!!! onCreateViewHolder")
         val viewHoler = createDelegateViewHolder(parent, viewType)
         viewHoler?.itemView?.setOnClickListener({
             val position = recyclerView?.getChildAdapterPosition(it)

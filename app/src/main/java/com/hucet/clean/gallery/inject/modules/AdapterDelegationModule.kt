@@ -1,6 +1,9 @@
 package com.hucet.clean.gallery.inject.modules
 
-import com.hucet.clean.gallery.gallery.adapter.*
+import com.hucet.clean.gallery.config.DAGGER_NAMED_GRID
+import com.hucet.clean.gallery.config.DAGGER_NAMED_LINEAR
+import com.hucet.clean.gallery.gallery.adapter.AbstractDelegateAdapter
+import com.hucet.clean.gallery.gallery.adapter.GalleryType
 import com.hucet.clean.gallery.gallery.adapter.grid.DateGridDelegateAdapter
 import com.hucet.clean.gallery.gallery.adapter.grid.DirectoryGridDelegateAdapter
 import com.hucet.clean.gallery.gallery.adapter.grid.MediumGridDelegateAdapter
@@ -23,7 +26,7 @@ abstract class AdapterDelegationModule {
     @IntoMap
     @PerFragment
     @GalleryEnumKey(GalleryType.DIRECTORY)
-    @Named("linear")
+    @Named(DAGGER_NAMED_LINEAR)
     abstract fun bindDirectoryLinearViewHolderCreator(conCreate: DirectoryLinearDelegateAdapter)
             : AbstractDelegateAdapter
 
@@ -32,7 +35,7 @@ abstract class AdapterDelegationModule {
     @IntoMap
     @PerFragment
     @GalleryEnumKey(GalleryType.MEDIUM)
-    @Named("linear")
+    @Named(DAGGER_NAMED_LINEAR)
     abstract fun bindMediumLinearViewHolderCreator(conCreate: MediumLinearDelegateAdapter)
             : AbstractDelegateAdapter
 
@@ -41,7 +44,7 @@ abstract class AdapterDelegationModule {
     @IntoMap
     @PerFragment
     @GalleryEnumKey(GalleryType.DIRECTORY)
-    @Named("grid")
+    @Named(DAGGER_NAMED_GRID)
     abstract fun bindDirectoryGridViewHolderCreator(conCreate: DirectoryGridDelegateAdapter)
             : AbstractDelegateAdapter
 
@@ -50,7 +53,7 @@ abstract class AdapterDelegationModule {
     @IntoMap
     @PerFragment
     @GalleryEnumKey(GalleryType.DATE)
-    @Named("grid")
+    @Named(DAGGER_NAMED_GRID)
     abstract fun bindDateDelegateAdapter(conCreate: DateGridDelegateAdapter)
             : AbstractDelegateAdapter
 
@@ -59,7 +62,7 @@ abstract class AdapterDelegationModule {
     @IntoMap
     @PerFragment
     @GalleryEnumKey(GalleryType.MEDIUM)
-    @Named("grid")
+    @Named(DAGGER_NAMED_GRID)
     abstract fun bindMediumGridViewHolderCreator(conCreate: MediumGridDelegateAdapter)
             : AbstractDelegateAdapter
 

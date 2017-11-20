@@ -18,7 +18,7 @@ import javax.inject.Inject
  * Created by taesu on 2017-11-09.
  */
 @PerFragment
-class MediumLinearDelegateAdapter @Inject constructor( private val glideRequests: GlideRequests) : AbstractDelegateAdapter {
+class MediumLinearDelegateAdapter @Inject constructor(private val glideRequests: GlideRequests) : AbstractDelegateAdapter {
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
         val v = LayoutInflater
                 .from(parent?.context)

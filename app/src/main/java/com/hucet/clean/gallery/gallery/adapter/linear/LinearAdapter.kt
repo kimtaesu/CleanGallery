@@ -2,6 +2,7 @@ package com.hucet.clean.gallery.gallery.adapter.linear
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import com.hucet.clean.gallery.config.DAGGER_NAMED_LINEAR
 import com.hucet.clean.gallery.gallery.adapter.AbstractDelegateAdapter
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.adapter.GalleryType
@@ -19,11 +20,14 @@ class LinearAdapter @Inject constructor() : GalleryAdapter() {
 
 
     @Inject
-    @field:[Named("linear")]
+    @field:[Named(DAGGER_NAMED_LINEAR)]
     lateinit var delegateLinearMap: Map<GalleryType, @JvmSuppressWildcards AbstractDelegateAdapter>
 
-    override fun createDelegateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? =
-            delegateLinearMap[GalleryType.galleryType(viewType)]?.onCreateViewHolder(parent, viewType)
+    override fun createDelegateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
+        println("!!!!!!!!!!!! LinearAdapter createDelegateViewHolder")
+        return delegateLinearMap[GalleryType.galleryType(viewType)]?.onCreateViewHolder(parent, viewType)
+    }
+
 
     override fun onBindDelegateViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         val item = Items[position]

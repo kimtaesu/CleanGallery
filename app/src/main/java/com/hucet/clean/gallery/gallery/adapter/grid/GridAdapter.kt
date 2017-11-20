@@ -2,6 +2,7 @@ package com.hucet.clean.gallery.gallery.adapter.grid
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import com.hucet.clean.gallery.config.DAGGER_NAMED_GRID
 import com.hucet.clean.gallery.gallery.adapter.AbstractDelegateAdapter
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.adapter.GalleryType
@@ -18,14 +19,17 @@ import javax.inject.Named
 class GridAdapter @Inject constructor() : GalleryAdapter() {
 
     @Inject
-    @field:[Named("grid")]
+    @field:[Named(DAGGER_NAMED_GRID)]
     lateinit var delegateGridMap: Map<GalleryType, @JvmSuppressWildcards AbstractDelegateAdapter>
 
-    override fun createDelegateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? =
-            delegateGridMap[GalleryType.galleryType(viewType)]?.onCreateViewHolder(parent, viewType)
+    override fun createDelegateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
+        return delegateGridMap[GalleryType.galleryType(viewType)]?.onCreateViewHolder(parent, viewType)
+    }
+
 
     override fun onBindDelegateViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         val item = Items[position]
         delegateGridMap[item.viewType]?.onBindViewHolder(holder, position, item)
     }
+
 }
