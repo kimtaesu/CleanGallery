@@ -1,7 +1,6 @@
 package com.hucet.clean.gallery.presenter
 
 import com.hucet.clean.gallery.config.ReadOnlyConfigs
-import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.category.MediumTransformer
 import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment
 import com.hucet.clean.gallery.repository.GalleryRepository
@@ -40,7 +39,7 @@ class GalleryPresenter constructor(private val view: Gallery.View,
                 .subscribe(
                         { next ->
                             Timber.d("subscribe ${next}")
-                            fragment.getCurrentAdapter().updateData(next)
+                            fragment.getCurrentAdapter()?.updateData(next)
                         },
                         { error ->
                             error.printStackTrace()

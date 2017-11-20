@@ -13,18 +13,17 @@ import android.widget.ImageView
 import android.widget.Toast
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.activity.MainActivity
-import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.extension.isExternalStorageDir
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.adapter.GalleryType
-import com.hucet.clean.gallery.gallery.adapter.grid.GridAdapter
-import com.hucet.clean.gallery.gallery.adapter.linear.LinearAdapter
 import com.hucet.clean.gallery.gallery.category.CategoryMode
+import com.hucet.clean.gallery.gallery.fragment.switchable.ViewModeSwichable
 import com.hucet.clean.gallery.inject.Injectable
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Directory
 import com.hucet.clean.gallery.model.Medium
+import com.hucet.clean.gallery.onGalleryClickedListener
 import com.hucet.clean.gallery.presenter.Gallery
 import kotlinx.android.synthetic.main.fragment_gallery.*
 import javax.inject.Inject
@@ -34,10 +33,9 @@ import javax.inject.Inject
  * Created by taesu on 2017-10-30.
  */
 class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
-    @Inject lateinit var linearAdapter: LinearAdapter
-    @Inject lateinit var gridAdapter: GridAdapter
     @Inject lateinit var presenter: Gallery.Presenter
-    @Inject lateinit var config: ApplicationConfig
+    @Inject lateinit var mapViewModeSetUp: Map<ViewModeType, @JvmSuppressWildcards ViewModeSwichable>
+
     var curPath = Environment.getExternalStorageDirectory().absolutePath
 
     companion object {
@@ -63,15 +61,15 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
         presenter.fetchItems(curPath, readOnlyConfigs)
     }
 
-    private val onGalleryClicked: (Basic, ImageView?) -> Unit = { basic: Basic, imageView: ImageView? ->
+    private val onGalleryClicked: onGalleryClickedListener = { basic: Basic, imageView: ImageView? ->
         when (basic) {
             is Medium -> {
                 ViewCompat.setTransitionName(imageView, basic.name)
-                (activity as MainActivity)?.onGalleryClicked.invoke(basic, imageView)
+                (activity as MainActivity).onGalleryClicked.invoke(basic, imageView)
             }
             is Directory -> {
                 curPath = basic.path
-                getCurrentAdapter().clearItems()
+                getCurrentAdapter()?.clearItems()
                 requestFetch(readOnlyFunction.invoke())
             }
         }
@@ -87,41 +85,31 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     }
 
     private fun setUpLayoutManager(type: ViewModeType) {
+        val items = ArrayList<Basic>()
+        items.addAll(getItems())
         when (type) {
-            ViewModeType.GRID -> setUpGridAdapter()
-            ViewModeType.LINEAR -> setUpLinearAdapter()
-        }
-    }
-
-    private fun setUpGridAdapter() {
-        gallery_list.apply {
-            layoutManager = null
-            adapter = null
-            val gridLayoutManager = GridLayoutManager(context, 2)
-            gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                override fun getSpanSize(position: Int): Int {
-                    if (adapter.getItemViewType(position) == GalleryType.DATE.value)
-                        return gridLayoutManager.spanCount
-                    else
-                        return 1
+            ViewModeType.GRID -> {
+                val gridLayoutManager = GridLayoutManager(context, 2)
+                gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return if (getCurrentAdapter()?.getItemViewType(position) == GalleryType.DATE.value)
+                            gridLayoutManager.spanCount
+                        else
+                            1
+                    }
                 }
+
+                mapViewModeSetUp[type]?.switchViewMode(gallery_list,
+                        gridLayoutManager,
+                        items,
+                        onGalleryClicked)
             }
-            layoutManager = gridLayoutManager
-            gridAdapter.setOnClickListener(this, onGalleryClicked)
-            swapAdapter(gridAdapter, false)
-            gridAdapter.updateData(linearAdapter.Items)
-        }
-    }
-
-    private fun setUpLinearAdapter() {
-        gallery_list.apply {
-            layoutManager = null
-            adapter = null
-            layoutManager = LinearLayoutManager(context)
-            linearAdapter.setOnClickListener(this, onGalleryClicked)
-
-            swapAdapter(linearAdapter, false)
-            linearAdapter.updateData(gridAdapter.Items)
+            ViewModeType.LINEAR -> {
+                mapViewModeSetUp[type]?.switchViewMode(gallery_list,
+                        LinearLayoutManager(context),
+                        items,
+                        onGalleryClicked)
+            }
         }
     }
 
@@ -150,5 +138,11 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
         Toast.makeText(context, "showError", Toast.LENGTH_SHORT).show()
     }
 
-    fun getCurrentAdapter(): GalleryAdapter = gallery_list.adapter as GalleryAdapter
+    fun getCurrentAdapter(): GalleryAdapter? = gallery_list.adapter as? GalleryAdapter
+
+    private fun getItems(): List<Basic> {
+        val adapter = getCurrentAdapter()
+        adapter ?: return emptyList()
+        return adapter.Items
+    }
 }

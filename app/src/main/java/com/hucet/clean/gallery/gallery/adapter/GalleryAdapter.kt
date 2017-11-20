@@ -3,13 +3,9 @@ package com.hucet.clean.gallery.gallery.adapter
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
-import android.widget.ImageView
 import com.hucet.clean.gallery.R
-import com.hucet.clean.gallery.config.ReadOnlyConfigs
-import com.hucet.clean.gallery.gallery.fragment.ViewModeType
-import com.hucet.clean.gallery.inject.scopes.PerFragment
 import com.hucet.clean.gallery.model.Basic
-import javax.inject.Inject
+import com.hucet.clean.gallery.onGalleryClickedListener
 
 /**
  * Created by taesu on 2017-10-31.
@@ -18,10 +14,10 @@ import javax.inject.Inject
 
 abstract class GalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val Items: ArrayList<Basic> = arrayListOf()
-    private var onClick: ((Basic, ImageView?) -> Unit)? = null
+    private var onClick: onGalleryClickedListener? = null
     private var recyclerView: RecyclerView? = null
 
-    fun setOnClickListener(recyclerView: RecyclerView, onGalleryClicked: (Basic, ImageView?) -> Unit) {
+    fun setOnClickListener(recyclerView: RecyclerView, onGalleryClicked: onGalleryClickedListener) {
         this.recyclerView = recyclerView
         this.onClick = onGalleryClicked
     }

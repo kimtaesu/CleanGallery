@@ -15,6 +15,7 @@ abstract class FragmentProviderModule {
     @PerFragment
     @ContributesAndroidInjector(modules = arrayOf(
             AdapterDelegationModule::class,
+            ViewModeSetUpModule::class,
             GalleryPresenterModule::class,
             ClassifierModule::class,
             ListGalleryFragmentModule::class,
