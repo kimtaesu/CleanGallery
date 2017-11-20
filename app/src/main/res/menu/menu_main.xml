@@ -19,8 +19,8 @@
         android:icon="@drawable/ic_filter_list_black_24dp"
         android:title="@string/menu_filter_option"
         app:showAsAction="never"></item>
-    <item
-        android:id="@+id/action_settings"
-        android:title="@string/menu_setting_title"
-        app:showAsAction="never"></item>
+    <!--<item-->
+        <!--android:id="@+id/action_settings"-->
+        <!--android:title="@string/menu_setting_title"-->
+        <!--app:showAsAction="never"></item>-->
 </menu>

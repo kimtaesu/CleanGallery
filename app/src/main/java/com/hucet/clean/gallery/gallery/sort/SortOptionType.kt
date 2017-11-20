@@ -15,9 +15,9 @@ enum class SortOptionType(val option: String, val title: Int, val bitAttr: Int) 
     BY_PATH(MediaStore.Images.Media.DATA, R.string.sort_option_path, SORT_BY_PATH),
     BY_SIZE(MediaStore.Images.Media.SIZE, R.string.sort_option_size, SORT_BY_SIZE),
 
-    BY_DAILY("yyyy-MM-dd", R.string.sort_option_daily, SORT_BY_DAILY),
-    BY_MONTHLY("yyyy-MM", R.string.sort_option_monthly, SORT_BY_MONTHLY),
-    BY_YEARLY("yyyy", R.string.sort_option_yearly, SORT_BY_YEARLY);
+    BY_DAILY("MM월 dd일 E요일", R.string.sort_option_daily, SORT_BY_DAILY),
+    BY_MONTHLY("MM월", R.string.sort_option_monthly, SORT_BY_MONTHLY),
+    BY_YEARLY("yyyy년", R.string.sort_option_yearly, SORT_BY_YEARLY);
 
     private var orderBy: ByOrder = ByOrder.BY_DESC
 

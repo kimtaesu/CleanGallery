@@ -113,10 +113,10 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item?.itemId) {
-        R.id.action_settings -> {
-            startSettingActivity()
-            true
-        }
+//        R.id.action_settings -> {
+//            startSettingActivity()
+//            true
+//        }
         R.id.action_category_mode -> {
             if (isFragmentShown(galleryFragment)) {
                 val categoryMode = readOnlyConfigs.getCategoryMode().toggle()
