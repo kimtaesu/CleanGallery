@@ -26,6 +26,6 @@ public class GlideThumbnailExtension {
     public static void asThumbnail(RequestBuilder<Drawable> requestBuilder) {
         requestBuilder
                 .apply(REQUEST_OPTIONS_THUMBNAIL)
-                .thumbnail(0.25f);
+                .thumbnail(ConstantsKt.getGLIDE_SIZE_MULTIPLIER());
     }
 }

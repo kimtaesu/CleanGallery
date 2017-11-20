@@ -5,6 +5,7 @@ package com.hucet.clean.gallery.config
  */
 
 val GLIDE_OVERRIVE_SIZE = 255
+val GLIDE_SIZE_MULTIPLIER = 0.25f
 
 const val DAGGER_NAMED_GRID = "grid"
 const val DAGGER_NAMED_LINEAR = "linear"
