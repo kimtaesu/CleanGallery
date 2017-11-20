@@ -13,9 +13,13 @@ import javax.inject.Inject
 class ApplicationConfig @Inject constructor(
         val application: Application
 ) {
-    private var filterdType: Int = PreferenceHelper.defaultPrefs(application)[key_filter_media, VIDEOS or IMAGES or GIFS]
+    private var filterdType: Int
+        get() {
+            return PreferenceHelper.defaultPrefs(application)[key_filter_media, VIDEOS or IMAGES or GIFS]
+        }
         set(value) {
             PreferenceHelper.defaultPrefs(application)[key_filter_media] = value
+            value
         }
 
     private var sortOptionType: SortOptionType

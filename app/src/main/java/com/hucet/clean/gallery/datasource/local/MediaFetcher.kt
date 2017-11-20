@@ -37,6 +37,7 @@ class MediaFetcher constructor(private val context: Context,
     fun parseCursor(cur: Cursor?, noMediaFolders: Set<String>, readOnlyConfigs: ReadOnlyConfigs): List<Medium> {
         cur ?: return emptyList()
         val curMedia = ArrayList<Medium>()
+
         cur.use {
             if (cur.moveToFirst()) {
                 do {

@@ -17,7 +17,6 @@ import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.extension.isExternalStorageDir
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.adapter.GalleryType
-import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.fragment.switchable.ViewModeSwichable
 import com.hucet.clean.gallery.inject.Injectable
 import com.hucet.clean.gallery.model.Basic
@@ -118,14 +117,6 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
         setUpLayoutManager((activity as MainActivity).readOnlyConfigs.getViewModeType())
     }
 
-    fun onViewModeChanged(viewModeType: ViewModeType) {
-        setUpLayoutManager(viewModeType)
-    }
-
-    fun onCategoryModeChanged(categoryMode: CategoryMode) {
-        requestFetch(readOnlyFunction.invoke())
-    }
-
     override fun showProgress() {
         Toast.makeText(context, "showProgress", Toast.LENGTH_SHORT).show()
     }
@@ -144,5 +135,21 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
         val adapter = getCurrentAdapter()
         adapter ?: return emptyList()
         return adapter.Items
+    }
+
+    fun onViewModeChanged(readOnlyConfigs: ReadOnlyConfigs) {
+        setUpLayoutManager(readOnlyConfigs.getViewModeType())
+    }
+
+    fun onCategoryModeChanged(readOnlyConfigs: ReadOnlyConfigs) {
+        requestFetch(readOnlyConfigs)
+    }
+
+    fun onFilterChanged(readOnlyConfigs: ReadOnlyConfigs) {
+        requestFetch(readOnlyConfigs)
+    }
+
+    fun onSortChanged(readOnlyConfigs: ReadOnlyConfigs) {
+        requestFetch(readOnlyConfigs)
     }
 }

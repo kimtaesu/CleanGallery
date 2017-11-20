@@ -1,13 +1,12 @@
 package com.hucet.clean.gallery.extension
 
-import android.content.Context
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.afollestad.materialdialogs.MaterialDialog
 import com.hucet.clean.gallery.R
-import com.hucet.clean.gallery.config.*
+import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.gallery.mapper.DialogRadioItemMapper
 import com.hucet.clean.gallery.gallery.sort.ByOrder
 import com.hucet.clean.gallery.gallery.sort.SortOptionType
@@ -55,7 +54,7 @@ fun AlertDialog.Builder.createFilterDialog(readOnlyConfigs: ReadOnlyConfigs, fp:
     val mapper = DialogRadioItemMapper.FilterMapper()
     val resultMap = mapper.map(context, readOnlyConfigs)
     val listItem = resultMap.values.flatMap { it }
-    val callback = MaterialDialog.ListCallbackMultiChoice { dialog, which, text ->
+    val callback = MaterialDialog.ListCallbackMultiChoice { _, which, _ ->
         val filterType = which.sumBy { which ->
             listItem
                     .first { it.index == which }

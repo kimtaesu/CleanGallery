@@ -110,8 +110,8 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         R.id.action_category_mode -> {
             if (isFragmentShown(galleryFragment)) {
                 val categoryMode = readOnlyConfigs.getCategoryMode().toggle()
-                readOnlyConfigs = config.setReadOnlyConfigs(this, categoryMode)
-                galleryFragment.onCategoryModeChanged(categoryMode)
+                readOnlyConfigs = config.setReadOnlyConfigs(this, categoryMode = categoryMode)
+                galleryFragment.onCategoryModeChanged(readOnlyConfigs)
                 updateCategory(item, categoryMode)
             }
             true
@@ -119,21 +119,23 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         R.id.action_view_mode -> {
             if (isFragmentShown(galleryFragment)) {
                 val viewMode = readOnlyConfigs.getViewModeType().toggle()
-                readOnlyConfigs = config.setReadOnlyConfigs(this, viewMode)
-                galleryFragment.onViewModeChanged(viewMode)
+                readOnlyConfigs = config.setReadOnlyConfigs(this, viewMode = viewMode)
+                galleryFragment.onViewModeChanged(readOnlyConfigs)
                 updateViewMode(item, viewMode)
             }
             true
         }
         R.id.action_sort -> {
             AlertDialog.Builder(this).createSortDialog(readOnlyConfigs, {
-                readOnlyConfigs = config.setReadOnlyConfigs(this, it)
+                readOnlyConfigs = config.setReadOnlyConfigs(this, sortOptionType = it)
+                galleryFragment.onSortChanged(readOnlyConfigs)
             }).show()
             true
         }
         R.id.action_filter -> {
             AlertDialog.Builder(this).createFilterDialog(readOnlyConfigs, {
-                readOnlyConfigs = config.setReadOnlyConfigs(this, it)
+                readOnlyConfigs = config.setReadOnlyConfigs(this, filterBit = it)
+                galleryFragment.onFilterChanged(readOnlyConfigs)
             }).show()
             true
         }
