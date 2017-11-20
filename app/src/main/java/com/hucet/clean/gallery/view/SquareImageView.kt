@@ -14,22 +14,11 @@ import android.arch.lifecycle.OnLifecycleEvent
 /**
  * Created by taesu on 2017-11-16.
  */
-class ViewModeImageView : ImageView, LifecycleObserver {
-
+class SquareImageView : ImageView, LifecycleObserver {
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs, 0) {
-
     }
 
-    fun startAsAnimatable(drawable: Drawable) {
-        this.setImageDrawable(drawable)
-        if (drawable is Animatable) {
-            drawable.start()
-        }
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, widthMeasureSpec)
     }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    fun OnPause() {
-        this.clearAnimation()
-    }
-
 }

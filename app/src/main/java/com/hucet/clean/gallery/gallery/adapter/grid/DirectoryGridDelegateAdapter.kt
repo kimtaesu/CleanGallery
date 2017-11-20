@@ -26,8 +26,6 @@ class DirectoryGridDelegateAdapter @Inject constructor(private val glideRequests
         holder.path.text = item.path
         holder.count.text = item.count.toString()
         glideRequests
-                .asDrawable()
-                .centerCrop()
                 .load(item.thumbnail)
                 .into(holder.thumbnail)
     }

@@ -10,7 +10,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <include layout="@layout/layout_thumbnail"></include>
+        <com.hucet.clean.gallery.view.SquareImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="wrap_content"
