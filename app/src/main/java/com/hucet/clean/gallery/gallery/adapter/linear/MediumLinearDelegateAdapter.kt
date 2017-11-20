@@ -11,6 +11,7 @@ import com.hucet.clean.gallery.gallery.adapter.AbstractDelegateAdapter
 import com.hucet.clean.gallery.gallery.fragment.GlideRequests
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import com.hucet.clean.gallery.model.Basic
+import com.hucet.clean.gallery.model.MediaType
 import com.hucet.clean.gallery.model.Medium
 import javax.inject.Inject
 
@@ -30,10 +31,18 @@ class MediumLinearDelegateAdapter @Inject constructor(private val glideRequests:
         holder as ViewHolder
         item as Medium
         holder.name.text = item.name
-        if (item.isVideo) {
-            holder.indicator.visibility = View.VISIBLE
-        } else {
-            holder.indicator.visibility = View.GONE
+        when (item.mediaType) {
+            MediaType.VIDEO -> {
+                holder.indicator.visibility = View.VISIBLE
+                holder.indicator.setImageResource(R.drawable.ic_play_circle_outline_black_24px)
+            }
+            MediaType.GIF -> {
+                holder.indicator.visibility = View.VISIBLE
+                holder.indicator.setImageResource(R.drawable.ic_gif_black_24dp)
+            }
+            MediaType.IMAGE -> {
+                holder.indicator.visibility = View.GONE
+            }
         }
         glideRequests
                 .asDrawable()
@@ -45,7 +54,7 @@ class MediumLinearDelegateAdapter @Inject constructor(private val glideRequests:
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val name: TextView = view.findViewById(R.id.name)
         val thumbnail: ImageView = view.findViewById(R.id.thumbnail)
-        val indicator: ImageView = view.findViewById(R.id.video)
+        val indicator: ImageView = view.findViewById(R.id.indicator)
     }
 }
 

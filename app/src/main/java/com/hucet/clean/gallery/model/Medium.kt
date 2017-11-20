@@ -12,6 +12,9 @@ import java.io.Serializable
 /**
  * Created by taesu on 2017-10-30.
  */
+enum class MediaType {
+    VIDEO, IMAGE, GIF
+}
 
 data class Medium(
         override val id: Long,
@@ -20,7 +23,7 @@ data class Medium(
         private val _modified: Long,
         val taken: Long,
         val size: Long,
-        val isVideo: Boolean = false,
+        val mediaType: MediaType = MediaType.IMAGE,
         override val viewType: GalleryType = GalleryType.MEDIUM
 ) : Basic(), Serializable {
     var modified: Long = _modified

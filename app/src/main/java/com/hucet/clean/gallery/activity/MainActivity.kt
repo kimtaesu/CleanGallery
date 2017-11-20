@@ -26,6 +26,7 @@ import com.hucet.clean.gallery.gallery.fragment.GalleryDetailFragment
 import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
 import com.hucet.clean.gallery.model.Date
+import com.hucet.clean.gallery.model.MediaType
 import com.hucet.clean.gallery.model.Medium
 import com.hucet.clean.gallery.preference.SettingActivity
 import dagger.android.AndroidInjector
@@ -224,7 +225,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     val onGalleryClicked: (Medium, ImageView?) -> Unit = { medium: Medium, imageView: ImageView? ->
         Timber.d("onGalleryClicked ${medium}")
-        if (medium.isVideo) {
+        if (medium.mediaType == MediaType.VIDEO) {
             startVideoPlayer(medium)
         } else {
             val transitionName = ViewCompat.getTransitionName(imageView)

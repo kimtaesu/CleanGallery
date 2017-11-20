@@ -48,7 +48,8 @@ class MediaFetcher constructor(private val context: Context,
                         var size = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE))
                         val dateTaken = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN))
                         val dateModified = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED))
-                        val medium = Medium(id, filename, path, dateModified, dateTaken, size, MediaTypeHelper.isVideo(filename))
+
+                        val medium = Medium(id, filename, path, dateModified, dateTaken, size, MediaTypeHelper.mediaType(filename))
                         if (isFilter(orderedFilter, medium, noMediaFolders, readOnlyConfigs) == MediaTypeFilter.FILTERED)
                             continue
 

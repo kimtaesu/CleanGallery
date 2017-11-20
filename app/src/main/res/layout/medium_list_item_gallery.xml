@@ -9,7 +9,7 @@
     <include layout="@layout/layout_thumbnail"></include>
 
     <ImageView
-        android:id="@+id/video"
+        android:id="@+id/indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
@@ -17,15 +17,14 @@
         android:tint="@color/colorAccent"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/thumbnail"
-        app:layout_constraintTop_toTopOf="@+id/thumbnail"
-        app:srcCompat="@drawable/ic_play_circle_outline_black_24px" />
+        app:layout_constraintTop_toTopOf="@+id/thumbnail" />
 
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/list_view_item_thumbnail_margin_left"
-        android:textColor="#616161"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/thumbnail"
