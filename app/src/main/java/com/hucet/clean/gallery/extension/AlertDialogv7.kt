@@ -34,7 +34,8 @@ fun AlertDialog.Builder.createSortDialog(readOnlyConfigs: ReadOnlyConfigs, callb
             .customView(v, true)
             .positiveText(android.R.string.ok)
             .onPositive { dialog, which ->
-                callback.invoke(sortGroup.createSortOptionType(sortItems, orderItems))
+                val sortType = SortOptionType.getFromSortOrderBit(sortGroup.getCheckedItemIndex(sortItems) or orderGroup.getCheckedItemIndex(orderItems))
+                callback.invoke(sortType)
             }
             .build()
 }
