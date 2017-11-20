@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.model.Basic
-import com.hucet.clean.gallery.onGalleryClickedListener
+import com.hucet.clean.gallery.OnGalleryClickedListener
 
 /**
  * Created by taesu on 2017-10-31.
@@ -14,10 +14,10 @@ import com.hucet.clean.gallery.onGalleryClickedListener
 
 abstract class GalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val Items: ArrayList<Basic> = arrayListOf()
-    private var onClick: onGalleryClickedListener? = null
+    private var onClick: OnGalleryClickedListener? = null
     private var recyclerView: RecyclerView? = null
 
-    fun setOnClickListener(recyclerView: RecyclerView, onGalleryClicked: onGalleryClickedListener) {
+    fun setOnClickListener(recyclerView: RecyclerView, onGalleryClicked: OnGalleryClickedListener) {
         this.recyclerView = recyclerView
         this.onClick = onGalleryClicked
     }

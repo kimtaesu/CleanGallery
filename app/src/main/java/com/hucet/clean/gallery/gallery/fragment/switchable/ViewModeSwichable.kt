@@ -5,20 +5,20 @@ import com.hucet.clean.gallery.gallery.adapter.grid.GridAdapter
 import com.hucet.clean.gallery.gallery.adapter.linear.LinearAdapter
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import com.hucet.clean.gallery.model.Basic
-import com.hucet.clean.gallery.onGalleryClickedListener
+import com.hucet.clean.gallery.OnGalleryClickedListener
 import javax.inject.Inject
 
 /**
  * Created by taesu on 2017-11-20.
  */
 interface ViewModeSwichable {
-    fun switchViewMode(recy: RecyclerView, manager: RecyclerView.LayoutManager, items: List<Basic>, clickedListener: onGalleryClickedListener)
+    fun switchViewMode(recy: RecyclerView, manager: RecyclerView.LayoutManager, items: List<Basic>, clickedListener: OnGalleryClickedListener)
 }
 
 @PerFragment
 class GridViewModeSetUp @Inject constructor() : ViewModeSwichable {
     @Inject lateinit var gridAdapter: GridAdapter
-    override fun switchViewMode(recy: RecyclerView, manager: RecyclerView.LayoutManager, items: List<Basic>, clickedListener: onGalleryClickedListener) {
+    override fun switchViewMode(recy: RecyclerView, manager: RecyclerView.LayoutManager, items: List<Basic>, clickedListener: OnGalleryClickedListener) {
         recy.apply {
             layoutManager = null
             adapter = null
@@ -33,7 +33,7 @@ class GridViewModeSetUp @Inject constructor() : ViewModeSwichable {
 @PerFragment
 class LinearViewModeSetUp @Inject constructor() : ViewModeSwichable {
     @Inject lateinit var linearAdapter: LinearAdapter
-    override fun switchViewMode(recy: RecyclerView, manager: RecyclerView.LayoutManager, items: List<Basic>, clickedListener: onGalleryClickedListener) {
+    override fun switchViewMode(recy: RecyclerView, manager: RecyclerView.LayoutManager, items: List<Basic>, clickedListener: OnGalleryClickedListener) {
         recy.apply {
             layoutManager = null
             adapter = null

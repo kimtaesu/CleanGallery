@@ -1,7 +1,6 @@
 package com.hucet.clean.gallery.config
 
 import android.app.Application
-import com.hucet.clean.gallery.activity.MainActivity
 import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
 import com.hucet.clean.gallery.gallery.sort.SortOptionType
@@ -50,9 +49,13 @@ class ApplicationConfig @Inject constructor(
             }
         }
 
-    val showHidden: Boolean
+    var showHidden: Boolean
         get() {
             return PreferenceHelper.defaultPrefs(application)[key_show_hidden, false]
+        }
+        set(value) {
+            PreferenceHelper.defaultPrefs(application)[key_show_hidden] = value
+            value
         }
 
     private var categoryMode: CategoryMode
@@ -73,55 +76,47 @@ class ApplicationConfig @Inject constructor(
             return ViewModeType.valueOf(name)
         }
 
-
-    fun getReadOnlyConfigs(activity: MainActivity): ReadOnlyConfigs {
-        validateSetGetter(activity)
-        return ReadOnlyConfigs(
-                this.categoryMode,
-                this.viewModeType,
-                this.sortOptionType,
-                this.filterdType,
-                this.showHidden
-        )
+    fun ReadOnlyConfigBuild(init: ReadOnlyConfigBuilder.() -> Unit): ReadOnlyConfigs {
+        return ReadOnlyConfigBuilder(init).build()
     }
 
-    fun setReadOnlyConfigs(activity: MainActivity, readOnlyConfigs: ReadOnlyConfigs): ReadOnlyConfigs {
-        validateSetGetter(activity)
-        this.sortOptionType = readOnlyConfigs.getSortOptionType()
-        this.categoryMode = readOnlyConfigs.getCategoryMode()
-        this.viewModeType = readOnlyConfigs.getViewModeType()
-        return getReadOnlyConfigs(activity)
-    }
+    inner class ReadOnlyConfigBuilder() {
+        constructor(init: ReadOnlyConfigBuilder.() -> Unit) : this() {
+            init()
+        }
 
-    fun setReadOnlyConfigs(activity: MainActivity, viewMode: ViewModeType): ReadOnlyConfigs {
-        validateSetGetter(activity)
-        this.viewModeType = viewMode
-        return getReadOnlyConfigs(activity)
-    }
+        fun filterType(filterBit: Int) {
+            this@ApplicationConfig.filterdType = filterBit
+        }
 
-    fun setReadOnlyConfigs(activity: MainActivity, sortOptionType: SortOptionType): ReadOnlyConfigs {
-        validateSetGetter(activity)
-        this.sortOptionType = sortOptionType
-        return getReadOnlyConfigs(activity)
-    }
+        fun categoryMode(categoryMode: CategoryMode) {
+            this@ApplicationConfig.categoryMode = categoryMode
+//            TODO Test Code
+            if (categoryMode == CategoryMode.DATE)
+                viewMode(ViewModeType.GRID)
+        }
 
+        fun sortType(sortOptionType: SortOptionType) {
+            this@ApplicationConfig.sortOptionType = sortOptionType
+        }
 
-    fun setReadOnlyConfigs(activity: MainActivity, categoryMode: CategoryMode): ReadOnlyConfigs {
-        validateSetGetter(activity)
-        this.categoryMode = categoryMode
-        return getReadOnlyConfigs(activity)
-    }
+        fun viewMode(viewMode: ViewModeType) {
+            this@ApplicationConfig.viewModeType = viewMode
+        }
 
-    private fun validateSetGetter(mainActivity: MainActivity) {
-        if (mainActivity !is MainActivity)
-            throw IllegalArgumentException()
-    }
+        fun showHidden(isShow: Boolean) {
+            this@ApplicationConfig.showHidden = isShow
+        }
 
-    fun setReadOnlyConfigs(activity: MainActivity, filterBit: Int): ReadOnlyConfigs {
-        validateSetGetter(activity)
-        this.filterdType = filterBit
-        return getReadOnlyConfigs(activity)
+        fun build(): ReadOnlyConfigs {
+            return ReadOnlyConfigs(
+                    c = this@ApplicationConfig.categoryMode,
+                    s = this@ApplicationConfig.sortOptionType,
+                    v = this@ApplicationConfig.viewModeType,
+                    f = this@ApplicationConfig.filterdType,
+                    varShowHidden = this@ApplicationConfig.showHidden
+            )
+        }
     }
 
 }
-

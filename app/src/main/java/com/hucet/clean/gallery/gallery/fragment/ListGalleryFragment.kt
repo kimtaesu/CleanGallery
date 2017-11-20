@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import com.hucet.clean.gallery.OnGalleryClickedListener
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.activity.MainActivity
 import com.hucet.clean.gallery.config.ReadOnlyConfigs
@@ -22,7 +23,6 @@ import com.hucet.clean.gallery.inject.Injectable
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Directory
 import com.hucet.clean.gallery.model.Medium
-import com.hucet.clean.gallery.onGalleryClickedListener
 import com.hucet.clean.gallery.presenter.Gallery
 import kotlinx.android.synthetic.main.fragment_gallery.*
 import javax.inject.Inject
@@ -50,7 +50,7 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
+        (activity as MainActivity).setOnViewModeChangedListener(onViewModeChanged)
         initRecyclerView()
         requestFetch(readOnlyFunction.invoke())
     }
@@ -60,7 +60,23 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
         presenter.fetchItems(curPath, readOnlyConfigs)
     }
 
-    private val onGalleryClicked: onGalleryClickedListener = { basic: Basic, imageView: ImageView? ->
+    val onViewModeChanged: (ViewModeType) -> Unit = { viewMode ->
+        setUpLayoutManager(viewMode)
+    }
+
+    fun onCategoryModeChanged(readOnlyConfigs: ReadOnlyConfigs) {
+        requestFetch(readOnlyConfigs)
+    }
+
+    fun onFilterChanged(readOnlyConfigs: ReadOnlyConfigs) {
+        requestFetch(readOnlyConfigs)
+    }
+
+    fun onSortChanged(readOnlyConfigs: ReadOnlyConfigs) {
+        requestFetch(readOnlyConfigs)
+    }
+
+    private val onGalleryClicked: OnGalleryClickedListener = { basic: Basic, imageView: ImageView? ->
         when (basic) {
             is Medium -> {
                 ViewCompat.setTransitionName(imageView, basic.name)
@@ -137,19 +153,4 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
         return adapter.Items
     }
 
-    fun onViewModeChanged(readOnlyConfigs: ReadOnlyConfigs) {
-        setUpLayoutManager(readOnlyConfigs.getViewModeType())
-    }
-
-    fun onCategoryModeChanged(readOnlyConfigs: ReadOnlyConfigs) {
-        requestFetch(readOnlyConfigs)
-    }
-
-    fun onFilterChanged(readOnlyConfigs: ReadOnlyConfigs) {
-        requestFetch(readOnlyConfigs)
-    }
-
-    fun onSortChanged(readOnlyConfigs: ReadOnlyConfigs) {
-        requestFetch(readOnlyConfigs)
-    }
 }
