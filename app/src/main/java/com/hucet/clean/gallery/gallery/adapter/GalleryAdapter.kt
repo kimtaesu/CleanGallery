@@ -32,7 +32,7 @@ abstract class GalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
         val viewHoler = createDelegateViewHolder(parent, viewType)
         viewHoler?.itemView?.setOnClickListener({
             val position = recyclerView?.getChildAdapterPosition(it)
-            onClick?.invoke(Items.get(position!!), viewHoler?.itemView?.findViewById(R.id.thumbnail))
+            onClick?.invoke(Items[position!!], viewHoler?.itemView?.findViewById(R.id.thumbnail))
         })
         return viewHoler
     }

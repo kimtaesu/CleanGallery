@@ -91,9 +91,6 @@ class ApplicationConfig @Inject constructor(
 
         fun categoryMode(categoryMode: CategoryMode) {
             this@ApplicationConfig.categoryMode = categoryMode
-//            TODO Test Code
-            if (categoryMode == CategoryMode.DATE)
-                viewMode(ViewModeType.GRID)
         }
 
         fun sortType(sortOptionType: SortOptionType) {

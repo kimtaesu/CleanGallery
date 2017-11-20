@@ -112,11 +112,18 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         R.id.action_category_mode -> {
             if (isFragmentShown(galleryFragment)) {
                 val categoryMode = readOnlyConfigs.getCategoryMode().toggle()
+                var needToUpdateViewMode = false
                 readOnlyConfigs = config.ReadOnlyConfigBuild {
                     categoryMode(categoryMode)
+                    if (categoryMode == CategoryMode.DATE) {
+                        viewMode(ViewModeType.GRID)
+                        needToUpdateViewMode = true
+                    }
                 }
+                if (needToUpdateViewMode)
+                    onViewModechangedListener?.run { readOnlyConfigs.getViewModeType() }
                 galleryFragment.onCategoryModeChanged(readOnlyConfigs)
-                onViewModechangedListener?.run { readOnlyConfigs.getViewModeType() }
+
                 updateCategory(item, categoryMode)
             }
             true
