@@ -1,7 +1,5 @@
 package com.hucet.clean.gallery.inject.modules
 
-import com.hucet.clean.gallery.gallery.fragment.GlideApp
-import com.hucet.clean.gallery.gallery.fragment.GlideRequests
 import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import dagger.Module
@@ -12,9 +10,4 @@ import dagger.Provides
  */
 @Module
 class ListGalleryFragmentModule {
-    @Provides
-    @PerFragment
-    fun provideGlideRequests(listGalleryFragment: ListGalleryFragment): GlideRequests {
-        return GlideApp.with(listGalleryFragment)
-    }
 }

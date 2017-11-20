@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/list_view_item_margin_top">
+    android:layout_margin="1dp">
 
     <include layout="@layout/layout_thumbnail"></include>
 
+    <include layout="@layout/layout_indicator"></include>
     <ImageView
-        android:id="@+id/video"
+        android:id="@+id/indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
@@ -17,8 +18,7 @@
         android:tint="@color/colorAccent"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/thumbnail"
-        app:layout_constraintTop_toTopOf="@+id/thumbnail"
-        app:srcCompat="@drawable/ic_play_circle_outline_black_24px" />
+        app:layout_constraintTop_toTopOf="@+id/thumbnail" />
 
     <TextView
         android:id="@+id/name"

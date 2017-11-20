@@ -6,6 +6,7 @@ import com.hucet.clean.gallery.config.DAGGER_NAMED_LINEAR
 import com.hucet.clean.gallery.gallery.adapter.AbstractDelegateAdapter
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.adapter.GalleryType
+import com.hucet.clean.gallery.gallery.fragment.glide.GlideRequests
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import javax.inject.Inject
 import javax.inject.Named
@@ -28,9 +29,9 @@ class LinearAdapter @Inject constructor() : GalleryAdapter() {
     }
 
 
-    override fun onBindDelegateViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+    override fun onBindDelegateViewHolder(holder: RecyclerView.ViewHolder?, position: Int, glideRequests: GlideRequests?) {
         val item = Items[position]
-        delegateLinearMap[item.viewType]?.onBindViewHolder(holder, position, item)
+        delegateLinearMap[item.viewType]?.onBindViewHolder(holder, position, item, glideRequests)
     }
 
 }

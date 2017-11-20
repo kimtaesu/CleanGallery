@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.gallery.adapter.AbstractDelegateAdapter
-import com.hucet.clean.gallery.gallery.fragment.GlideRequests
+import com.hucet.clean.gallery.gallery.fragment.glide.GlideRequests
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.MediaType
@@ -19,7 +19,7 @@ import javax.inject.Inject
  * Created by taesu on 2017-11-09.
  */
 @PerFragment
-class MediumGridDelegateAdapter @Inject constructor(private val glideRequests: GlideRequests) : AbstractDelegateAdapter {
+class MediumGridDelegateAdapter @Inject constructor() : AbstractDelegateAdapter {
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
         val v = LayoutInflater
                 .from(parent?.context)
@@ -27,7 +27,7 @@ class MediumGridDelegateAdapter @Inject constructor(private val glideRequests: G
         return ViewHolder(v)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int, item: Basic) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int, item: Basic, glideRequests: GlideRequests?) {
         holder as ViewHolder
         item as Medium
         holder.name.text = item.name
@@ -44,9 +44,9 @@ class MediumGridDelegateAdapter @Inject constructor(private val glideRequests: G
                 holder.indicator.visibility = View.GONE
             }
         }
+        if (glideRequests == null) return
         glideRequests
-                .asDrawable()
-                .centerCrop()
+                .asThumbnail()
                 .load(item.path)
                 .into(holder.thumbnail)
     }

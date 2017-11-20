@@ -4,6 +4,8 @@ package com.hucet.clean.gallery.config
  * Created by taesu on 2017-10-30.
  */
 
+val GLIDE_OVERRIVE_SIZE = 255
+
 const val DAGGER_NAMED_GRID = "grid"
 const val DAGGER_NAMED_LINEAR = "linear"
 // preference keys

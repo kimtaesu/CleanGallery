@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.hucet.clean.gallery.OnGalleryClickedListener
 import com.hucet.clean.gallery.R
+import com.hucet.clean.gallery.gallery.fragment.glide.GlideRequests
 import com.hucet.clean.gallery.model.Basic
 
 /**
@@ -16,6 +17,11 @@ abstract class GalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
     val Items: ArrayList<Basic> = arrayListOf()
     private var onClick: OnGalleryClickedListener? = null
     private var recyclerView: RecyclerView? = null
+    private var glideRequests: GlideRequests? = null
+
+    fun setGlideRequest(glideRequests: GlideRequests) {
+        this.glideRequests = glideRequests
+    }
 
     fun setOnClickListener(recyclerView: RecyclerView, onGalleryClicked: OnGalleryClickedListener) {
         this.recyclerView = recyclerView
@@ -37,10 +43,10 @@ abstract class GalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
         return viewHoler
     }
 
-    abstract fun onBindDelegateViewHolder(holder: RecyclerView.ViewHolder?, position: Int)
+    abstract fun onBindDelegateViewHolder(holder: RecyclerView.ViewHolder?, position: Int, glideRequests: GlideRequests?)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
-        onBindDelegateViewHolder(holder, position)
+        onBindDelegateViewHolder(holder, position, this.glideRequests)
     }
 
     override fun getItemCount() = Items.size

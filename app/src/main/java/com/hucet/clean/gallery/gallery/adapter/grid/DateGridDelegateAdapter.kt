@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.gallery.adapter.AbstractDelegateAdapter
+import com.hucet.clean.gallery.gallery.fragment.glide.GlideRequests
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Date
@@ -17,7 +18,7 @@ import javax.inject.Inject
  */
 @PerFragment
 class DateGridDelegateAdapter @Inject constructor() : AbstractDelegateAdapter {
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int, item: Basic) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int, item: Basic, glideRequests: GlideRequests?) {
         holder as ViewHolder
         item as Date
         holder.date.text = item.date

@@ -20,6 +20,7 @@ import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.extension.isExternalStorageDir
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.adapter.GalleryType
+import com.hucet.clean.gallery.gallery.fragment.glide.GlideApp
 import com.hucet.clean.gallery.gallery.fragment.switchable.ViewModeSwichable
 import com.hucet.clean.gallery.inject.Injectable
 import com.hucet.clean.gallery.model.Basic
@@ -118,12 +119,15 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
 
                 mapViewModeSetUp[type]?.switchViewMode(gallery_list,
                         gridLayoutManager,
+                        GlideApp.with(this),
                         items,
-                        onGalleryClicked)
+                        onGalleryClicked
+                )
             }
             ViewModeType.LINEAR -> {
                 mapViewModeSetUp[type]?.switchViewMode(gallery_list,
                         LinearLayoutManager(context),
+                        GlideApp.with(this),
                         items,
                         onGalleryClicked)
             }

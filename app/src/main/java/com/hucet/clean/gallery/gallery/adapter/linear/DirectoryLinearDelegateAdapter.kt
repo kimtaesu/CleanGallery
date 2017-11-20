@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.gallery.adapter.AbstractDelegateAdapter
-import com.hucet.clean.gallery.gallery.fragment.GlideRequests
+import com.hucet.clean.gallery.gallery.fragment.glide.GlideRequests
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Directory
@@ -18,17 +18,17 @@ import javax.inject.Inject
  * Created by taesu on 2017-11-09.
  */
 @PerFragment
-class DirectoryLinearDelegateAdapter @Inject constructor(private val glideRequests: GlideRequests) : AbstractDelegateAdapter {
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int, item: Basic) {
+class DirectoryLinearDelegateAdapter @Inject constructor() : AbstractDelegateAdapter {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int, item: Basic, glideRequests: GlideRequests?) {
         holder as ViewHolder
         item as Directory
         holder.name.text = item.name
         holder.path.text = item.path
         holder.count.text = item.count.toString()
+        if (glideRequests == null) return
         glideRequests
-                .asDrawable()
-                .centerCrop()
-                .load(item.thumbnail)
+                .asThumbnail()
+                .load(item.path)
                 .into(holder.thumbnail)
     }
 
