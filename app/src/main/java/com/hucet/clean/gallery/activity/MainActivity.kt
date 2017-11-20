@@ -25,6 +25,7 @@ import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.fragment.GalleryDetailFragment
 import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
+import com.hucet.clean.gallery.model.Date
 import com.hucet.clean.gallery.model.Medium
 import com.hucet.clean.gallery.preference.SettingActivity
 import dagger.android.AndroidInjector
@@ -64,24 +65,32 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         super.onDestroy()
     }
 
-    private fun updateCategory(item: MenuItem, categoryMode: CategoryMode) {
+    private fun updateCategory(item: MenuItem?, categoryMode: CategoryMode) {
         when (categoryMode) {
             CategoryMode.DIRECTORY -> {
-                item.startAsAnimation(MemoryCacheDrawable.getDrawable(R.drawable.ic_directory2date_animation, this))
+                item?.startAsAnimation(MemoryCacheDrawable.getDrawable(R.drawable.ic_directory2date_animation, this))
             }
             CategoryMode.DATE -> {
-                item.startAsAnimation(MemoryCacheDrawable.getDrawable(R.drawable.ic_date2directory_animation, this))
+                item?.startAsAnimation(MemoryCacheDrawable.getDrawable(R.drawable.ic_date2directory_animation, this))
             }
         }
     }
 
-    private fun updateViewMode(item: MenuItem, viewMode: ViewModeType) {
+    private fun updateViewMode(item: MenuItem?, viewMode: ViewModeType, categoryMode: CategoryMode) {
+        val isRestrict = !isGridRestriction(categoryMode)
+        item?.isEnabled = isRestrict
         when (viewMode) {
             ViewModeType.GRID -> {
-                item.startAsAnimation(MemoryCacheDrawable.getDrawable(R.drawable.ic_grid2list_animation, this))
+                if (isRestrict)
+                    item?.startAsAnimation(MemoryCacheDrawable.getDrawable(R.drawable.ic_grid2list_animation, this))
+                else
+                    item?.startAsAnimation(MemoryCacheDrawable.getDrawable(R.drawable.ic_view_mode_list_disable, this))
             }
             ViewModeType.LINEAR -> {
-                item.startAsAnimation(MemoryCacheDrawable.getDrawable(R.drawable.ic_list2grid_animation, this))
+                if (isRestrict)
+                    item?.startAsAnimation(MemoryCacheDrawable.getDrawable(R.drawable.ic_list2grid_animation, this))
+                else
+                    item?.startAsAnimation(MemoryCacheDrawable.getDrawable(R.drawable.ic_view_mode_grid_disable, this))
             }
         }
     }
@@ -92,17 +101,15 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         supportActionBar?.setTitle(R.string.app_name)
     }
 
+    private var viewModeItem: MenuItem? = null
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
-        val viewModeItem = menu?.findItem(R.id.action_view_mode)
-        if (viewModeItem != null)
-            updateViewMode(viewModeItem, readOnlyConfigs.getViewModeType())
+        viewModeItem = menu?.findItem(R.id.action_view_mode)
+        updateViewMode(viewModeItem, readOnlyConfigs.getViewModeType(), readOnlyConfigs.getCategoryMode())
         val categoryItem = menu?.findItem(R.id.action_category_mode)
-        if (categoryItem != null)
-            updateCategory(categoryItem, readOnlyConfigs.getCategoryMode())
+        updateCategory(categoryItem, readOnlyConfigs.getCategoryMode())
         return true
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item?.itemId) {
         R.id.action_settings -> {
@@ -112,18 +119,14 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         R.id.action_category_mode -> {
             if (isFragmentShown(galleryFragment)) {
                 val categoryMode = readOnlyConfigs.getCategoryMode().toggle()
-                var needToUpdateViewMode = false
                 readOnlyConfigs = config.ReadOnlyConfigBuild {
                     categoryMode(categoryMode)
-                    if (categoryMode == CategoryMode.DATE) {
+                    if (isGridRestriction(categoryMode))
                         viewMode(ViewModeType.GRID)
-                        needToUpdateViewMode = true
-                    }
                 }
-                if (needToUpdateViewMode)
-                    onViewModechangedListener?.run { readOnlyConfigs.getViewModeType() }
-                galleryFragment.onCategoryModeChanged(readOnlyConfigs)
+                cascadeViewModeUpdate()
 
+                galleryFragment.onCategoryModeChanged(readOnlyConfigs)
                 updateCategory(item, categoryMode)
             }
             true
@@ -134,8 +137,8 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 readOnlyConfigs = config.ReadOnlyConfigBuild {
                     viewMode(viewMode)
                 }
-                onViewModechangedListener?.run { readOnlyConfigs.getViewModeType() }
-                updateViewMode(item, viewMode)
+                onViewModechangedListener?.invoke(readOnlyConfigs.getViewModeType())
+                updateViewMode(item, viewMode, readOnlyConfigs.getCategoryMode())
             }
             true
         }
@@ -161,6 +164,19 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             super.onOptionsItemSelected(item)
         }
     }
+
+
+    private fun isGridRestriction(categoryMode: CategoryMode): Boolean {
+        if (categoryMode == CategoryMode.DATE)
+            return true
+        return false
+    }
+
+    private fun cascadeViewModeUpdate() {
+        onViewModechangedListener?.invoke(readOnlyConfigs.getViewModeType())
+        updateViewMode(viewModeItem, readOnlyConfigs.getViewModeType(), readOnlyConfigs.getCategoryMode())
+    }
+
 
     fun setOnViewModeChangedListener(onViewModeChanged: (ViewModeType) -> Unit) {
         onViewModechangedListener = onViewModeChanged

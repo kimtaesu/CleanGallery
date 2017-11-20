@@ -1,5 +1,6 @@
 package com.hucet.clean.gallery.extension
 
+import android.app.Activity
 import android.graphics.drawable.Drawable
 import android.view.MenuItem
 
