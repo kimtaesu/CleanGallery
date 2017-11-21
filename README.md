@@ -84,7 +84,7 @@ Client의 요청에 의해 Context의 미리 정의된 State[Linear, Grid]에 �
 ![](https://github.com/kimtaesu/CleanGallery/blob/master/document/design_pattern_state.jpg)
 
 ### Adapter Delegation (Adapter)
-복잡하게 보이지만 간단합니다.
+아래의 UML이 복잡하게 보이지만 간단합니다.
 * Target : GalleryAdapter
 * Adapter : LinearAdapter, GridAdapter
 * Adaptee : DirectoryLinearDelegateAdapter, MediumLinearDelegateAdapter, DirectoryGridDelegateAdapter, MediumGridDelegateAdapter, DateGridDelegateAdapter
