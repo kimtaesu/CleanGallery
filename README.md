@@ -1,6 +1,8 @@
 # CleanGallery
 Gallery라는 주제로 Clean Code를 지향하며 Architecture를 보다 나은 방향으로 학습하기 위한 용도의 프로젝트입니다.
 
+> Source는 99% [Kotlin](https://kotlinlang.org/)으로 작성되었습니다.  Unit Test는 100% [Kotlin-Spek](https://github.com/spekframework/spek)으로 작성되었습니다.
+
 ## Demos
 ### Directory Category
 
@@ -21,7 +23,6 @@ Gallery라는 주제로 Clean Code를 지향하며 Architecture를 보다 나은
 ## Languages, libraries and tools used
 
 * [Kotlin](https://kotlinlang.org/)
-* [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html)
 * Android Support Libraries
 * [RxJava2](https://github.com/ReactiveX/RxJava/wiki/What's-different-in-2.0)
 * [Dagger 2 (2.11)](https://github.com/google/dagger)
@@ -49,12 +50,14 @@ Data Layer는 여러 External data layer 대한 **Access Point**입니다. 현�
 Local Layer는 [MediaFetcher](https://github.com/kimtaesu/CleanGallery/blob/master/app/src/main/java/com/hucet/clean/gallery/datasource/local/MediaFetcher.kt)를 사용하여 데이터를 가져올 수 있습니다. MediaFetcher는 [ContentResolver](https://developer.android.com/reference/android/content/ContentResolver.html)의 Query를 통해 Local의 저장되어 있는 Image, Video, Gif를 가져옵니다.
 
 ## Denpencies Graph
+![](https://raw.githubusercontent.com/kimtaesu/CleanGallery/master/document/di.jpg)
+
 Dagger2를 사용하여 DI를 구현하였으며, 더 나아가 **Graph**를 작성함으로써 명확하게 이해를 도울 수 있습니다.
 
 각 객체들에 대한 자세한 설명은 앞으로 진행할 것 입니다.
 > 아래 그림에서 Provide - Inject 관계 연결은 생략하였습니다.
 
-![](https://raw.githubusercontent.com/kimtaesu/CleanGallery/master/document/di.jpg)
+
 
 ## Design Patterns
 ### MediaFilter (Chain of responsibility)
@@ -111,3 +114,5 @@ config.ReadOnlyConfigBuild {
                 }
 ```
 ![](https://github.com/kimtaesu/CleanGallery/blob/master/document/design_pattern_builder.jpg)
+
+

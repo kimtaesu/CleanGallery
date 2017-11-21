@@ -29,7 +29,6 @@ class DirClassifierTest : SubjectSpek<DirClassifier>({
         on("dir classify")
         {
             val (test, correct) = MediumFixture.TEST_CATEGORY_DIR
-//             TODO Sort test
             var result = subject.classify(SortOptionType.BY_NAME, test)
 
             result = result.map {
