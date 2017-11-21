@@ -1,6 +1,8 @@
 # CleanGallery
 Gallery라는 주제로 Clean Code를 지향하며 Architecture를 보다 나은 방향으로 학습하기 위한 용도의 프로젝트입니다.
 
+요구사항들은 [Trello](https://trello.com/b/txtiUe3Y/cleangallery)에서 확인 가능합니다.
+
 > Source는 99% [Kotlin](https://kotlinlang.org/)으로 작성되었습니다.  Unit Test는 100% [Kotlin-Spek](https://github.com/spekframework/spek)으로 작성되었습니다.
 
 ## Demos
@@ -54,7 +56,8 @@ Local Layer는 [MediaFetcher](https://github.com/kimtaesu/CleanGallery/blob/mast
 
 Dagger2를 사용하여 DI를 구현하였으며, 더 나아가 **Graph**를 작성함으로써 명확하게 이해를 도울 수 있습니다.
 
-각 객체들에 대한 자세한 설명은 앞으로 진행할 것 입니다.
+각 객체들에 대한 설명은 [Design Pattern](https://github.com/kimtaesu/CleanGallery#design-patterns)에서 일부 다루고 있습니다. 
+
 > 아래 그림에서 Provide - Inject 관계 연결은 생략하였습니다.
 
 
@@ -114,5 +117,4 @@ config.ReadOnlyConfigBuild {
                 }
 ```
 ![](https://github.com/kimtaesu/CleanGallery/blob/master/document/design_pattern_builder.jpg)
-
 
