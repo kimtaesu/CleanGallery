@@ -8,22 +8,17 @@ Trello : https://trello.com/b/txtiUe3Y/cleangallery
 <img src="/document/gallery_thumbnail.png" alt="Smiley face" height="510" width="300">
 <img src="/document/gallery_detail.png" alt="Smiley face" height="510" width="300">
 
+우리는 Kotlin를
 ## Languages, libraries and tools used
-
 * [Kotlin](https://kotlinlang.org/)
-<!-- * [Room](https://developer.android.com/topic/libraries/architecture/room.html) -->
 * [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html)
 * Android Support Libraries
 * [RxJava2](https://github.com/ReactiveX/RxJava/wiki/What's-different-in-2.0)
 * [Dagger 2 (2.11)](https://github.com/google/dagger)
-* [Glide](https://github.com/bumptech/glide)
-<!-- * [Retrofit](http://square.github.io/retrofit/) -->
-<!-- * [OkHttp](http://square.github.io/okhttp/) -->
+* [Glide v4](https://github.com/bumptech/glide)
 * [Gson](https://github.com/google/gson)
 * [Timber](https://github.com/JakeWharton/timber)
 * [Mockito](http://site.mockito.org/)
-<!-- * [Espresso](https://developer.android.com/training/testing/espresso/index.html) -->
-<!-- * [Robolectric](http://robolectric.org/) -->
 
 ## Step 1. Local Storage  Images  _List up_
 Clearn Gallery를 계획하면서 많은 *Iteration*들이 있지만 Start Point는 Local Storage로 부터 Images들을 가져오는 것이었다.
