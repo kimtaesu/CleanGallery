@@ -1,12 +1,12 @@
 package com.hucet.clean.gallery.gallery.fragment.switchable
 
 import android.support.v7.widget.RecyclerView
+import com.hucet.clean.gallery.OnGalleryClickedListener
 import com.hucet.clean.gallery.gallery.adapter.grid.GridAdapter
 import com.hucet.clean.gallery.gallery.adapter.linear.LinearAdapter
+import com.hucet.clean.gallery.gallery.fragment.glide.GlideRequests
 import com.hucet.clean.gallery.inject.scopes.PerFragment
 import com.hucet.clean.gallery.model.Basic
-import com.hucet.clean.gallery.OnGalleryClickedListener
-import com.hucet.clean.gallery.gallery.fragment.glide.GlideRequests
 import javax.inject.Inject
 
 /**

@@ -28,7 +28,7 @@ class DirectoryLinearDelegateAdapter @Inject constructor() : AbstractDelegateAda
         if (glideRequests == null) return
         glideRequests
                 .asThumbnail()
-                .load(item.path)
+                .load(item.thumbnail)
                 .into(holder.thumbnail)
     }
 
