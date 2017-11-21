@@ -82,14 +82,14 @@ Category는 Date, Direcotry 각각의 요소로  Groupping 되어야 합니다. 
 
 ![](https://github.com/kimtaesu/CleanGallery/blob/master/document/design_pattern_strategy.jpg)
 
-### SetUp View Mode (State)
+### SetUp View Mode (Strategy)
 <img src="https://github.com/kimtaesu/CleanGallery/blob/master/document/screen_viewmode.png" alt="Smiley face" height="100" width="300">
 
 [Linear, Grid] 두 가지 Type의 User Interface의 요구사항이 있었습니다.  이것를 **ViewMode**라고 명칭을 정했습니다.
 
-Client의 요청에 의해 Context의 미리 정의된 State[Linear, Grid]에 따라서 User Interface가 표현됩니다.
+Client의 요청에 의해 ViewMode [Linear, Grid]에 따라서 User Interface가 표현됩니다.
 
-![](https://github.com/kimtaesu/CleanGallery/blob/master/document/design_pattern_state.jpg)
+![](https://github.com/kimtaesu/CleanGallery/blob/master/document/design_pattern_viewmode.jpg)
 
 ### Adapter Delegation (Adapter)
 아래의 UML이 복잡하게 보이지만 간단합니다.
