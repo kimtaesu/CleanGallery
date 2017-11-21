@@ -1,6 +1,8 @@
 # CleanGallery
 Gallery라는 주제로 Clean Code를 지향하며 Architecture를 보다 나은 방향으로 학습하기 위한 용도의 프로젝트입니다.
 
+요구사항들은 [Trello](https://trello.com/b/txtiUe3Y/cleangallery)에서 확인 가능합니다.
+
 > Source는 99% [Kotlin](https://kotlinlang.org/)으로 작성되었습니다.  Unit Test는 100% [Kotlin-Spek](https://github.com/spekframework/spek)으로 작성되었습니다.
 
 ## Demos
@@ -49,12 +51,13 @@ Data Layer는 여러 External data layer 대한 **Access Point**입니다. 현�
 ### Local
 Local Layer는 [MediaFetcher](https://github.com/kimtaesu/CleanGallery/blob/master/app/src/main/java/com/hucet/clean/gallery/datasource/local/MediaFetcher.kt)를 사용하여 데이터를 가져올 수 있습니다. MediaFetcher는 [ContentResolver](https://developer.android.com/reference/android/content/ContentResolver.html)의 Query를 통해 Local의 저장되어 있는 Image, Video, Gif를 가져옵니다.
 
-## Denpencies Graph
+## Denpendencies Graph
 ![](https://raw.githubusercontent.com/kimtaesu/CleanGallery/master/document/di.jpg)
 
 Dagger2를 사용하여 DI를 구현하였으며, 더 나아가 **Graph**를 작성함으로써 명확하게 이해를 도울 수 있습니다.
 
-각 객체들에 대한 자세한 설명은 앞으로 진행할 것 입니다.
+각 객체들에 대한 설명은 [Design Pattern](https://github.com/kimtaesu/CleanGallery#design-patterns)에서 일부 다루고 있습니다. 
+
 > 아래 그림에서 Provide - Inject 관계 연결은 생략하였습니다.
 
 
@@ -66,6 +69,8 @@ Dagger2를 사용하여 DI를 구현하였으며, 더 나아가 **Graph**를 작
 
 Media query를 조회할 경우 모든 File이 조회되도록 설정하였습니다.
 [ImageVideoGifFilter](https://github.com/kimtaesu/CleanGallery/blob/master/app/src/main/java/com/hucet/clean/gallery/gallery/filter/ImageVideoGifFilter.kt)는 우리가 필요한 Media type [Image, Video, Gif]의 Filter를 담당합니다.
+
+> Client에서 successor 의 역활을 가지도록 변형하였습니다.
 
 ![](https://github.com/kimtaesu/CleanGallery/blob/master/document/design_pattern_chainOfResponsibility.jpg)
 
@@ -114,5 +119,4 @@ config.ReadOnlyConfigBuild {
                 }
 ```
 ![](https://github.com/kimtaesu/CleanGallery/blob/master/document/design_pattern_builder.jpg)
-
 
