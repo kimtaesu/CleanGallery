@@ -1,8 +1,5 @@
 # CleanGallery
-Trello : https://trello.com/b/txtiUe3Y/cleangallery
-
-우리의 프로젝트는 [CleanArchitecture](https://github.com/bufferapp/clean-architecture-components-boilerplate) 를 기반으로 학습을 목적으로 진행하고 있습니다.
-요구사항을 도출하고 최적의 해결 방안을 모색하는 것을 학습할 수 있습니다.
+Gallery라는 주제로 Clean Code를 지향하며 Architecture를 보다 나은 방향으로 학습하기 위한 용도의 프로젝트입니다.
 
 ## Demos
 ### Directory Category
@@ -86,13 +83,20 @@ Client의 요청에 의해 Context의 미리 정의된 State[Linear, Grid]에 �
 
 ![](https://github.com/kimtaesu/CleanGallery/blob/master/document/design_pattern_state.jpg)
 
-### Adapter Delegation (State)
+### Adapter Delegation (Adapter)
+복잡하게 보이지만 간단합니다.
+* Target : GalleryAdapter
+* Adapter : LinearAdapter, GridAdapter
+* Adaptee : DirectoryLinearDelegateAdapter, MediumLinearDelegateAdapter, DirectoryGridDelegateAdapter, MediumGridDelegateAdapter, DateGridDelegateAdapter
 
-![](https://github.com/kimtaesu/CleanGallery/blob/master/document/design_pattern_state2.jpg)
+만약 이 요구사항을 하나의 Adapter에서 if ~ else문으로 해결해야 했다면, 많은 문제를 극복해야 했습니다.
+* 동적으로 LayoutParam 수정
+* Linear, Grid의 View 차이점
+* etc...
 
-### DialogRadioItem Mapper (Strategy)
+Adapter 패턴으로 구조를 잡음으로써 **각 Class는 하나의 책임을 가지게 됩니다.** 즉, 다른 변경 사항의 영향을 받지 않습니다.
 
-![](https://github.com/kimtaesu/CleanGallery/blob/master/document/design_pattern_strategy2.jpg)
+![](https://github.com/kimtaesu/CleanGallery/blob/master/document/design_pattern_adapter.jpg)
 
 ### ReadOnlyConfigs (Builder)
 
