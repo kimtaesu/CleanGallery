@@ -51,7 +51,7 @@ Data Layer는 여러 External data layer 대한 **Access Point**입니다. 현�
 ### Local
 Local Layer는 [MediaFetcher](https://github.com/kimtaesu/CleanGallery/blob/master/app/src/main/java/com/hucet/clean/gallery/datasource/local/MediaFetcher.kt)를 사용하여 데이터를 가져올 수 있습니다. MediaFetcher는 [ContentResolver](https://developer.android.com/reference/android/content/ContentResolver.html)의 Query를 통해 Local의 저장되어 있는 Image, Video, Gif를 가져옵니다.
 
-## Denpencies Graph
+## Denpendencies Graph
 ![](https://raw.githubusercontent.com/kimtaesu/CleanGallery/master/document/di.jpg)
 
 Dagger2를 사용하여 DI를 구현하였으며, 더 나아가 **Graph**를 작성함으로써 명확하게 이해를 도울 수 있습니다.
@@ -69,6 +69,8 @@ Dagger2를 사용하여 DI를 구현하였으며, 더 나아가 **Graph**를 작
 
 Media query를 조회할 경우 모든 File이 조회되도록 설정하였습니다.
 [ImageVideoGifFilter](https://github.com/kimtaesu/CleanGallery/blob/master/app/src/main/java/com/hucet/clean/gallery/gallery/filter/ImageVideoGifFilter.kt)는 우리가 필요한 Media type [Image, Video, Gif]의 Filter를 담당합니다.
+
+> Client에서 successor 의 역활을 가지도록 변형하였습니다.
 
 ![](https://github.com/kimtaesu/CleanGallery/blob/master/document/design_pattern_chainOfResponsibility.jpg)
 
