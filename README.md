@@ -15,13 +15,17 @@ Trello : https://trello.com/b/txtiUe3Y/cleangallery
 * Android Support Libraries
 * [RxJava2](https://github.com/ReactiveX/RxJava/wiki/What's-different-in-2.0)
 * [Dagger 2 (2.11)](https://github.com/google/dagger)
-* [Glide v4](https://github.com/bumptech/glide)
+* [Glide (4)](https://github.com/bumptech/glide)
 * [Gson](https://github.com/google/gson)
 * [Timber](https://github.com/JakeWharton/timber)
 * [Mockito](http://site.mockito.org/)
 * [Spek](https://github.com/spekframework/spek)
 
 ## Denpencies Graph
+Dagger2를 사용하여 DI를 구현하였으며, 더 나아가 **Graph**를 작성함으로써 명확하게 이해를 도울 수 있습니다.
+
+각 객체들에 대한 자세한 설명은 앞으로 진행할 것 입니다.
+> 아래 그림에서 Provide - Inject 관계 연결은 생략하였습니다.
 ![](https://raw.githubusercontent.com/kimtaesu/CleanGallery/master/document/di.jpg)
 
 ## Architecture
