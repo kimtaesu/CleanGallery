@@ -66,6 +66,7 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     }
 
     fun onCategoryModeChanged(readOnlyConfigs: ReadOnlyConfigs) {
+        getCurrentAdapter()?.syncClearItems()
         requestFetch(readOnlyConfigs)
     }
 
@@ -87,7 +88,6 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
             is Directory -> {
                 config.curPath = basic.path
                 (activity as MainActivity).refreshSortType()
-                getCurrentAdapter()?.syncClearItems()
                 requestFetch(readOnlyFunction.invoke())
             }
         }
