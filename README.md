@@ -1,7 +1,6 @@
 # CleanGallery
 Gallery라는 주제로 Clean Code를 지향하며 Architecture를 보다 나은 방향으로 학습하기 위한 용도의 프로젝트입니다.
 
-요구사항들은 [Trello](https://trello.com/b/txtiUe3Y/cleangallery)에서 확인 가능합니다.
 
 > Source는 99% [Kotlin](https://kotlinlang.org/)으로 작성되었습니다.  Unit Test는 100% [Kotlin-Spek](https://github.com/spekframework/spek)으로 작성되었습니다.
 
