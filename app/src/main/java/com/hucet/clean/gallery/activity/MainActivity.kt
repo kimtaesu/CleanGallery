@@ -121,6 +121,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         R.id.action_category_mode -> {
             if (isFragmentShown(galleryFragment)) {
                 val categoryMode = readOnlyConfigs.getCategoryMode().toggle()
+
                 readOnlyConfigs = config.ReadOnlyConfigBuild {
                     categoryMode(categoryMode)
                     if (isGridRestriction(categoryMode))

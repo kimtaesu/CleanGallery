@@ -24,7 +24,7 @@ class GalleryPresenter constructor(private val view: Gallery.View,
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     override fun fetchItems(curPath: String, isRoot: Boolean, readOnlyConfigs: ReadOnlyConfigs, cacheInvalidate: Boolean) {
         repository
-                .getGalleries(readOnlyConfigs, isRoot, cacheInvalidate)
+                .getGalleries(readOnlyConfigs, curPath, isRoot, cacheInvalidate)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.main())
                 .doOnSubscribe {

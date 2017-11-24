@@ -14,8 +14,14 @@ class GalleryRepository(
         private val localDataSource: LocalDataSource,
         private val transformer: MediumTransformer
 ) {
-    fun getGalleries(readOnlyConfigs: ReadOnlyConfigs, isRoot: Boolean, cacheInvalidate: Boolean): Flowable<List<Basic>> {
+    fun getGalleries(readOnlyConfigs: ReadOnlyConfigs, curPath: String, isRoot: Boolean, cacheInvalidate: Boolean): Flowable<List<Basic>> {
         return localDataSource.getGalleries(cacheInvalidate, readOnlyConfigs)
+                .map {
+                    if (!isRoot)
+                        it.filter { it.path.startsWith(curPath) }
+                    else
+                        it
+                }
                 .map {
                     if (!isRoot)
                         it.sortedWith(SortComparatorFactory.createComparator(readOnlyConfigs.getSortOptionType()))
