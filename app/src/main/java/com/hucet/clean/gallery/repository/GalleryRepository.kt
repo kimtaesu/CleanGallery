@@ -19,7 +19,8 @@ class GalleryRepository(
                 .map {
                     if (!isRoot)
                         it.sortedWith(SortComparatorFactory.createComparator(readOnlyConfigs.getSortOptionType()))
-                    it
+                    else
+                        it
                 }
                 .map {
                     transformer.transform(it, isRoot, readOnlyConfigs)

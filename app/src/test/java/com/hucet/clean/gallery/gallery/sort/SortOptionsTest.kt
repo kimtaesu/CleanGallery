@@ -23,7 +23,7 @@ class OldMediaSortOptionsTest : Spek({
     describe("fail to validate in directory")
     {
         val sortType = SortOptions(PATH)
-        val func = { sortType validate (mockCategoryMode(CategoryMode.DATE)) }
+        val func = { sortType.validate(mockCategoryMode(CategoryMode.DATE), false) }
 
         it("should be throw exception")
         {
@@ -33,7 +33,7 @@ class OldMediaSortOptionsTest : Spek({
     describe("success to validate in directory")
     {
         val sortType = SortOptions(PATH)
-        val func = { sortType validate (mockCategoryMode(CategoryMode.DIRECTORY)) }
+        val func = { sortType.validate(mockCategoryMode(CategoryMode.DIRECTORY), false) }
         it("should not be throw exception")
         {
             func shouldNotThrow AnyException
@@ -42,7 +42,7 @@ class OldMediaSortOptionsTest : Spek({
     describe("fail to validate in directory")
     {
         val sortType = SortOptions(DAILY)
-        val func = { sortType.validate(mockCategoryMode(CategoryMode.DIRECTORY)) }
+        val func = { sortType.validate(mockCategoryMode(CategoryMode.DIRECTORY), false) }
         it("should be throw exception")
         {
             func shouldThrow AnyException
@@ -51,7 +51,7 @@ class OldMediaSortOptionsTest : Spek({
     describe("success to validate in directory")
     {
         val sortType = SortOptions(DAILY)
-        val func = { sortType.validate(mockCategoryMode(CategoryMode.DATE)) }
+        val func = { sortType.validate(mockCategoryMode(CategoryMode.DATE), false) }
         it("should not be throw exception")
         {
             func shouldNotThrow AnyException

@@ -96,6 +96,7 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     fun onBackPressed(): Boolean {
         if (!config.curPath.isExternalStorageDir()) {
             config.curPath = Environment.getExternalStorageDirectory().absolutePath
+            (activity as MainActivity).refreshSortType()
             requestFetch(readOnlyFunction.invoke())
             return false
         }

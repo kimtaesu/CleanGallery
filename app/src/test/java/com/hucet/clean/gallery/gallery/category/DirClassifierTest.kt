@@ -7,13 +7,14 @@ import org.amshove.kluent.`should equal`
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
+import org.jetbrains.spek.api.dsl.xgiven
 import org.jetbrains.spek.subject.SubjectSpek
 
 /**
  * Created by taesu on 2017-11-10.
  */
 class DirClassifierTest : SubjectSpek<DirClassifier>({
-    given("a dirClassifier")
+    xgiven("a dirClassifier")
     {
         subject {
             DirClassifier()
