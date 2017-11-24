@@ -4,6 +4,7 @@ import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
 import com.hucet.clean.gallery.config.ReadOnlyConfigs
+import com.hucet.clean.gallery.extension.isExternalStorageDir
 import com.hucet.clean.gallery.gallery.category.MediumTransformer
 import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment
 import com.hucet.clean.gallery.repository.GalleryRepository
@@ -15,19 +16,15 @@ import timber.log.Timber
 /**
  * Created by taesu on 2017-10-31.
  */
-class GalleryPresenter constructor(private val view: Gallery.View,
+open class GalleryPresenter constructor(private val view: Gallery.View,
                                    private val fragment: ListGalleryFragment,
                                    private val repository: GalleryRepository,
-                                   private val transformer: MediumTransformer,
                                    private val schedulerProvider: SchedulerProvider = DefaultSchedulerProvider()
 ) : Gallery.Presenter {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     override fun fetchItems(curPath: String, readOnlyConfigs: ReadOnlyConfigs, cacheInvalidate: Boolean) {
         repository
-                .getGalleries(cacheInvalidate)
-                .map {
-                    transformer.transform(it, curPath, readOnlyConfigs)
-                }
+                .getGalleries(readOnlyConfigs, isRoot(curPath), cacheInvalidate)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.main())
                 .doOnSubscribe {
@@ -59,4 +56,6 @@ class GalleryPresenter constructor(private val view: Gallery.View,
     fun clear() {
         compositeDisposable.clear()
     }
+
+    open fun isRoot(curPath: String) = curPath.isExternalStorageDir()
 }

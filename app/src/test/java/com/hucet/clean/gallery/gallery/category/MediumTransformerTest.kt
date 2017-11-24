@@ -12,7 +12,6 @@ import org.jetbrains.spek.subject.SubjectSpek
 /**
  * Created by taesu on 2017-11-12.
  */
-val externalStoragePath = "ROOT"
 
 class MediumTransformerTest : SubjectSpek<MediumTransformer>({
     val dirMock by memoized { mock<DirClassifier>() }
@@ -20,13 +19,13 @@ class MediumTransformerTest : SubjectSpek<MediumTransformer>({
     given("a mediumTransformer")
     {
         subject {
-            TestMediumTransformer(dateMock, dirMock)
+            MediumTransformer(dateMock, dirMock)
         }
 
         on("a dateClaasifier call 검증 ")
         {
             val mock = ReadOnlyConfigsFixture.mockReadOnlyConfigs(CategoryMode.DATE, sortOptionType = SortOptionType.BY_DAILY)
-            subject.transform(listOf(), externalStoragePath, mock)
+            subject.transform(listOf(), true, mock)
             it("one calll dateCalssify, never call dirClassify")
             {
 
@@ -37,7 +36,7 @@ class MediumTransformerTest : SubjectSpek<MediumTransformer>({
         on("a dirClaasifier call 검증 ")
         {
             val mock = ReadOnlyConfigsFixture.mockReadOnlyConfigs(CategoryMode.DIRECTORY, sortOptionType = SortOptionType.BY_NAME)
-            subject.transform(listOf(), externalStoragePath, mock)
+            subject.transform(listOf(), true, mock)
 
             it("one calll dirClassify, never call dateClassify")
             {
@@ -48,7 +47,7 @@ class MediumTransformerTest : SubjectSpek<MediumTransformer>({
         on("a medium call 검증")
         {
             val mock = ReadOnlyConfigsFixture.mockReadOnlyConfigs(CategoryMode.DIRECTORY, sortOptionType = SortOptionType.BY_NAME)
-            subject.transform(listOf(), "Not matchs to the external storae", mock)
+            subject.transform(listOf(), false, mock)
             it("never calll dirClassify, never call dateClassify")
             {
                 verify(dirMock, never()).classify(any(), any())
@@ -57,10 +56,3 @@ class MediumTransformerTest : SubjectSpek<MediumTransformer>({
         }
     }
 })
-
-class TestMediumTransformer(dateClassifier: DateClassifier,
-                            dirClassifier: DirClassifier) : MediumTransformer(dateClassifier, dirClassifier) {
-    override fun isExternalStorage(curPath: String): Boolean {
-        return curPath == externalStoragePath
-    }
-}

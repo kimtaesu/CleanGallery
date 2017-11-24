@@ -12,13 +12,13 @@ import com.hucet.clean.gallery.model.Medium
 
 open class MediumTransformer(private val dateClassifier: DateClassifier,
                              private val dirClassifier: DirClassifier) {
-    fun transform(items: List<Medium>, curPath: String, readOnlyConfigs: ReadOnlyConfigs): List<Basic> {
+    fun transform(items: List<Medium>, isRoot: Boolean, readOnlyConfigs: ReadOnlyConfigs): List<Basic> {
         when (readOnlyConfigs.getCategoryMode()) {
             CategoryMode.DATE -> {
                 return dateClassifier.classify(readOnlyConfigs.getSortOptionType(), items)
             }
             CategoryMode.DIRECTORY -> {
-                if (isExternalStorage(curPath)) {
+                if (isRoot) {
                     return dirClassifier.classify(readOnlyConfigs.getSortOptionType(), items)
                 }
             }

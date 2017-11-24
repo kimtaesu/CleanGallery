@@ -4,6 +4,7 @@ import android.content.Context
 import com.hucet.clean.gallery.datasource.local.LocalDataSource
 import com.hucet.clean.gallery.datasource.local.MediaFetcher
 import com.hucet.clean.gallery.datasource.local.NoMediaFolderProvider
+import com.hucet.clean.gallery.gallery.category.MediumTransformer
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter
 import com.hucet.clean.gallery.gallery.filter.OrderedFilterContext
 import com.hucet.clean.gallery.inject.scopes.PerFragment
@@ -19,8 +20,8 @@ import dagger.Provides
 class RepositoryServiceModule {
     @Provides
     @PerFragment
-    fun provideGalleryRepository(localDataSource: LocalDataSource): GalleryRepository {
-        return GalleryRepository(localDataSource)
+    fun provideGalleryRepository(localDataSource: LocalDataSource, transformer: MediumTransformer): GalleryRepository {
+        return GalleryRepository(localDataSource, transformer)
     }
 
     @Provides

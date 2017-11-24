@@ -16,8 +16,8 @@ import dagger.Provides
 class GalleryPresenterModule {
     @Provides
     @PerFragment
-    fun providesGalleryPresenter(view: Gallery.View, fragment: ListGalleryFragment, repository: GalleryRepository, transformer: MediumTransformer): Gallery.Presenter {
-        return GalleryPresenter(view, fragment, repository, transformer)
+    fun providesGalleryPresenter(view: Gallery.View, fragment: ListGalleryFragment, repository: GalleryRepository): Gallery.Presenter {
+        return GalleryPresenter(view, fragment, repository)
     }
 
     @Provides
