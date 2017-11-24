@@ -29,7 +29,7 @@ class GridViewModeSetUp @Inject constructor() : ViewModeSwichable {
         gridAdapter.apply {
             setGlideRequest(glideRequests)
             setOnClickListener(recy, clickedListener)
-            updateData(items)
+            syncUpdateData(items)
         }
     }
 }
@@ -48,7 +48,7 @@ class LinearViewModeSetUp @Inject constructor() : ViewModeSwichable {
         linearAdapter.apply {
             setGlideRequest(glideRequests)
             setOnClickListener(recy, clickedListener)
-            linearAdapter.updateData(items)
+            linearAdapter.syncUpdateData(items)
         }
     }
 

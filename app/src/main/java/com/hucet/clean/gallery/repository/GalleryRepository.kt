@@ -16,6 +16,7 @@ class GalleryRepository(
 ) {
     fun getGalleries(readOnlyConfigs: ReadOnlyConfigs, curPath: String, isRoot: Boolean, cacheInvalidate: Boolean): Flowable<List<Basic>> {
         return localDataSource.getGalleries(cacheInvalidate, readOnlyConfigs)
+//                TODO Compose
                 .map {
                     if (!isRoot)
                         it.filter { it.path.startsWith(curPath) }

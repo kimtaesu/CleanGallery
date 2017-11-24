@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
 import com.hucet.clean.gallery.OnGalleryClickedListener
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.activity.MainActivity
@@ -75,6 +74,7 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     }
 
     fun onSortChanged(readOnlyConfigs: ReadOnlyConfigs) {
+        getCurrentAdapter()?.syncClearItems()
         requestFetch(readOnlyConfigs)
     }
 
@@ -87,7 +87,7 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
             is Directory -> {
                 config.curPath = basic.path
                 (activity as MainActivity).refreshSortType()
-                getCurrentAdapter()?.clearItems()
+                getCurrentAdapter()?.syncClearItems()
                 requestFetch(readOnlyFunction.invoke())
             }
         }

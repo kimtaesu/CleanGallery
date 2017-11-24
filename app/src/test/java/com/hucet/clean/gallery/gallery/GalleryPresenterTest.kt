@@ -1,15 +1,13 @@
 package com.hucet.clean.gallery.gallery
 
+import android.support.v7.util.DiffUtil
 import com.hucet.clean.gallery.fixture.MediumFixture
 import com.hucet.clean.gallery.fixture.ReadOnlyConfigsFixture
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
-import com.hucet.clean.gallery.gallery.category.MediumTransformer
 import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment
 import com.hucet.clean.gallery.presenter.Gallery
 import com.hucet.clean.gallery.presenter.GalleryPresenter
 import com.hucet.clean.gallery.repository.GalleryRepository
-import com.hucet.clean.gallery.scheduler.DefaultSchedulerProvider
-import com.hucet.clean.gallery.scheduler.SchedulerProvider
 import com.hucet.clean.gallery.scheduler.TestSchedulerProvider
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Flowable
@@ -29,6 +27,8 @@ class GalleryPresenterTest : SubjectSpek<GalleryPresenter>({
     val repository by memoized { mock<GalleryRepository>() }
     val testScheduler by memoized { TestScheduler() }
     val fragment by memoized { mock<ListGalleryFragment>() }
+    val diffResult by memoized { mock<DiffUtil.DiffResult>() }
+
     given("a galleryPresenter") {
         subject {
             GalleryPresenter(view, fragment, repository, TestSchedulerProvider(testScheduler))
@@ -36,14 +36,16 @@ class GalleryPresenterTest : SubjectSpek<GalleryPresenter>({
         on("presenter next - complete 검증")
         {
             whenever(fragment.getCurrentAdapter()).thenReturn(adapter)
+            whenever(adapter.calculateDiff(any())).thenReturn(diffResult)
             whenever(repository.getGalleries(any(), any(), any(), any())).thenReturn(Flowable.just(test))
             subject.fetchItems("", false, ReadOnlyConfigsFixture.readOnlyConfigs(), false)
             testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
 
-            it("call one [repository.getGalleries, adapter.updateData, view, view.showProgress, view.hideProgress]")
+            it("call one [repository.getGalleries, adapter.updateByDiff, view.showProgress, view.hideProgress]")
             {
                 verify(repository, times(1)).getGalleries(any(), any(), any(), any())
-                verify(adapter, times(1)).updateData(any())
+                verify(adapter, times(1)).calculateDiff(any())
+                verify(adapter, times(1)).updateByDiff(any())
                 verify(view, times(1)).showProgress()
                 verify(view, times(1)).hideProgress()
             }
@@ -59,10 +61,11 @@ class GalleryPresenterTest : SubjectSpek<GalleryPresenter>({
             subject.fetchItems("", false, ReadOnlyConfigsFixture.readOnlyConfigs(), false)
             testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
 
-            it("call never [adapter.updateData]")
+            it("call never [adapter.syncUpdateData]")
             {
                 verify(repository, times(1)).getGalleries(any(), any(), any(), any())
-                verify(adapter, never()).updateData(any())
+                verify(adapter, never()).calculateDiff(any())
+                verify(adapter, never()).updateByDiff(any())
                 verify(view, times(1)).showProgress()
                 verify(view, times(1)).hideProgress()
                 verify(view, times(1)).showError()

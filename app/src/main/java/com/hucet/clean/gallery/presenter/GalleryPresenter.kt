@@ -25,6 +25,11 @@ class GalleryPresenter constructor(private val view: Gallery.View,
     override fun fetchItems(curPath: String, isRoot: Boolean, readOnlyConfigs: ReadOnlyConfigs, cacheInvalidate: Boolean) {
         repository
                 .getGalleries(readOnlyConfigs, curPath, isRoot, cacheInvalidate)
+                .map {
+                    println("calculateDiff")
+                    Timber.d("calculateDiff")
+                    fragment.getCurrentAdapter()?.calculateDiff(it)!!
+                }
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.main())
                 .doOnSubscribe {
@@ -39,7 +44,7 @@ class GalleryPresenter constructor(private val view: Gallery.View,
                 .subscribe(
                         { next ->
                             Timber.d("subscribe ${next}")
-                            fragment.getCurrentAdapter()?.updateData(next)
+                            fragment.getCurrentAdapter()?.updateByDiff(next)
                         },
                         { error ->
                             error.printStackTrace()

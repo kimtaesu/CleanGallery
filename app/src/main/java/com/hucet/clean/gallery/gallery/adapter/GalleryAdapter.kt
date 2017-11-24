@@ -51,19 +51,23 @@ abstract class GalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
 
     override fun getItemCount() = Items.size
 
-    fun updateData(newItems: List<Basic>) {
-        updateByDiff(newItems)
+    fun syncUpdateData(newItems: List<Basic>) {
+        updateByDiff(calculateDiff(newItems))
     }
 
-    fun clearItems() {
-        updateByDiff(emptyList())
+    fun syncClearItems() {
+        updateByDiff(calculateDiff(emptyList()))
     }
 
-    private fun updateByDiff(newItems: List<Basic>) {
+    fun calculateDiff(newItems: List<Basic>): DiffUtil.DiffResult {
         val diffCallback = MediumDiffCallback(this.Items, newItems)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         this.Items.clear()
         this.Items.addAll(newItems)
+        return diffResult
+    }
+
+    fun updateByDiff(diffResult: DiffUtil.DiffResult) {
         diffResult.dispatchUpdatesTo(this)
     }
 }
