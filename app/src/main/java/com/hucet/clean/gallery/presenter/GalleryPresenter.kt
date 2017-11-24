@@ -1,11 +1,15 @@
 package com.hucet.clean.gallery.presenter
 
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleObserver
+import android.arch.lifecycle.OnLifecycleEvent
 import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.gallery.category.MediumTransformer
 import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment
 import com.hucet.clean.gallery.repository.GalleryRepository
 import com.hucet.clean.gallery.scheduler.DefaultSchedulerProvider
 import com.hucet.clean.gallery.scheduler.SchedulerProvider
+import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
 /**
@@ -16,9 +20,13 @@ class GalleryPresenter constructor(private val view: Gallery.View,
                                    private val repository: GalleryRepository,
                                    private val transformer: MediumTransformer,
                                    private val schedulerProvider: SchedulerProvider = DefaultSchedulerProvider()
+) : Gallery.Presenter, LifecycleObserver {
 
+    init {
+        fragment.lifecycle.addObserver(this)
+    }
 
-) : Gallery.Presenter {
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     override fun fetchItems(curPath: String, readOnlyConfigs: ReadOnlyConfigs) {
         repository
                 .getGalleries(curPath, readOnlyConfigs)
@@ -49,6 +57,11 @@ class GalleryPresenter constructor(private val view: Gallery.View,
                         {
                             Timber.d("Completed")
                         })
+                .also { compositeDisposable.add(it) }
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    fun clear() {
+        compositeDisposable.clear()
+    }
 }
