@@ -11,7 +11,7 @@ object DialogRadioItemFixture {
         get() {
             return mapOf(
                     SortOptions.SORT_TYPE.KEY to
-                            SortOptions.SORT_TYPE.DIRECTORY_TYPES.mapIndexed { index, sort ->
+                            SortOptions.SORT_TYPE.MEDIUM_TYPES.mapIndexed { index, sort ->
                                 dialog(
                                         index = index,
                                         title = sort.name,
@@ -62,7 +62,7 @@ object DialogRadioItemFixture {
                 }?.copy(isCheck = true, title = "")!!,
 
                 items[SortOptions.ORDER_BY.KEY]?.first {
-                    it.bitAtt and checkedSortItem.orderBY.bit > 0
+                    it.bitAtt and checkedSortItem.orderBy.bit > 0
                 }?.copy(isCheck = true, title = "")!!
         )
     }
@@ -78,7 +78,7 @@ data class TestDialogItem(
 fun dialog(index: Int = 0,
            title: String = "",
            isCheck: Boolean = false,
-           bitAttr: Int = 0
+           bitAttr: Long = 0
 ): DialogRadioItem {
     return DialogRadioItem(index, title, isCheck, bitAttr)
 }

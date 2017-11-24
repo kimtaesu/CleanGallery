@@ -17,29 +17,33 @@ val key_layout_type = "key_layout_type"
 val key_show_hidden = "key_show_hidden"
 val key_filter_media = "key_filter_media"
 val key_dir_sorting = "key_dir_sorting"
+val key_dir_root_sorting = "key_dir_root_sorting"
 val key_date_sorting = "key_date_sorting"
 
 // filterd media
 val NONE = 0
-val IMAGES = 1
-val VIDEOS = 2
-val GIFS = 4
+val IMAGES: Long = 1
+val VIDEOS: Long = 2
+val GIFS: Long = 4
 
 
 // base sort types
-val SORT_ASCENDING = 256
-val SORT_DESCENDING = 512
+val SORT_ASCENDING: Long = 0x0100000000000
+val SORT_DESCENDING: Long = 0x1000000000000
 
 
-// dir sort types
-val SORT_BY_NAME = 1
-val SORT_BY_DATE_MODIFIED = 2
-val SORT_BY_SIZE = 4
-val SORT_BY_DATE_TAKEN = 8
-val SORT_BY_PATH = 16
+// medium sort types
+val SORT_BY_NAME: Long = 0x0000000000001
+val SORT_BY_DATE_MODIFIED: Long = 0x0000000000010
+val SORT_BY_SIZE: Long = 0x0000000000100
+val SORT_BY_DATE_TAKEN: Long = 0x0000000001000
+val SORT_BY_PATH: Long = 0x0000000010000
 // date sort types
-val SORT_BY_DAILY = 32
-val SORT_BY_MONTHLY = 64
-val SORT_BY_YEARLY = 128
+val SORT_BY_DAILY: Long = 0x0000000100000
+val SORT_BY_MONTHLY: Long = 0x0000001000000
+val SORT_BY_YEARLY: Long = 0x0000010000000
 
-
+// medium dir types
+val SORT_BY_COUNT: Long = 0x0000100000000
+val SORT_BY_DIR_NAME: Long = 0x0001000000000
+val SORT_BY_DIR_PATH: Long = 0x0010000000000

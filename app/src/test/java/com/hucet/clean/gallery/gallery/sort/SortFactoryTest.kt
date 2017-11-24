@@ -1,8 +1,6 @@
 package com.hucet.clean.gallery.gallery.sort
 
 import com.hucet.clean.gallery.fixture.DeserializerFixture
-import com.hucet.clean.gallery.gallery.sort.SortOptions
-import com.hucet.clean.gallery.gallery.sort.SortOptionFactory
 import com.hucet.clean.gallery.model.Medium
 import org.hamcrest.core.Is.*
 import org.junit.Assert.*
@@ -88,7 +86,7 @@ class SortFactoryTest {
 
     private fun sortTest(option: SortOptions, path: String, parent: String) {
         var correctData: List<Medium> = DeserializerFixture.deserializeMedium(path, parent)
-        val comparator = SortOptionFactory.createComparator(option)
+        val comparator = SortComparatorFactory.createComparator(option)
         Collections.sort(testData, comparator)
         when (option.sort) {
             SortOptions.SORT_TYPE.NAME -> {

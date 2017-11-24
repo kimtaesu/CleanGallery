@@ -15,6 +15,6 @@ interface Gallery {
     }
 
     interface Presenter : LifecycleObserver {
-        fun fetchItems(curPath: String, readOnlyConfigs: ReadOnlyConfigs, cacheInvalidate: Boolean)
+        fun fetchItems(curPath: String, isRoot : Boolean, readOnlyConfigs: ReadOnlyConfigs, cacheInvalidate: Boolean)
     }
 }

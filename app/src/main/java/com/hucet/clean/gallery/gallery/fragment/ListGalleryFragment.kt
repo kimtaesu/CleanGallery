@@ -14,6 +14,7 @@ import android.widget.Toast
 import com.hucet.clean.gallery.OnGalleryClickedListener
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.activity.MainActivity
+import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.extension.isExternalStorageDir
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
@@ -35,8 +36,7 @@ import javax.inject.Inject
 class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     @Inject lateinit var presenter: Gallery.Presenter
     @Inject lateinit var mapViewModeSetUp: Map<ViewModeType, @JvmSuppressWildcards ViewModeSwichable>
-
-    var curPath = Environment.getExternalStorageDirectory().absolutePath
+    @Inject lateinit var config: ApplicationConfig
 
     companion object {
         fun newInstance() = ListGalleryFragment()
@@ -59,7 +59,7 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
 
 
     private fun requestFetch(readOnlyConfigs: ReadOnlyConfigs) {
-        presenter.fetchItems(curPath, readOnlyConfigs, false)
+        presenter.fetchItems(config.curPath, config.isRoot(), readOnlyConfigs, false)
     }
 
     val onViewModeChanged: (ViewModeType) -> Unit = { viewMode ->
@@ -85,7 +85,8 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
                 (activity as MainActivity).onGalleryClicked.invoke(basic, imageView)
             }
             is Directory -> {
-                curPath = basic.path
+                config.curPath = basic.path
+                (activity as MainActivity).refreshSortType()
                 getCurrentAdapter()?.clearItems()
                 requestFetch(readOnlyFunction.invoke())
             }
@@ -93,8 +94,8 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     }
 
     fun onBackPressed(): Boolean {
-        if (!curPath.isExternalStorageDir()) {
-            curPath = Environment.getExternalStorageDirectory().absolutePath
+        if (!config.curPath.isExternalStorageDir()) {
+            config.curPath = Environment.getExternalStorageDirectory().absolutePath
             requestFetch(readOnlyFunction.invoke())
             return false
         }
@@ -164,5 +165,4 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
         adapter ?: return emptyList()
         return adapter.Items
     }
-
 }

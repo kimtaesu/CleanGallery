@@ -62,15 +62,15 @@ class OldMediaSortOptionsTest : Spek({
     {
         it("directory type 검증")
         {
-            true `should be` MODIFIED.isDirecotryType()
-            true `should be` NAME.isDirecotryType()
-            true `should be` SIZE.isDirecotryType()
-            true `should be` TAKEN.isDirecotryType()
-            true `should be` PATH.isDirecotryType()
+            true `should be` MODIFIED.isMediumType()
+            true `should be` NAME.isMediumType()
+            true `should be` SIZE.isMediumType()
+            true `should be` TAKEN.isMediumType()
+            true `should be` PATH.isMediumType()
 
-            false `should be` MONTHLY.isDirecotryType()
-            false `should be` DAILY.isDirecotryType()
-            false `should be` YEARLY.isDirecotryType()
+            false `should be` MONTHLY.isMediumType()
+            false `should be` DAILY.isMediumType()
+            false `should be` YEARLY.isMediumType()
         }
         it("date type 검증")
         {

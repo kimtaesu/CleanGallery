@@ -25,6 +25,7 @@ import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.fragment.GalleryDetailFragment
 import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
+import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.hucet.clean.gallery.model.Date
 import com.hucet.clean.gallery.model.MediaType
 import com.hucet.clean.gallery.model.Medium
@@ -144,7 +145,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             true
         }
         R.id.action_sort -> {
-            AlertDialog.Builder(this).createSortDialog(readOnlyConfigs, {
+            AlertDialog.Builder(this).createSortDialog(readOnlyConfigs, config.isRoot(), {
                 readOnlyConfigs = config.ReadOnlyConfigBuild {
                     sortType(it)
                 }
@@ -166,6 +167,9 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         }
     }
 
+    fun refreshSortType() {
+        readOnlyConfigs = config.ReadOnlyConfigBuild { }
+    }
 
     private fun isGridRestriction(categoryMode: CategoryMode): Boolean {
         if (categoryMode == CategoryMode.DATE)

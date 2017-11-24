@@ -18,7 +18,7 @@ object ReadOnlyConfigsFixture {
             categoryMode: CategoryMode = CategoryMode.DIRECTORY,
             viewModeType: ViewModeType = ViewModeType.LINEAR,
             sortOptionType: SortOptions = SortOptions(SortOptions.SORT_TYPE.NAME, SortOptions.ORDER_BY.DESC),
-            filterBit: Int = IMAGES or VIDEOS or GIFS,
+            filterBit: Long = IMAGES or VIDEOS or GIFS,
             showHidden: Boolean = false
     ): ReadOnlyConfigs {
         return ReadOnlyConfigs(categoryMode, viewModeType, sortOptionType, filterBit, showHidden)
@@ -28,7 +28,7 @@ object ReadOnlyConfigsFixture {
             categoryMode: CategoryMode = CategoryMode.DIRECTORY,
             viewModeType: ViewModeType = ViewModeType.LINEAR,
             sortOptionType: SortOptions = SortOptions(SortOptions.SORT_TYPE.NAME, SortOptions.ORDER_BY.DESC),
-            filterBit: Int = IMAGES or VIDEOS or GIFS,
+            filterBit: Long = IMAGES or VIDEOS or GIFS,
             showHidden: Boolean = false
     ): ReadOnlyConfigs {
         val mock = mock<ReadOnlyConfigs>()

@@ -15,10 +15,10 @@ import com.hucet.clean.gallery.model.DialogRadioItem
 /**
  * Created by taesu on 2017-11-16.
  */
-fun AlertDialog.Builder.createSortDialog(readOnlyConfigs: ReadOnlyConfigs, callback: (SortOptions) -> Unit): MaterialDialog {
+fun AlertDialog.Builder.createSortDialog(readOnlyConfigs: ReadOnlyConfigs, isRoot: Boolean, callback: (SortOptions) -> Unit): MaterialDialog {
     val mapper = DialogRadioItemMapper.SortMapper()
     val v = LayoutInflater.from(context).inflate(R.layout.dialog_sorting, null)
-    val items = mapper.map(context, readOnlyConfigs)
+    val items = mapper.map(context, readOnlyConfigs, isRoot)
     val sortItems = items[SortOptions.SORT_TYPE.KEY]!!
     val orderItems = items[SortOptions.ORDER_BY.KEY]!!
 
@@ -50,17 +50,17 @@ private fun addRadioChilden(radioGroup: RadioGroup, radioItems: List<DialogRadio
 }
 
 
-fun AlertDialog.Builder.createFilterDialog(readOnlyConfigs: ReadOnlyConfigs, fp: (Int) -> Unit): MaterialDialog {
+fun AlertDialog.Builder.createFilterDialog(readOnlyConfigs: ReadOnlyConfigs, fp: (Long) -> Unit): MaterialDialog {
     val mapper = DialogRadioItemMapper.FilterMapper()
-    val resultMap = mapper.map(context, readOnlyConfigs)
+    val resultMap = mapper.map(context, readOnlyConfigs, false)
     val listItem = resultMap.values.flatMap { it }
     val callback = MaterialDialog.ListCallbackMultiChoice { _, which, _ ->
         val filterType = which.sumBy { which ->
             listItem
                     .first { it.index == which }
-                    .bitAtt
+                    .bitAtt.toInt()
         }
-        fp.invoke(filterType)
+        fp.invoke(filterType.toLong())
         true
     }
 

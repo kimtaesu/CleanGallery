@@ -16,15 +16,15 @@ import timber.log.Timber
 /**
  * Created by taesu on 2017-10-31.
  */
-open class GalleryPresenter constructor(private val view: Gallery.View,
-                                        private val fragment: ListGalleryFragment,
-                                        private val repository: GalleryRepository,
-                                        private val schedulerProvider: SchedulerProvider = DefaultSchedulerProvider()
+class GalleryPresenter constructor(private val view: Gallery.View,
+                                   private val fragment: ListGalleryFragment,
+                                   private val repository: GalleryRepository,
+                                   private val schedulerProvider: SchedulerProvider = DefaultSchedulerProvider()
 ) : Gallery.Presenter {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
-    override fun fetchItems(curPath: String, readOnlyConfigs: ReadOnlyConfigs, cacheInvalidate: Boolean) {
+    override fun fetchItems(curPath: String, isRoot: Boolean, readOnlyConfigs: ReadOnlyConfigs, cacheInvalidate: Boolean) {
         repository
-                .getGalleries(readOnlyConfigs, isRoot(curPath), cacheInvalidate)
+                .getGalleries(readOnlyConfigs, isRoot, cacheInvalidate)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.main())
                 .doOnSubscribe {
@@ -56,6 +56,4 @@ open class GalleryPresenter constructor(private val view: Gallery.View,
     fun clear() {
         compositeDisposable.clear()
     }
-
-    open fun isRoot(curPath: String) = curPath.isExternalStorageDir()
 }

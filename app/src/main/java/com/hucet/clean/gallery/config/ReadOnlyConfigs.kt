@@ -8,7 +8,7 @@ import com.hucet.clean.gallery.gallery.sort.SortOptions
  * Created by taesu on 2017-11-19.
  */
 class ReadOnlyConfigs(private val c: CategoryMode, private val v: ViewModeType, private val s: SortOptions,
-                      private val f: Int, private val varShowHidden: Boolean) {
+                      private val f: Long, private val varShowHidden: Boolean) {
     fun getCategoryMode(): CategoryMode {
         return c
     }
@@ -21,7 +21,7 @@ class ReadOnlyConfigs(private val c: CategoryMode, private val v: ViewModeType, 
         return s
     }
 
-    fun getFilterBit(): Int = f
+    fun getFilterBit(): Long = f
 
     val showHidden = varShowHidden
 

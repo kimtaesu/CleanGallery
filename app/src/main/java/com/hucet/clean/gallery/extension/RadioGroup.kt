@@ -7,7 +7,7 @@ import com.hucet.clean.gallery.model.DialogRadioItem
  * Created by taesu on 2017-11-19.
  */
 
-fun RadioGroup.getCheckedItemIndex(radioItems: List<DialogRadioItem>): Int {
+fun RadioGroup.getCheckedItemIndex(radioItems: List<DialogRadioItem>): Long {
     val checkedSortItem = radioItems.first {
         it.index == this.checkedRadioButtonId
     }

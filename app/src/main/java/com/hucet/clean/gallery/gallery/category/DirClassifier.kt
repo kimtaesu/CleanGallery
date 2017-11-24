@@ -1,6 +1,7 @@
 package com.hucet.clean.gallery.gallery.category
 
 import com.hucet.clean.gallery.gallery.adapter.GalleryType
+import com.hucet.clean.gallery.gallery.sort.SortComparatorFactory
 import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.hucet.clean.gallery.model.Directory
 import com.hucet.clean.gallery.model.Medium
@@ -27,5 +28,6 @@ class DirClassifier : CategoryStrategy<Directory> {
                             viewType = GalleryType.DIRECTORY
                     )
                 }
+                .sortedWith(SortComparatorFactory.createDirComparator(sortOptionType))
     }
 }

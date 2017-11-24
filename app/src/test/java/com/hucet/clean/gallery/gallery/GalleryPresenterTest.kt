@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by taesu on 2017-11-01.
  */
-class GalleryPresenterTest : SubjectSpek<TestGalleryPresenter>({
+class GalleryPresenterTest : SubjectSpek<GalleryPresenter>({
     val test = MediumFixture.DEFAULT
     val view by memoized { mock<Gallery.View>() }
     val adapter by memoized { mock<GalleryAdapter>() }
@@ -31,13 +31,13 @@ class GalleryPresenterTest : SubjectSpek<TestGalleryPresenter>({
     val fragment by memoized { mock<ListGalleryFragment>() }
     given("a galleryPresenter") {
         subject {
-            TestGalleryPresenter(view, fragment, repository, TestSchedulerProvider(testScheduler))
+            GalleryPresenter(view, fragment, repository, TestSchedulerProvider(testScheduler))
         }
         on("presenter next - complete 검증")
         {
             whenever(fragment.getCurrentAdapter()).thenReturn(adapter)
             whenever(repository.getGalleries(any(), any(), any())).thenReturn(Flowable.just(test))
-            subject.fetchItems("", ReadOnlyConfigsFixture.readOnlyConfigs(), false)
+            subject.fetchItems("", false, ReadOnlyConfigsFixture.readOnlyConfigs(), false)
             testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
 
             it("call one [repository.getGalleries, adapter.updateData, view, view.showProgress, view.hideProgress]")
@@ -56,7 +56,7 @@ class GalleryPresenterTest : SubjectSpek<TestGalleryPresenter>({
                         throw MockitoException("")
                     })
 
-            subject.fetchItems("", ReadOnlyConfigsFixture.readOnlyConfigs(), false)
+            subject.fetchItems("", false, ReadOnlyConfigsFixture.readOnlyConfigs(), false)
             testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
 
             it("call never [adapter.updateData]")
@@ -70,11 +70,3 @@ class GalleryPresenterTest : SubjectSpek<TestGalleryPresenter>({
         }
     }
 })
-
-class TestGalleryPresenter(view: Gallery.View,
-                           fragment: ListGalleryFragment,
-                           repository: GalleryRepository,
-                           schedulerProvider: SchedulerProvider) : GalleryPresenter(view, fragment, repository, schedulerProvider) {
-    override fun isRoot(curPath: String): Boolean = true
-
-}

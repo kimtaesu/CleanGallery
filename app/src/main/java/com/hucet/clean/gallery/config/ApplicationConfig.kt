@@ -1,6 +1,8 @@
 package com.hucet.clean.gallery.config
 
 import android.app.Application
+import android.os.Environment
+import com.hucet.clean.gallery.extension.isExternalStorageDir
 import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
 import com.hucet.clean.gallery.gallery.sort.SortOptions
@@ -12,7 +14,11 @@ import javax.inject.Inject
 class ApplicationConfig @Inject constructor(
         val application: Application
 ) {
-    private var filterdType: Int
+    var curPath = Environment.getExternalStorageDirectory().absolutePath
+
+    fun isRoot() = curPath.isExternalStorageDir()
+
+    private var filterdType: Long
         get() {
             return PreferenceHelper.defaultPrefs(application)[key_filter_media, VIDEOS or IMAGES or GIFS]
         }
@@ -27,13 +33,16 @@ class ApplicationConfig @Inject constructor(
                 CategoryMode.DATE -> {
                     val bitSort = PreferenceHelper.defaultPrefs(application)[key_date_sorting, SORT_BY_DAILY or SORT_DESCENDING]
                     val sortType = SortOptions.getFromSortBit(bitSort)
-                    sortType validate categoryMode
+                    sortType.validate(categoryMode, isRoot())
                     return sortType
                 }
                 CategoryMode.DIRECTORY -> {
-                    val bitSort = PreferenceHelper.defaultPrefs(application)[key_dir_sorting, SORT_BY_DATE_MODIFIED or SORT_DESCENDING]
+                    val bitSort = if (curPath.isExternalStorageDir())
+                        PreferenceHelper.defaultPrefs(application)[key_dir_root_sorting, SORT_BY_DIR_PATH or SORT_DESCENDING]
+                    else
+                        PreferenceHelper.defaultPrefs(application)[key_dir_sorting, SORT_BY_DATE_MODIFIED or SORT_DESCENDING]
                     val sortType = SortOptions.getFromSortBit(bitSort)
-                    sortType validate categoryMode
+                    sortType.validate(categoryMode, isRoot())
                     return sortType
                 }
             }
@@ -44,7 +53,9 @@ class ApplicationConfig @Inject constructor(
                     PreferenceHelper.defaultPrefs(application)[key_date_sorting] = value.bit()
                 }
                 CategoryMode.DIRECTORY -> {
-                    PreferenceHelper.defaultPrefs(application)[key_dir_sorting] = value.bit()
+                    if (curPath.isExternalStorageDir())
+                        PreferenceHelper.defaultPrefs(application)[key_dir_root_sorting] = value.bit()
+                    else PreferenceHelper.defaultPrefs(application)[key_dir_sorting] = value.bit()
                 }
             }
         }
@@ -85,7 +96,7 @@ class ApplicationConfig @Inject constructor(
             init()
         }
 
-        fun filterType(filterBit: Int) {
+        fun filterType(filterBit: Long) {
             this@ApplicationConfig.filterdType = filterBit
         }
 

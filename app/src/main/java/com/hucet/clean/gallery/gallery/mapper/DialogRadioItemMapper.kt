@@ -11,10 +11,10 @@ import com.hucet.clean.gallery.model.DialogRadioItem
  * Created by taesu on 2017-11-20.
  */
 interface DialogRadioItemMapper {
-    fun map(context: Context, readOnlyConfigs: ReadOnlyConfigs): Map<String, List<DialogRadioItem>>
+    fun map(context: Context, readOnlyConfigs: ReadOnlyConfigs, isRoot: Boolean): Map<String, List<DialogRadioItem>>
 
     class FilterMapper : DialogRadioItemMapper {
-        override fun map(context: Context, readOnlyConfigs: ReadOnlyConfigs): Map<String, List<DialogRadioItem>> {
+        override fun map(context: Context, readOnlyConfigs: ReadOnlyConfigs, isRoot: Boolean): Map<String, List<DialogRadioItem>> {
             return mapOf(
                     FilterType.KEY to
                             FilterType.values().mapIndexed { index, filterType ->
@@ -41,7 +41,7 @@ interface DialogRadioItemMapper {
                         DialogRadioItem(
                                 index,
                                 context.getString(byOrder.title),
-                                checkedSortType.orderBY.bit and byOrder.bit > 0,
+                                checkedSortType.orderBy.bit and byOrder.bit > 0,
                                 byOrder.bit
                         )
                     }
@@ -52,14 +52,17 @@ interface DialogRadioItemMapper {
             )
         }
 
-        override fun map(context: Context, readOnlyConfigs: ReadOnlyConfigs): Map<String, List<DialogRadioItem>> {
+        override fun map(context: Context, readOnlyConfigs: ReadOnlyConfigs, isRoot: Boolean): Map<String, List<DialogRadioItem>> {
             val checkedSortType = readOnlyConfigs.getSortOptionType()
             when (readOnlyConfigs.getCategoryMode()) {
                 CategoryMode.DATE -> {
                     return createDialogRadioItems(context, SortOptions.SORT_TYPE.DATE_TYPES, checkedSortType)
                 }
                 CategoryMode.DIRECTORY -> {
-                    return createDialogRadioItems(context, SortOptions.SORT_TYPE.DIRECTORY_TYPES, checkedSortType)
+                    return if (isRoot)
+                        createDialogRadioItems(context, SortOptions.SORT_TYPE.DIRECOTRY_TYPE, checkedSortType)
+                    else
+                        createDialogRadioItems(context, SortOptions.SORT_TYPE.MEDIUM_TYPES, checkedSortType)
                 }
             }
         }

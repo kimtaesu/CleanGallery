@@ -34,7 +34,7 @@ class SortMapperTest : SubjectSpek<DialogRadioItemMapper>({
             {
                 checkSort `should equal` sort
             }
-            it("desc sortOption must equal orderBY")
+            it("desc sortOption must equal orderBy")
             {
                 checkOrder `should equal` order
             }
@@ -49,7 +49,7 @@ class SortMapperTest : SubjectSpek<DialogRadioItemMapper>({
             {
                 checkSort `should equal` sort
             }
-            it("asc sortOption must equal orderBY")
+            it("asc sortOption must equal orderBy")
             {
                 checkOrder `should equal` order
             }
@@ -65,7 +65,7 @@ class SortMapperTest : SubjectSpek<DialogRadioItemMapper>({
             {
                 checkSort `should equal` sort
             }
-            it("desc sortOption must equal orderBY")
+            it("desc sortOption must equal orderBy")
             {
                 checkOrder `should equal` order
             }
@@ -80,7 +80,7 @@ class SortMapperTest : SubjectSpek<DialogRadioItemMapper>({
             {
                 checkSort `should equal` sort
             }
-            it("asc sortOption must equal orderBY")
+            it("asc sortOption must equal orderBy")
             {
                 checkOrder `should equal` order
             }
@@ -93,11 +93,11 @@ private fun getTestDialogItem(subject: DialogRadioItemMapper, sortOptionType: So
 
     val dialogItems = if (sortOptionType.sort.isDateType()) {
         subject.map(mockContext(), ReadOnlyConfigsFixture.readOnlyConfigs(CategoryMode.DATE,
-                sortOptionType = sortOptionType))
+                sortOptionType = sortOptionType), false)
 
     } else {
         subject.map(mockContext(), ReadOnlyConfigsFixture.readOnlyConfigs(CategoryMode.DIRECTORY,
-                sortOptionType = sortOptionType))
+                sortOptionType = sortOptionType), false)
 
     }
     val checkedSortOption = dialogItems[SortOptions.SORT_TYPE.KEY]?.find { it.isCheck }

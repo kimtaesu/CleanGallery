@@ -124,7 +124,7 @@ class ImageVideoGifFilterTest : SubjectSpek<ImageVideoGifFilter>({
     }
 })
 
-fun mockReadOnlyConfig(mediaType: Int): ReadOnlyConfigs {
+fun mockReadOnlyConfig(mediaType: Long): ReadOnlyConfigs {
     val mock = mock<ReadOnlyConfigs>()
     whenever(mock.getFilterBit()).thenReturn(mediaType)
     return mock

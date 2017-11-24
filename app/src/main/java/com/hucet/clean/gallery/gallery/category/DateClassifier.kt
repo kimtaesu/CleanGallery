@@ -1,6 +1,7 @@
 package com.hucet.clean.gallery.gallery.category
 
 import android.content.Context
+import com.hucet.clean.gallery.gallery.sort.SortComparatorFactory
 import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Date
@@ -19,7 +20,7 @@ open class DateClassifier(private val context: Context) : CategoryStrategy<Basic
                 .groupBy {
                     format.format(it.modified)
                 }
-                .toSortedMap(createComparetor(sortOptionType))
+                .toSortedMap(SortComparatorFactory.createDateComparator(sortOptionType))
                 .flatMap {
                     val temp = ArrayList<Basic>()
                     val date = Date(date = it.key, id = UUID.randomUUID().mostSignificantBits and Long.MAX_VALUE)
@@ -27,20 +28,6 @@ open class DateClassifier(private val context: Context) : CategoryStrategy<Basic
                     temp.addAll(it.value)
                     temp
                 }
-    }
-
-    private fun createComparetor(sortOptionType: SortOptions): Comparator<in String> {
-        return if (sortOptionType.isDesc()) {
-            Comparator { o1: String, o2: String ->
-                if (o1 < o2) 1
-                else -1
-            }
-        } else {
-            Comparator { o1: String, o2: String ->
-                if (o1 < o2) -1
-                else 1
-            }
-        }
     }
 
 
