@@ -17,9 +17,9 @@ import timber.log.Timber
  * Created by taesu on 2017-10-31.
  */
 open class GalleryPresenter constructor(private val view: Gallery.View,
-                                   private val fragment: ListGalleryFragment,
-                                   private val repository: GalleryRepository,
-                                   private val schedulerProvider: SchedulerProvider = DefaultSchedulerProvider()
+                                        private val fragment: ListGalleryFragment,
+                                        private val repository: GalleryRepository,
+                                        private val schedulerProvider: SchedulerProvider = DefaultSchedulerProvider()
 ) : Gallery.Presenter {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     override fun fetchItems(curPath: String, readOnlyConfigs: ReadOnlyConfigs, cacheInvalidate: Boolean) {

@@ -30,13 +30,12 @@ class GalleryRepositoryTest : SubjectSpek<GalleryRepository>({
 
     given("a galleryRepository")
     {
-
         subject {
             GalleryRepository(localDataSource, tranformer)
         }
         on("a getGalleries subscriber")
         {
-            whenever(localDataSource.getGalleries(any())).thenReturn(Flowable.just(test))
+            whenever(localDataSource.getGalleries(any(), any())).thenReturn(Flowable.just(test))
             whenever(tranformer.transform(any(), any(), any())).thenReturn(test)
             val testSubscriber = subject.getGalleries(readOnlyConfig, true, true).test()
             it("testSubscriber status [no errors, complete]")

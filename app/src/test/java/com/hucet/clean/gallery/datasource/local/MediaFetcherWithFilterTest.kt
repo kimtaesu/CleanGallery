@@ -10,7 +10,6 @@ import com.nhaarman.mockito_kotlin.whenever
 import org.hamcrest.core.Is
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.xdescribe
 import org.jetbrains.spek.subject.SubjectSpek
 import org.junit.Assert
 
@@ -20,10 +19,10 @@ import org.junit.Assert
 
 class MediaFetcherWithFilterTest : SubjectSpek<MediaFetcher>({
 
-    xdescribe("filter [NOT_FILTERED, NOT_FILTERED]")
+    describe("filter [NOT_FILTERED, NOT_FILTERED]")
     {
         subject {
-            MediaFetcher(mock<Context>())
+            MediaFetcher(mock<Context>(), mockOrderedFilterContext(MediaTypeFilter.NOT_FILTERED, MediaTypeFilter.NOT_FILTERED))
         }
 
         val items = parseCursor(subject, MediumFixture.DEFAULT)
@@ -34,10 +33,10 @@ class MediaFetcherWithFilterTest : SubjectSpek<MediaFetcher>({
         }
     }
 
-    xdescribe("filter [FILTERED, NOT_FILTERED]")
+    describe("filter [FILTERED, NOT_FILTERED]")
     {
         subject {
-            MediaFetcher(mock<Context>())
+            MediaFetcher(mock<Context>(), mockOrderedFilterContext(MediaTypeFilter.FILTERED, MediaTypeFilter.NOT_FILTERED))
         }
 
         val items = parseCursor(subject, MediumFixture.DEFAULT)
@@ -48,10 +47,10 @@ class MediaFetcherWithFilterTest : SubjectSpek<MediaFetcher>({
         }
     }
 
-    xdescribe("filter [FILTERED, FILTERED]")
+    describe("filter [FILTERED, FILTERED]")
     {
         subject {
-            MediaFetcher(mock<Context>())
+            MediaFetcher(mock<Context>(), mockOrderedFilterContext(MediaTypeFilter.FILTERED, MediaTypeFilter.FILTERED))
         }
         val items = parseCursor(subject, MediumFixture.DEFAULT)
 

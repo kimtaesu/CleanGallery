@@ -3,8 +3,12 @@ package com.hucet.clean.gallery.datasource.local
 import android.content.Context
 import android.database.Cursor
 import android.provider.MediaStore
+import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.extension.getFilenameFromPath
+import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter.Companion.FILTERED
+import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter.Companion.NOT_FILTERED
 import com.hucet.clean.gallery.gallery.filter.MediaTypeHelper
+import com.hucet.clean.gallery.gallery.filter.OrderedFilterContext
 import com.hucet.clean.gallery.model.Medium
 import java.util.*
 
@@ -12,13 +16,22 @@ import java.util.*
  * Created by taesu on 2017-10-30.
  */
 
-class MediaFetcher constructor(private val context: Context
+class MediaFetcher constructor(private val context: Context,
+                               private val orderedFilter: OrderedFilterContext
 ) {
     fun query(curPath: () -> String): Cursor =
             MediaProvider().query(context, curPath.invoke(), MediaStore.Images.ImageColumns.DATE_MODIFIED + " DESC")
 
+    private fun isFilter(filters: OrderedFilterContext, medium: Medium, noMediaFolders: Set<String>, readOnlyConfigs: ReadOnlyConfigs): Boolean {
+        val isFilter = filters.iterator().any {
+            it.filterd(medium, noMediaFolders, readOnlyConfigs) == FILTERED
+        }
+        if (isFilter)
+            return FILTERED
+        return NOT_FILTERED
+    }
 
-    fun parseCursor(cur: Cursor?): List<Medium> {
+    fun parseCursor(cur: Cursor?, noMediaFolders: Set<String>, readOnlyConfigs: ReadOnlyConfigs): List<Medium> {
         cur ?: return emptyList()
         val curMedia = ArrayList<Medium>()
 
@@ -32,8 +45,10 @@ class MediaFetcher constructor(private val context: Context
                         var size = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE))
                         val dateTaken = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN))
                         val dateModified = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED))
-
                         val medium = Medium(id, filename, path, dateModified, dateTaken, size, MediaTypeHelper.mediaType(filename))
+
+                        if (isFilter(orderedFilter, medium, noMediaFolders, readOnlyConfigs) == FILTERED)
+                            continue
 
                         curMedia.add(medium)
 

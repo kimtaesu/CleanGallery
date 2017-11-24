@@ -32,13 +32,13 @@ class RepositoryServiceModule {
 
     @Provides
     @PerFragment
-    fun provideMediaFetcher(context: Context): MediaFetcher {
-        return MediaFetcher(context)
+    fun provideMediaFetcher(context: Context, orderedFilterContext: OrderedFilterContext): MediaFetcher {
+        return MediaFetcher(context, orderedFilterContext)
     }
 
     @Provides
     @PerFragment
-    fun provideLocalDataSource(mediaFetcher: MediaFetcher): LocalDataSource {
-        return LocalDataSource(mediaFetcher)
+    fun provideLocalDataSource(mediaFetcher: MediaFetcher, noMediaFolderProvider: NoMediaFolderProvider): LocalDataSource {
+        return LocalDataSource(mediaFetcher, noMediaFolderProvider)
     }
 }

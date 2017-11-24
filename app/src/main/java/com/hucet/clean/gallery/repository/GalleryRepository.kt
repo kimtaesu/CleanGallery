@@ -15,7 +15,7 @@ class GalleryRepository(
         private val transformer: MediumTransformer
 ) {
     fun getGalleries(readOnlyConfigs: ReadOnlyConfigs, isRoot: Boolean, cacheInvalidate: Boolean): Flowable<List<Basic>> {
-        return localDataSource.getGalleries(cacheInvalidate)
+        return localDataSource.getGalleries(cacheInvalidate, readOnlyConfigs)
                 .map {
                     transformer.transform(it, isRoot, readOnlyConfigs)
                 }
