@@ -3,13 +3,8 @@ package com.hucet.clean.gallery.datasource.local
 import android.content.Context
 import android.database.Cursor
 import android.provider.MediaStore
-import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.extension.getFilenameFromPath
-import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter
-import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter.Companion.FILTERED
-import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter.Companion.NOT_FILTERED
 import com.hucet.clean.gallery.gallery.filter.MediaTypeHelper
-import com.hucet.clean.gallery.gallery.filter.OrderedFilterContext
 import com.hucet.clean.gallery.model.Medium
 import java.util.*
 
@@ -17,15 +12,13 @@ import java.util.*
  * Created by taesu on 2017-10-30.
  */
 
-class MediaFetcher constructor(private val context: Context,
-                               private val orderedFilter: OrderedFilterContext
+class MediaFetcher constructor(private val context: Context
 ) {
-    fun query(curPath: String, sortOption: String = MediaStore.Images.ImageColumns.DATE_MODIFIED + " DESC"): Cursor {
-        return MediaProvider().query(context, curPath, sortOption)
-    }
+    fun query(curPath: () -> String): Cursor =
+            MediaProvider().query(context, curPath.invoke(), MediaStore.Images.ImageColumns.DATE_MODIFIED + " DESC")
 
 
-    fun parseCursor(cur: Cursor?, noMediaFolders: Set<String>): List<Medium> {
+    fun parseCursor(cur: Cursor?): List<Medium> {
         cur ?: return emptyList()
         val curMedia = ArrayList<Medium>()
 
@@ -78,5 +71,4 @@ class MediaFetcher constructor(private val context: Context,
             return arrayOf("${curPath}/%")
         }
     }
-
 }
