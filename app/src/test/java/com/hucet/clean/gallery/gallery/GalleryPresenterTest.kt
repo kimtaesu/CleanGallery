@@ -35,13 +35,14 @@ class GalleryPresenterTest : SubjectSpek<GalleryPresenter>({
         }
         on("presenter next - complete 검증")
         {
-            whenever(repository.getGalleries(any(), any())).thenReturn(Flowable.just(test))
+            whenever(repository.getGalleries(any())).thenReturn(Flowable.just(test))
             whenever(tranformer.transform(any(), any(), any())).thenReturn(test)
-            subject.fetchItems("", ReadOnlyConfigsFixture.readOnlyConfigs())
+            subject.fetchItems("", ReadOnlyConfigsFixture.readOnlyConfigs(), false)
             testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
+
             it("call one [repository.getGalleries, adapter.updateData, view, view.showProgress, view.hideProgress]")
             {
-                verify(repository, times(1)).getGalleries(any(), any())
+                verify(repository, times(1)).getGalleries(any())
                 verify(adapter, times(1)).updateData(any())
                 verify(view, times(1)).showProgress()
                 verify(view, times(1)).hideProgress()
@@ -50,16 +51,18 @@ class GalleryPresenterTest : SubjectSpek<GalleryPresenter>({
         }
         on("presenter error 검증")
         {
-            whenever(repository.getGalleries(any(), any())).thenReturn(Flowable.just(test)
+            whenever(repository.getGalleries(any())).thenReturn(Flowable.just(test)
                     .map {
                         throw MockitoException("")
                     })
+
             whenever(tranformer.transform(any(), any(), any())).thenReturn(test)
-            subject.fetchItems("", ReadOnlyConfigsFixture.readOnlyConfigs())
+            subject.fetchItems("", ReadOnlyConfigsFixture.readOnlyConfigs(), false)
             testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
+
             it("call never [adapter.updateData]")
             {
-                verify(repository, times(1)).getGalleries(any(), any())
+                verify(repository, times(1)).getGalleries(any())
                 verify(adapter, never()).updateData(any())
                 verify(view, times(1)).showProgress()
                 verify(view, times(1)).hideProgress()

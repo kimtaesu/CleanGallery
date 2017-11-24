@@ -52,13 +52,14 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         (activity as MainActivity).setOnViewModeChangedListener(onViewModeChanged)
+        lifecycle.addObserver(presenter)
         initRecyclerView()
         requestFetch(readOnlyFunction.invoke())
     }
 
 
     private fun requestFetch(readOnlyConfigs: ReadOnlyConfigs) {
-        presenter.fetchItems(curPath, readOnlyConfigs)
+        presenter.fetchItems(curPath, readOnlyConfigs, false)
     }
 
     val onViewModeChanged: (ViewModeType) -> Unit = { viewMode ->

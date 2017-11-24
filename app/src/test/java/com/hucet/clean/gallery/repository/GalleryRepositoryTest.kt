@@ -25,8 +25,8 @@ class GalleryRepositoryTest : SubjectSpek<GalleryRepository>({
         }
         on("a getGalleries subscriber")
         {
-            whenever(mockLocalDataSource.getGalleries(any(), any())).thenReturn(Flowable.just(test))
-            val testSubscriber = subject.getGalleries("", ReadOnlyConfigsFixture.readOnlyConfigs()).test()
+            whenever(mockLocalDataSource.getGalleries(any())).thenReturn(Flowable.just(test))
+            val testSubscriber = subject.getGalleries(false).test()
             it("testSubscriber status [no errors, complete]")
             {
                 testSubscriber.assertNoErrors()

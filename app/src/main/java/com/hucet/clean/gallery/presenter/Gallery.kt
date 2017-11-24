@@ -1,5 +1,6 @@
 package com.hucet.clean.gallery.presenter
 
+import android.arch.lifecycle.LifecycleObserver
 import com.hucet.clean.gallery.config.ReadOnlyConfigs
 
 /**
@@ -13,7 +14,7 @@ interface Gallery {
 
     }
 
-    interface Presenter {
-        fun fetchItems(curPath: String, readOnlyConfigs: ReadOnlyConfigs)
+    interface Presenter : LifecycleObserver {
+        fun fetchItems(curPath: String, readOnlyConfigs: ReadOnlyConfigs, cacheInvalidate: Boolean)
     }
 }

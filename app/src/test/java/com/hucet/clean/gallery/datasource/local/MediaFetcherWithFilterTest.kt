@@ -10,6 +10,7 @@ import com.nhaarman.mockito_kotlin.whenever
 import org.hamcrest.core.Is
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
+import org.jetbrains.spek.api.dsl.xdescribe
 import org.jetbrains.spek.subject.SubjectSpek
 import org.junit.Assert
 
@@ -19,7 +20,7 @@ import org.junit.Assert
 
 class MediaFetcherWithFilterTest : SubjectSpek<MediaFetcher>({
 
-    describe("filter [NOT_FILTERED, NOT_FILTERED]")
+    xdescribe("filter [NOT_FILTERED, NOT_FILTERED]")
     {
         subject {
             MediaFetcher(mock<Context>(), mockOrderedFilterContext(MediaTypeFilter.NOT_FILTERED, MediaTypeFilter.NOT_FILTERED))
@@ -33,7 +34,7 @@ class MediaFetcherWithFilterTest : SubjectSpek<MediaFetcher>({
         }
     }
 
-    describe("filter [FILTERED, NOT_FILTERED]")
+    xdescribe("filter [FILTERED, NOT_FILTERED]")
     {
         subject {
             MediaFetcher(mock<Context>(), mockOrderedFilterContext(MediaTypeFilter.FILTERED, MediaTypeFilter.NOT_FILTERED))
@@ -47,7 +48,7 @@ class MediaFetcherWithFilterTest : SubjectSpek<MediaFetcher>({
         }
     }
 
-    describe("filter [FILTERED, FILTERED]")
+    xdescribe("filter [FILTERED, FILTERED]")
     {
         subject {
             MediaFetcher(mock<Context>(), mockOrderedFilterContext(MediaTypeFilter.FILTERED, MediaTypeFilter.FILTERED))

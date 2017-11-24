@@ -17,6 +17,7 @@ import org.amshove.kluent.`should equal to`
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
+import org.jetbrains.spek.api.dsl.xgiven
 import org.jetbrains.spek.subject.SubjectSpek
 
 /**
@@ -61,7 +62,7 @@ fun classify(d: DateClassifier, sortType: SortOptionType, test: List<Medium>): L
 class DateClassifierTest : SubjectSpek<DateClassifier>({
     val config by memoized { mock<ApplicationConfig>() }
 
-    given("a dateClassifier")
+    xgiven("a dateClassifier")
     {
         subject {
             DateClassifier()

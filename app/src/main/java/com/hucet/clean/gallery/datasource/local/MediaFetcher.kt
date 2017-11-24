@@ -24,17 +24,8 @@ class MediaFetcher constructor(private val context: Context,
         return MediaProvider().query(context, curPath, sortOption)
     }
 
-    private fun isFilter(filters: OrderedFilterContext, medium: Medium, noMediaFolders: Set<String>, readOnlyConfigs: ReadOnlyConfigs): Boolean {
-        val isFilter = filters.iterator().any {
-            it.filterd(medium, noMediaFolders, readOnlyConfigs) == FILTERED
-        }
-        if (isFilter)
-            return FILTERED
-        return NOT_FILTERED
-    }
 
-
-    fun parseCursor(cur: Cursor?, noMediaFolders: Set<String>, readOnlyConfigs: ReadOnlyConfigs): List<Medium> {
+    fun parseCursor(cur: Cursor?, noMediaFolders: Set<String>): List<Medium> {
         cur ?: return emptyList()
         val curMedia = ArrayList<Medium>()
 
@@ -50,8 +41,6 @@ class MediaFetcher constructor(private val context: Context,
                         val dateModified = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED))
 
                         val medium = Medium(id, filename, path, dateModified, dateTaken, size, MediaTypeHelper.mediaType(filename))
-                        if (isFilter(orderedFilter, medium, noMediaFolders, readOnlyConfigs) == MediaTypeFilter.FILTERED)
-                            continue
 
                         curMedia.add(medium)
 

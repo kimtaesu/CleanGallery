@@ -20,16 +20,11 @@ class GalleryPresenter constructor(private val view: Gallery.View,
                                    private val repository: GalleryRepository,
                                    private val transformer: MediumTransformer,
                                    private val schedulerProvider: SchedulerProvider = DefaultSchedulerProvider()
-) : Gallery.Presenter, LifecycleObserver {
-
-    init {
-        fragment.lifecycle.addObserver(this)
-    }
-
+) : Gallery.Presenter {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
-    override fun fetchItems(curPath: String, readOnlyConfigs: ReadOnlyConfigs) {
+    override fun fetchItems(curPath: String, readOnlyConfigs: ReadOnlyConfigs, cacheInvalidate: Boolean) {
         repository
-                .getGalleries(curPath, readOnlyConfigs)
+                .getGalleries(cacheInvalidate)
                 .map {
                     transformer.transform(it, curPath, readOnlyConfigs)
                 }
