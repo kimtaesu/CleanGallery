@@ -36,13 +36,13 @@ class GalleryPresenterTest : SubjectSpek<GalleryPresenter>({
         on("presenter next - complete 검증")
         {
             whenever(fragment.getCurrentAdapter()).thenReturn(adapter)
-            whenever(repository.getGalleries(any(), any(), any())).thenReturn(Flowable.just(test))
+            whenever(repository.getGalleries(any(), any(), any(), any())).thenReturn(Flowable.just(test))
             subject.fetchItems("", false, ReadOnlyConfigsFixture.readOnlyConfigs(), false)
             testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
 
             it("call one [repository.getGalleries, adapter.updateData, view, view.showProgress, view.hideProgress]")
             {
-                verify(repository, times(1)).getGalleries(any(), any(), any())
+                verify(repository, times(1)).getGalleries(any(), any(), any(), any())
                 verify(adapter, times(1)).updateData(any())
                 verify(view, times(1)).showProgress()
                 verify(view, times(1)).hideProgress()
@@ -51,7 +51,7 @@ class GalleryPresenterTest : SubjectSpek<GalleryPresenter>({
         on("presenter error 검증")
         {
             whenever(fragment.getCurrentAdapter()).thenReturn(adapter)
-            whenever(repository.getGalleries(any(), any(), any())).thenReturn(Flowable.just(test)
+            whenever(repository.getGalleries(any(), any(), any(), any())).thenReturn(Flowable.just(test)
                     .map {
                         throw MockitoException("")
                     })
@@ -61,7 +61,7 @@ class GalleryPresenterTest : SubjectSpek<GalleryPresenter>({
 
             it("call never [adapter.updateData]")
             {
-                verify(repository, times(1)).getGalleries(any(), any(), any())
+                verify(repository, times(1)).getGalleries(any(), any(), any(), any())
                 verify(adapter, never()).updateData(any())
                 verify(view, times(1)).showProgress()
                 verify(view, times(1)).hideProgress()

@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AlertDialog
@@ -129,6 +130,10 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 }
                 cascadeViewModeUpdate()
 
+                if (isGridRestriction(categoryMode)) {
+                    config.curPath = Environment.getExternalStorageDirectory().path
+                    refreshSortType()
+                }
                 galleryFragment.onCategoryModeChanged(readOnlyConfigs)
                 updateCategory(item, categoryMode)
             }

@@ -37,7 +37,7 @@ class GalleryRepositoryTest : SubjectSpek<GalleryRepository>({
         {
             whenever(localDataSource.getGalleries(any(), any())).thenReturn(Flowable.just(test))
             whenever(tranformer.transform(any(), any(), any())).thenReturn(test)
-            val testSubscriber = subject.getGalleries(readOnlyConfig, true, true).test()
+            val testSubscriber = subject.getGalleries(readOnlyConfig, "", true, true).test()
             it("testSubscriber status [no errors, complete]")
             {
                 testSubscriber.assertNoErrors()
