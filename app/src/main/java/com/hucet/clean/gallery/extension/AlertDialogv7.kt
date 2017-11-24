@@ -8,20 +8,19 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.gallery.mapper.DialogRadioItemMapper
-import com.hucet.clean.gallery.gallery.sort.ByOrder
-import com.hucet.clean.gallery.gallery.sort.SortOptionType
+import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.hucet.clean.gallery.model.DialogRadioItem
 
 
 /**
  * Created by taesu on 2017-11-16.
  */
-fun AlertDialog.Builder.createSortDialog(readOnlyConfigs: ReadOnlyConfigs, callback: (SortOptionType) -> Unit): MaterialDialog {
+fun AlertDialog.Builder.createSortDialog(readOnlyConfigs: ReadOnlyConfigs, callback: (SortOptions) -> Unit): MaterialDialog {
     val mapper = DialogRadioItemMapper.SortMapper()
     val v = LayoutInflater.from(context).inflate(R.layout.dialog_sorting, null)
     val items = mapper.map(context, readOnlyConfigs)
-    val sortItems = items[SortOptionType.KEY]!!
-    val orderItems = items[ByOrder.KEY]!!
+    val sortItems = items[SortOptions.SORT_TYPE.KEY]!!
+    val orderItems = items[SortOptions.ORDER_BY.KEY]!!
 
     val sortGroup = v.findViewById<RadioGroup>(R.id.group_sort)
     addRadioChilden(sortGroup, sortItems)
@@ -34,7 +33,7 @@ fun AlertDialog.Builder.createSortDialog(readOnlyConfigs: ReadOnlyConfigs, callb
             .customView(v, true)
             .positiveText(android.R.string.ok)
             .onPositive { dialog, which ->
-                val sortType = SortOptionType.getFromSortOrderBit(sortGroup.getCheckedItemIndex(sortItems) or orderGroup.getCheckedItemIndex(orderItems))
+                val sortType = SortOptions.getFromSortBit(sortGroup.getCheckedItemIndex(sortItems) or orderGroup.getCheckedItemIndex(orderItems))
                 callback.invoke(sortType)
             }
             .build()

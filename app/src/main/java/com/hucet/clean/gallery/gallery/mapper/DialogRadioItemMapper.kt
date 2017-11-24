@@ -4,8 +4,7 @@ import android.content.Context
 import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.filter.FilterType
-import com.hucet.clean.gallery.gallery.sort.ByOrder
-import com.hucet.clean.gallery.gallery.sort.SortOptionType
+import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.hucet.clean.gallery.model.DialogRadioItem
 
 /**
@@ -14,7 +13,7 @@ import com.hucet.clean.gallery.model.DialogRadioItem
 interface DialogRadioItemMapper {
     fun map(context: Context, readOnlyConfigs: ReadOnlyConfigs): Map<String, List<DialogRadioItem>>
 
-    class FilterMapper() : DialogRadioItemMapper {
+    class FilterMapper : DialogRadioItemMapper {
         override fun map(context: Context, readOnlyConfigs: ReadOnlyConfigs): Map<String, List<DialogRadioItem>> {
             return mapOf(
                     FilterType.KEY to
@@ -27,29 +26,29 @@ interface DialogRadioItemMapper {
     }
 
     class SortMapper() : DialogRadioItemMapper {
-        private fun createDialogRadioItems(context: Context, targetItems: List<SortOptionType>, checkedSortType: SortOptionType): Map<String, List<DialogRadioItem>> {
+        private fun createDialogRadioItems(context: Context, targetItems: List<SortOptions.SORT_TYPE>, checkedSortType: SortOptions): Map<String, List<DialogRadioItem>> {
             val sortItems = targetItems
                     .mapIndexed { index, sortType ->
                         DialogRadioItem(
                                 index,
                                 context.getString(sortType.title),
-                                checkedSortType.bitAttr and sortType.bitAttr > 0,
-                                sortType.bitAttr
+                                checkedSortType.sort.bit and sortType.bit > 0,
+                                sortType.bit
                         )
                     }
-            val orderItems = ByOrder.values()
+            val orderItems = SortOptions.ORDER_BY.values()
                     .mapIndexed { index, byOrder ->
                         DialogRadioItem(
                                 index,
                                 context.getString(byOrder.title),
-                                checkedSortType.getOrder().bitAttr and byOrder.bitAttr > 0,
-                                byOrder.bitAttr
+                                checkedSortType.orderBY.bit and byOrder.bit > 0,
+                                byOrder.bit
                         )
                     }
 
             return mapOf(
-                    SortOptionType.KEY to sortItems,
-                    ByOrder.KEY to orderItems
+                    SortOptions.SORT_TYPE.KEY to sortItems,
+                    SortOptions.ORDER_BY.KEY to orderItems
             )
         }
 
@@ -57,10 +56,10 @@ interface DialogRadioItemMapper {
             val checkedSortType = readOnlyConfigs.getSortOptionType()
             when (readOnlyConfigs.getCategoryMode()) {
                 CategoryMode.DATE -> {
-                    return createDialogRadioItems(context, SortOptionType.DATE_TYPES, checkedSortType)
+                    return createDialogRadioItems(context, SortOptions.SORT_TYPE.DATE_TYPES, checkedSortType)
                 }
                 CategoryMode.DIRECTORY -> {
-                    return createDialogRadioItems(context, SortOptionType.DIRECTORY_TYPES, checkedSortType)
+                    return createDialogRadioItems(context, SortOptions.SORT_TYPE.DIRECTORY_TYPES, checkedSortType)
                 }
             }
         }

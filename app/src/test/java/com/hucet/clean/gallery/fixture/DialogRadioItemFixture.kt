@@ -1,8 +1,6 @@
 package com.hucet.clean.gallery.fixture
 
-import com.hucet.clean.gallery.config.*
-import com.hucet.clean.gallery.gallery.sort.ByOrder
-import com.hucet.clean.gallery.gallery.sort.SortOptionType
+import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.hucet.clean.gallery.model.DialogRadioItem
 
 /**
@@ -12,39 +10,15 @@ object DialogRadioItemFixture {
     private val TEST_DIRECTORY: Map<String, List<DialogRadioItem>>
         get() {
             return mapOf(
-                    SortOptionType.KEY to
-                            listOf(
-                                    dialog(
-                                            index = 0,
-                                            title = "File name",
-                                            isCheck = false,
-                                            bitAttr = SORT_BY_NAME
-                                    ),
-                                    dialog(
-                                            index = 1,
-                                            title = "Last modified",
-                                            isCheck = false,
-                                            bitAttr = SORT_BY_DATE_MODIFIED
-                                    ),
-                                    dialog(
-                                            index = 2,
-                                            title = "Date taken",
-                                            isCheck = false,
-                                            bitAttr = SORT_BY_DATE_TAKEN
-                                    ),
-                                    dialog(
-                                            index = 3,
-                                            title = "Path",
-                                            isCheck = false,
-                                            bitAttr = SORT_BY_PATH
-                                    ),
-                                    dialog(
-                                            index = 4,
-                                            title = "Size",
-                                            isCheck = false,
-                                            bitAttr = SORT_BY_SIZE
-                                    )
-                            ),
+                    SortOptions.SORT_TYPE.KEY to
+                            SortOptions.SORT_TYPE.DIRECTORY_TYPES.mapIndexed { index, sort ->
+                                dialog(
+                                        index = index,
+                                        title = sort.name,
+                                        isCheck = false,
+                                        bitAttr = sort.bit
+                                )
+                            },
                     TEST_ORDER
             )
         }
@@ -53,63 +27,42 @@ object DialogRadioItemFixture {
     private val TEST_DATE: Map<String, List<DialogRadioItem>>
         get() {
             return mapOf(
-                    SortOptionType.KEY to
-                            listOf(
-                                    dialog(
-                                            index = 0,
-                                            title = "Daily",
-                                            isCheck = false,
-                                            bitAttr = SORT_BY_DAILY
-                                    ),
-                                    dialog(
-                                            index = 1,
-                                            title = "Monthly",
-                                            isCheck = false,
-                                            bitAttr = SORT_BY_MONTHLY
-                                    ),
-                                    dialog(
-                                            index = 2,
-                                            title = "Yearly",
-                                            isCheck = false,
-                                            bitAttr = SORT_BY_YEARLY
-                                    )
-                            ),
-
-                    TEST_ORDER
-
-
-            )
+                    SortOptions.SORT_TYPE.KEY to
+                            SortOptions.SORT_TYPE.DATE_TYPES
+                                    .mapIndexed { index, sort ->
+                                        dialog(
+                                                index = index,
+                                                title = sort.name,
+                                                isCheck = false,
+                                                bitAttr = sort.bit
+                                        )
+                                    },
+                    TEST_ORDER)
         }
 
-    private val TEST_ORDER = ByOrder.KEY to
-            listOf(
-                    dialog(
-                            index = 0,
-                            title = "ASC",
-                            isCheck = false,
-                            bitAttr = SORT_ASCENDING
-                    ),
-                    dialog(
-                            index = 1,
-                            title = "DESC",
-                            isCheck = false,
-                            bitAttr = SORT_DESCENDING
-                    ))
+    private val TEST_ORDER = SortOptions.ORDER_BY.KEY to
+            SortOptions.ORDER_BY.values().mapIndexed { index, order ->
+                dialog(
+                        index = index,
+                        title = order.name,
+                        isCheck = false,
+                        bitAttr = order.bit
+                )
+            }
 
-
-    fun getCorrectFromCheckItems(checkedSortItem: SortOptionType): TestDialogItem {
-        val items = if (SortOptionType.isDateType(checkedSortItem))
+    fun getCorrectFromCheckItems(checkedSortItem: SortOptions): TestDialogItem {
+        val items = if (checkedSortItem.sort.isDateType())
             TEST_DATE
         else
             TEST_DIRECTORY
 
         return TestDialogItem(
-                items[SortOptionType.KEY]?.first {
-                    it.bitAtt and checkedSortItem.bitAttr > 0
+                items[SortOptions.SORT_TYPE.KEY]?.first {
+                    it.bitAtt and checkedSortItem.sort.bit > 0
                 }?.copy(isCheck = true, title = "")!!,
 
-                items[ByOrder.KEY]?.first {
-                    it.bitAtt and checkedSortItem.getOrder().bitAttr > 0
+                items[SortOptions.ORDER_BY.KEY]?.first {
+                    it.bitAtt and checkedSortItem.orderBY.bit > 0
                 }?.copy(isCheck = true, title = "")!!
         )
     }

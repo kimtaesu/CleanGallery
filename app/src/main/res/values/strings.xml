@@ -29,4 +29,8 @@
 
     <string name="dialog_sort_title">Sort by</string>
     <string name="dialog_filter_title">Filter</string>
+
+    <string name="format_group_daily">yyyy-MM-dd</string>
+    <string name="format_group_monthly">yyyy-MM</string>
+    <string name="format_group_yearly">yyyy</string>
 </resources>

@@ -6,8 +6,7 @@ import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.config.VIDEOS
 import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
-import com.hucet.clean.gallery.gallery.sort.SortOptionType
-import com.hucet.clean.gallery.gallery.sort.SortOptionTypeTest
+import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.nhaarman.mockito_kotlin.whenever
 import org.amshove.kluent.mock
 
@@ -18,7 +17,7 @@ object ReadOnlyConfigsFixture {
     fun readOnlyConfigs(
             categoryMode: CategoryMode = CategoryMode.DIRECTORY,
             viewModeType: ViewModeType = ViewModeType.LINEAR,
-            sortOptionType: SortOptionType = SortOptionType.BY_NAME,
+            sortOptionType: SortOptions = SortOptions(SortOptions.SORT_TYPE.NAME, SortOptions.ORDER_BY.DESC),
             filterBit: Int = IMAGES or VIDEOS or GIFS,
             showHidden: Boolean = false
     ): ReadOnlyConfigs {
@@ -28,7 +27,7 @@ object ReadOnlyConfigsFixture {
     fun mockReadOnlyConfigs(
             categoryMode: CategoryMode = CategoryMode.DIRECTORY,
             viewModeType: ViewModeType = ViewModeType.LINEAR,
-            sortOptionType: SortOptionType = SortOptionType.BY_NAME,
+            sortOptionType: SortOptions = SortOptions(SortOptions.SORT_TYPE.NAME, SortOptions.ORDER_BY.DESC),
             filterBit: Int = IMAGES or VIDEOS or GIFS,
             showHidden: Boolean = false
     ): ReadOnlyConfigs {

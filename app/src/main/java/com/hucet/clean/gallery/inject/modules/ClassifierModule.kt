@@ -1,5 +1,6 @@
 package com.hucet.clean.gallery.inject.modules
 
+import android.content.Context
 import com.hucet.clean.gallery.gallery.category.DateClassifier
 import com.hucet.clean.gallery.gallery.category.DirClassifier
 import com.hucet.clean.gallery.gallery.category.MediumTransformer
@@ -14,8 +15,8 @@ import dagger.Provides
 class ClassifierModule {
     @Provides
     @PerFragment
-    fun provideDateClassifier(): DateClassifier {
-        return DateClassifier()
+    fun provideDateClassifier(context: Context): DateClassifier {
+        return DateClassifier(context)
     }
 
 

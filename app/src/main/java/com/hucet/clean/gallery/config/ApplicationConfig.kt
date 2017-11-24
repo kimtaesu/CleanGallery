@@ -3,7 +3,7 @@ package com.hucet.clean.gallery.config
 import android.app.Application
 import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
-import com.hucet.clean.gallery.gallery.sort.SortOptionType
+import com.hucet.clean.gallery.gallery.sort.SortOptions
 import javax.inject.Inject
 
 /**
@@ -21,18 +21,18 @@ class ApplicationConfig @Inject constructor(
             value
         }
 
-    private var sortOptionType: SortOptionType
+    private var sortOptionType: SortOptions
         get() {
             when (categoryMode) {
                 CategoryMode.DATE -> {
                     val bitSort = PreferenceHelper.defaultPrefs(application)[key_date_sorting, SORT_BY_DAILY or SORT_DESCENDING]
-                    val sortType = SortOptionType.getFromSortOrderBit(bitSort)
+                    val sortType = SortOptions.getFromSortBit(bitSort)
                     sortType validate categoryMode
                     return sortType
                 }
                 CategoryMode.DIRECTORY -> {
                     val bitSort = PreferenceHelper.defaultPrefs(application)[key_dir_sorting, SORT_BY_DATE_MODIFIED or SORT_DESCENDING]
-                    val sortType = SortOptionType.getFromSortOrderBit(bitSort)
+                    val sortType = SortOptions.getFromSortBit(bitSort)
                     sortType validate categoryMode
                     return sortType
                 }
@@ -41,10 +41,10 @@ class ApplicationConfig @Inject constructor(
         set(value) {
             when (categoryMode) {
                 CategoryMode.DATE -> {
-                    PreferenceHelper.defaultPrefs(application)[key_date_sorting] = value.bitWithOrder()
+                    PreferenceHelper.defaultPrefs(application)[key_date_sorting] = value.bit()
                 }
                 CategoryMode.DIRECTORY -> {
-                    PreferenceHelper.defaultPrefs(application)[key_dir_sorting] = value.bitWithOrder()
+                    PreferenceHelper.defaultPrefs(application)[key_dir_sorting] = value.bit()
                 }
             }
         }
@@ -93,7 +93,7 @@ class ApplicationConfig @Inject constructor(
             this@ApplicationConfig.categoryMode = categoryMode
         }
 
-        fun sortType(sortOptionType: SortOptionType) {
+        fun sortType(sortOptionType: SortOptions) {
             this@ApplicationConfig.sortOptionType = sortOptionType
         }
 

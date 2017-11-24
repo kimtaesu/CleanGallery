@@ -1,56 +1,25 @@
 package com.hucet.clean.gallery.gallery.category
 
-import com.hucet.clean.gallery.config.*
-import com.hucet.clean.gallery.fixture.MediumFixture
+import android.content.Context
 import com.hucet.clean.gallery.fixture.SortMediumFixture
 import com.hucet.clean.gallery.fixture.TestData
 import com.hucet.clean.gallery.gallery.adapter.GalleryType
-import com.hucet.clean.gallery.gallery.sort.ByOrder
-import com.hucet.clean.gallery.gallery.sort.ByOrder.*
-import com.hucet.clean.gallery.gallery.sort.SortOptionType
-import com.hucet.clean.gallery.gallery.sort.SortOptionType.*
+import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.hucet.clean.gallery.model.Date
 import com.hucet.clean.gallery.model.Medium
 import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.whenever
 import org.amshove.kluent.`should equal to`
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
-import org.jetbrains.spek.api.dsl.xgiven
 import org.jetbrains.spek.subject.SubjectSpek
+import java.text.SimpleDateFormat
 
 /**
  * Created by taesu on 2017-11-10.
  */
 
-fun getTestDate(type: SortOptionType): TestData {
-    when (type) {
-        BY_DAILY -> {
-            return if (type.isDesc())
-                SortMediumFixture.TEST_CATEGORY_DAILY_DESC
-            else
-                SortMediumFixture.TEST_CATEGORY_DAILY_ASC
-        }
-        BY_MONTHLY -> {
-            return if (type.isDesc())
-                SortMediumFixture.TEST_CATEGORY_MONTHLY_DESC
-            else
-                SortMediumFixture.TEST_CATEGORY_MONTHLY_ASC
-        }
-        BY_YEARLY -> {
-            return if (type.isDesc())
-                SortMediumFixture.TEST_CATEGORY_YEARLY_DESC
-            else
-                SortMediumFixture.TEST_CATEGORY_YEARLY_ASC
-        }
-        else -> {
-            throw IllegalArgumentException()
-        }
-    }
-}
-
-fun classify(d: DateClassifier, sortType: SortOptionType, test: List<Medium>): List<Date> {
+fun classify(d: TestDateClassifier, sortType: SortOptions, test: List<Medium>): List<Date> {
     var result = d.classify(sortType, test)
     return result.filter {
         it.viewType == GalleryType.DATE
@@ -59,21 +28,20 @@ fun classify(d: DateClassifier, sortType: SortOptionType, test: List<Medium>): L
     }
 }
 
-class DateClassifierTest : SubjectSpek<DateClassifier>({
-    val config by memoized { mock<ApplicationConfig>() }
-
-    xgiven("a dateClassifier")
+class DateClassifierTest : SubjectSpek<TestDateClassifier>({
+    given("a dateClassifier")
     {
         subject {
-            DateClassifier()
+            TestDateClassifier(mock())
         }
         on("desc daily")
         {
-            val (test, correct) = getTestDate(BY_DAILY order BY_DESC)
+            val sortOption = SortOptions(SortOptions.SORT_TYPE.DAILY)
+
+            val (test, correct) = getTestDate(sortOption)
             correct as List<Date>
 
-            val sortType = SortOptionType.BY_DAILY order ByOrder.BY_DESC
-            var result = classify(subject, sortType, test)
+            var result = classify(subject, sortOption, test)
 
             it("daily [2017-11-06, 2017-02-23, 2016-01-01]")
             {
@@ -84,11 +52,11 @@ class DateClassifierTest : SubjectSpek<DateClassifier>({
         }
         on("asc daily")
         {
-            val (test, correct) = getTestDate(BY_DAILY order BY_ASC)
+            val sortOption = SortOptions(SortOptions.SORT_TYPE.DAILY)
+            val (test, correct) = getTestDate(sortOption)
             correct as List<Date>
 
-            val sortType = SortOptionType.BY_DAILY order ByOrder.BY_ASC
-            var result = classify(subject, sortType, test)
+            var result = classify(subject, sortOption, test)
 
             it("daily [2017-11-06, 2017-02-23, 2016-01-01]")
             {
@@ -99,11 +67,11 @@ class DateClassifierTest : SubjectSpek<DateClassifier>({
         }
         on("desc monthly")
         {
-            val (test, correct) = getTestDate(BY_MONTHLY order BY_DESC)
+            val sortOption = SortOptions(SortOptions.SORT_TYPE.MONTHLY)
+            val (test, correct) = getTestDate(sortOption)
             correct as List<Date>
 
-            val sortType = SortOptionType.BY_MONTHLY order ByOrder.BY_DESC
-            var result = classify(subject, sortType, test)
+            var result = classify(subject, sortOption, test)
             it("monthly [2017-11, 2017-02, 2016-01]")
             {
 
@@ -114,11 +82,11 @@ class DateClassifierTest : SubjectSpek<DateClassifier>({
         }
         on("asc monthly")
         {
-            val (test, correct) = getTestDate(BY_MONTHLY order BY_ASC)
+            val sortOption = SortOptions(SortOptions.SORT_TYPE.MONTHLY)
+            val (test, correct) = getTestDate(sortOption)
             correct as List<Date>
 
-            val sortType = SortOptionType.BY_MONTHLY order ByOrder.BY_ASC
-            var result = classify(subject, sortType, test)
+            var result = classify(subject, sortOption, test)
             it("monthly [2017-11, 2017-02, 2016-01]")
             {
 
@@ -129,11 +97,11 @@ class DateClassifierTest : SubjectSpek<DateClassifier>({
         }
         on("desc yearly")
         {
-            val (test, correct) = getTestDate(BY_YEARLY order BY_DESC)
+            val sortOption = SortOptions(SortOptions.SORT_TYPE.YEARLY)
+            val (test, correct) = getTestDate(sortOption)
             correct as List<Date>
 
-            val sortType = SortOptionType.BY_YEARLY order ByOrder.BY_DESC
-            var result = classify(subject, sortType, test)
+            var result = classify(subject, sortOption, test)
             it("yearly [2017, 2016]")
             {
                 result.forEachIndexed { index, it ->
@@ -143,11 +111,11 @@ class DateClassifierTest : SubjectSpek<DateClassifier>({
         }
         on("asc yearly")
         {
-            val (test, correct) = getTestDate(BY_YEARLY order BY_ASC)
+            val sortOption = SortOptions(SortOptions.SORT_TYPE.YEARLY)
+            val (test, correct) = getTestDate(sortOption)
             correct as List<Date>
 
-            val sortType = SortOptionType.BY_YEARLY order BY_ASC
-            var result = classify(subject, sortType, test)
+            var result = classify(subject, sortOption, test)
             it("yearly [2016, 2017]")
             {
                 result.forEachIndexed { index, it ->
@@ -157,3 +125,49 @@ class DateClassifierTest : SubjectSpek<DateClassifier>({
         }
     }
 })
+
+class TestDateClassifier(context: Context) : DateClassifier(context) {
+    override fun getFormat(sortOptionType: SortOptions): SimpleDateFormat {
+        val dateString = when (sortOptionType.sort) {
+            SortOptions.SORT_TYPE.DAILY -> {
+                "yyyy-MM-dd"
+            }
+            SortOptions.SORT_TYPE.MONTHLY -> {
+                "yyyy-MM"
+            }
+            SortOptions.SORT_TYPE.YEARLY -> {
+                "yyyy"
+            }
+            else -> {
+                throw IllegalArgumentException()
+            }
+        }
+        return SimpleDateFormat(dateString)
+    }
+}
+
+fun getTestDate(type: SortOptions): TestData {
+    when (type.sort) {
+        SortOptions.SORT_TYPE.DAILY -> {
+            return if (type.isDesc())
+                SortMediumFixture.TEST_CATEGORY_DAILY_DESC
+            else
+                SortMediumFixture.TEST_CATEGORY_DAILY_ASC
+        }
+        SortOptions.SORT_TYPE.MONTHLY -> {
+            return if (type.isDesc())
+                SortMediumFixture.TEST_CATEGORY_MONTHLY_DESC
+            else
+                SortMediumFixture.TEST_CATEGORY_MONTHLY_ASC
+        }
+        SortOptions.SORT_TYPE.YEARLY -> {
+            return if (type.isDesc())
+                SortMediumFixture.TEST_CATEGORY_YEARLY_DESC
+            else
+                SortMediumFixture.TEST_CATEGORY_YEARLY_ASC
+        }
+        else -> {
+            throw IllegalArgumentException()
+        }
+    }
+}

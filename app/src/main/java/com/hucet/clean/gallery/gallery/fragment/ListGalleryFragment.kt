@@ -146,15 +146,15 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     }
 
     override fun showProgress() {
-        Toast.makeText(context, "showProgress", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, "showProgress", Toast.LENGTH_SHORT).show()
     }
 
     override fun hideProgress() {
-        Toast.makeText(context, "hideProgress", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, "hideProgress", Toast.LENGTH_SHORT).show()
     }
 
     override fun showError() {
-        Toast.makeText(context, "showError", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, "showError", Toast.LENGTH_SHORT).show()
     }
 
     fun getCurrentAdapter(): GalleryAdapter? = gallery_list.adapter as? GalleryAdapter

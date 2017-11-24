@@ -1,17 +1,11 @@
 package com.hucet.clean.gallery.gallery.mapper
 
 import android.content.Context
-import com.hucet.clean.gallery.config.ApplicationConfig
-import com.hucet.clean.gallery.config.SORT_BY_DATE_MODIFIED
-import com.hucet.clean.gallery.config.SORT_DESCENDING
 import com.hucet.clean.gallery.fixture.DialogRadioItemFixture
 import com.hucet.clean.gallery.fixture.ReadOnlyConfigsFixture
 import com.hucet.clean.gallery.fixture.TestDialogItem
 import com.hucet.clean.gallery.gallery.category.CategoryMode
-import com.hucet.clean.gallery.gallery.sort.ByOrder
-import com.hucet.clean.gallery.gallery.sort.ByOrder.*
-import com.hucet.clean.gallery.gallery.sort.SortOptionType
-import com.hucet.clean.gallery.gallery.sort.SortOptionType.*
+import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.whenever
 import org.amshove.kluent.`should equal`
@@ -24,7 +18,7 @@ import org.jetbrains.spek.subject.SubjectSpek
 /**
  * Created by taesu on 2017-11-17.
  */
-class DialogListItemMapperTest : SubjectSpek<DialogRadioItemMapper>({
+class SortMapperTest : SubjectSpek<DialogRadioItemMapper>({
     given("a sortMapper")
     {
         subject {
@@ -32,7 +26,7 @@ class DialogListItemMapperTest : SubjectSpek<DialogRadioItemMapper>({
         }
         on("directory check item")
         {
-            val sortOptionType = BY_PATH order BY_DESC
+            val sortOptionType = SortOptions(SortOptions.SORT_TYPE.PATH, SortOptions.ORDER_BY.DESC)
             val (sort, order) = DialogRadioItemFixture.getCorrectFromCheckItems(sortOptionType)
             val (checkSort, checkOrder) = getTestDialogItem(subject, sortOptionType)
 
@@ -40,14 +34,14 @@ class DialogListItemMapperTest : SubjectSpek<DialogRadioItemMapper>({
             {
                 checkSort `should equal` sort
             }
-            it("desc sortOption must equal order")
+            it("desc sortOption must equal orderBY")
             {
                 checkOrder `should equal` order
             }
         }
         on("directory check item")
         {
-            val sortOptionType = BY_PATH order BY_ASC
+            val sortOptionType = SortOptions(SortOptions.SORT_TYPE.PATH, SortOptions.ORDER_BY.ASC)
             val (sort, order) = DialogRadioItemFixture.getCorrectFromCheckItems(sortOptionType)
             val (checkSort, checkOrder) = getTestDialogItem(subject, sortOptionType)
 
@@ -55,7 +49,7 @@ class DialogListItemMapperTest : SubjectSpek<DialogRadioItemMapper>({
             {
                 checkSort `should equal` sort
             }
-            it("asc sortOption must equal order")
+            it("asc sortOption must equal orderBY")
             {
                 checkOrder `should equal` order
             }
@@ -63,7 +57,7 @@ class DialogListItemMapperTest : SubjectSpek<DialogRadioItemMapper>({
 
         on("date check item")
         {
-            val sortOptionType = BY_DAILY order BY_DESC
+            val sortOptionType = SortOptions(SortOptions.SORT_TYPE.DAILY, SortOptions.ORDER_BY.DESC)
             val (sort, order) = DialogRadioItemFixture.getCorrectFromCheckItems(sortOptionType)
             val (checkSort, checkOrder) = getTestDialogItem(subject, sortOptionType)
 
@@ -71,14 +65,14 @@ class DialogListItemMapperTest : SubjectSpek<DialogRadioItemMapper>({
             {
                 checkSort `should equal` sort
             }
-            it("desc sortOption must equal order")
+            it("desc sortOption must equal orderBY")
             {
                 checkOrder `should equal` order
             }
         }
         on("date check item")
         {
-            val sortOptionType = BY_MONTHLY order BY_ASC
+            val sortOptionType = SortOptions(SortOptions.SORT_TYPE.MONTHLY, SortOptions.ORDER_BY.ASC)
             val (sort, order) = DialogRadioItemFixture.getCorrectFromCheckItems(sortOptionType)
             val (checkSort, checkOrder) = getTestDialogItem(subject, sortOptionType)
 
@@ -86,7 +80,7 @@ class DialogListItemMapperTest : SubjectSpek<DialogRadioItemMapper>({
             {
                 checkSort `should equal` sort
             }
-            it("asc sortOption must equal order")
+            it("asc sortOption must equal orderBY")
             {
                 checkOrder `should equal` order
             }
@@ -95,9 +89,9 @@ class DialogListItemMapperTest : SubjectSpek<DialogRadioItemMapper>({
     }
 })
 
-private fun getTestDialogItem(subject: DialogRadioItemMapper, sortOptionType: SortOptionType): TestDialogItem {
+private fun getTestDialogItem(subject: DialogRadioItemMapper, sortOptionType: SortOptions): TestDialogItem {
 
-    val dialogItems = if (SortOptionType.isDateType(sortOptionType)) {
+    val dialogItems = if (sortOptionType.sort.isDateType()) {
         subject.map(mockContext(), ReadOnlyConfigsFixture.readOnlyConfigs(CategoryMode.DATE,
                 sortOptionType = sortOptionType))
 
@@ -106,8 +100,8 @@ private fun getTestDialogItem(subject: DialogRadioItemMapper, sortOptionType: So
                 sortOptionType = sortOptionType))
 
     }
-    val checkedSortOption = dialogItems[SortOptionType.KEY]?.find { it.isCheck }
-    val checkedOrder = dialogItems[ByOrder.KEY]?.find { it.isCheck }
+    val checkedSortOption = dialogItems[SortOptions.SORT_TYPE.KEY]?.find { it.isCheck }
+    val checkedOrder = dialogItems[SortOptions.ORDER_BY.KEY]?.find { it.isCheck }
     return TestDialogItem(checkedSortOption!!, checkedOrder!!)
 }
 

@@ -5,7 +5,7 @@ import com.hucet.clean.gallery.fixture.MediumFixture
 import com.hucet.clean.gallery.fixture.ReadOnlyConfigsFixture
 import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.category.MediumTransformer
-import com.hucet.clean.gallery.gallery.sort.SortOptionType
+import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
@@ -25,7 +25,7 @@ class GalleryRepositoryTest : SubjectSpek<GalleryRepository>({
 
     val readOnlyConfig = ReadOnlyConfigsFixture.readOnlyConfigs(
             categoryMode = CategoryMode.DATE,
-            sortOptionType = SortOptionType.BY_MODIFIED
+            sortOptionType = SortOptions(SortOptions.SORT_TYPE.DAILY)
     )
 
     given("a galleryRepository")

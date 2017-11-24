@@ -1,6 +1,7 @@
 package com.hucet.clean.gallery.gallery.category
 
-import com.hucet.clean.gallery.gallery.sort.SortOptionType
+import android.content.Context
+import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Date
 import com.hucet.clean.gallery.model.Medium
@@ -11,9 +12,9 @@ import kotlin.collections.ArrayList
 /**
  * Created by taesu on 2017-11-10.
  */
-class DateClassifier : CategoryStrategy<Basic> {
-    override fun classify(sortOptionType: SortOptionType, items: List<Medium>): List<Basic> {
-        val format = SimpleDateFormat(sortOptionType.option)
+open class DateClassifier(private val context: Context) : CategoryStrategy<Basic> {
+    override fun classify(sortOptionType: SortOptions, items: List<Medium>): List<Basic> {
+        val format = getFormat(sortOptionType)
         return items
                 .groupBy {
                     format.format(it.modified)
@@ -28,7 +29,7 @@ class DateClassifier : CategoryStrategy<Basic> {
                 }
     }
 
-    private fun createComparetor(sortOptionType: SortOptionType): Comparator<in String> {
+    private fun createComparetor(sortOptionType: SortOptions): Comparator<in String> {
         return if (sortOptionType.isDesc()) {
             Comparator { o1: String, o2: String ->
                 if (o1 < o2) 1
@@ -42,4 +43,7 @@ class DateClassifier : CategoryStrategy<Basic> {
         }
     }
 
+
+    open fun getFormat(sortOptionType: SortOptions): SimpleDateFormat =
+            SimpleDateFormat(sortOptionType.getDateGroupString(context))
 }

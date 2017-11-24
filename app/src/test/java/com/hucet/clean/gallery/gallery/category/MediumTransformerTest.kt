@@ -1,8 +1,7 @@
 package com.hucet.clean.gallery.gallery.category
 
-import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.fixture.ReadOnlyConfigsFixture
-import com.hucet.clean.gallery.gallery.sort.SortOptionType
+import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.nhaarman.mockito_kotlin.*
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
@@ -24,7 +23,7 @@ class MediumTransformerTest : SubjectSpek<MediumTransformer>({
 
         on("a dateClaasifier call 검증 ")
         {
-            val mock = ReadOnlyConfigsFixture.mockReadOnlyConfigs(CategoryMode.DATE, sortOptionType = SortOptionType.BY_DAILY)
+            val mock = ReadOnlyConfigsFixture.mockReadOnlyConfigs(CategoryMode.DATE, sortOptionType = SortOptions(SortOptions.SORT_TYPE.DAILY, SortOptions.ORDER_BY.DESC))
             subject.transform(listOf(), true, mock)
             it("one calll dateCalssify, never call dirClassify")
             {
@@ -35,7 +34,7 @@ class MediumTransformerTest : SubjectSpek<MediumTransformer>({
         }
         on("a dirClaasifier call 검증 ")
         {
-            val mock = ReadOnlyConfigsFixture.mockReadOnlyConfigs(CategoryMode.DIRECTORY, sortOptionType = SortOptionType.BY_NAME)
+            val mock = ReadOnlyConfigsFixture.mockReadOnlyConfigs(CategoryMode.DIRECTORY, sortOptionType = SortOptions(SortOptions.SORT_TYPE.NAME, SortOptions.ORDER_BY.DESC))
             subject.transform(listOf(), true, mock)
 
             it("one calll dirClassify, never call dateClassify")
@@ -46,7 +45,7 @@ class MediumTransformerTest : SubjectSpek<MediumTransformer>({
         }
         on("a medium call 검증")
         {
-            val mock = ReadOnlyConfigsFixture.mockReadOnlyConfigs(CategoryMode.DIRECTORY, sortOptionType = SortOptionType.BY_NAME)
+            val mock = ReadOnlyConfigsFixture.mockReadOnlyConfigs(CategoryMode.DIRECTORY, sortOptionType = SortOptions(SortOptions.SORT_TYPE.NAME, SortOptions.ORDER_BY.DESC))
             subject.transform(listOf(), false, mock)
             it("never calll dirClassify, never call dateClassify")
             {
