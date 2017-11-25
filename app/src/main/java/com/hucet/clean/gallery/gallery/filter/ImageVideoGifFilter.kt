@@ -11,8 +11,8 @@ import javax.inject.Inject
  * Created by taesu on 2017-11-13.
  */
 class ImageVideoGifFilter @Inject constructor() : MediaTypeFilter {
-    override fun filterd(medium: Medium, noMedia: Set<String>, readOnlyConfigs: ReadOnlyConfigs): Boolean {
-        val filterBit = readOnlyConfigs.getFilterBit()
+
+    fun filterd(medium: Medium, filterBit: Long): Boolean {
         val isImage = MediaTypeHelper.isImage(medium.name) && filterBit and IMAGES > 0
         if (isImage) return MediaTypeFilter.NOT_FILTERED
         val isVideo = MediaTypeHelper.isVideo(medium.name) && filterBit and VIDEOS > 0
@@ -21,4 +21,5 @@ class ImageVideoGifFilter @Inject constructor() : MediaTypeFilter {
         if (isGif) return MediaTypeFilter.NOT_FILTERED
         return MediaTypeFilter.FILTERED
     }
+
 }

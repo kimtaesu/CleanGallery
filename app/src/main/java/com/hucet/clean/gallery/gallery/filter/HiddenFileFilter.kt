@@ -9,13 +9,13 @@ import javax.inject.Inject
  * Created by taesu on 2017-11-13.
  */
 class HiddenFileFilter @Inject constructor() : MediaTypeFilter {
-    override fun filterd(medium: Medium, noMedia: Set<String>, readOnlyConfigs: ReadOnlyConfigs): Boolean {
+    fun filterd(medium: Medium, noMedia: Set<String>, showHidden: Boolean): Boolean {
         val isHiddenFile = isHidden(medium, noMedia)
 
         if (!isHiddenFile)
             return MediaTypeFilter.NOT_FILTERED
 
-        if (readOnlyConfigs.showHidden && isHiddenFile)
+        if (showHidden && isHiddenFile)
             return MediaTypeFilter.NOT_FILTERED
 
         return MediaTypeFilter.FILTERED

@@ -3,7 +3,7 @@ package com.hucet.clean.gallery.datasource.local
 import android.content.Context
 import com.hucet.clean.gallery.fixture.MediumFixture
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter
-import com.hucet.clean.gallery.gallery.filter.OrderedFilterContext
+import com.hucet.clean.gallery.gallery.filter.OrchestraFilter
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
@@ -63,8 +63,8 @@ class MediaFetcherWithFilterTest : SubjectSpek<MediaFetcher>({
 })
 
 
-fun mockOrderedFilterContext(vararg isFilters: Boolean): OrderedFilterContext {
-    val orderFilter = mock<OrderedFilterContext>()
+fun mockOrderedFilterContext(vararg isFilters: Boolean): OrchestraFilter {
+    val orderFilter = mock<OrchestraFilter>()
     val mocks = mockFilters(isFilters)
     whenever(orderFilter.iterator()).thenReturn(mocks)
     return orderFilter

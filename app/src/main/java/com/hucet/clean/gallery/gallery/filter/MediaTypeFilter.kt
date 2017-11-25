@@ -11,6 +11,4 @@ interface MediaTypeFilter {
         val FILTERED = true
         val NOT_FILTERED = false
     }
-
-    fun filterd(medium: Medium, noMedia: Set<String>, readOnlyConfigs: ReadOnlyConfigs): Boolean
 }
