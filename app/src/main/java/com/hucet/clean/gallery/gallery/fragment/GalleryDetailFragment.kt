@@ -26,9 +26,6 @@ class GalleryDetailFragment : Fragment(), Injectable {
         arguments?.getSerializable(BUNDLE_KEY_MEDIUM) as Medium
     }
 
-    val transitionName by lazy {
-        arguments?.getSerializable(EXTRA_TRANSITION_NAME) as String
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +43,6 @@ class GalleryDetailFragment : Fragment(), Injectable {
 
 
     private fun updateView(medium: Medium) {
-        content.transitionName = transitionName
         Glide.with(this)
                 .load(medium.path)
                 .into(content)

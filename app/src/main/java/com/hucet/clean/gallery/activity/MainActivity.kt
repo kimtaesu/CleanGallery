@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AlertDialog
@@ -26,8 +27,6 @@ import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.fragment.GalleryDetailFragment
 import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
-import com.hucet.clean.gallery.gallery.sort.SortOptions
-import com.hucet.clean.gallery.model.Date
 import com.hucet.clean.gallery.model.MediaType
 import com.hucet.clean.gallery.model.Medium
 import com.hucet.clean.gallery.preference.SettingActivity
@@ -233,15 +232,19 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         if (medium.mediaType == MediaType.VIDEO) {
             startVideoPlayer(medium)
         } else {
-            val transitionName = ViewCompat.getTransitionName(imageView)
-            supportFragmentManager.beginTransaction()
-                    .addSharedElement(imageView, transitionName)
-                    .replace(R.id.content, GalleryDetailFragment.newInstance(medium, transitionName), GalleryDetailFragment.TAG)
-                    .addToBackStack(null)
-                    .commit()
+            startDetailActivity(imageView, medium)
         }
     }
 
+
+    private fun startDetailActivity(shareElement: ImageView?, medium: Medium) {
+        val transitionName = ViewCompat.getTransitionName(shareElement)
+        val intent = Intent(this, GalleryDetailActivity::class.java).also {
+            it.putExtra(GalleryDetailActivity.BUNDLE_KEY_MEDIUM, medium)
+        }
+        val option = ActivityOptionsCompat.makeSceneTransitionAnimation(this, shareElement!!, getString(R.string.transition_imageview))
+        startActivity(intent, option.toBundle())
+    }
 
     private fun startVideoPlayer(medium: Medium) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(medium.path))

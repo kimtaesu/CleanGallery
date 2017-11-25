@@ -37,4 +37,6 @@
     <string name="format_group_daily">yyyy-MM-dd</string>
     <string name="format_group_monthly">yyyy-MM</string>
     <string name="format_group_yearly">yyyy</string>
+
+    <string name="transition_imageview">imageview transition</string>
 </resources>
