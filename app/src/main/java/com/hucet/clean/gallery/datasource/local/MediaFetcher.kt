@@ -3,6 +3,7 @@ package com.hucet.clean.gallery.datasource.local
 import android.content.Context
 import android.database.Cursor
 import android.provider.MediaStore
+import android.webkit.MimeTypeMap
 import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.extension.getFilenameFromPath
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter.Companion.FILTERED
@@ -37,7 +38,7 @@ class MediaFetcher constructor(private val context: Context,
                         val dateTaken = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN))
                         val dateModified = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED))
                         val orientation = cur.getInt(cur.getColumnIndexOrThrow(MediaStore.Images.Media.ORIENTATION))
-                        val mimeType = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Images.Media.MIME_TYPE))
+                        val mimeType = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Images.Media.MIME_TYPE)) ?: MimeTypeMap.getFileExtensionFromUrl(filename)
                         val medium = Medium(id, filename, path, dateModified, dateTaken, size, orientation, mimeType, MediaTypeHelper.mediaType(filename))
 
                         if (orchestraFilter.filterd(medium, noMediaFolders, readOnlyConfigs) == FILTERED)
@@ -62,7 +63,10 @@ class MediaFetcher constructor(private val context: Context,
                 MediaStore.Images.Media.DATE_TAKEN,
                 MediaStore.Images.Media.DATE_MODIFIED,
                 MediaStore.Images.Media.DATA,
-                MediaStore.Images.Media.SIZE)
+                MediaStore.Images.Media.SIZE,
+                MediaStore.Images.Media.ORIENTATION,
+                MediaStore.Images.Media.MIME_TYPE
+        )
 
         fun query(context: Context, curPath: String, sortOption: String): Cursor {
             val uri = MediaStore.Files.getContentUri("external")
