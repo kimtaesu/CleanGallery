@@ -23,7 +23,6 @@ class GalleryPresenter constructor(private val view: Gallery.View,
         repository
                 .getGalleries(readOnlyConfigs, curPath, isRoot, cacheInvalidate)
                 .map {
-                    println("calculateDiff")
                     Timber.d("calculateDiff")
                     activity.getCurrentAdapter()?.calculateDiff(it)!!
                 }

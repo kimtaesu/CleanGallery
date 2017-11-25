@@ -2,10 +2,15 @@ package com.hucet.clean.gallery.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.text.TextUtils
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.model.Medium
 import kotlinx.android.synthetic.main.activity_detail.*
+import kotlinx.android.synthetic.main.layout_toolbar.*
 
 /**
  * Created by taesu on 2017-11-25.
@@ -20,24 +25,64 @@ class GalleryDetailActivity : AppCompatActivity() {
         intent.getSerializableExtra(BUNDLE_KEY_MEDIUM) as Medium
     }
 
-    val transitionName by lazy {
-        intent.getStringExtra(EXTRA_TRANSITION_NAME) as String
-    }
+//    val transitionName by lazy {
+//        intent.getStringExtra(EXTRA_TRANSITION_NAME) as String
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
+        initToolbar()
         //Postpone the enter transition until image is loaded in this activity
-        supportPostponeEnterTransition()
+//        supportPostponeEnterTransition()
 
-        imageview_content.transitionName = transitionName
+//        imageview_content.transitionName = transitionName
         updateView()
     }
 
+
+    private fun initToolbar() {
+        setSupportActionBar(toolbar)
+        supportActionBar?.apply {
+            setBackgroundDrawable(getDrawable(R.drawable.shape_linear_gradient))
+            title = medium.name
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_arrow_back)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_detail, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            android.R.id.home -> {
+                finish()
+            }
+//            R.id.action_info -> {
+//
+//            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun updateView() {
-        println("!!!!!!!!!!! ${medium.path}")
         Glide.with(this)
                 .load(medium.path)
+//                .listener(object : RequestListener<Drawable> {
+//                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+//                        supportStartPostponedEnterTransition()
+//                        return true
+//                    }
+//
+//                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+//                        supportStartPostponedEnterTransition()
+//                        return true
+//                    }
+//
+//                })
                 .into(imageview_content)
     }
 }

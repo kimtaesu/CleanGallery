@@ -10,6 +10,7 @@ import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.gallery.mapper.DialogRadioItemMapper
 import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.hucet.clean.gallery.model.DialogRadioItem
+import com.hucet.clean.gallery.model.Medium
 
 
 /**

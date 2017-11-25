@@ -44,6 +44,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.layout_toolbar.*
 import permissions.dispatcher.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -340,14 +341,15 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
 
 
     private fun startDetailActivity(shareElement: ImageView, medium: Medium) {
-        val transitionName = ViewCompat.getTransitionName(shareElement)
+//        val transitionName = ViewCompat.getTransitionName(shareElement)
         val intent = Intent(this, GalleryDetailActivity::class.java).also {
             it.putExtra(GalleryDetailActivity.BUNDLE_KEY_MEDIUM, medium)
-            it.putExtra(GalleryDetailActivity.EXTRA_TRANSITION_NAME, transitionName)
+//            it.putExtra(GalleryDetailActivity.EXTRA_TRANSITION_NAME, transitionName)
         }
 
-        val option = ActivityOptionsCompat.makeSceneTransitionAnimation(this, shareElement, transitionName)
-        startActivity(intent, option.toBundle())
+//        val option = ActivityOptionsCompat.makeSceneTransitionAnimation(this, shareElement, transitionName)
+//        startActivity(intent, option.toBundle())
+        startActivity(intent)
     }
 
     private fun startVideoPlayer(medium: Medium) {

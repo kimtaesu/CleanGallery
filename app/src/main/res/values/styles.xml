@@ -8,7 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.Base" parent="AppTheme"/>
+    <style name="AppTheme.Transparent" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@android:color/transparent</item>
+    </style>
 
     <style name="SettingTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Used to theme preference list and items. -->

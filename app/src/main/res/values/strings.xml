@@ -10,6 +10,9 @@
     <string name="menu_view_mode">View mode</string>
     <string name="menu_category_mode">Category mode</string>
 
+    <string name="menu_info">Info</string>
+
+
     <string name="sort_option_descending">Descending</string>
     <string name="sort_option_ascending">Ascending</string>
 
