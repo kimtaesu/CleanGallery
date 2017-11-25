@@ -6,8 +6,10 @@ import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.hucet.clean.gallery.R
+import com.hucet.clean.gallery.extension.toastTodo
 import com.hucet.clean.gallery.model.Medium
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.layout_toolbar.*
@@ -61,9 +63,13 @@ class GalleryDetailActivity : AppCompatActivity() {
             android.R.id.home -> {
                 finish()
             }
-//            R.id.action_info -> {
-//
-//            }
+            R.id.action_info -> {
+                toastTodo(this)
+            }
+            R.id.action_share -> {
+                toastTodo(this)
+            }
+
         }
         return super.onOptionsItemSelected(item)
     }
