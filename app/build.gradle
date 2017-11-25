@@ -14,8 +14,19 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
+
+    signingConfigs {
+        release {
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -73,6 +84,7 @@ dependencies {
     kapt opensourceDeps.glideCompiler
     implementation opensourceDeps.glide
 
+    implementation firebaseDeps.crash
 
     testImplementation testDeps.junit
     testImplementation testDeps.mock
@@ -113,3 +125,4 @@ task copyKotlinDebugClasses(type: Copy) {
 repositories {
     mavenCentral()
 }
+apply plugin: 'com.google.gms.google-services'
