@@ -2,14 +2,16 @@ package com.hucet.clean.gallery
 
 import android.app.Activity
 import android.app.Application
+import android.content.Context
 import android.os.StrictMode
-import com.facebook.stetho.Stetho
+import com.hucet.clean.gallery.debug.CrashReportingTree
 import com.hucet.clean.gallery.debug.OptionalTree
 import com.hucet.clean.gallery.inject.AppInjector
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import timber.log.Timber
+import java.lang.reflect.InvocationTargetException
 import javax.inject.Inject
 
 
@@ -29,7 +31,19 @@ class GalleryApplication : Application(), HasActivityInjector {
 
     private fun initStetho() {
         if (BuildConfig.DEBUG) {
-            Stetho.initializeWithDefaults(this)
+            try {
+                val stethoClazz = Class.forName("com.facebook.stetho.Stetho")
+                val method = stethoClazz.getMethod("initializeWithDefaults", Context::class.java)
+                method.invoke(null, this)
+            } catch (e: ClassNotFoundException) {
+                e.printStackTrace()
+            } catch (e: NoSuchMethodException) {
+                e.printStackTrace()
+            } catch (e: IllegalAccessException) {
+                e.printStackTrace()
+            } catch (e: InvocationTargetException) {
+                e.printStackTrace()
+            }
         }
     }
 
@@ -53,6 +67,8 @@ class GalleryApplication : Application(), HasActivityInjector {
     private fun initTimber() {
         if (BuildConfig.DEBUG) {
             Timber.plant(OptionalTree(threadName = true))
+        } else {
+            Timber.plant(CrashReportingTree())
         }
     }
 
