@@ -21,9 +21,9 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
-        android:id="@+id/content"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/gallery_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"></FrameLayout>
+        android:layout_margin="2dp"></android.support.v7.widget.RecyclerView>
 </android.support.design.widget.CoordinatorLayout>

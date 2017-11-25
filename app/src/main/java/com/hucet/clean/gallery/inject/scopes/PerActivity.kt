@@ -1,4 +1,4 @@
-package org.buffer.android.boilerplate.ui.injection.scopes
+package com.hucet.clean.gallery.inject.scopes
 
 import javax.inject.Scope
 

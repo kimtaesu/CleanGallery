@@ -5,7 +5,7 @@ import com.hucet.clean.gallery.OnGalleryClickedListener
 import com.hucet.clean.gallery.gallery.adapter.grid.GridAdapter
 import com.hucet.clean.gallery.gallery.adapter.linear.LinearAdapter
 import com.hucet.clean.gallery.gallery.fragment.glide.GlideRequests
-import com.hucet.clean.gallery.inject.scopes.PerFragment
+import com.hucet.clean.gallery.inject.scopes.PerActivity
 import com.hucet.clean.gallery.model.Basic
 import javax.inject.Inject
 
@@ -16,7 +16,7 @@ interface ViewModeSwichable {
     fun switchViewMode(recy: RecyclerView, manager: RecyclerView.LayoutManager, glideRequests: GlideRequests, items: List<Basic>, clickedListener: OnGalleryClickedListener)
 }
 
-@PerFragment
+@PerActivity
 class GridViewModeSetUp @Inject constructor() : ViewModeSwichable {
     @Inject lateinit var gridAdapter: GridAdapter
     override fun switchViewMode(recy: RecyclerView, manager: RecyclerView.LayoutManager, glideRequests: GlideRequests, items: List<Basic>, clickedListener: OnGalleryClickedListener) {
@@ -34,7 +34,7 @@ class GridViewModeSetUp @Inject constructor() : ViewModeSwichable {
     }
 }
 
-@PerFragment
+@PerActivity
 class LinearViewModeSetUp @Inject constructor() : ViewModeSwichable {
     @Inject lateinit var linearAdapter: LinearAdapter
     override fun switchViewMode(recy: RecyclerView, manager: RecyclerView.LayoutManager, glideRequests: GlideRequests, items: List<Basic>, clickedListener: OnGalleryClickedListener) {

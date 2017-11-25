@@ -4,7 +4,7 @@ import android.content.Context
 import com.hucet.clean.gallery.gallery.category.DateClassifier
 import com.hucet.clean.gallery.gallery.category.DirClassifier
 import com.hucet.clean.gallery.gallery.category.MediumTransformer
-import com.hucet.clean.gallery.inject.scopes.PerFragment
+import com.hucet.clean.gallery.inject.scopes.PerActivity
 import dagger.Module
 import dagger.Provides
 
@@ -14,20 +14,20 @@ import dagger.Provides
 @Module
 class ClassifierModule {
     @Provides
-    @PerFragment
+    @PerActivity
     fun provideDateClassifier(context: Context): DateClassifier {
         return DateClassifier(context)
     }
 
 
     @Provides
-    @PerFragment
+    @PerActivity
     fun provideDirClassifier(): DirClassifier {
         return DirClassifier()
     }
 
     @Provides
-    @PerFragment
+    @PerActivity
     fun provideMediumTransformer(date: DateClassifier, dir: DirClassifier): MediumTransformer {
         return MediumTransformer(date, dir)
     }

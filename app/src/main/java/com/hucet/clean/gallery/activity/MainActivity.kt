@@ -11,10 +11,13 @@ import android.support.v4.app.Fragment
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.Toast
+import com.hucet.clean.gallery.OnGalleryClickedListener
 import com.hucet.clean.gallery.OnViewModechangedListener
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.activity.cache.MemoryCacheDrawable
@@ -22,14 +25,21 @@ import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.extension.createFilterDialog
 import com.hucet.clean.gallery.extension.createSortDialog
+import com.hucet.clean.gallery.extension.isExternalStorageDir
 import com.hucet.clean.gallery.extension.startAsAnimation
+import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
+import com.hucet.clean.gallery.gallery.adapter.GalleryType
 import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.fragment.GalleryDetailFragment
-import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
+import com.hucet.clean.gallery.gallery.fragment.glide.GlideApp
+import com.hucet.clean.gallery.gallery.fragment.switchable.ViewModeSwichable
+import com.hucet.clean.gallery.model.Basic
+import com.hucet.clean.gallery.model.Directory
 import com.hucet.clean.gallery.model.MediaType
 import com.hucet.clean.gallery.model.Medium
 import com.hucet.clean.gallery.preference.SettingActivity
+import com.hucet.clean.gallery.presenter.Gallery
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -40,17 +50,20 @@ import javax.inject.Inject
 
 
 @RuntimePermissions
-class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
+class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.View {
     @Inject
     lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
-    @Inject lateinit var config: ApplicationConfig
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
         return fragmentDispatchingAndroidInjector
     }
 
+    @Inject lateinit var presenter: Gallery.Presenter
+    @Inject lateinit var mapViewModeSetUp: Map<ViewModeType, @JvmSuppressWildcards ViewModeSwichable>
+    @Inject lateinit var config: ApplicationConfig
+
+
     private var onViewModechangedListener: OnViewModechangedListener? = null
-    private val galleryFragment: ListGalleryFragment = ListGalleryFragment.newInstance()
 
     lateinit var readOnlyConfigs: ReadOnlyConfigs
     private var viewModeItem: MenuItem? = null
@@ -60,6 +73,91 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         readOnlyConfigs = config.ReadOnlyConfigBuild { }
         showGallaeryWithPermissionCheck()
         initToolbar()
+        lifecycle.addObserver(presenter)
+        initRecyclerView()
+        requestFetch()
+
+    }
+
+    private fun setUpLayoutManager(type: ViewModeType) {
+        val items = ArrayList<Basic>()
+        items.addAll(getItems())
+        when (type) {
+            ViewModeType.GRID -> {
+                val gridLayoutManager = GridLayoutManager(this, 2)
+                gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return if (getCurrentAdapter()?.getItemViewType(position) == GalleryType.DATE.value)
+                            gridLayoutManager.spanCount
+                        else
+                            1
+                    }
+                }
+
+                mapViewModeSetUp[type]?.switchViewMode(gallery_list,
+                        gridLayoutManager,
+                        GlideApp.with(this),
+                        items,
+                        onGalleryClicked
+                )
+            }
+            ViewModeType.LINEAR -> {
+                mapViewModeSetUp[type]?.switchViewMode(gallery_list,
+                        LinearLayoutManager(this),
+                        GlideApp.with(this),
+                        items,
+                        onGalleryClicked)
+            }
+        }
+    }
+
+    fun getCurrentAdapter(): GalleryAdapter? = gallery_list.adapter as? GalleryAdapter
+
+    private fun getItems(): List<Basic> {
+        val adapter = getCurrentAdapter()
+        adapter ?: return emptyList()
+        return adapter.Items
+    }
+
+    override fun showProgress() {
+//        Toast.makeText(context, "showProgress", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun hideProgress() {
+//        Toast.makeText(context, "hideProgress", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showError() {
+//        Toast.makeText(context, "showError", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun initRecyclerView() {
+        setUpLayoutManager(readOnlyConfigs.getViewModeType())
+        gallery_list.apply {
+            setRecyclerListener({ viewHolder ->
+                val thumbnailView = viewHolder.itemView.findViewById<ImageView>(R.id.thumbnail)
+                if (thumbnailView != null)
+                    GlideApp.with(this).clear(thumbnailView)
+            })
+        }
+    }
+
+    private fun requestFetch() {
+        presenter.fetchItems(config.curPath, config.isRoot(), readOnlyConfigs, false)
+    }
+
+    fun onCategoryModeChanged(readOnlyConfigs: ReadOnlyConfigs) {
+        getCurrentAdapter()?.syncClearItems()
+        setUpLayoutManager(readOnlyConfigs.getViewModeType())
+        requestFetch()
+    }
+
+    fun onFilterChanged(readOnlyConfigs: ReadOnlyConfigs) {
+        requestFetch()
+    }
+
+    fun onSortChanged(readOnlyConfigs: ReadOnlyConfigs) {
+        requestFetch()
     }
 
     override fun onDestroy() {
@@ -119,34 +217,30 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 //            true
 //        }
         R.id.action_category_mode -> {
-            if (isFragmentShown(galleryFragment)) {
-                val categoryMode = readOnlyConfigs.getCategoryMode().toggle()
+            val categoryMode = readOnlyConfigs.getCategoryMode().toggle()
 
-                readOnlyConfigs = config.ReadOnlyConfigBuild {
-                    categoryMode(categoryMode)
-                    if (isGridRestriction(categoryMode))
-                        viewMode(ViewModeType.GRID)
-                }
-                updateViewMode(viewModeItem, readOnlyConfigs.getViewModeType(), readOnlyConfigs.getCategoryMode())
-
-                if (isGridRestriction(categoryMode)) {
-                    config.curPath = Environment.getExternalStorageDirectory().path
-                    refreshSortType()
-                }
-                galleryFragment.onCategoryModeChanged(readOnlyConfigs)
-                updateCategory(item, categoryMode)
+            readOnlyConfigs = config.ReadOnlyConfigBuild {
+                categoryMode(categoryMode)
+                if (isGridRestriction(categoryMode))
+                    viewMode(ViewModeType.GRID)
             }
+            updateViewMode(viewModeItem, readOnlyConfigs.getViewModeType(), readOnlyConfigs.getCategoryMode())
+
+            if (isGridRestriction(categoryMode)) {
+                config.curPath = Environment.getExternalStorageDirectory().path
+                refreshSortType()
+            }
+            onCategoryModeChanged(readOnlyConfigs)
+            updateCategory(item, categoryMode)
             true
         }
         R.id.action_view_mode -> {
-            if (isFragmentShown(galleryFragment)) {
-                val viewMode = readOnlyConfigs.getViewModeType().toggle()
-                readOnlyConfigs = config.ReadOnlyConfigBuild {
-                    viewMode(viewMode)
-                }
-                onViewModechangedListener?.invoke(readOnlyConfigs.getViewModeType())
-                updateViewMode(item, viewMode, readOnlyConfigs.getCategoryMode())
+            val viewMode = readOnlyConfigs.getViewModeType().toggle()
+            readOnlyConfigs = config.ReadOnlyConfigBuild {
+                viewMode(viewMode)
             }
+            onViewModechangedListener?.invoke(readOnlyConfigs.getViewModeType())
+            updateViewMode(item, viewMode, readOnlyConfigs.getCategoryMode())
             true
         }
         R.id.action_sort -> {
@@ -154,7 +248,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 readOnlyConfigs = config.ReadOnlyConfigBuild {
                     sortType(it)
                 }
-                galleryFragment.onSortChanged(readOnlyConfigs)
+                onSortChanged(readOnlyConfigs)
             }).show()
             true
         }
@@ -163,7 +257,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 readOnlyConfigs = config.ReadOnlyConfigBuild {
                     filterType(it)
                 }
-                galleryFragment.onFilterChanged(readOnlyConfigs)
+                onFilterChanged(readOnlyConfigs)
             }).show()
             true
         }
@@ -203,9 +297,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
     fun showGallaery() {
-        supportFragmentManager.beginTransaction()
-                .add(R.id.content, galleryFragment)
-                .commit()
+        requestFetch()
     }
 
     @OnShowRationale(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -227,22 +319,34 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         Toast.makeText(this, R.string.permission_access_storage_never_ask_again, Toast.LENGTH_SHORT).show()
     }
 
-    val onGalleryClicked: (Medium, ImageView?) -> Unit = { medium: Medium, imageView: ImageView? ->
-        Timber.d("onGalleryClicked ${medium}")
-        if (medium.mediaType == MediaType.VIDEO) {
-            startVideoPlayer(medium)
-        } else {
-            startDetailActivity(imageView, medium)
+    val onGalleryClicked: OnGalleryClickedListener = { basic: Basic, imageView: ImageView ->
+        Timber.d("onGalleryClicked ${basic}")
+        when (basic) {
+            is Medium -> {
+                if (basic.mediaType == MediaType.VIDEO) {
+                    startVideoPlayer(basic)
+                } else {
+                    startDetailActivity(imageView, basic)
+                }
+                ViewCompat.setTransitionName(imageView, basic.name)
+            }
+            is Directory -> {
+                config.curPath = basic.path
+                refreshSortType()
+                requestFetch()
+            }
         }
     }
 
 
-    private fun startDetailActivity(shareElement: ImageView?, medium: Medium) {
+    private fun startDetailActivity(shareElement: ImageView, medium: Medium) {
         val transitionName = ViewCompat.getTransitionName(shareElement)
         val intent = Intent(this, GalleryDetailActivity::class.java).also {
             it.putExtra(GalleryDetailActivity.BUNDLE_KEY_MEDIUM, medium)
+            it.putExtra(GalleryDetailActivity.EXTRA_TRANSITION_NAME, transitionName)
         }
-        val option = ActivityOptionsCompat.makeSceneTransitionAnimation(this, shareElement!!, getString(R.string.transition_imageview))
+
+        val option = ActivityOptionsCompat.makeSceneTransitionAnimation(this, shareElement, transitionName)
         startActivity(intent, option.toBundle())
     }
 
@@ -253,13 +357,23 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     }
 
+    private fun canBack(): Boolean {
+        if (!config.curPath.isExternalStorageDir()) {
+            config.curPath = Environment.getExternalStorageDirectory().absolutePath
+            refreshSortType()
+            requestFetch()
+            return false
+        }
+        return true
+    }
+
     override fun onBackPressed() {
         if (GalleryDetailFragment.isVisible(supportFragmentManager)) {
             supportFragmentManager.popBackStackImmediate()
             return
         }
 
-        if (!galleryFragment.onBackPressed())
+        if (!canBack())
             return
 
         super.onBackPressed()

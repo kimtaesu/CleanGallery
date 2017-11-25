@@ -9,7 +9,7 @@ import com.hucet.clean.gallery.gallery.adapter.grid.DirectoryGridDelegateAdapter
 import com.hucet.clean.gallery.gallery.adapter.grid.MediumGridDelegateAdapter
 import com.hucet.clean.gallery.gallery.adapter.linear.DirectoryLinearDelegateAdapter
 import com.hucet.clean.gallery.gallery.adapter.linear.MediumLinearDelegateAdapter
-import com.hucet.clean.gallery.inject.scopes.PerFragment
+import com.hucet.clean.gallery.inject.scopes.PerActivity
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -24,7 +24,7 @@ import javax.inject.Named
 abstract class AdapterDelegationModule {
     @Binds
     @IntoMap
-    @PerFragment
+    @PerActivity
     @GalleryEnumKey(GalleryType.DIRECTORY)
     @Named(DAGGER_NAMED_LINEAR)
     abstract fun bindDirectoryLinearViewHolderCreator(conCreate: DirectoryLinearDelegateAdapter)
@@ -33,7 +33,7 @@ abstract class AdapterDelegationModule {
 
     @Binds
     @IntoMap
-    @PerFragment
+    @PerActivity
     @GalleryEnumKey(GalleryType.MEDIUM)
     @Named(DAGGER_NAMED_LINEAR)
     abstract fun bindMediumLinearViewHolderCreator(conCreate: MediumLinearDelegateAdapter)
@@ -42,7 +42,7 @@ abstract class AdapterDelegationModule {
 
     @Binds
     @IntoMap
-    @PerFragment
+    @PerActivity
     @GalleryEnumKey(GalleryType.DIRECTORY)
     @Named(DAGGER_NAMED_GRID)
     abstract fun bindDirectoryGridViewHolderCreator(conCreate: DirectoryGridDelegateAdapter)
@@ -51,7 +51,7 @@ abstract class AdapterDelegationModule {
 
     @Binds
     @IntoMap
-    @PerFragment
+    @PerActivity
     @GalleryEnumKey(GalleryType.DATE)
     @Named(DAGGER_NAMED_GRID)
     abstract fun bindDateDelegateAdapter(conCreate: DateGridDelegateAdapter)
@@ -60,7 +60,7 @@ abstract class AdapterDelegationModule {
 
     @Binds
     @IntoMap
-    @PerFragment
+    @PerActivity
     @GalleryEnumKey(GalleryType.MEDIUM)
     @Named(DAGGER_NAMED_GRID)
     abstract fun bindMediumGridViewHolderCreator(conCreate: MediumGridDelegateAdapter)

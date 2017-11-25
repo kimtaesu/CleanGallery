@@ -4,7 +4,7 @@ import com.hucet.clean.gallery.gallery.fragment.ViewModeType
 import com.hucet.clean.gallery.gallery.fragment.switchable.GridViewModeSetUp
 import com.hucet.clean.gallery.gallery.fragment.switchable.LinearViewModeSetUp
 import com.hucet.clean.gallery.gallery.fragment.switchable.ViewModeSwichable
-import com.hucet.clean.gallery.inject.scopes.PerFragment
+import com.hucet.clean.gallery.inject.scopes.PerActivity
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -18,7 +18,7 @@ import java.lang.annotation.Documented
 abstract class ViewModeSetUpModule {
     @Binds
     @IntoMap
-    @PerFragment
+    @PerActivity
     @ViewModeEnumKey(ViewModeType.GRID)
     abstract fun bindGridViewModeSetUp(conCreate: GridViewModeSetUp)
             : ViewModeSwichable
@@ -26,7 +26,7 @@ abstract class ViewModeSetUpModule {
 
     @Binds
     @IntoMap
-    @PerFragment
+    @PerActivity
     @ViewModeEnumKey(ViewModeType.LINEAR)
     abstract fun bindLinearViewModeSetUp(conCreate: LinearViewModeSetUp)
             : ViewModeSwichable

@@ -1,16 +1,11 @@
 package com.hucet.clean.gallery.inject.modules
 
-import android.content.Context
-import com.hucet.clean.gallery.config.ApplicationConfig
-import com.hucet.clean.gallery.datasource.local.LocalDataSource
-import com.hucet.clean.gallery.datasource.local.MediaFetcher
 import com.hucet.clean.gallery.gallery.filter.HiddenFileFilter
 import com.hucet.clean.gallery.gallery.filter.ImageVideoGifFilter
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter
-import com.hucet.clean.gallery.inject.scopes.PerFragment
+import com.hucet.clean.gallery.inject.scopes.PerActivity
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.multibindings.IntoSet
 
 /**
@@ -20,11 +15,11 @@ import dagger.multibindings.IntoSet
 abstract class FilterModule {
     @Binds
     @IntoSet
-    @PerFragment
+    @PerActivity
     abstract fun provideHiddenFileFilter(config: HiddenFileFilter): MediaTypeFilter
 
     @Binds
     @IntoSet
-    @PerFragment
+    @PerActivity
     abstract fun provideImageVideoGifFilter(config: ImageVideoGifFilter): MediaTypeFilter
 }

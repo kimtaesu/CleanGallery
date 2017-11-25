@@ -8,6 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.Base" parent="AppTheme"/>
+
     <style name="SettingTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Used to theme preference list and items. -->
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.Material</item>
@@ -21,4 +23,5 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"></style>
 
     <style name="SortDialog" parent="Theme.AppCompat.Dialog"></style>
+
 </resources>

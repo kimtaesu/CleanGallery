@@ -1,12 +1,9 @@
 package com.hucet.clean.gallery.presenter
 
 import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
+import com.hucet.clean.gallery.activity.MainActivity
 import com.hucet.clean.gallery.config.ReadOnlyConfigs
-import com.hucet.clean.gallery.extension.isExternalStorageDir
-import com.hucet.clean.gallery.gallery.category.MediumTransformer
-import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment
 import com.hucet.clean.gallery.repository.GalleryRepository
 import com.hucet.clean.gallery.scheduler.DefaultSchedulerProvider
 import com.hucet.clean.gallery.scheduler.SchedulerProvider
@@ -17,7 +14,7 @@ import timber.log.Timber
  * Created by taesu on 2017-10-31.
  */
 class GalleryPresenter constructor(private val view: Gallery.View,
-                                   private val fragment: ListGalleryFragment,
+                                   private val activity: MainActivity,
                                    private val repository: GalleryRepository,
                                    private val schedulerProvider: SchedulerProvider = DefaultSchedulerProvider()
 ) : Gallery.Presenter {
@@ -28,7 +25,7 @@ class GalleryPresenter constructor(private val view: Gallery.View,
                 .map {
                     println("calculateDiff")
                     Timber.d("calculateDiff")
-                    fragment.getCurrentAdapter()?.calculateDiff(it)!!
+                    activity.getCurrentAdapter()?.calculateDiff(it)!!
                 }
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.main())
@@ -44,7 +41,7 @@ class GalleryPresenter constructor(private val view: Gallery.View,
                 .subscribe(
                         { next ->
                             Timber.d("subscribe ${next}")
-                            fragment.getCurrentAdapter()?.updateByDiff(next)
+                            activity.getCurrentAdapter()?.updateByDiff(next)
                         },
                         { error ->
                             error.printStackTrace()

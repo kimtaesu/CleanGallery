@@ -8,7 +8,7 @@ import com.hucet.clean.gallery.gallery.category.MediumTransformer
 import com.hucet.clean.gallery.gallery.filter.ImageVideoGifFilter
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter
 import com.hucet.clean.gallery.gallery.filter.OrchestraFilter
-import com.hucet.clean.gallery.inject.scopes.PerFragment
+import com.hucet.clean.gallery.inject.scopes.PerActivity
 import com.hucet.clean.gallery.repository.GalleryRepository
 import dagger.Module
 import dagger.Provides
@@ -20,25 +20,25 @@ import dagger.Provides
 @Module
 class RepositoryServiceModule {
     @Provides
-    @PerFragment
+    @PerActivity
     fun provideGalleryRepository(localDataSource: LocalDataSource, transformer: MediumTransformer, imageVideoGifFilter: ImageVideoGifFilter): GalleryRepository {
         return GalleryRepository(localDataSource, transformer, imageVideoGifFilter)
     }
 
     @Provides
-    @PerFragment
+    @PerActivity
     fun provideOrderedFilterContext(filters: Set<@JvmSuppressWildcards MediaTypeFilter>): OrchestraFilter {
         return OrchestraFilter(filters)
     }
 
     @Provides
-    @PerFragment
+    @PerActivity
     fun provideMediaFetcher(context: Context, orchestraFilter: OrchestraFilter): MediaFetcher {
         return MediaFetcher(context, orchestraFilter)
     }
 
     @Provides
-    @PerFragment
+    @PerActivity
     fun provideLocalDataSource(mediaFetcher: MediaFetcher, noMediaFolderProvider: NoMediaFolderProvider): LocalDataSource {
         return LocalDataSource(mediaFetcher, noMediaFolderProvider)
     }

@@ -1,8 +1,7 @@
 package com.hucet.clean.gallery.inject.modules
 
-import com.hucet.clean.gallery.gallery.category.MediumTransformer
-import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment
-import com.hucet.clean.gallery.inject.scopes.PerFragment
+import com.hucet.clean.gallery.activity.MainActivity
+import com.hucet.clean.gallery.inject.scopes.PerActivity
 import com.hucet.clean.gallery.presenter.Gallery
 import com.hucet.clean.gallery.presenter.GalleryPresenter
 import com.hucet.clean.gallery.repository.GalleryRepository
@@ -15,14 +14,14 @@ import dagger.Provides
 @Module
 class GalleryPresenterModule {
     @Provides
-    @PerFragment
-    fun providesGalleryPresenter(view: Gallery.View, fragment: ListGalleryFragment, repository: GalleryRepository): Gallery.Presenter {
-        return GalleryPresenter(view, fragment, repository)
+    @PerActivity
+    fun providesGalleryPresenter(view: Gallery.View, activity: MainActivity, repository: GalleryRepository): Gallery.Presenter {
+        return GalleryPresenter(view, activity, repository)
     }
 
     @Provides
-    @PerFragment
-    fun providesGalleryFragmentView(fragment: ListGalleryFragment): Gallery.View {
-        return fragment
+    @PerActivity
+    fun providesGalleryGalleryView(activity: MainActivity): Gallery.View {
+        return activity
     }
 }

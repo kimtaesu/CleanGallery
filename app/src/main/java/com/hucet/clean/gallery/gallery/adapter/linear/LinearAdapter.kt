@@ -7,7 +7,7 @@ import com.hucet.clean.gallery.gallery.adapter.AbstractDelegateAdapter
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.adapter.GalleryType
 import com.hucet.clean.gallery.gallery.fragment.glide.GlideRequests
-import com.hucet.clean.gallery.inject.scopes.PerFragment
+import com.hucet.clean.gallery.inject.scopes.PerActivity
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -16,7 +16,7 @@ import javax.inject.Named
  */
 
 
-@PerFragment
+@PerActivity
 class LinearAdapter @Inject constructor() : GalleryAdapter() {
 
 
