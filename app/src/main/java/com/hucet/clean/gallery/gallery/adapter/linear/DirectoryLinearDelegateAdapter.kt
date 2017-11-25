@@ -6,9 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.signature.MediaStoreSignature
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.gallery.adapter.AbstractDelegateAdapter
-import com.hucet.clean.gallery.gallery.fragment.glide.GlideRequests
+import com.hucet.clean.gallery.gallery.glide.GlideRequests
 import com.hucet.clean.gallery.inject.scopes.PerActivity
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Directory
@@ -28,7 +29,8 @@ class DirectoryLinearDelegateAdapter @Inject constructor() : AbstractDelegateAda
         if (glideRequests == null) return
         glideRequests
                 .asThumbnail()
-                .load(item.thumbnail)
+                .signature(MediaStoreSignature(item.medium.mimeType, item.medium.modified, item.medium.orientation))
+                .load(item.medium.path)
                 .into(holder.thumbnail)
     }
 

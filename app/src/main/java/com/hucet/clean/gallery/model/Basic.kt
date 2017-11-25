@@ -1,6 +1,5 @@
 package com.hucet.clean.gallery.model
 
-import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.adapter.GalleryType
 
 /**

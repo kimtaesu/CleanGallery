@@ -32,7 +32,7 @@ import com.hucet.clean.gallery.gallery.adapter.GalleryType
 import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.fragment.GalleryDetailFragment
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
-import com.hucet.clean.gallery.gallery.fragment.glide.GlideApp
+import com.hucet.clean.gallery.gallery.glide.GlideApp
 import com.hucet.clean.gallery.gallery.fragment.switchable.ViewModeSwichable
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Directory

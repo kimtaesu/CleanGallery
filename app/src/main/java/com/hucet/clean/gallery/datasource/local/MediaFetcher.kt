@@ -6,7 +6,6 @@ import android.provider.MediaStore
 import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.extension.getFilenameFromPath
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter.Companion.FILTERED
-import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter.Companion.NOT_FILTERED
 import com.hucet.clean.gallery.gallery.filter.MediaTypeHelper
 import com.hucet.clean.gallery.gallery.filter.OrchestraFilter
 import com.hucet.clean.gallery.model.Medium
@@ -37,7 +36,9 @@ class MediaFetcher constructor(private val context: Context,
                         var size = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE))
                         val dateTaken = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN))
                         val dateModified = cur.getLong(cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED))
-                        val medium = Medium(id, filename, path, dateModified, dateTaken, size, MediaTypeHelper.mediaType(filename))
+                        val orientation = cur.getInt(cur.getColumnIndexOrThrow(MediaStore.Images.Media.ORIENTATION))
+                        val mimeType = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Images.Media.MIME_TYPE))
+                        val medium = Medium(id, filename, path, dateModified, dateTaken, size, orientation, mimeType, MediaTypeHelper.mediaType(filename))
 
                         if (orchestraFilter.filterd(medium, noMediaFolders, readOnlyConfigs) == FILTERED)
                             continue

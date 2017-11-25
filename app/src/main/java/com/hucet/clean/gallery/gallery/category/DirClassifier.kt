@@ -21,7 +21,7 @@ class DirClassifier : CategoryStrategy<Directory> {
                     val dirFile = File(it.key)
                     Directory(
                             count = it.value.size,
-                            thumbnail = first.path,
+                            medium = first,
                             path = dirFile.path,
                             name = dirFile.name,
                             id = first.id,

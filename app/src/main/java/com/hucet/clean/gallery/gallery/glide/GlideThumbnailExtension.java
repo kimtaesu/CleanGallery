@@ -1,11 +1,10 @@
-package com.hucet.clean.gallery.gallery.fragment.glide;
+package com.hucet.clean.gallery.gallery.glide;
 
 import android.graphics.drawable.Drawable;
 
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.annotation.GlideExtension;
 import com.bumptech.glide.annotation.GlideType;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.hucet.clean.gallery.config.ConstantsKt;
 

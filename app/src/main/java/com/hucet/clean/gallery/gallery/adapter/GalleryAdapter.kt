@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.hucet.clean.gallery.OnGalleryClickedListener
 import com.hucet.clean.gallery.R
-import com.hucet.clean.gallery.gallery.fragment.glide.GlideRequests
+import com.hucet.clean.gallery.gallery.glide.GlideRequests
 import com.hucet.clean.gallery.model.Basic
 
 /**
