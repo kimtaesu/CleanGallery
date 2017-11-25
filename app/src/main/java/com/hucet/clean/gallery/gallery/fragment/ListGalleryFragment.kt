@@ -67,6 +67,7 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
 
     fun onCategoryModeChanged(readOnlyConfigs: ReadOnlyConfigs) {
         getCurrentAdapter()?.syncClearItems()
+        onViewModeChanged(readOnlyConfigs.getViewModeType())
         requestFetch(readOnlyConfigs)
     }
 
@@ -75,7 +76,6 @@ class ListGalleryFragment : Fragment(), Gallery.View, Injectable {
     }
 
     fun onSortChanged(readOnlyConfigs: ReadOnlyConfigs) {
-        getCurrentAdapter()?.syncClearItems()
         requestFetch(readOnlyConfigs)
     }
 

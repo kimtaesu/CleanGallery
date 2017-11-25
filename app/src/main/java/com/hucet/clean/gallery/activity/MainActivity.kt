@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                     if (isGridRestriction(categoryMode))
                         viewMode(ViewModeType.GRID)
                 }
-                cascadeViewModeUpdate()
+                updateViewMode(viewModeItem, readOnlyConfigs.getViewModeType(), readOnlyConfigs.getCategoryMode())
 
                 if (isGridRestriction(categoryMode)) {
                     config.curPath = Environment.getExternalStorageDirectory().path
@@ -181,11 +181,6 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         if (categoryMode == CategoryMode.DATE)
             return true
         return false
-    }
-
-    private fun cascadeViewModeUpdate() {
-        onViewModechangedListener?.invoke(readOnlyConfigs.getViewModeType())
-        updateViewMode(viewModeItem, readOnlyConfigs.getViewModeType(), readOnlyConfigs.getCategoryMode())
     }
 
 
