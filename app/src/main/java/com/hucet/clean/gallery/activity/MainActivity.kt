@@ -6,7 +6,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
+import android.support.v4.view.ViewCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
@@ -90,8 +92,8 @@ class MainActivity() : AppCompatActivity(), HasSupportFragmentInjector, Gallery.
     fun showRationaleForGallaery(request: PermissionRequest) {
         AlertDialog.Builder(this)
                 .setMessage(R.string.permission_access_storage_rationale)
-                .setPositiveButton(android.R.string.ok, { dialog, button -> request.proceed() })
-                .setNegativeButton(android.R.string.no, { dialog, button -> request.cancel() })
+                .setPositiveButton(android.R.string.ok, { _, _ -> request.proceed() })
+                .setNegativeButton(android.R.string.no, { _, _ -> request.cancel() })
                 .show()
     }
 
@@ -182,7 +184,7 @@ class MainActivity() : AppCompatActivity(), HasSupportFragmentInjector, Gallery.
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item?.itemId) {
+        when (item.itemId) {
             R.id.action_settings -> {
                 toastTodo(this)
             }

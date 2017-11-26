@@ -67,7 +67,7 @@ abstract class AdapterDelegationModule {
             : AbstractDelegateAdapter
 
 
-    @Documented
+    @MustBeDocumented
     @MapKey
     annotation class GalleryEnumKey(val value: GalleryType)
 }

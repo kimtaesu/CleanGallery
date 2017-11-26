@@ -34,7 +34,7 @@ fun AlertDialog.Builder.createSortDialog(categoryMode: CategoryMode, sortOptions
             .title(R.string.dialog_sort_title)
             .customView(v, true)
             .positiveText(android.R.string.ok)
-            .onPositive { dialog, which ->
+            .onPositive { _, _ ->
                 val sortType = SortOptions.getFromSortBit(sortGroup.getCheckedItemIndex(sortItems) or orderGroup.getCheckedItemIndex(orderItems))
                 if (sortOptions.bit() != sortType.bit())
                     callback(sortType)
@@ -43,7 +43,7 @@ fun AlertDialog.Builder.createSortDialog(categoryMode: CategoryMode, sortOptions
 }
 
 private fun addRadioChilden(radioGroup: RadioGroup, radioItems: List<DialogRadioItem>?) {
-    radioItems?.forEachIndexed { index, item ->
+    radioItems?.forEachIndexed { _, item ->
         val radioButton = RadioButton(radioGroup.context)
         radioButton.text = item.title
         radioButton.id = item.index

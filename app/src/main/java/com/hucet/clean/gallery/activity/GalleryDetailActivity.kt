@@ -1,5 +1,6 @@
 package com.hucet.clean.gallery.activity
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
@@ -8,6 +9,9 @@ import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.extension.toastTodo
 import com.hucet.clean.gallery.model.Medium

@@ -34,7 +34,7 @@ abstract class ViewModeSetUpModule {
             : ViewModeSwichable
 
 
-    @Documented
+    @MustBeDocumented
     @MapKey
     annotation class ViewModeEnumKey(val value: ViewModeType)
 }
