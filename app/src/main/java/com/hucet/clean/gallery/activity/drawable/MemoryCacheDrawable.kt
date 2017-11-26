@@ -1,4 +1,4 @@
-package com.hucet.clean.gallery.activity.cache
+package com.hucet.clean.gallery.activity.drawable
 
 import android.content.Context
 import android.graphics.drawable.Animatable

@@ -1,4 +1,4 @@
-package com.hucet.clean.gallery.gallery.fragment.switchable
+package com.hucet.clean.gallery.gallery.view_mode
 
 import android.support.v7.widget.RecyclerView
 import com.hucet.clean.gallery.OnGalleryClickedListener

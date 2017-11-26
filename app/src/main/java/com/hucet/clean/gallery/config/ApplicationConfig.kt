@@ -1,11 +1,9 @@
 package com.hucet.clean.gallery.config
 
 import android.app.Application
-import android.os.Environment
-import com.hucet.clean.gallery.extension.isExternalStorageDir
 import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.directory.DirectoryRootChecker
-import com.hucet.clean.gallery.gallery.fragment.ViewModeType
+import com.hucet.clean.gallery.gallery.view_mode.ViewModeType
 import com.hucet.clean.gallery.gallery.sort.SortOptions
 import javax.inject.Inject
 
@@ -80,6 +78,8 @@ class ApplicationConfig @Inject constructor(
             val name = PreferenceHelper.defaultPrefs(application)[key_category_type, CategoryMode.DIRECTORY.name]
             return CategoryMode.valueOf(name)
         }
+
+    fun isCategoryDate(): Boolean = categoryMode == CategoryMode.DATE
 
     var viewModeType: ViewModeType
         set(value) {

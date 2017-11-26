@@ -1,7 +1,7 @@
 package com.hucet.clean.gallery
 
 import android.widget.ImageView
-import com.hucet.clean.gallery.gallery.fragment.ViewModeType
+import com.hucet.clean.gallery.gallery.view_mode.ViewModeType
 import com.hucet.clean.gallery.model.Basic
 
 /**

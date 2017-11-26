@@ -14,7 +14,7 @@ import com.hucet.clean.gallery.model.Basic
 
 
 abstract class GalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    val Items: ArrayList<Basic> = arrayListOf()
+    val items: ArrayList<Basic> = arrayListOf()
     private var onClick: OnGalleryClickedListener? = null
     private var recyclerView: RecyclerView? = null
     private var glideRequests: GlideRequests? = null
@@ -29,7 +29,7 @@ abstract class GalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
     }
 
     override fun getItemViewType(position: Int): Int {
-        return this.Items[position].viewType.value
+        return this.items[position].viewType.value
     }
 
     abstract fun createDelegateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder?
@@ -39,7 +39,7 @@ abstract class GalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
         viewHoler?.itemView?.setOnClickListener({
             val position = recyclerView?.getChildAdapterPosition(it)
             if (viewHoler != null) {
-                onClick?.invoke(Items[position!!], viewHoler.itemView.findViewById(R.id.thumbnail))
+                onClick?.invoke(items[position!!], viewHoler.itemView.findViewById(R.id.thumbnail))
             }
 
         })
@@ -52,7 +52,7 @@ abstract class GalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
         onBindDelegateViewHolder(holder, position, this.glideRequests)
     }
 
-    override fun getItemCount() = Items.size
+    override fun getItemCount() = items.size
 
     fun syncUpdateData(newItems: List<Basic>) {
         updateByDiff(calculateDiff(newItems))
@@ -63,10 +63,10 @@ abstract class GalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
     }
 
     fun calculateDiff(newItems: List<Basic>): DiffUtil.DiffResult {
-        val diffCallback = MediumDiffCallback(this.Items, newItems)
+        val diffCallback = MediumDiffCallback(this.items, newItems)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
-        this.Items.clear()
-        this.Items.addAll(newItems)
+        this.items.clear()
+        this.items.addAll(newItems)
         return diffResult
     }
 

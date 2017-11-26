@@ -29,7 +29,7 @@ class GridAdapter @Inject constructor() : GalleryAdapter() {
 
 
     override fun onBindDelegateViewHolder(holder: RecyclerView.ViewHolder?, position: Int, glideRequests: GlideRequests?) {
-        val item = Items[position]
+        val item = items[position]
         delegateGridMap[item.viewType]?.onBindViewHolder(holder, position, item, glideRequests)
     }
 

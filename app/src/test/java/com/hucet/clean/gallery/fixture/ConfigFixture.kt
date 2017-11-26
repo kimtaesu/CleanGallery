@@ -5,7 +5,7 @@ import com.hucet.clean.gallery.config.GIFS
 import com.hucet.clean.gallery.config.IMAGES
 import com.hucet.clean.gallery.config.VIDEOS
 import com.hucet.clean.gallery.gallery.category.CategoryMode
-import com.hucet.clean.gallery.gallery.fragment.ViewModeType
+import com.hucet.clean.gallery.gallery.view_mode.ViewModeType
 import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.nhaarman.mockito_kotlin.whenever
 import org.amshove.kluent.mock

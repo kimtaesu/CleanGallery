@@ -1,4 +1,4 @@
-package com.hucet.clean.gallery.gallery.fragment
+package com.hucet.clean.gallery.gallery.view_mode
 
 /**
  * Created by taesu on 2017-11-15.
