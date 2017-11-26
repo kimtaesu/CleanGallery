@@ -1,7 +1,6 @@
 package com.hucet.clean.gallery.gallery.filter
 
 import com.hucet.clean.gallery.fixture.MediumFixture
-import com.hucet.clean.gallery.fixture.ReadOnlyConfigsFixture
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter.Companion.FILTERED
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter.Companion.NOT_FILTERED
 import com.nhaarman.mockito_kotlin.any
@@ -23,12 +22,12 @@ class OrchestraFilterTest : SubjectSpek<OrchestraFilter>({
     given("OrchestraFilter")
     {
         subject {
-            OrchestraFilter(filters)
+            OrchestraFilter(filters, mock())
         }
         on("filter [FILTERED, FILTERED]")
         {
             filters.addAll(mockFilters(FILTERED, FILTERED))
-            val result = subject.filterd(MediumFixture.medium(), emptySet(), ReadOnlyConfigsFixture.readOnlyConfigs())
+            val result = subject.filterd(MediumFixture.medium(), emptySet())
             it("result FILTERED")
             {
                 result `should be` FILTERED
@@ -37,7 +36,7 @@ class OrchestraFilterTest : SubjectSpek<OrchestraFilter>({
         on("filter [NOT_FILTERED, FILTERED]")
         {
             filters.addAll(mockFilters(NOT_FILTERED, FILTERED))
-            val result = subject.filterd(MediumFixture.medium(), emptySet(), ReadOnlyConfigsFixture.readOnlyConfigs())
+            val result = subject.filterd(MediumFixture.medium(), emptySet())
             it("result FILTERED")
             {
                 result `should be` FILTERED
@@ -46,7 +45,7 @@ class OrchestraFilterTest : SubjectSpek<OrchestraFilter>({
         on("filter [NOT_FILTERED, NOT_FILTERED]")
         {
             filters.addAll(mockFilters(NOT_FILTERED, NOT_FILTERED))
-            val result = subject.filterd(MediumFixture.medium(), emptySet(), ReadOnlyConfigsFixture.readOnlyConfigs())
+            val result = subject.filterd(MediumFixture.medium(), emptySet())
             it("result NOT_FILTERED")
             {
                 result `should be` NOT_FILTERED

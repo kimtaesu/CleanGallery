@@ -13,8 +13,8 @@ import kotlin.collections.ArrayList
 /**
  * Created by taesu on 2017-11-10.
  */
-open class DateClassifier(private val context: Context) : CategoryStrategy<Basic> {
-    override fun classify(sortOptionType: SortOptions, items: List<Medium>): List<Basic> {
+open class DateTransformer(private val context: Context) : CategoryStrategy<Basic> {
+    override fun transform(sortOptionType: SortOptions, items: List<Medium>): List<Basic> {
         val format = getFormat(sortOptionType)
         return items
                 .groupBy {

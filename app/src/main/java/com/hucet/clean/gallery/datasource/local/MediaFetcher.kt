@@ -4,7 +4,6 @@ import android.content.Context
 import android.database.Cursor
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
-import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.extension.getFilenameFromPath
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter.Companion.FILTERED
 import com.hucet.clean.gallery.gallery.filter.MediaTypeHelper
@@ -23,7 +22,7 @@ open class MediaFetcher constructor(private val context: Context,
             MediaProvider().query(context, curPath.invoke(), MediaStore.Images.ImageColumns.DATE_MODIFIED + " DESC")
 
 
-    fun parseCursor(cur: Cursor?, noMediaFolders: Set<String>, readOnlyConfigs: ReadOnlyConfigs): List<Medium> {
+    fun parseCursor(cur: Cursor?, noMediaFolders: Set<String>): List<Medium> {
         cur ?: return emptyList()
         val curMedia = ArrayList<Medium>()
 
@@ -40,7 +39,7 @@ open class MediaFetcher constructor(private val context: Context,
                         val orientation = cur.getInt(cur.getColumnIndexOrThrow(MediaStore.Images.Media.ORIENTATION))
                         val mimeType = cur.getString(cur.getColumnIndexOrThrow(MediaStore.Images.Media.MIME_TYPE)) ?: getMimetypeFromExtension(fileName)
                         val medium = Medium(id, fileName, path, dateModified, dateTaken, size, orientation, mimeType, MediaTypeHelper.mediaType(fileName))
-                        if (orchestraFilter.filterd(medium, noMediaFolders, readOnlyConfigs) == FILTERED)
+                        if (orchestraFilter.filterd(medium, noMediaFolders) == FILTERED)
                             continue
 
                         curMedia.add(medium)

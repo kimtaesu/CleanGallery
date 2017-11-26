@@ -3,8 +3,7 @@ package com.hucet.clean.gallery.presenter
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.OnLifecycleEvent
 import com.hucet.clean.gallery.activity.MainActivity
-import com.hucet.clean.gallery.config.ReadOnlyConfigs
-import com.hucet.clean.gallery.gallery.directory.DirectoryContext
+import com.hucet.clean.gallery.gallery.directory.PathLocationContext
 import com.hucet.clean.gallery.repository.GalleryRepository
 import com.hucet.clean.gallery.scheduler.DefaultSchedulerProvider
 import com.hucet.clean.gallery.scheduler.SchedulerProvider
@@ -20,12 +19,13 @@ class GalleryPresenter constructor(private val view: Gallery.View,
                                    private val schedulerProvider: SchedulerProvider = DefaultSchedulerProvider()
 ) : Gallery.Presenter {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
-    override fun fetchItems(directoryContext: DirectoryContext, readOnlyConfigs: ReadOnlyConfigs, cacheInvalidate: Boolean) {
+    override fun fetchItems(pathLocationContext: PathLocationContext, cacheInvalidate: Boolean) {
         repository
-                .getGalleries(directoryContext, readOnlyConfigs, cacheInvalidate)
+                .getGalleries(pathLocationContext, cacheInvalidate)
                 .map {
                     Timber.d("calculateDiff")
-                    activity.getCurrentAdapter()?.calculateDiff(it)!!
+                    val adapter = activity.getCurrentAdapter() ?: throw NullPointerException("adapter is null")
+                    adapter.calculateDiff(it)
                 }
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.main())

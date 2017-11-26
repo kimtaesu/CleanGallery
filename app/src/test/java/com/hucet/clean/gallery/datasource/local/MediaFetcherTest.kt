@@ -25,7 +25,7 @@ class MediaFetcherTest : SubjectSpek<TestMediaFetcher>({
         on("MediumFixture.DEFAULT 검증")
         {
             val cursor = CursorFixture.getCursor(MediumFixture.DEFAULT)
-            val items = subject.parseCursor(cursor, emptySet(), mock())
+            val items = subject.parseCursor(cursor, emptySet())
 
             it("items size == 2")
             {
@@ -41,7 +41,3 @@ class MediaFetcherTest : SubjectSpek<TestMediaFetcher>({
 })
 
 
-fun parseCursor(subject: MediaFetcher, items: List<Medium>): List<Medium> {
-    val cursor = CursorFixture.getCursor(MediumFixture.DEFAULT)
-    return subject.parseCursor(cursor, emptySet(), mock())
-}

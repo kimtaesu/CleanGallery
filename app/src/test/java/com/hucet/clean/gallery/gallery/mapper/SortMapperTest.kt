@@ -1,8 +1,8 @@
 package com.hucet.clean.gallery.gallery.mapper
 
 import android.content.Context
+import com.hucet.clean.gallery.fixture.ConfigFixture
 import com.hucet.clean.gallery.fixture.DialogRadioItemFixture
-import com.hucet.clean.gallery.fixture.ReadOnlyConfigsFixture
 import com.hucet.clean.gallery.fixture.TestDialogItem
 import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.sort.SortOptions
@@ -90,14 +90,10 @@ class SortMapperTest : SubjectSpek<DialogRadioItemMapper>({
 })
 
 private fun getTestDialogItem(subject: DialogRadioItemMapper, sortOptionType: SortOptions): TestDialogItem {
-
     val dialogItems = if (sortOptionType.sort.isDateType()) {
-        subject.map(mockContext(), ReadOnlyConfigsFixture.readOnlyConfigs(CategoryMode.DATE,
-                sortOptionType = sortOptionType), false)
-
+        subject.map(mockContext(), ConfigFixture.mockConfig(categoryMode = CategoryMode.DATE, sortOptions = sortOptionType), false)
     } else {
-        subject.map(mockContext(), ReadOnlyConfigsFixture.readOnlyConfigs(CategoryMode.DIRECTORY,
-                sortOptionType = sortOptionType), false)
+        subject.map(mockContext(), ConfigFixture.mockConfig(categoryMode = CategoryMode.DIRECTORY, sortOptions = sortOptionType), false)
 
     }
     val checkedSortOption = dialogItems[SortOptions.SORT_TYPE.KEY]?.find { it.isCheck }
@@ -105,7 +101,7 @@ private fun getTestDialogItem(subject: DialogRadioItemMapper, sortOptionType: So
     return TestDialogItem(checkedSortOption!!, checkedOrder!!)
 }
 
-fun mockContext(): Context {
+private fun mockContext(): Context {
     val mock = mock<Context>()
     whenever(mock.getString(any())).thenReturn("")
     return mock

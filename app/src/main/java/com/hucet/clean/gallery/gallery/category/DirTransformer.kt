@@ -10,8 +10,8 @@ import java.io.File
 /**
  * Created by taesu on 2017-11-10.
  */
-class DirClassifier : CategoryStrategy<Directory> {
-    override fun classify(sortOptionType: SortOptions, items: List<Medium>): List<Directory> {
+class DirTransformer : CategoryStrategy<Directory> {
+    override fun transform(sortOptionType: SortOptions, items: List<Medium>): List<Directory> {
         return items
                 .groupBy {
                     File(it.path)?.parentFile.path

@@ -1,9 +1,8 @@
 package com.hucet.clean.gallery.inject.modules
 
 import android.content.Context
-import com.hucet.clean.gallery.gallery.category.DateClassifier
-import com.hucet.clean.gallery.gallery.category.DirClassifier
-import com.hucet.clean.gallery.gallery.category.MediumTransformer
+import com.hucet.clean.gallery.gallery.category.DateTransformer
+import com.hucet.clean.gallery.gallery.category.DirTransformer
 import com.hucet.clean.gallery.inject.scopes.PerActivity
 import dagger.Module
 import dagger.Provides
@@ -15,21 +14,14 @@ import dagger.Provides
 class ClassifierModule {
     @Provides
     @PerActivity
-    fun provideDateClassifier(context: Context): DateClassifier {
-        return DateClassifier(context)
+    fun provideDateClassifier(context: Context): DateTransformer {
+        return DateTransformer(context)
     }
 
 
     @Provides
     @PerActivity
-    fun provideDirClassifier(): DirClassifier {
-        return DirClassifier()
+    fun provideDirClassifier(): DirTransformer {
+        return DirTransformer()
     }
-
-    @Provides
-    @PerActivity
-    fun provideMediumTransformer(date: DateClassifier, dir: DirClassifier): MediumTransformer {
-        return MediumTransformer(date, dir)
-    }
-
 }

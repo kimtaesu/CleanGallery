@@ -6,7 +6,8 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.afollestad.materialdialogs.MaterialDialog
 import com.hucet.clean.gallery.R
-import com.hucet.clean.gallery.config.ReadOnlyConfigs
+import com.hucet.clean.gallery.config.ApplicationConfig
+import com.hucet.clean.gallery.gallery.directory.PathLocationContext
 import com.hucet.clean.gallery.gallery.mapper.DialogRadioItemMapper
 import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.hucet.clean.gallery.model.DialogRadioItem
@@ -16,10 +17,10 @@ import com.hucet.clean.gallery.model.Medium
 /**
  * Created by taesu on 2017-11-16.
  */
-fun AlertDialog.Builder.createSortDialog(readOnlyConfigs: ReadOnlyConfigs, isRoot: Boolean, callback: (SortOptions) -> Unit): MaterialDialog {
+fun AlertDialog.Builder.createSortDialog(config: ApplicationConfig, isRoot: Boolean, callback: (SortOptions) -> Unit): MaterialDialog {
     val mapper = DialogRadioItemMapper.SortMapper()
     val v = LayoutInflater.from(context).inflate(R.layout.dialog_sorting, null)
-    val items = mapper.map(context, readOnlyConfigs, isRoot)
+    val items = mapper.map(context, config, isRoot)
     val sortItems = items[SortOptions.SORT_TYPE.KEY]!!
     val orderItems = items[SortOptions.ORDER_BY.KEY]!!
 
@@ -51,9 +52,9 @@ private fun addRadioChilden(radioGroup: RadioGroup, radioItems: List<DialogRadio
 }
 
 
-fun AlertDialog.Builder.createFilterDialog(readOnlyConfigs: ReadOnlyConfigs, fp: (Long) -> Unit): MaterialDialog {
+fun AlertDialog.Builder.createFilterDialog(config: ApplicationConfig, fp: (Long) -> Unit): MaterialDialog {
     val mapper = DialogRadioItemMapper.FilterMapper()
-    val resultMap = mapper.map(context, readOnlyConfigs, false)
+    val resultMap = mapper.map(context, config, false)
     val listItem = resultMap.values.flatMap { it }
     val callback = MaterialDialog.ListCallbackMultiChoice { _, which, _ ->
         val filterType = which.sumBy { which ->

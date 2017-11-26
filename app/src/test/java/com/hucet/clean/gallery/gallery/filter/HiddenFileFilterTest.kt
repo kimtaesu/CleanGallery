@@ -3,7 +3,6 @@ package com.hucet.clean.gallery.gallery.filter
 import com.google.gson.Gson
 import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.fixture.MediumFixture
-import com.hucet.clean.gallery.fixture.ReadOnlyConfigsFixture
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import org.amshove.kluent.`should be`

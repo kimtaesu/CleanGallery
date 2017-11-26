@@ -17,7 +17,7 @@ abstract class MainAcitivtyModule {
             ViewModeSetUpModule::class,
             GalleryPresenterModule::class,
             ClassifierModule::class,
-            DirectoryModule::class,
+            PathContextModule::class,
             RepositoryServiceModule::class,
             FilterModule::class
     ))

@@ -1,7 +1,6 @@
 package com.hucet.clean.gallery.gallery.filter
 
 import com.hucet.clean.gallery.config.ApplicationConfig
-import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.model.Medium
 import javax.inject.Inject
 

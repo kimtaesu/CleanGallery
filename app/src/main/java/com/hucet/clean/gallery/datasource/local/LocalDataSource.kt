@@ -1,6 +1,5 @@
 package com.hucet.clean.gallery.datasource.local
 
-import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.extension.getExternalStorageDirectory
 import com.hucet.clean.gallery.model.Medium
 import io.reactivex.Flowable
@@ -16,7 +15,7 @@ class LocalDataSource constructor(
 ) {
     private var flowableCache: Flowable<List<Medium>>? = null
 
-    private fun fetch(readOnlyConfigs: ReadOnlyConfigs): Flowable<List<Medium>> {
+    private fun fetch(): Flowable<List<Medium>> {
         return Flowable
                 .defer {
                     Timber.d("GalleryPresenter noMedia")
@@ -26,18 +25,18 @@ class LocalDataSource constructor(
                 .map { noMediaFolder ->
                     Timber.d("GalleryPresenter getGalleries")
                     val cursor = mediaFetcher.query(getExternalStorageDirectory())
-                    mediaFetcher.parseCursor(cursor, noMediaFolder, readOnlyConfigs)
+                    mediaFetcher.parseCursor(cursor, noMediaFolder)
                 }
                 .cache()
     }
 
-    fun getGalleries(cacheInvalidate: Boolean, readOnlyConfigs: ReadOnlyConfigs): Flowable<List<Medium>> {
+    fun getGalleries(cacheInvalidate: Boolean): Flowable<List<Medium>> {
         return if (cacheInvalidate) {
-            flowableCache = fetch(readOnlyConfigs)
+            flowableCache = fetch()
             flowableCache!!
         } else {
             if (flowableCache == null)
-                flowableCache = fetch(readOnlyConfigs)
+                flowableCache = fetch()
             flowableCache!!
         }
     }

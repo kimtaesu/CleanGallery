@@ -2,7 +2,6 @@ package com.hucet.clean.gallery.gallery.filter
 
 import com.hucet.clean.gallery.config.GIFS
 import com.hucet.clean.gallery.config.IMAGES
-import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.config.VIDEOS
 import com.hucet.clean.gallery.model.Medium
 import javax.inject.Inject

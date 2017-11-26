@@ -7,5 +7,5 @@ import com.hucet.clean.gallery.model.Medium
  * Created by taesu on 2017-11-10.
  */
 interface CategoryStrategy<R> {
-    fun classify(sortOptionType: SortOptions, items: List<Medium>): List<R>
+    fun transform(sortOptionType: SortOptions, items: List<Medium>): List<R>
 }

@@ -2,7 +2,6 @@ package com.hucet.clean.gallery.gallery.filter
 
 import com.hucet.clean.gallery.config.*
 import com.hucet.clean.gallery.fixture.MediumFixture
-import com.hucet.clean.gallery.fixture.ReadOnlyConfigsFixture
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter.Companion.FILTERED
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter.Companion.NOT_FILTERED
 import com.nhaarman.mockito_kotlin.mock

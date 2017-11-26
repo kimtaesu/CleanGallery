@@ -20,9 +20,6 @@ import com.hucet.clean.gallery.OnViewModechangedListener
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.activity.cache.MemoryCacheDrawable
 import com.hucet.clean.gallery.config.ApplicationConfig
-import com.hucet.clean.gallery.config.ReadOnlyConfigs
-import com.hucet.clean.gallery.extension.createFilterDialog
-import com.hucet.clean.gallery.extension.createSortDialog
 import com.hucet.clean.gallery.extension.startAsAnimation
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.adapter.GalleryType
@@ -31,7 +28,7 @@ import com.hucet.clean.gallery.gallery.fragment.GalleryDetailFragment
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
 import com.hucet.clean.gallery.gallery.glide.GlideApp
 import com.hucet.clean.gallery.gallery.fragment.switchable.ViewModeSwichable
-import com.hucet.clean.gallery.gallery.directory.DirectoryContext
+import com.hucet.clean.gallery.gallery.directory.PathLocationContext
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Directory
 import com.hucet.clean.gallery.model.MediaType
@@ -56,7 +53,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
         return fragmentDispatchingAndroidInjector
     }
 
-    @Inject lateinit var directoryContext: DirectoryContext
+    @Inject lateinit var pathLocationContext: PathLocationContext
     @Inject lateinit var presenter: Gallery.Presenter
     @Inject lateinit var mapViewModeSetUp: Map<ViewModeType, @JvmSuppressWildcards ViewModeSwichable>
     @Inject lateinit var config: ApplicationConfig
@@ -64,18 +61,28 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
 
     private var onViewModechangedListener: OnViewModechangedListener? = null
 
-    lateinit var readOnlyConfigs: ReadOnlyConfigs
     private var viewModeItem: MenuItem? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        readOnlyConfigs = config.ReadOnlyConfigBuild { }
-        showGallaeryWithPermissionCheck()
+        // TODO Revert it
+//        showGallaeryWithPermissionCheck()
         initToolbar()
+        showGallaery()
+    }
+
+    // TODO Revert it
+//    @SuppressLint("NeedOnRequestPermissionsResult")
+//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        onRequestPermissionsResult(requestCode, grantResults)
+//    }
+
+    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    fun showGallaery() {
         lifecycle.addObserver(presenter)
         initRecyclerView()
         requestFetch()
-
     }
 
     private fun setUpLayoutManager(type: ViewModeType) {
@@ -131,7 +138,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
     }
 
     private fun initRecyclerView() {
-        setUpLayoutManager(readOnlyConfigs.getViewModeType())
+        setUpLayoutManager(config.viewModeType)
         gallery_list.apply {
             setRecyclerListener({ viewHolder ->
                 val thumbnailView = viewHolder.itemView.findViewById<ImageView>(R.id.thumbnail)
@@ -142,20 +149,20 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
     }
 
     private fun requestFetch() {
-        presenter.fetchItems(directoryContext, readOnlyConfigs, false)
+        presenter.fetchItems(pathLocationContext, false)
     }
 
-    fun onCategoryModeChanged(readOnlyConfigs: ReadOnlyConfigs) {
+    fun onCategoryModeChanged() {
         getCurrentAdapter()?.syncClearItems()
-        setUpLayoutManager(readOnlyConfigs.getViewModeType())
+        setUpLayoutManager(config.viewModeType)
         requestFetch()
     }
 
-    fun onFilterChanged(readOnlyConfigs: ReadOnlyConfigs) {
+    fun onFilterChanged() {
         requestFetch()
     }
 
-    fun onSortChanged(readOnlyConfigs: ReadOnlyConfigs) {
+    fun onSortChanged() {
         requestFetch()
     }
 
@@ -204,9 +211,9 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         viewModeItem = menu?.findItem(R.id.action_view_mode)
-        updateViewMode(viewModeItem, readOnlyConfigs.getViewModeType(), readOnlyConfigs.getCategoryMode())
+        updateViewMode(viewModeItem, config.viewModeType, config.categoryMode)
         val categoryItem = menu?.findItem(R.id.action_category_mode)
-        updateCategory(categoryItem, readOnlyConfigs.getCategoryMode())
+        updateCategory(categoryItem, config.categoryMode)
         return true
     }
 
@@ -216,57 +223,53 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
 //            true
 //        }
         R.id.action_category_mode -> {
-            val categoryMode = readOnlyConfigs.getCategoryMode().toggle()
-
-            readOnlyConfigs = config.ReadOnlyConfigBuild {
-                categoryMode(categoryMode)
-                if (isGridRestriction(categoryMode))
-                    viewMode(ViewModeType.GRID)
-            }
-            updateViewMode(viewModeItem, readOnlyConfigs.getViewModeType(), readOnlyConfigs.getCategoryMode())
-
-            if (isGridRestriction(categoryMode)) {
-                directoryContext.moveRoot()
-                refreshSortType()
-            }
-            onCategoryModeChanged(readOnlyConfigs)
-            updateCategory(item, categoryMode)
+//            val categoryMode = readOnlyConfigs.getCategoryMode().toggle()
+//
+//            readOnlyConfigs = config.ReadOnlyConfigBuild {
+//                categoryMode(categoryMode)
+//                if (isGridRestriction(categoryMode))
+//                    viewMode(ViewModeType.GRID)
+//            }
+//            updateViewMode(viewModeItem, readOnlyConfigs.getViewModeType(), readOnlyConfigs.getCategoryMode())
+//
+//            if (isGridRestriction(categoryMode)) {
+//                pathLocationContext.moveRoot()
+//                refreshSortType()
+//            }
+//            onCategoryModeChanged(readOnlyConfigs)
+//            updateCategory(item, categoryMode)
             true
         }
         R.id.action_view_mode -> {
-            val viewMode = readOnlyConfigs.getViewModeType().toggle()
-            readOnlyConfigs = config.ReadOnlyConfigBuild {
-                viewMode(viewMode)
-            }
-            onViewModechangedListener?.invoke(readOnlyConfigs.getViewModeType())
-            updateViewMode(item, viewMode, readOnlyConfigs.getCategoryMode())
+//            val viewMode = readOnlyConfigs.getViewModeType().toggle()
+//            readOnlyConfigs = config.ReadOnlyConfigBuild {
+//                viewMode(viewMode)
+//            }
+//            onViewModechangedListener?.invoke(readOnlyConfigs.getViewModeType())
+//            updateViewMode(item, viewMode, readOnlyConfigs.getCategoryMode())
             true
         }
         R.id.action_sort -> {
-            AlertDialog.Builder(this).createSortDialog(readOnlyConfigs, config.isRoot(), {
-                readOnlyConfigs = config.ReadOnlyConfigBuild {
-                    sortType(it)
-                }
-                onSortChanged(readOnlyConfigs)
-            }).show()
+//            AlertDialog.Builder(this).createSortDialog(readOnlyConfigs, config.isRoot(), {
+//                readOnlyConfigs = config.ReadOnlyConfigBuild {
+//                    sortType(it)
+//                }
+//                onSortChanged(readOnlyConfigs)
+//            }).show()
             true
         }
         R.id.action_filter -> {
-            AlertDialog.Builder(this).createFilterDialog(readOnlyConfigs, {
-                readOnlyConfigs = config.ReadOnlyConfigBuild {
-                    filterType(it)
-                }
-                onFilterChanged(readOnlyConfigs)
-            }).show()
+//            AlertDialog.Builder(this).createFilterDialog(readOnlyConfigs, {
+//                readOnlyConfigs = config.ReadOnlyConfigBuild {
+//                    filterType(it)
+//                }
+//                onFilterChanged(readOnlyConfigs)
+//            }).show()
             true
         }
         else -> {
             super.onOptionsItemSelected(item)
         }
-    }
-
-    fun refreshSortType() {
-        readOnlyConfigs = config.ReadOnlyConfigBuild { }
     }
 
     private fun isGridRestriction(categoryMode: CategoryMode): Boolean {
@@ -280,24 +283,12 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
         onViewModechangedListener = onViewModeChanged
     }
 
-    private fun startSettingActivity() {
-        startActivity(Intent(this, SettingActivity::class.java))
-    }
+//    @SuppressLint("NeedOnRequestPermissionsResult")
+//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        onRequestPermissionsResult(requestCode, grantResults)
+//    }
 
-    private fun isFragmentShown(fragment: Fragment): Boolean {
-        return fragment != null && fragment.isVisible
-    }
-
-    @SuppressLint("NeedOnRequestPermissionsResult")
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        onRequestPermissionsResult(requestCode, grantResults)
-    }
-
-    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-    fun showGallaery() {
-        requestFetch()
-    }
 
     @OnShowRationale(Manifest.permission.READ_EXTERNAL_STORAGE)
     fun showRationaleForGallaery(request: PermissionRequest) {
@@ -330,8 +321,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
                 ViewCompat.setTransitionName(imageView, basic.name)
             }
             is Directory -> {
-                directoryContext.movePath(basic.path)
-                refreshSortType()
+                pathLocationContext.movePath(basic.path)
                 requestFetch()
             }
         }
@@ -358,9 +348,8 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
     }
 
     private fun canBack(): Boolean {
-        if (!directoryContext.isRoot()) {
-            directoryContext.moveRoot()
-            refreshSortType()
+        if (!pathLocationContext.isRoot()) {
+            pathLocationContext.moveRoot()
             requestFetch()
             return false
         }

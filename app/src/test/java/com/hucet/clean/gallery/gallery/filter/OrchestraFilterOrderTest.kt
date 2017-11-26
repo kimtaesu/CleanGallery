@@ -1,6 +1,7 @@
 package com.hucet.clean.gallery.gallery.filter
 
 import org.amshove.kluent.`should be in`
+import org.amshove.kluent.mock
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
@@ -23,7 +24,7 @@ class OrchestraFilterOrderTest : SubjectSpek<OrchestraFilter>({
     given("OrchestraFilter")
     {
         subject {
-            OrchestraFilter(filters)
+            OrchestraFilter(filters, mock())
         }
         val correctFilterNames = setOf(
                 ImageVideoGifFilter::class

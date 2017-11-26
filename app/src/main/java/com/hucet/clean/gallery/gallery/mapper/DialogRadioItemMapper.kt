@@ -1,7 +1,7 @@
 package com.hucet.clean.gallery.gallery.mapper
 
 import android.content.Context
-import com.hucet.clean.gallery.config.ReadOnlyConfigs
+import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.filter.FilterType
 import com.hucet.clean.gallery.gallery.sort.SortOptions
@@ -11,15 +11,15 @@ import com.hucet.clean.gallery.model.DialogRadioItem
  * Created by taesu on 2017-11-20.
  */
 interface DialogRadioItemMapper {
-    fun map(context: Context, readOnlyConfigs: ReadOnlyConfigs, isRoot: Boolean): Map<String, List<DialogRadioItem>>
+    fun map(context: Context, config: ApplicationConfig, isRoot: Boolean): Map<String, List<DialogRadioItem>>
 
     class FilterMapper : DialogRadioItemMapper {
-        override fun map(context: Context, readOnlyConfigs: ReadOnlyConfigs, isRoot: Boolean): Map<String, List<DialogRadioItem>> {
+        override fun map(context: Context, config: ApplicationConfig, isRoot: Boolean): Map<String, List<DialogRadioItem>> {
             return mapOf(
                     FilterType.KEY to
                             FilterType.values().mapIndexed { index, filterType ->
                                 DialogRadioItem(index, context.getString(filterType.stringId),
-                                        filterType.isChecked(readOnlyConfigs.getFilterBit()), filterType.bitAtt)
+                                        filterType.isChecked(config.filterdType), filterType.bitAtt)
                             }
             )
         }
@@ -52,9 +52,9 @@ interface DialogRadioItemMapper {
             )
         }
 
-        override fun map(context: Context, readOnlyConfigs: ReadOnlyConfigs, isRoot: Boolean): Map<String, List<DialogRadioItem>> {
-            val checkedSortType = readOnlyConfigs.getSortOptionType()
-            when (readOnlyConfigs.getCategoryMode()) {
+        override fun map(context: Context, config: ApplicationConfig, isRoot: Boolean): Map<String, List<DialogRadioItem>> {
+            val checkedSortType = config.sortOptionType
+            when (config.categoryMode) {
                 CategoryMode.DATE -> {
                     return createDialogRadioItems(context, SortOptions.SORT_TYPE.DATE_TYPES, checkedSortType)
                 }

@@ -1,11 +1,10 @@
 package org.buffer.android.boilerplate.ui.injection.module
 
 import android.content.Context
+import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.datasource.local.LocalDataSource
 import com.hucet.clean.gallery.datasource.local.MediaFetcher
 import com.hucet.clean.gallery.datasource.local.NoMediaFolderProvider
-import com.hucet.clean.gallery.gallery.category.MediumTransformer
-import com.hucet.clean.gallery.gallery.filter.ImageVideoGifFilter
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter
 import com.hucet.clean.gallery.gallery.filter.OrchestraFilter
 import com.hucet.clean.gallery.inject.scopes.PerActivity
@@ -21,14 +20,15 @@ import dagger.Provides
 class RepositoryServiceModule {
     @Provides
     @PerActivity
-    fun provideGalleryRepository(localDataSource: LocalDataSource, transformer: MediumTransformer, imageVideoGifFilter: ImageVideoGifFilter): GalleryRepository {
-        return GalleryRepository(localDataSource, transformer, imageVideoGifFilter)
+    fun provideGalleryRepository(localDataSource: LocalDataSource): GalleryRepository {
+        return GalleryRepository(localDataSource)
     }
 
     @Provides
     @PerActivity
-    fun provideOrderedFilterContext(filters: Set<@JvmSuppressWildcards MediaTypeFilter>): OrchestraFilter {
-        return OrchestraFilter(filters)
+    fun provideOrderedFilterContext(filters: Set<@JvmSuppressWildcards MediaTypeFilter>,
+                                    config: ApplicationConfig): OrchestraFilter {
+        return OrchestraFilter(filters, config)
     }
 
     @Provides

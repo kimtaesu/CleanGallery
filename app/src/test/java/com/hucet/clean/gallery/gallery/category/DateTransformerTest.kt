@@ -19,8 +19,8 @@ import java.text.SimpleDateFormat
  * Created by taesu on 2017-11-10.
  */
 
-fun classify(d: TestDateClassifier, sortType: SortOptions, test: List<Medium>): List<Date> {
-    var result = d.classify(sortType, test)
+fun classify(d: TestDateTransformer, sortType: SortOptions, test: List<Medium>): List<Date> {
+    var result = d.transform(sortType, test)
     return result.filter {
         it.viewType == GalleryType.DATE
     }.map {
@@ -28,11 +28,11 @@ fun classify(d: TestDateClassifier, sortType: SortOptions, test: List<Medium>): 
     }
 }
 
-class DateClassifierTest : SubjectSpek<TestDateClassifier>({
+class DateClassifierTest : SubjectSpek<TestDateTransformer>({
     given("a dateClassifier")
     {
         subject {
-            TestDateClassifier(mock())
+            TestDateTransformer(mock())
         }
         on("desc daily")
         {
@@ -126,7 +126,7 @@ class DateClassifierTest : SubjectSpek<TestDateClassifier>({
     }
 })
 
-class TestDateClassifier(context: Context) : DateClassifier(context) {
+class TestDateTransformer(context: Context) : DateTransformer(context) {
     override fun getFormat(sortOptionType: SortOptions): SimpleDateFormat {
         val dateString = when (sortOptionType.sort) {
             SortOptions.SORT_TYPE.DAILY -> {

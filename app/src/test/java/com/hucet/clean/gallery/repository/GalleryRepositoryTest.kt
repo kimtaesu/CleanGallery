@@ -2,11 +2,7 @@ package com.hucet.clean.gallery.repository
 
 import com.hucet.clean.gallery.datasource.local.LocalDataSource
 import com.hucet.clean.gallery.fixture.MediumFixture
-import com.hucet.clean.gallery.fixture.ReadOnlyConfigsFixture
-import com.hucet.clean.gallery.gallery.category.CategoryMode
-import com.hucet.clean.gallery.gallery.category.MediumTransformer
-import com.hucet.clean.gallery.gallery.filter.ImageVideoGifFilter
-import com.hucet.clean.gallery.gallery.sort.SortOptions
+import com.hucet.clean.gallery.gallery.directory.PathLocationContext
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
@@ -22,24 +18,17 @@ import org.jetbrains.spek.subject.SubjectSpek
 class GalleryRepositoryTest : SubjectSpek<GalleryRepository>({
     val test = MediumFixture.DEFAULT
     val localDataSource = mock<LocalDataSource>()
-    val tranformer by memoized { mock<MediumTransformer>() }
-    val imageVideoGifFilter by memoized { mock<ImageVideoGifFilter>() }
-
-    val readOnlyConfig = ReadOnlyConfigsFixture.readOnlyConfigs(
-            categoryMode = CategoryMode.DATE,
-            sortOptionType = SortOptions(SortOptions.SORT_TYPE.DAILY)
-    )
-
+    val pathLocator by memoized { mock<PathLocationContext>() }
     given("a galleryRepository")
     {
         subject {
-            GalleryRepository(localDataSource, tranformer, imageVideoGifFilter)
+            GalleryRepository(localDataSource)
         }
         on("a getGalleries subscriber")
         {
-            whenever(localDataSource.getGalleries(any(), any())).thenReturn(Flowable.just(test))
-            whenever(tranformer.transform(any(), any(), any())).thenReturn(test)
-            val testSubscriber = subject.getGalleries(readOnlyConfig, "", true, true).test()
+            whenever(localDataSource.getGalleries(any())).thenReturn(Flowable.just(test))
+            whenever(pathLocator.map(any())).thenReturn(test)
+            val testSubscriber = subject.getGalleries(pathLocator, true).test()
             it("testSubscriber status [no errors, complete]")
             {
                 testSubscriber.assertNoErrors()
@@ -47,6 +36,7 @@ class GalleryRepositoryTest : SubjectSpek<GalleryRepository>({
             }
             it("first id equlas")
             {
+
                 testSubscriber.assertValue { data ->
                     data.first().id == test.first().id
                 }
