@@ -18,11 +18,11 @@ import org.jetbrains.spek.subject.SubjectSpek
 /**
  * Created by taesu on 2017-11-17.
  */
-class SortMapperTest : SubjectSpek<DialogRadioItemMapper>({
+class SortMapperTest : SubjectSpek<DialogSortMapper>({
     given("a sortMapper")
     {
         subject {
-            DialogRadioItemMapper.DialogSortMapper()
+            DialogSortMapper()
         }
         on("directory check item")
         {
@@ -89,11 +89,11 @@ class SortMapperTest : SubjectSpek<DialogRadioItemMapper>({
     }
 })
 
-private fun getTestDialogItem(subject: DialogRadioItemMapper, sortOptionType: SortOptions): TestDialogItem {
+private fun getTestDialogItem(subject: DialogSortMapper, sortOptionType: SortOptions): TestDialogItem {
     val dialogItems = if (sortOptionType.sort.isDateType()) {
-        subject.map(mockContext(), ConfigFixture.mockConfig(categoryMode = CategoryMode.DATE, sortOptions = sortOptionType), false)
+        subject.map(mockContext(), CategoryMode.DATE, sortOptionType, false)
     } else {
-        subject.map(mockContext(), ConfigFixture.mockConfig(categoryMode = CategoryMode.DIRECTORY, sortOptions = sortOptionType), false)
+        subject.map(mockContext(), CategoryMode.DIRECTORY, sortOptionType, false)
 
     }
     val checkedSortOption = dialogItems[SortOptions.SORT_TYPE.KEY]?.find { it.isCheck }

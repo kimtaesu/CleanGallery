@@ -27,7 +27,7 @@ class GalleryRepositoryTest : SubjectSpek<GalleryRepository>({
         on("a getGalleries subscriber")
         {
             whenever(localDataSource.getGalleries(any())).thenReturn(Flowable.just(test))
-            whenever(pathLocator.map(any())).thenReturn(test)
+            whenever(pathLocator.switchMap(any())).thenReturn(test)
             val testSubscriber = subject.getGalleries(pathLocator, true).test()
             it("testSubscriber status [no errors, complete]")
             {
