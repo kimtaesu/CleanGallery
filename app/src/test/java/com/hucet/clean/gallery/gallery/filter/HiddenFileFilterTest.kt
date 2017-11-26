@@ -9,9 +9,7 @@ import com.nhaarman.mockito_kotlin.whenever
 import org.amshove.kluent.`should be`
 import org.amshove.kluent.`should equal`
 import org.hamcrest.core.Is
-import org.jetbrains.spek.api.dsl.context
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.it
+import org.jetbrains.spek.api.dsl.*
 import org.jetbrains.spek.subject.SubjectSpek
 import org.junit.Assert.assertThat
 
@@ -30,7 +28,7 @@ class HiddenFileFilterTest : SubjectSpek<HiddenFileFilter>({
         context("config showHidden [true] ")
         {
             val result = test.filter {
-                !subject.filterd(it, noMediaData, ReadOnlyConfigsFixture.mockReadOnlyConfigs(showHidden = true))
+                !subject.filterd(it, noMediaData, true)
             }
             it("test == result")
             {
@@ -46,14 +44,13 @@ class HiddenFileFilterTest : SubjectSpek<HiddenFileFilter>({
         }
         context("config showHidden [false] ") {
             val result = test.filter {
-                !subject.filterd(it, noMediaData, ReadOnlyConfigsFixture.mockReadOnlyConfigs(showHidden = false))
+                !subject.filterd(it, noMediaData, false)
             }
             it("correct == result")
             {
                 correct `should equal` result
             }
         }
-
     }
 
 })

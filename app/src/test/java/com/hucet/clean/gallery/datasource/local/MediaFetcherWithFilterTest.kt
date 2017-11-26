@@ -7,9 +7,12 @@ import com.hucet.clean.gallery.gallery.filter.OrchestraFilter
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
+import org.amshove.kluent.`should be`
 import org.hamcrest.core.Is
 import org.jetbrains.spek.api.dsl.describe
+import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
+import org.jetbrains.spek.api.dsl.on
 import org.jetbrains.spek.subject.SubjectSpek
 import org.junit.Assert
 
@@ -17,65 +20,34 @@ import org.junit.Assert
  * Created by taesu on 2017-11-14.
  */
 
-class MediaFetcherWithFilterTest : SubjectSpek<MediaFetcher>({
+class MediaFetcherWithFilterTest : SubjectSpek<TestMediaFetcher>({
+    val orchestraFilter by memoized { mock<OrchestraFilter>() }
 
-    describe("filter [NOT_FILTERED, NOT_FILTERED]")
+    given("MediaFetcher")
     {
         subject {
-            MediaFetcher(mock<Context>(), mockOrderedFilterContext(MediaTypeFilter.NOT_FILTERED, MediaTypeFilter.NOT_FILTERED))
+            TestMediaFetcher(mock<Context>(), orchestraFilter)
         }
 
-        val items = parseCursor(subject, MediumFixture.DEFAULT)
-
-        it("items size == 2")
+        on("orchestraFilter NOT_FILTERED")
         {
-            Assert.assertThat(2, Is.`is`(items.size))
+            whenever(orchestraFilter.filterd(any(), any(), any())).thenReturn(MediaTypeFilter.NOT_FILTERED)
+            val items = parseCursor(subject, MediumFixture.DEFAULT)
+
+            it("item size == 2")
+            {
+                items.size `should be` 2
+            }
         }
-    }
-
-    describe("filter [FILTERED, NOT_FILTERED]")
-    {
-        subject {
-            MediaFetcher(mock<Context>(), mockOrderedFilterContext(MediaTypeFilter.FILTERED, MediaTypeFilter.NOT_FILTERED))
-        }
-
-        val items = parseCursor(subject, MediumFixture.DEFAULT)
-
-        it("items size == 0")
+        on("orchestraFilter FILTERED")
         {
-            Assert.assertThat(0, Is.`is`(items.size))
-        }
-    }
+            whenever(orchestraFilter.filterd(any(), any(), any())).thenReturn(MediaTypeFilter.FILTERED)
+            val items = parseCursor(subject, MediumFixture.DEFAULT)
 
-    describe("filter [FILTERED, FILTERED]")
-    {
-        subject {
-            MediaFetcher(mock<Context>(), mockOrderedFilterContext(MediaTypeFilter.FILTERED, MediaTypeFilter.FILTERED))
+            it("item size == 0")
+            {
+                items.size `should be` 0
+            }
         }
-        val items = parseCursor(subject, MediumFixture.DEFAULT)
-
-        it("items size == 0")
-        {
-            Assert.assertThat(0, Is.`is`(items.size))
-        }
-
     }
 })
-
-
-fun mockOrderedFilterContext(vararg isFilters: Boolean): OrchestraFilter {
-    val orderFilter = mock<OrchestraFilter>()
-    val mocks = mockFilters(isFilters)
-    whenever(orderFilter.iterator()).thenReturn(mocks)
-    return orderFilter
-}
-
-fun mockFilters(isFilters: BooleanArray): Set<MediaTypeFilter> {
-    val mocks = HashSet<MediaTypeFilter>()
-    isFilters.forEach {
-        val mock = mock<MediaTypeFilter>()
-        whenever(mock.filterd(any(), any(), any())).thenReturn(it)
-        mocks.add(mock)
-    }
-    return mocks
-}

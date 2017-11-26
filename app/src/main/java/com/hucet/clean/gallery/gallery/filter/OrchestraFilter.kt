@@ -1,6 +1,5 @@
 package com.hucet.clean.gallery.gallery.filter
 
-import android.media.Image
 import com.hucet.clean.gallery.config.GIFS
 import com.hucet.clean.gallery.config.IMAGES
 import com.hucet.clean.gallery.config.ReadOnlyConfigs
@@ -14,16 +13,20 @@ import com.hucet.clean.gallery.model.Medium
  */
 class OrchestraFilter constructor(filters: Set<@JvmSuppressWildcards MediaTypeFilter>) {
     private val FILTER_HIGH_PRIORITY = listOf(
-            ImageVideoGifFilter::javaClass.name
+            ImageVideoGifFilter::class
     )
     private val orderedFilter = LinkedHashSet<MediaTypeFilter>()
 
     init {
         orderedFilter.addAll(
                 filters.sortedByDescending {
-                    FILTER_HIGH_PRIORITY.indexOf(it::javaClass.name)
+                    FILTER_HIGH_PRIORITY.indexOf(it::class)
                 }
         )
+    }
+
+    operator fun iterator(): LinkedHashSet<MediaTypeFilter> {
+        return orderedFilter
     }
 
     fun filterd(medium: Medium, noMedia: Set<String>, readOnlyConfigs: ReadOnlyConfigs): Boolean {
@@ -42,8 +45,7 @@ class OrchestraFilter constructor(filters: Set<@JvmSuppressWildcards MediaTypeFi
                 }
             }
         }
-        if (isFilter)
-            return FILTERED
-        return NOT_FILTERED
+        return if (isFilter) FILTERED
+        else NOT_FILTERED
     }
 }

@@ -5,6 +5,7 @@ import com.hucet.clean.gallery.fixture.MediumFixture
 import com.hucet.clean.gallery.fixture.ReadOnlyConfigsFixture
 import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.category.MediumTransformer
+import com.hucet.clean.gallery.gallery.filter.ImageVideoGifFilter
 import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
@@ -22,6 +23,7 @@ class GalleryRepositoryTest : SubjectSpek<GalleryRepository>({
     val test = MediumFixture.DEFAULT
     val localDataSource = mock<LocalDataSource>()
     val tranformer by memoized { mock<MediumTransformer>() }
+    val imageVideoGifFilter by memoized { mock<ImageVideoGifFilter>() }
 
     val readOnlyConfig = ReadOnlyConfigsFixture.readOnlyConfigs(
             categoryMode = CategoryMode.DATE,
@@ -31,7 +33,7 @@ class GalleryRepositoryTest : SubjectSpek<GalleryRepository>({
     given("a galleryRepository")
     {
         subject {
-            GalleryRepository(localDataSource, tranformer)
+            GalleryRepository(localDataSource, tranformer, imageVideoGifFilter)
         }
         on("a getGalleries subscriber")
         {

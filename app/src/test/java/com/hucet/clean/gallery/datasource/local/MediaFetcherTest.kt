@@ -16,12 +16,11 @@ import org.jetbrains.spek.subject.SubjectSpek
  */
 
 
-class MediaFetcherTest : SubjectSpek<MediaFetcher>({
+class MediaFetcherTest : SubjectSpek<TestMediaFetcher>({
 
-
-    given("a mediaFetcher") {
+    given("a MediaFetcher") {
         subject {
-            MediaFetcher(mock<Context>(), mock())
+            TestMediaFetcher(mock<Context>(), mock())
         }
         on("MediumFixture.DEFAULT 검증")
         {

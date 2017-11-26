@@ -1,12 +1,10 @@
 package com.hucet.clean.gallery.gallery.filter
 
-import android.media.Image
 import com.hucet.clean.gallery.config.*
 import com.hucet.clean.gallery.fixture.MediumFixture
 import com.hucet.clean.gallery.fixture.ReadOnlyConfigsFixture
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter.Companion.FILTERED
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter.Companion.NOT_FILTERED
-import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import org.amshove.kluent.`should be`
@@ -21,8 +19,6 @@ import org.jetbrains.spek.subject.SubjectSpek
  */
 
 class ImageVideoGifFilterTest : SubjectSpek<ImageVideoGifFilter>({
-
-
     describe("a imageVideoGifFilter")
     {
         context("filterType [IMAGES]")
@@ -33,17 +29,17 @@ class ImageVideoGifFilterTest : SubjectSpek<ImageVideoGifFilter>({
 
             it("image tpye NOT_FILTERED")
             {
-                testFilter(subject, ".jpg", NOT_FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = IMAGES))
-                testFilter(subject, ".png", NOT_FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = IMAGES))
-                testFilter(subject, ".jpeg", NOT_FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = IMAGES))
-                testFilter(subject, ".bmp", NOT_FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = IMAGES))
-                testFilter(subject, ".webp", NOT_FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = IMAGES))
+                testFilter(NOT_FILTERED, subject, ".jpg", IMAGES)
+                testFilter(NOT_FILTERED, subject, ".png", IMAGES)
+                testFilter(NOT_FILTERED, subject, ".jpeg", IMAGES)
+                testFilter(NOT_FILTERED, subject, ".bmp", IMAGES)
+                testFilter(NOT_FILTERED, subject, ".webp", IMAGES)
             }
             it("image tpye FILTERED")
             {
-                testFilter(subject, ".ic_grid_to_list_animation", FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = IMAGES))
-                testFilter(subject, ".mp4", FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = IMAGES))
-                testFilter(subject, ".gif", FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = IMAGES))
+                testFilter(FILTERED, subject, ".ic_grid_to_list_animation", IMAGES)
+                testFilter(FILTERED, subject, ".mp4", IMAGES)
+                testFilter(FILTERED, subject, ".gif", IMAGES)
             }
         }
         on("filterType [VIDEOS]")
@@ -54,18 +50,18 @@ class ImageVideoGifFilterTest : SubjectSpek<ImageVideoGifFilter>({
 
             it("video type NOT_FILTERED")
             {
-                testFilter(subject, ".mp4", NOT_FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = VIDEOS))
-                testFilter(subject, ".mkv", NOT_FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = VIDEOS))
-                testFilter(subject, ".webm", NOT_FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = VIDEOS))
-                testFilter(subject, ".avi", NOT_FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = VIDEOS))
-                testFilter(subject, ".3gp", NOT_FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = VIDEOS))
-                testFilter(subject, ".m4v", NOT_FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = VIDEOS))
-                testFilter(subject, ".3gpp", NOT_FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = VIDEOS))
+                testFilter(NOT_FILTERED, subject, ".mp4", VIDEOS)
+                testFilter(NOT_FILTERED, subject, ".mkv", VIDEOS)
+                testFilter(NOT_FILTERED, subject, ".webm", VIDEOS)
+                testFilter(NOT_FILTERED, subject, ".avi", VIDEOS)
+                testFilter(NOT_FILTERED, subject, ".3gp", VIDEOS)
+                testFilter(NOT_FILTERED, subject, ".m4v", VIDEOS)
+                testFilter(NOT_FILTERED, subject, ".3gpp", VIDEOS)
             }
             it("video type FILTERED")
             {
-                testFilter(subject, ".gif", FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = VIDEOS))
-                testFilter(subject, ".jpg", FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = VIDEOS))
+                testFilter(FILTERED, subject, ".gif", VIDEOS)
+                testFilter(FILTERED, subject, ".jpg", VIDEOS)
             }
         }
         on("filterType [GIFS]")
@@ -77,13 +73,13 @@ class ImageVideoGifFilterTest : SubjectSpek<ImageVideoGifFilter>({
             it("gif type NOT_FILTERED")
             {
 
-                testFilter(subject, ".gif", NOT_FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = GIFS))
+                testFilter(NOT_FILTERED, subject, ".gif", GIFS)
             }
             it("gif type FILTERED")
             {
-                testFilter(subject, ".m4v", FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = GIFS))
-                testFilter(subject, ".3gpp", FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = GIFS))
-                testFilter(subject, ".jpg", FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = GIFS))
+                testFilter(FILTERED, subject, ".m4v", GIFS)
+                testFilter(FILTERED, subject, ".3gpp", GIFS)
+                testFilter(FILTERED, subject, ".jpg", GIFS)
             }
         }
         on("filterType [IMAGES or VIDEOS]")
@@ -94,14 +90,14 @@ class ImageVideoGifFilterTest : SubjectSpek<ImageVideoGifFilter>({
 
             it("image or video type NOT_FILTERED")
             {
-                testFilter(subject, ".jpg", NOT_FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = VIDEOS or IMAGES))
-                testFilter(subject, ".mp4", NOT_FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = VIDEOS or IMAGES))
+                testFilter(NOT_FILTERED, subject, ".jpg", VIDEOS or IMAGES)
+                testFilter(NOT_FILTERED, subject, ".mp4", VIDEOS or IMAGES)
             }
         }
         it("image or video  type FILTERED")
         {
-            testFilter(subject, ".aaa", FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = VIDEOS or IMAGES))
-            testFilter(subject, ".gif", FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = VIDEOS or IMAGES))
+            testFilter(FILTERED, subject, ".aaa", VIDEOS or IMAGES)
+            testFilter(FILTERED, subject, ".gif", VIDEOS or IMAGES)
         }
         on("filterType [IMAGES or VIDEOS or GIFS]")
         {
@@ -111,26 +107,20 @@ class ImageVideoGifFilterTest : SubjectSpek<ImageVideoGifFilter>({
 
             it("image or video or gif type NOT_FILTERED")
             {
-                testFilter(subject, ".jpg", NOT_FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = VIDEOS or IMAGES or GIFS))
-                testFilter(subject, ".mp4", NOT_FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = VIDEOS or IMAGES or GIFS))
-                testFilter(subject, ".gif", NOT_FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = VIDEOS or IMAGES or GIFS))
+                testFilter(NOT_FILTERED, subject, ".jpg", VIDEOS or IMAGES or GIFS)
+                testFilter(NOT_FILTERED, subject, ".mp4", VIDEOS or IMAGES or GIFS)
+                testFilter(NOT_FILTERED, subject, ".gif", VIDEOS or IMAGES or GIFS)
             }
         }
         it("image or video or gif  type FILTERED")
         {
-            testFilter(subject, ".aaa", FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = VIDEOS or IMAGES or GIFS))
-            testFilter(subject, ".hpp", FILTERED, ReadOnlyConfigsFixture.mockReadOnlyConfigs(filterBit = VIDEOS or IMAGES or GIFS))
+            testFilter(FILTERED, subject, ".aaa", VIDEOS or IMAGES or GIFS)
+            testFilter(FILTERED, subject, ".hpp", VIDEOS or IMAGES or GIFS)
         }
     }
 })
 
-fun mockReadOnlyConfig(mediaType: Long): ReadOnlyConfigs {
-    val mock = mock<ReadOnlyConfigs>()
-    whenever(mock.getFilterBit()).thenReturn(mediaType)
-    return mock
-}
-
-fun testFilter(filter: ImageVideoGifFilter, ext: String, result: Boolean, readOnlyConfigs: ReadOnlyConfigs) {
+fun testFilter(result: Boolean, filter: ImageVideoGifFilter, ext: String, filterBit: Long) {
     val medium = MediumFixture.medium(name = ext)
-    result `should be` filter.filterd(medium, emptySet(), readOnlyConfigs)
+    result `should be` filter.filterd(medium, filterBit)
 }

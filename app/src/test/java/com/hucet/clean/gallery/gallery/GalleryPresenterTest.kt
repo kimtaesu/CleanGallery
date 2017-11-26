@@ -1,10 +1,10 @@
 package com.hucet.clean.gallery.gallery
 
 import android.support.v7.util.DiffUtil
+import com.hucet.clean.gallery.activity.MainActivity
 import com.hucet.clean.gallery.fixture.MediumFixture
 import com.hucet.clean.gallery.fixture.ReadOnlyConfigsFixture
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
-import com.hucet.clean.gallery.gallery.fragment.ListGalleryFragment
 import com.hucet.clean.gallery.presenter.Gallery
 import com.hucet.clean.gallery.presenter.GalleryPresenter
 import com.hucet.clean.gallery.repository.GalleryRepository
@@ -12,7 +12,9 @@ import com.hucet.clean.gallery.scheduler.TestSchedulerProvider
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Flowable
 import io.reactivex.schedulers.TestScheduler
-import org.jetbrains.spek.api.dsl.*
+import org.jetbrains.spek.api.dsl.given
+import org.jetbrains.spek.api.dsl.it
+import org.jetbrains.spek.api.dsl.on
 import org.jetbrains.spek.subject.SubjectSpek
 import org.mockito.exceptions.base.MockitoException
 import java.util.concurrent.TimeUnit
@@ -26,16 +28,16 @@ class GalleryPresenterTest : SubjectSpek<GalleryPresenter>({
     val adapter by memoized { mock<GalleryAdapter>() }
     val repository by memoized { mock<GalleryRepository>() }
     val testScheduler by memoized { TestScheduler() }
-    val fragment by memoized { mock<ListGalleryFragment>() }
+    val activity by memoized { mock<MainActivity>() }
     val diffResult by memoized { mock<DiffUtil.DiffResult>() }
 
     given("a galleryPresenter") {
         subject {
-            GalleryPresenter(view, fragment, repository, TestSchedulerProvider(testScheduler))
+            GalleryPresenter(view, activity, repository, TestSchedulerProvider(testScheduler))
         }
         on("presenter next - complete 검증")
         {
-            whenever(fragment.getCurrentAdapter()).thenReturn(adapter)
+            whenever(activity.getCurrentAdapter()).thenReturn(adapter)
             whenever(adapter.calculateDiff(any())).thenReturn(diffResult)
             whenever(repository.getGalleries(any(), any(), any(), any())).thenReturn(Flowable.just(test))
             subject.fetchItems("", false, ReadOnlyConfigsFixture.readOnlyConfigs(), false)
@@ -52,7 +54,7 @@ class GalleryPresenterTest : SubjectSpek<GalleryPresenter>({
         }
         on("presenter error 검증")
         {
-            whenever(fragment.getCurrentAdapter()).thenReturn(adapter)
+            whenever(activity.getCurrentAdapter()).thenReturn(adapter)
             whenever(repository.getGalleries(any(), any(), any(), any())).thenReturn(Flowable.just(test)
                     .map {
                         throw MockitoException("")

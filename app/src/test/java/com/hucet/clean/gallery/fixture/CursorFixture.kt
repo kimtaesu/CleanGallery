@@ -51,6 +51,8 @@ object CursorFixture {
         whenever(c.getColumnIndex(MediaStore.Images.Media.SIZE)).thenReturn(MediaColumnOfIndex.SIZE.getValue())
         whenever(c.getColumnIndex(MediaStore.Images.Media.DATE_TAKEN)).thenReturn(MediaColumnOfIndex.DATE_TAKEN.getValue())
         whenever(c.getColumnIndex(MediaStore.Images.Media.DATE_MODIFIED)).thenReturn(MediaColumnOfIndex.DATE_MODIFIED.getValue())
+        whenever(c.getColumnIndex(MediaStore.Images.Media.ORIENTATION)).thenReturn(MediaColumnOfIndex.ORIENTATION.getValue())
+        whenever(c.getColumnIndex(MediaStore.Images.Media.MIME_TYPE)).thenReturn(MediaColumnOfIndex.MIME_TYPE.getValue())
 
         whenever(c.getColumnIndexOrThrow(MediaStore.Images.Media._ID)).thenReturn(MediaColumnOfIndex.ID.getValue())
         whenever(c.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)).thenReturn(MediaColumnOfIndex.DATA.getValue())
@@ -58,6 +60,9 @@ object CursorFixture {
         whenever(c.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE)).thenReturn(MediaColumnOfIndex.SIZE.getValue())
         whenever(c.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN)).thenReturn(MediaColumnOfIndex.DATE_TAKEN.getValue())
         whenever(c.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED)).thenReturn(MediaColumnOfIndex.DATE_MODIFIED.getValue())
+        whenever(c.getColumnIndexOrThrow(MediaStore.Images.Media.ORIENTATION)).thenReturn(MediaColumnOfIndex.ORIENTATION.getValue())
+        whenever(c.getColumnIndexOrThrow(MediaStore.Images.Media.MIME_TYPE)).thenReturn(MediaColumnOfIndex.MIME_TYPE.getValue())
+
     }
 
 
@@ -76,7 +81,9 @@ object CursorFixture {
         DATE_TAKEN(2),
         DATE_MODIFIED(3),
         DATA(4),
-        SIZE(5);
+        SIZE(5),
+        ORIENTATION(6),
+        MIME_TYPE(7);
 
         fun getValue() = i
     }

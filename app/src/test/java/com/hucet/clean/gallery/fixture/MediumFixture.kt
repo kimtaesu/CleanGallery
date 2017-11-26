@@ -145,21 +145,21 @@ object MediumFixture {
                     listOf(
                             directory(
                                     3,
-                                    "/storage/emulated/0/Samsung/Image/3_Forest.jpg",
+                                    medium(path = "/storage/emulated/0/Samsung/Image/3_Forest.jpg"),
                                     1,
                                     "Image",
                                     "/storage/emulated/0/Samsung/Image"
                             ),
                             directory(
                                     1,
-                                    "/storage/emulated/0/Pictures/Screenshots/Screenshot_2017-08-02-09-35-33.png",
+                                    medium(path = "/storage/emulated/0/Pictures/Screenshots/Screenshot_2017-08-02-09-35-33.png"),
                                     441,
                                     "Screenshots",
                                     "/storage/emulated/0/Pictures/Screenshots"
                             ),
                             directory(
                                     1,
-                                    "/storage/emulated/0/Pictures/KakaoTalk/14845794522132.png",
+                                    medium(path = "/storage/emulated/0/Pictures/KakaoTalk/14845794522132.png"),
                                     32,
                                     "KakaoTalk",
                                     "/storage/emulated/0/Pictures/KakaoTalk"
@@ -215,21 +215,21 @@ object MediumFixture {
                     listOf(
                             directory(
                                     3,
-                                    "/storage/emulated/0/Samsung/Image/3_Forest.jpg",
+                                    medium(path = "/storage/emulated/0/Samsung/Image/3_Forest.jpg"),
                                     1,
                                     "Image",
                                     "/storage/emulated/0/Samsung/Image"
                             ),
                             directory(
                                     1,
-                                    "/storage/emulated/0/Pictures/Screenshots/Screenshot_2017-08-02-09-35-33.png",
+                                    medium(path = "/storage/emulated/0/Pictures/Screenshots/Screenshot_2017-08-02-09-35-33.png"),
                                     441,
                                     "Screenshots",
                                     "/storage/emulated/0/Pictures/Screenshots"
                             ),
                             directory(
                                     1,
-                                    "/storage/emulated/0/Pictures/KakaoTalk/14845794522132.png",
+                                    medium(path = "/storage/emulated/0/Pictures/KakaoTalk/14845794522132.png"),
                                     32,
                                     "KakaoTalk",
                                     "/storage/emulated/0/Pictures/KakaoTalk"
@@ -255,21 +255,21 @@ object MediumFixture {
                modified: Long = 0,
                taken: Long = 0,
                size: Long = 0,
+               orientation: Int = 0,
+               mimeType: String = "",
                viewType: GalleryType = GalleryType.MEDIUM
-
-
     ): Medium {
-        return Medium(id, name, path, modified, taken, size)
+        return Medium(id, name, path, modified, taken, size, orientation, mimeType)
     }
 
     fun directory(
             count: Int = 0,
-            thumbnail: String = "",
+            medium: Medium = MediumFixture.medium(),
             id: Long = 0,
             name: String = "",
             path: String = ""
     ): Directory {
-        return Directory(count, thumbnail, id, name, path)
+        return Directory(count, medium, id, name, path)
     }
 
 }
