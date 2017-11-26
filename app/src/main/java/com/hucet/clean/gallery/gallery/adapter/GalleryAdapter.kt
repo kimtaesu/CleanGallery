@@ -54,10 +54,6 @@ abstract class GalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
 
     override fun getItemCount() = items.size
 
-    fun syncUpdateData(newItems: List<Basic>) {
-        updateByDiff(calculateDiff(newItems))
-    }
-
     fun clearItems() {
         updateByDiff(calculateDiff(emptyList()))
     }

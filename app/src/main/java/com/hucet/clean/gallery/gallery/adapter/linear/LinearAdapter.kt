@@ -25,11 +25,14 @@ class LinearAdapter @Inject constructor() : GalleryAdapter() {
     lateinit var delegateLinearMap: Map<GalleryType, @JvmSuppressWildcards AbstractDelegateAdapter>
 
     override fun createDelegateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
+
         return delegateLinearMap[GalleryType.galleryType(viewType)]?.onCreateViewHolder(parent, viewType)
     }
 
 
     override fun onBindDelegateViewHolder(holder: RecyclerView.ViewHolder?, position: Int, glideRequests: GlideRequests?) {
+
+        println("!!!!!!!!! onBindDelegateViewHolder ${items.size} / position ${position}")
         val item = items[position]
         delegateLinearMap[item.viewType]?.onBindViewHolder(holder, position, item, glideRequests)
     }

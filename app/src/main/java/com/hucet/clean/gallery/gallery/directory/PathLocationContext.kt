@@ -4,6 +4,7 @@ import android.os.Environment
 import com.hucet.clean.gallery.config.*
 import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.filter.ImageVideoGifFilter
+import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.hucet.clean.gallery.gallery.view_mode.ViewModeType
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Medium
@@ -23,6 +24,7 @@ open class PathLocationContext(
         private val config: ApplicationConfig,
         private val mappers: Map<MapperType, SubjectMapper<Medium, out Basic>>
 ) : DirectoryRootChecker, OnConfigObserver {
+
 
     init {
         config.setDirectoryRootChecker(this)
@@ -91,5 +93,8 @@ open class PathLocationContext(
     }
 
     override fun onViewModeChanged(viewModeType: ViewModeType) {
+    }
+
+    override fun onSortChanged(sortOptions: SortOptions) {
     }
 }

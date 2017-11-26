@@ -1,6 +1,7 @@
 package com.hucet.clean.gallery.config
 
 import com.hucet.clean.gallery.gallery.category.CategoryMode
+import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.hucet.clean.gallery.gallery.view_mode.ViewModeType
 
 /**
@@ -9,6 +10,12 @@ import com.hucet.clean.gallery.gallery.view_mode.ViewModeType
 class ConfigLogic(
         private val config: ApplicationConfig
 ) : OnConfigObserver {
+    override fun onSortChanged(sortOptions: SortOptions) {
+        config.apply {
+            this.sortOptionType = sortOptions
+        }
+    }
+
     override fun onCategoryChanged(categoryMode: CategoryMode) {
         config.apply {
             this.categoryMode = categoryMode

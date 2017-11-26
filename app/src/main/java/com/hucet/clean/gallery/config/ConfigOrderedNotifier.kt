@@ -4,6 +4,7 @@ import com.hucet.clean.gallery.activity.MainActivity
 import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.filter.ImageVideoGifFilter
 import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter
+import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.hucet.clean.gallery.gallery.view_mode.ViewModeType
 
 /**
@@ -48,6 +49,10 @@ class ConfigOrderedNotifier(
             it.onViewModeChanged(viewModeType)
         }
     }
+
+    fun sortOptionNotify(selectedSort: SortOptions) {
+        orderedObservers.forEach {
+            it.onSortChanged(selectedSort)
+        }
+    }
 }
-
-

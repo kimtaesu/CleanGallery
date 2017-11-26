@@ -14,33 +14,23 @@ import com.hucet.clean.gallery.model.Basic
  * Created by taesu on 2017-11-27.
  */
 class ViewModeNavigator(val mapViewModeSetUp: Map<ViewModeType, @JvmSuppressWildcards ViewModeSwichable>) {
-
-    private fun getLoadedItems(adapter: GalleryAdapter?): List<Basic> {
-        adapter ?: return emptyList<Basic>()
-        return adapter.items
-    }
-
     fun setUpLayoutManager(activity: Activity, type: ViewModeType, recyclerView: RecyclerView, adapterFP: () -> GalleryAdapter?, onGalleryClicked: OnGalleryClickedListener) {
         val adapter = adapterFP()
-
-        val items = ArrayList<Basic>()
-        items.addAll(getLoadedItems(adapter))
         when (type) {
             ViewModeType.GRID -> {
                 val gridLayoutManager = GridLayoutManager(activity, 2)
-//                gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-//                    override fun getSpanSize(position: Int): Int {
-//                        return if (adapter?.getItemViewType(position) == GalleryType.DATE.value)
-//                            gridLayoutManager.spanCount
-//                        else
-//                            1
-//                    }
-//                }
+                gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return if (adapter?.getItemViewType(position) == GalleryType.DATE.value)
+                            gridLayoutManager.spanCount
+                        else
+                            1
+                    }
+                }
 
                 mapViewModeSetUp[type]?.switchViewMode(recyclerView,
                         gridLayoutManager,
                         GlideApp.with(activity),
-                        items,
                         onGalleryClicked
                 )
             }
@@ -48,7 +38,6 @@ class ViewModeNavigator(val mapViewModeSetUp: Map<ViewModeType, @JvmSuppressWild
                 mapViewModeSetUp[type]?.switchViewMode(recyclerView,
                         LinearLayoutManager(activity),
                         GlideApp.with(activity),
-                        items,
                         onGalleryClicked)
             }
         }

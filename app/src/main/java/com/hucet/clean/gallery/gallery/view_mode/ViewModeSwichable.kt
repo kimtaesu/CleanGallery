@@ -13,13 +13,13 @@ import javax.inject.Inject
  * Created by taesu on 2017-11-20.
  */
 interface ViewModeSwichable {
-    fun switchViewMode(recy: RecyclerView, manager: RecyclerView.LayoutManager, glideRequests: GlideRequests, items: List<Basic>, clickedListener: OnGalleryClickedListener)
+    fun switchViewMode(recy: RecyclerView, manager: RecyclerView.LayoutManager, glideRequests: GlideRequests, clickedListener: OnGalleryClickedListener)
 }
 
 @PerActivity
 class GridViewModeSetUp @Inject constructor() : ViewModeSwichable {
     @Inject lateinit var gridAdapter: GridAdapter
-    override fun switchViewMode(recy: RecyclerView, manager: RecyclerView.LayoutManager, glideRequests: GlideRequests, items: List<Basic>, clickedListener: OnGalleryClickedListener) {
+    override fun switchViewMode(recy: RecyclerView, manager: RecyclerView.LayoutManager, glideRequests: GlideRequests, clickedListener: OnGalleryClickedListener) {
         recy.apply {
             layoutManager = null
             adapter = null
@@ -29,7 +29,6 @@ class GridViewModeSetUp @Inject constructor() : ViewModeSwichable {
         gridAdapter.apply {
             setGlideRequest(glideRequests)
             setOnClickListener(recy, clickedListener)
-            syncUpdateData(items)
         }
     }
 }
@@ -37,7 +36,7 @@ class GridViewModeSetUp @Inject constructor() : ViewModeSwichable {
 @PerActivity
 class LinearViewModeSetUp @Inject constructor() : ViewModeSwichable {
     @Inject lateinit var linearAdapter: LinearAdapter
-    override fun switchViewMode(recy: RecyclerView, manager: RecyclerView.LayoutManager, glideRequests: GlideRequests, items: List<Basic>, clickedListener: OnGalleryClickedListener) {
+    override fun switchViewMode(recy: RecyclerView, manager: RecyclerView.LayoutManager, glideRequests: GlideRequests, clickedListener: OnGalleryClickedListener) {
         recy.apply {
             layoutManager = null
             adapter = null
@@ -48,7 +47,6 @@ class LinearViewModeSetUp @Inject constructor() : ViewModeSwichable {
         linearAdapter.apply {
             setGlideRequest(glideRequests)
             setOnClickListener(recy, clickedListener)
-            linearAdapter.syncUpdateData(items)
         }
     }
 

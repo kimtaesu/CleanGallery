@@ -22,11 +22,6 @@ class GalleryPresenter constructor(private val view: Gallery.View,
     override fun fetchItems(pathLocationContext: PathLocationContext, cacheInvalidate: Boolean) {
         repository
                 .getGalleries(pathLocationContext, cacheInvalidate)
-                .map {
-                    Timber.d("calculateDiff")
-                    val adapter = activity.getCurrentAdapter() ?: throw NullPointerException("adapter is null")
-                    adapter.calculateDiff(it)
-                }
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.main())
                 .doOnSubscribe {
@@ -41,7 +36,9 @@ class GalleryPresenter constructor(private val view: Gallery.View,
                 .subscribe(
                         { next ->
                             Timber.d("subscribe ${next}")
-                            activity.getCurrentAdapter()?.updateByDiff(next)
+                            val adapter = activity.getCurrentAdapter() ?: throw NullPointerException("adapter is null")
+                            val diffUtil = adapter.calculateDiff(next)
+                            activity.getCurrentAdapter()?.updateByDiff(diffUtil)
                         },
                         { error ->
                             error.printStackTrace()

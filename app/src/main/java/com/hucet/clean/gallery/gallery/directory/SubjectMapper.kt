@@ -66,6 +66,11 @@ sealed class SubjectMapper<T, R> {
     }
 
     class DateMediumMapper(private val dateTransformer: DateTransformer) : SubjectMapper<Medium, Basic>() {
+
+        override fun filter(items: List<Medium>, filter: (Medium) -> Boolean): List<Medium> {
+            return items.filter { filter(it) }
+        }
+
         override fun aggregate(items: List<Medium>, sortOption: () -> SortOptions): List<Basic> =
                 dateTransformer.transform(sortOption(), items)
     }

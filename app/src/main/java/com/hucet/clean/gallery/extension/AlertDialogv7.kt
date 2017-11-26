@@ -36,7 +36,8 @@ fun AlertDialog.Builder.createSortDialog(categoryMode: CategoryMode, sortOptions
             .positiveText(android.R.string.ok)
             .onPositive { dialog, which ->
                 val sortType = SortOptions.getFromSortBit(sortGroup.getCheckedItemIndex(sortItems) or orderGroup.getCheckedItemIndex(orderItems))
-                callback.invoke(sortType)
+                if (sortOptions.bit() != sortType.bit())
+                    callback(sortType)
             }
             .build()
 }
@@ -62,7 +63,8 @@ fun AlertDialog.Builder.createFilterDialog(filterBit: Long, fp: (Long) -> Unit):
                     .first { it.index == which }
                     .bitAtt.toInt()
         }
-        fp.invoke(filterType.toLong())
+        if (filterBit != filterType.toLong())
+            fp(filterType.toLong())
         true
     }
 

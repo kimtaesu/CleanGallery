@@ -4,6 +4,8 @@ import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcel
+import android.os.Parcelable
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -18,12 +20,15 @@ import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.config.ConfigOrderedNotifier
 import com.hucet.clean.gallery.config.OnConfigObserver
 import com.hucet.clean.gallery.extension.createFilterDialog
+import com.hucet.clean.gallery.extension.createSortDialog
 import com.hucet.clean.gallery.extension.startAsAnimation
+import com.hucet.clean.gallery.extension.toastTodo
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.view_mode.ViewModeType
 import com.hucet.clean.gallery.gallery.glide.GlideApp
 import com.hucet.clean.gallery.gallery.directory.PathLocationContext
+import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.hucet.clean.gallery.gallery.view_mode.ViewModeNavigator
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Directory
@@ -40,7 +45,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.View, OnConfigObserver {
+class MainActivity() : AppCompatActivity(), HasSupportFragmentInjector, Gallery.View, OnConfigObserver {
+
     @Inject
     lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
@@ -177,9 +183,9 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item?.itemId) {
-//        R.id.action_settings -> {
-//            startSettingActivity()
-//        }
+            R.id.action_settings -> {
+                toastTodo(this)
+            }
             R.id.action_category_mode -> {
                 with(config) {
                     configOrderedNotifier.categoryNotify(categoryMode.toggle())
@@ -191,37 +197,20 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
                     configOrderedNotifier.viewModeNotify(viewModeType.toggle())
                     updateViewModeItem(item, viewModeType)
                 }
-//            val viewMode = readOnlyConfigs.getViewModeType().toggle()
-//            readOnlyConfigs = config.ReadOnlyConfigBuild {
-//                viewMode(viewMode)
-//            }
-//            onViewModechangedListener?.invoke(readOnlyConfigs.getViewModeType())
-//            updateViewModeItem(item, viewMode, readOnlyConfigs.getCategoryMode())
             }
             R.id.action_sort -> {
-//            AlertDialog.Builder(this).createSortDialog(readOnlyConfigs, config.isRoot(), {
-//                readOnlyConfigs = config.ReadOnlyConfigBuild {
-//                    sortType(it)
-//                }
-//                onSortChanged(readOnlyConfigs)
-//            }).show()
+                AlertDialog.Builder(this).createSortDialog(config.categoryMode,
+                        config.sortOptionType,
+                        pathLocationContext.isRoot(),
+                        { selectedSort ->
+                            configOrderedNotifier.sortOptionNotify(selectedSort)
+                        })
+                        .show()
             }
             R.id.action_filter -> {
-                AlertDialog.Builder(this).createFilterDialog(config.filterdType, { filter ->
-                    with(config)
-                    {
-                        if (filterdType != filter) {
-                            configOrderedNotifier.filterNotify(filter)
-                        }
-                    }
+                AlertDialog.Builder(this).createFilterDialog(config.filterdType, { seletecFilter ->
+                    configOrderedNotifier.filterNotify(seletecFilter)
                 }).show()
-
-//            AlertDialog.Builder(this).createFilterDialog(readOnlyConfigs, {
-//                readOnlyConfigs = config.ReadOnlyConfigBuild {
-//                    filterType(it)
-//                }
-//                onFilterChanged(readOnlyConfigs)
-//            }).show()
             }
             else -> {
                 super.onOptionsItemSelected(item)
@@ -230,29 +219,37 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
         return true
     }
 
+    override fun onSortChanged(sortOptions: SortOptions) {
+        getCurrentAdapter()?.clearItems()
+        setUpLayout()
+        requestFetch()
+    }
+
     override fun onCategoryChanged(categoryMode: CategoryMode) {
-        with(config)
-        {
-            getCurrentAdapter()?.clearItems()
-            updateViewModeItem(viewModeItem, viewModeType)
-            viewModeNavigator.setUpLayoutManager(this@MainActivity,
-                    viewModeType, gallery_list, { getCurrentAdapter() }, onGalleryClicked)
-            requestFetch()
-        }
+        getCurrentAdapter()?.clearItems()
+        updateViewModeItem(viewModeItem, config.viewModeType)
+        setUpLayout()
+        requestFetch()
     }
 
     override fun onFilterChanged(filterBit: Long) {
+        getCurrentAdapter()?.clearItems()
+        setUpLayout()
         requestFetch()
     }
 
     override fun onViewModeChanged(viewModeType: ViewModeType) {
         getCurrentAdapter()?.clearItems()
-        viewModeNavigator.setUpLayoutManager(this@MainActivity,
-                viewModeType, gallery_list, { getCurrentAdapter() }, onGalleryClicked)
+        setUpLayout()
         requestFetch()
     }
 
-    val onGalleryClicked: OnGalleryClickedListener = { basic: Basic, imageView: ImageView ->
+    private fun setUpLayout() {
+        viewModeNavigator.setUpLayoutManager(this@MainActivity,
+                config.viewModeType, gallery_list, { getCurrentAdapter() }, onGalleryClicked)
+    }
+
+    private val onGalleryClicked: OnGalleryClickedListener = { basic: Basic, imageView: ImageView ->
         Timber.d("onGalleryClicked ${basic}")
         when (basic) {
             is Medium -> {
