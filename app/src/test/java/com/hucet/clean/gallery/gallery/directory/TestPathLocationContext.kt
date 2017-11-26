@@ -11,7 +11,7 @@ import com.hucet.clean.gallery.model.Medium
 class TestPathLocationContext(
         private val imageVideoGifFilter: ImageVideoGifFilter,
         private val config: ApplicationConfig,
-        private val mappers: Map<DirectoryType, SubjectMapper<Medium, out Basic>>
+        private val mappers: Map<MapperType, SubjectMapper<Medium, out Basic>>
 ) : PathLocationContext(imageVideoGifFilter, config, mappers) {
     override fun getRootPath(): String {
         return "Root"

@@ -2,7 +2,9 @@ package com.hucet.clean.gallery.gallery.directory
 
 import android.os.Environment
 import com.hucet.clean.gallery.config.*
+import com.hucet.clean.gallery.gallery.category.CategoryMode
 import com.hucet.clean.gallery.gallery.filter.ImageVideoGifFilter
+import com.hucet.clean.gallery.gallery.view_mode.ViewModeType
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Medium
 import java.util.concurrent.atomic.AtomicReference
@@ -19,18 +21,25 @@ interface DirectoryRootChecker {
 open class PathLocationContext(
         private val imageVideoGifFilter: ImageVideoGifFilter,
         private val config: ApplicationConfig,
-        private val mappers: Map<DirectoryType, SubjectMapper<Medium, out Basic>>
-) : DirectoryRootChecker {
+        private val mappers: Map<MapperType, SubjectMapper<Medium, out Basic>>
+) : DirectoryRootChecker, OnConfigObserver {
 
     init {
         config.setDirectoryRootChecker(this)
     }
 
-    enum class DirectoryType {
+    enum class MapperType {
         ROOT, MEDIUM, DATE
     }
 
+    private var type = MapperType.ROOT
+
     private var curPath = AtomicReference<String>(getRootPath())
+
+    init {
+        curPath = AtomicReference<String>(getRootPath())
+        onCategoryChanged(config.categoryMode)
+    }
 
     fun movePath(path: String) {
         updatePath(path)
@@ -50,12 +59,19 @@ open class PathLocationContext(
 
     fun getCurrentPath() = curPath.get()
 
-    fun map(items: List<Medium>): List<Basic> {
-        return if (isRoot()) allInOne(DirectoryType.ROOT, items)
-        else allInOne(DirectoryType.MEDIUM, items)
+    fun map(items: List<Medium>): List<Basic> = when (type) {
+        MapperType.ROOT -> {
+            allInOne(MapperType.ROOT, items)
+        }
+        MapperType.MEDIUM -> {
+            allInOne(MapperType.MEDIUM, items)
+        }
+        MapperType.DATE -> {
+            allInOne(MapperType.DATE, items)
+        }
     }
 
-    private fun allInOne(type: DirectoryType, items: List<Medium>): List<Basic> {
+    private fun allInOne(type: MapperType, items: List<Medium>): List<Basic> {
         return mappers.getValue(type).allInOne(
                 getCurrentPath(),
                 imageVideoGifFilter,
@@ -63,5 +79,29 @@ open class PathLocationContext(
                 config.sortOptionType,
                 items
         )
+    }
+
+    override fun onCategoryChanged(categoryMode: CategoryMode) {
+        println("!!!!!!!! PathLocationContext")
+
+        when (categoryMode) {
+            CategoryMode.DATE -> {
+                moveRoot()
+                type = MapperType.DATE
+            }
+            CategoryMode.DIRECTORY -> {
+                if (isRoot())
+                    type = MapperType.ROOT
+                else
+                    type = MapperType.MEDIUM
+            }
+        }
+        println("!!!!!!!!! PathLocationContext $type")
+    }
+
+    override fun onFilterChanged(filterBit: Long) {
+    }
+
+    override fun onViewModeChanged(viewModeType: ViewModeType) {
     }
 }

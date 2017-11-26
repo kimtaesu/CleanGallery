@@ -46,6 +46,7 @@ class SortComparatorFactory {
         }
 
         fun getDirComparable(sortOption: SortOptions): (Directory, Directory) -> Int {
+            println("!!!!!!!!! ${sortOption.sort}")
             return when (sortOption.sort) {
                 DIR_NAME -> {
                     return { o1: Directory, o2: Directory ->

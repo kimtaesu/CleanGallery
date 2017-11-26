@@ -3,7 +3,6 @@ package com.hucet.clean.gallery.inject.modules
 import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.gallery.category.DateTransformer
 import com.hucet.clean.gallery.gallery.category.DirTransformer
-import com.hucet.clean.gallery.gallery.directory.DirectoryRootChecker
 import com.hucet.clean.gallery.gallery.directory.PathLocationContext
 import com.hucet.clean.gallery.gallery.directory.PathLocationContext.*
 import com.hucet.clean.gallery.gallery.directory.SubjectMapper
@@ -26,9 +25,9 @@ class PathContextModule() {
             dirTransformer: DirTransformer,
             dateTransformer: DateTransformer
     ): PathLocationContext {
-        val mappers = mapOf(DirectoryType.ROOT to SubjectMapper.DirecotryRootMapper(dirTransformer),
-                DirectoryType.MEDIUM to SubjectMapper.DirectoryMediumMapper(),
-                DirectoryType.DATE to SubjectMapper.DateMediumMapper(dateTransformer))
+        val mappers = mapOf(MapperType.ROOT to SubjectMapper.DirecotryRootMapper(dirTransformer),
+                MapperType.MEDIUM to SubjectMapper.DirectoryMediumMapper(),
+                MapperType.DATE to SubjectMapper.DateMediumMapper(dateTransformer))
         return PathLocationContext(imageVideoGifFilter, config, mappers)
     }
 }

@@ -12,10 +12,11 @@ import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.Toast
 import com.hucet.clean.gallery.OnGalleryClickedListener
-import com.hucet.clean.gallery.OnViewModechangedListener
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.activity.drawable.MemoryCacheDrawable
 import com.hucet.clean.gallery.config.ApplicationConfig
+import com.hucet.clean.gallery.config.ConfigOrderedNotifier
+import com.hucet.clean.gallery.config.OnConfigObserver
 import com.hucet.clean.gallery.extension.startAsAnimation
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.category.CategoryMode
@@ -38,7 +39,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.View {
+class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.View, OnConfigObserver {
     @Inject
     lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
@@ -50,8 +51,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
     @Inject lateinit var presenter: Gallery.Presenter
     @Inject lateinit var config: ApplicationConfig
     @Inject lateinit var viewModeNavigator: ViewModeNavigator
-
-    private var onViewModechangedListener: OnViewModechangedListener? = null
+    @Inject lateinit var configOrderedNotifier: ConfigOrderedNotifier
 
     private var viewModeItem: MenuItem? = null
 
@@ -127,21 +127,23 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
         presenter.fetchItems(pathLocationContext, false)
     }
 
-    fun onCategoryModeChanged() {
-        getCurrentAdapter()?.syncClearItems()
-        viewModeNavigator.setUpLayoutManager(this, config.viewModeType, gallery_list, { getCurrentAdapter() }, onGalleryClicked)
-        requestFetch()
+    private fun initToolbar() {
+        setSupportActionBar(toolbar)
+        supportActionBar?.setTitle(R.string.app_name)
     }
 
-    fun onFilterChanged() {
-        requestFetch()
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        viewModeItem = menu?.findItem(R.id.action_view_mode)
+        updateViewModeItem(viewModeItem, config.viewModeType)
+        val categoryItem = menu?.findItem(R.id.action_category_mode)
+        updateCategoryItem(categoryItem, config.categoryMode)
+        return true
     }
 
-    fun onSortChanged() {
-        requestFetch()
-    }
 
-    private fun updateCategory(item: MenuItem?, categoryMode: CategoryMode) {
+    private fun updateCategoryItem(item: MenuItem?, categoryMode: CategoryMode) {
         when (categoryMode) {
             CategoryMode.DIRECTORY -> {
                 item?.startAsAnimation(MemoryCacheDrawable.getDrawable(R.drawable.ic_directory2date_animation, this))
@@ -152,18 +154,18 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
         }
     }
 
-    private fun updateViewMode(item: MenuItem?, viewMode: ViewModeType, categoryMode: CategoryMode) {
-        val isRestrict = !config.isCategoryDate()
-        item?.isEnabled = isRestrict
+    private fun updateViewModeItem(item: MenuItem?, viewMode: ViewModeType) {
+        val isDate = !config.isCategoryDate()
+        item?.isEnabled = isDate
         when (viewMode) {
             ViewModeType.GRID -> {
-                if (isRestrict)
+                if (isDate)
                     item?.startAsAnimation(MemoryCacheDrawable.getDrawable(R.drawable.ic_grid2list_animation, this))
                 else
                     item?.startAsAnimation(MemoryCacheDrawable.getDrawable(R.drawable.ic_view_mode_list_disable, this))
             }
             ViewModeType.LINEAR -> {
-                if (isRestrict)
+                if (isDate)
                     item?.startAsAnimation(MemoryCacheDrawable.getDrawable(R.drawable.ic_list2grid_animation, this))
                 else
                     item?.startAsAnimation(MemoryCacheDrawable.getDrawable(R.drawable.ic_view_mode_grid_disable, this))
@@ -172,78 +174,65 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
     }
 
 
-    private fun initToolbar() {
-        setSupportActionBar(toolbar)
-        supportActionBar?.setTitle(R.string.app_name)
-    }
-
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        viewModeItem = menu?.findItem(R.id.action_view_mode)
-        updateViewMode(viewModeItem, config.viewModeType, config.categoryMode)
-        val categoryItem = menu?.findItem(R.id.action_category_mode)
-        updateCategory(categoryItem, config.categoryMode)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item?.itemId) {
 //        R.id.action_settings -> {
 //            startSettingActivity()
 //            true
 //        }
-        R.id.action_category_mode -> {
-//            val categoryMode = readOnlyConfigs.getCategoryMode().toggle()
-//
-//            readOnlyConfigs = config.ReadOnlyConfigBuild {
-//                categoryMode(categoryMode)
-//                if (isGridRestriction(categoryMode))
-//                    viewMode(ViewModeType.GRID)
-//            }
-//            updateViewMode(viewModeItem, readOnlyConfigs.getViewModeType(), readOnlyConfigs.getCategoryMode())
-//
-//            if (isGridRestriction(categoryMode)) {
-//                pathLocationContext.moveRoot()
-//                refreshSortType()
-//            }
-//            onCategoryModeChanged(readOnlyConfigs)
-//            updateCategory(item, categoryMode)
-            true
-        }
-        R.id.action_view_mode -> {
+            R.id.action_category_mode -> {
+                with(config) {
+                    configOrderedNotifier.categoryNotify(categoryMode.toggle())
+                    updateCategoryItem(item, categoryMode)
+                }
+            }
+            R.id.action_view_mode -> {
 //            val viewMode = readOnlyConfigs.getViewModeType().toggle()
 //            readOnlyConfigs = config.ReadOnlyConfigBuild {
 //                viewMode(viewMode)
 //            }
 //            onViewModechangedListener?.invoke(readOnlyConfigs.getViewModeType())
-//            updateViewMode(item, viewMode, readOnlyConfigs.getCategoryMode())
-            true
-        }
-        R.id.action_sort -> {
+//            updateViewModeItem(item, viewMode, readOnlyConfigs.getCategoryMode())
+            }
+            R.id.action_sort -> {
 //            AlertDialog.Builder(this).createSortDialog(readOnlyConfigs, config.isRoot(), {
 //                readOnlyConfigs = config.ReadOnlyConfigBuild {
 //                    sortType(it)
 //                }
 //                onSortChanged(readOnlyConfigs)
 //            }).show()
-            true
-        }
-        R.id.action_filter -> {
+            }
+            R.id.action_filter -> {
 //            AlertDialog.Builder(this).createFilterDialog(readOnlyConfigs, {
 //                readOnlyConfigs = config.ReadOnlyConfigBuild {
 //                    filterType(it)
 //                }
 //                onFilterChanged(readOnlyConfigs)
 //            }).show()
-            true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
         }
-        else -> {
-            super.onOptionsItemSelected(item)
+        return true
+    }
+
+    override fun onCategoryChanged(categoryMode: CategoryMode) {
+        with(config)
+        {
+            updateViewModeItem(viewModeItem, viewModeType)
+            viewModeNavigator.setUpLayoutManager(this@MainActivity,
+                    viewModeType, gallery_list, { getCurrentAdapter() }, onGalleryClicked)
+            requestFetch()
         }
     }
 
-    fun setOnViewModeChangedListener(onViewModeChanged: (ViewModeType) -> Unit) {
-        onViewModechangedListener = onViewModeChanged
+    override fun onFilterChanged(filterBit: Long) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onViewModeChanged(viewModeType: ViewModeType) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     val onGalleryClicked: OnGalleryClickedListener = { basic: Basic, imageView: ImageView ->
