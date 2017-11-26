@@ -5,8 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AlertDialog
@@ -25,7 +23,6 @@ import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.config.ReadOnlyConfigs
 import com.hucet.clean.gallery.extension.createFilterDialog
 import com.hucet.clean.gallery.extension.createSortDialog
-import com.hucet.clean.gallery.extension.isExternalStorageDir
 import com.hucet.clean.gallery.extension.startAsAnimation
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.adapter.GalleryType
@@ -34,6 +31,7 @@ import com.hucet.clean.gallery.gallery.fragment.GalleryDetailFragment
 import com.hucet.clean.gallery.gallery.fragment.ViewModeType
 import com.hucet.clean.gallery.gallery.glide.GlideApp
 import com.hucet.clean.gallery.gallery.fragment.switchable.ViewModeSwichable
+import com.hucet.clean.gallery.gallery.directory.DirectoryContext
 import com.hucet.clean.gallery.model.Basic
 import com.hucet.clean.gallery.model.Directory
 import com.hucet.clean.gallery.model.MediaType
@@ -50,7 +48,6 @@ import timber.log.Timber
 import javax.inject.Inject
 
 
-@RuntimePermissions
 class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.View {
     @Inject
     lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
@@ -59,6 +56,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
         return fragmentDispatchingAndroidInjector
     }
 
+    @Inject lateinit var directoryContext: DirectoryContext
     @Inject lateinit var presenter: Gallery.Presenter
     @Inject lateinit var mapViewModeSetUp: Map<ViewModeType, @JvmSuppressWildcards ViewModeSwichable>
     @Inject lateinit var config: ApplicationConfig
@@ -144,7 +142,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
     }
 
     private fun requestFetch() {
-        presenter.fetchItems(config.curPath, config.isRoot(), readOnlyConfigs, false)
+        presenter.fetchItems(directoryContext, readOnlyConfigs, false)
     }
 
     fun onCategoryModeChanged(readOnlyConfigs: ReadOnlyConfigs) {
@@ -228,7 +226,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
             updateViewMode(viewModeItem, readOnlyConfigs.getViewModeType(), readOnlyConfigs.getCategoryMode())
 
             if (isGridRestriction(categoryMode)) {
-                config.curPath = Environment.getExternalStorageDirectory().path
+                directoryContext.moveRoot()
                 refreshSortType()
             }
             onCategoryModeChanged(readOnlyConfigs)
@@ -332,7 +330,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
                 ViewCompat.setTransitionName(imageView, basic.name)
             }
             is Directory -> {
-                config.curPath = basic.path
+                directoryContext.movePath(basic.path)
                 refreshSortType()
                 requestFetch()
             }
@@ -360,8 +358,8 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
     }
 
     private fun canBack(): Boolean {
-        if (!config.curPath.isExternalStorageDir()) {
-            config.curPath = Environment.getExternalStorageDirectory().absolutePath
+        if (!directoryContext.isRoot()) {
+            directoryContext.moveRoot()
             refreshSortType()
             requestFetch()
             return false

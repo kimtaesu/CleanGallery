@@ -14,7 +14,7 @@ import javax.inject.Inject
 class ApplicationConfig @Inject constructor(
         val application: Application
 ) {
-    var curPath = Environment.getExternalStorageDirectory().absolutePath
+//    private var curPath = Environment.getExternalStorageDirectory().absolutePath
 
     fun isRoot() = curPath.isExternalStorageDir()
 
