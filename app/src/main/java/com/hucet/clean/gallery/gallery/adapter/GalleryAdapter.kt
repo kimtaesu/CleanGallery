@@ -58,7 +58,7 @@ abstract class GalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
         updateByDiff(calculateDiff(newItems))
     }
 
-    fun syncClearItems() {
+    fun clearItems() {
         updateByDiff(calculateDiff(emptyList()))
     }
 

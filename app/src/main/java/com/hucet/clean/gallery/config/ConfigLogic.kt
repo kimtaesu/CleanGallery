@@ -10,22 +10,24 @@ class ConfigLogic(
         private val config: ApplicationConfig
 ) : OnConfigObserver {
     override fun onCategoryChanged(categoryMode: CategoryMode) {
-        println("!!!!!!!! ConfigLogic")
         config.apply {
             this.categoryMode = categoryMode
             if (isCategoryDate()) {
                 viewModeType = ViewModeType.GRID
             }
         }
-        println("!!!!!!!! ConfigLogic ${config.categoryMode}")
     }
 
     override fun onFilterChanged(filterBit: Long) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        config.apply {
+            filterdType = filterBit
+        }
     }
 
     override fun onViewModeChanged(viewModeType: ViewModeType) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        config.apply {
+            this.viewModeType = viewModeType
+        }
     }
 
 }

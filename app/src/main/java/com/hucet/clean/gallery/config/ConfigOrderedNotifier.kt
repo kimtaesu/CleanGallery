@@ -37,6 +37,12 @@ class ConfigOrderedNotifier(
         }
     }
 
+    fun filterNotify(filterBit: Long) {
+        orderedObservers.forEach {
+            it.onFilterChanged(filterBit)
+        }
+    }
+
     fun viewModeNotify(viewModeType: ViewModeType) {
         orderedObservers.forEach {
             it.onViewModeChanged(viewModeType)

@@ -32,8 +32,6 @@ open class PathLocationContext(
         ROOT, MEDIUM, DATE
     }
 
-    private var type = MapperType.ROOT
-
     private var curPath = AtomicReference<String>(getRootPath())
 
     init {
@@ -59,15 +57,15 @@ open class PathLocationContext(
 
     fun getCurrentPath() = curPath.get()
 
-    fun map(items: List<Medium>): List<Basic> = when (type) {
-        MapperType.ROOT -> {
-            allInOne(MapperType.ROOT, items)
-        }
-        MapperType.MEDIUM -> {
-            allInOne(MapperType.MEDIUM, items)
-        }
-        MapperType.DATE -> {
+    fun switchMap(items: List<Medium>): List<Basic> = when (config.categoryMode) {
+        CategoryMode.DATE -> {
             allInOne(MapperType.DATE, items)
+        }
+        CategoryMode.DIRECTORY -> {
+            if (isRoot())
+                allInOne(MapperType.ROOT, items)
+            else
+                allInOne(MapperType.MEDIUM, items)
         }
     }
 
@@ -82,21 +80,11 @@ open class PathLocationContext(
     }
 
     override fun onCategoryChanged(categoryMode: CategoryMode) {
-        println("!!!!!!!! PathLocationContext")
-
         when (categoryMode) {
             CategoryMode.DATE -> {
                 moveRoot()
-                type = MapperType.DATE
-            }
-            CategoryMode.DIRECTORY -> {
-                if (isRoot())
-                    type = MapperType.ROOT
-                else
-                    type = MapperType.MEDIUM
             }
         }
-        println("!!!!!!!!! PathLocationContext $type")
     }
 
     override fun onFilterChanged(filterBit: Long) {

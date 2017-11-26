@@ -3,6 +3,8 @@ package com.hucet.clean.gallery.gallery.directory
 import com.hucet.clean.gallery.gallery.category.DateTransformer
 import com.hucet.clean.gallery.gallery.category.DirTransformer
 import com.hucet.clean.gallery.gallery.filter.ImageVideoGifFilter
+import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter.Companion.FILTERED
+import com.hucet.clean.gallery.gallery.filter.MediaTypeFilter.Companion.NOT_FILTERED
 import com.hucet.clean.gallery.gallery.sort.SortComparatorFactory
 import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.hucet.clean.gallery.model.Basic
@@ -28,9 +30,7 @@ sealed class SubjectMapper<T, R> {
         return items.let {
             map(it, { curPath })
         }.let {
-            filter(it, { medium ->
-                imageVideoGifFilter.filterd(medium, filterBit)
-            })
+            filter(it, { medium -> imageVideoGifFilter.filterd(medium, filterBit) == NOT_FILTERED })
         }.let {
             sort(it, { sortOption })
         }.let {
@@ -39,16 +39,24 @@ sealed class SubjectMapper<T, R> {
     }
 
     class DirectoryMediumMapper : SubjectMapper<Medium, Medium>() {
-        override fun map(items: List<Medium>, curPath: () -> String): List<Medium> =
-                items.filter { it.path.startsWith(curPath()) }
+        override fun map(items: List<Medium>, curPath: () -> String): List<Medium> {
+            return items.filter { it.path.startsWith(curPath()) }
+        }
 
-        override fun filter(items: List<Medium>, filter: (Medium) -> Boolean): List<Medium> =
-                items.filter { filter(it) }
 
-        override fun sort(items: List<Medium>, sortOption: () -> SortOptions): List<Medium> =
-                items.sortedWith(SortComparatorFactory.createComparator(sortOption()))
+        override fun filter(items: List<Medium>, filter: (Medium) -> Boolean): List<Medium> {
+            return items.filter { filter(it) }
+        }
 
-        override fun aggregate(items: List<Medium>, sortOption: () -> SortOptions): List<Medium> = items
+
+        override fun sort(items: List<Medium>, sortOption: () -> SortOptions): List<Medium> {
+            return items.sortedWith(SortComparatorFactory.createComparator(sortOption()))
+        }
+
+
+        override fun aggregate(items: List<Medium>, sortOption: () -> SortOptions): List<Medium> {
+            return items
+        }
 
     }
 

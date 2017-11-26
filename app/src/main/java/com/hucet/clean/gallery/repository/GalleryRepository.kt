@@ -14,7 +14,7 @@ class GalleryRepository(
     fun getGalleries(pathLocationContext: PathLocationContext, cacheInvalidate: Boolean): Flowable<List<Basic>> {
         return localDataSource.getGalleries(cacheInvalidate)
                 .switchMap {
-                    Flowable.just(pathLocationContext.map(it))
+                    Flowable.just(pathLocationContext.switchMap(it))
                 }
     }
 }

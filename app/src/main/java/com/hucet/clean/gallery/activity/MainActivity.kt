@@ -17,6 +17,7 @@ import com.hucet.clean.gallery.activity.drawable.MemoryCacheDrawable
 import com.hucet.clean.gallery.config.ApplicationConfig
 import com.hucet.clean.gallery.config.ConfigOrderedNotifier
 import com.hucet.clean.gallery.config.OnConfigObserver
+import com.hucet.clean.gallery.extension.createFilterDialog
 import com.hucet.clean.gallery.extension.startAsAnimation
 import com.hucet.clean.gallery.gallery.adapter.GalleryAdapter
 import com.hucet.clean.gallery.gallery.category.CategoryMode
@@ -178,7 +179,6 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
         when (item?.itemId) {
 //        R.id.action_settings -> {
 //            startSettingActivity()
-//            true
 //        }
             R.id.action_category_mode -> {
                 with(config) {
@@ -187,6 +187,10 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
                 }
             }
             R.id.action_view_mode -> {
+                with(config) {
+                    configOrderedNotifier.viewModeNotify(viewModeType.toggle())
+                    updateViewModeItem(item, viewModeType)
+                }
 //            val viewMode = readOnlyConfigs.getViewModeType().toggle()
 //            readOnlyConfigs = config.ReadOnlyConfigBuild {
 //                viewMode(viewMode)
@@ -203,6 +207,15 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
 //            }).show()
             }
             R.id.action_filter -> {
+                AlertDialog.Builder(this).createFilterDialog(config.filterdType, { filter ->
+                    with(config)
+                    {
+                        if (filterdType != filter) {
+                            configOrderedNotifier.filterNotify(filter)
+                        }
+                    }
+                }).show()
+
 //            AlertDialog.Builder(this).createFilterDialog(readOnlyConfigs, {
 //                readOnlyConfigs = config.ReadOnlyConfigBuild {
 //                    filterType(it)
@@ -220,6 +233,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
     override fun onCategoryChanged(categoryMode: CategoryMode) {
         with(config)
         {
+            getCurrentAdapter()?.clearItems()
             updateViewModeItem(viewModeItem, viewModeType)
             viewModeNavigator.setUpLayoutManager(this@MainActivity,
                     viewModeType, gallery_list, { getCurrentAdapter() }, onGalleryClicked)
@@ -228,11 +242,14 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.Vi
     }
 
     override fun onFilterChanged(filterBit: Long) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        requestFetch()
     }
 
     override fun onViewModeChanged(viewModeType: ViewModeType) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        getCurrentAdapter()?.clearItems()
+        viewModeNavigator.setUpLayoutManager(this@MainActivity,
+                viewModeType, gallery_list, { getCurrentAdapter() }, onGalleryClicked)
+        requestFetch()
     }
 
     val onGalleryClicked: OnGalleryClickedListener = { basic: Basic, imageView: ImageView ->

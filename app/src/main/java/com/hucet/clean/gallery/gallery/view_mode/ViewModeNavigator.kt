@@ -28,14 +28,14 @@ class ViewModeNavigator(val mapViewModeSetUp: Map<ViewModeType, @JvmSuppressWild
         when (type) {
             ViewModeType.GRID -> {
                 val gridLayoutManager = GridLayoutManager(activity, 2)
-                gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                    override fun getSpanSize(position: Int): Int {
-                        return if (adapter?.getItemViewType(position) == GalleryType.DATE.value)
-                            gridLayoutManager.spanCount
-                        else
-                            1
-                    }
-                }
+//                gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+//                    override fun getSpanSize(position: Int): Int {
+//                        return if (adapter?.getItemViewType(position) == GalleryType.DATE.value)
+//                            gridLayoutManager.spanCount
+//                        else
+//                            1
+//                    }
+//                }
 
                 mapViewModeSetUp[type]?.switchViewMode(recyclerView,
                         gridLayoutManager,

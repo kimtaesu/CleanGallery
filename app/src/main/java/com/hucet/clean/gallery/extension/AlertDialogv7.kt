@@ -7,20 +7,20 @@ import android.widget.RadioGroup
 import com.afollestad.materialdialogs.MaterialDialog
 import com.hucet.clean.gallery.R
 import com.hucet.clean.gallery.config.ApplicationConfig
-import com.hucet.clean.gallery.gallery.directory.PathLocationContext
-import com.hucet.clean.gallery.gallery.mapper.DialogRadioItemMapper
+import com.hucet.clean.gallery.gallery.category.CategoryMode
+import com.hucet.clean.gallery.gallery.mapper.DialogFilterMapper
+import com.hucet.clean.gallery.gallery.mapper.DialogSortMapper
 import com.hucet.clean.gallery.gallery.sort.SortOptions
 import com.hucet.clean.gallery.model.DialogRadioItem
-import com.hucet.clean.gallery.model.Medium
 
 
 /**
  * Created by taesu on 2017-11-16.
  */
-fun AlertDialog.Builder.createSortDialog(config: ApplicationConfig, isRoot: Boolean, callback: (SortOptions) -> Unit): MaterialDialog {
-    val mapper = DialogRadioItemMapper.SortMapper()
+fun AlertDialog.Builder.createSortDialog(categoryMode: CategoryMode, sortOptions: SortOptions, isRoot: Boolean, callback: (SortOptions) -> Unit): MaterialDialog {
+    val mapper = DialogSortMapper()
     val v = LayoutInflater.from(context).inflate(R.layout.dialog_sorting, null)
-    val items = mapper.map(context, config, isRoot)
+    val items = mapper.map(context, categoryMode, sortOptions, isRoot)
     val sortItems = items[SortOptions.SORT_TYPE.KEY]!!
     val orderItems = items[SortOptions.ORDER_BY.KEY]!!
 
@@ -52,9 +52,9 @@ private fun addRadioChilden(radioGroup: RadioGroup, radioItems: List<DialogRadio
 }
 
 
-fun AlertDialog.Builder.createFilterDialog(config: ApplicationConfig, fp: (Long) -> Unit): MaterialDialog {
-    val mapper = DialogRadioItemMapper.FilterMapper()
-    val resultMap = mapper.map(context, config, false)
+fun AlertDialog.Builder.createFilterDialog(filterBit: Long, fp: (Long) -> Unit): MaterialDialog {
+    val mapper = DialogFilterMapper()
+    val resultMap = mapper.map(context, filterBit)
     val listItem = resultMap.values.flatMap { it }
     val callback = MaterialDialog.ListCallbackMultiChoice { _, which, _ ->
         val filterType = which.sumBy { which ->

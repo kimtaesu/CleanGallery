@@ -22,7 +22,7 @@ class SortMapperTest : SubjectSpek<DialogRadioItemMapper>({
     given("a sortMapper")
     {
         subject {
-            DialogRadioItemMapper.SortMapper()
+            DialogRadioItemMapper.DialogSortMapper()
         }
         on("directory check item")
         {
