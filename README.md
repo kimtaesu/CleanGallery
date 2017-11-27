@@ -16,7 +16,7 @@ Gallery라는 주제로 Clean Code를 지향하며 Architecture를 보다 나은
 * [Mockito](http://site.mockito.org/)
 * [Spek](https://github.com/spekframework/spek)
 
-## Sequence flow
+## Data Sequential flow
 ![](https://github.com/kimtaesu/CleanGallery/blob/performance/document/flow.png)
 
 ### DataStore & Filter
@@ -115,11 +115,74 @@ Data Layer는 여러 External data layer 대한 **Access Point**입니다. 현�
 ### Local
 Local Layer는 [MediaFetcher](https://github.com/kimtaesu/CleanGallery/blob/master/app/src/main/java/com/hucet/clean/gallery/datasource/local/MediaFetcher.kt)를 사용하여 데이터를 가져올 수 있습니다. MediaFetcher는 [ContentResolver](https://developer.android.com/reference/android/content/ContentResolver.html)의 Query를 통해 Local의 저장되어 있는 Image, Video, Gif를 가져옵니다.
 
+## Design Patterns
+### MediaFilter (Chain of responsibility)
+
+<img src="document/screen_filter.png" alt="Smiley face" height="230" width="230">
+
+ * [ImageVideoGifFilter][ImageVideoGifFilter]는 Media type [Image, Video, Gif]을 filter 합니다.
+ * [HiddenFileFilter][HiddenFileFilter]는 Hidden file을 filter 합니다.
+
+![](document/design_pattern_chainOfResponsibility.jpg)
+
+### MediaFilter (State)
+
+CleanGallery의 Category는 [Directory, Date]로 구성되어 있습니다.
+또, Directory 구조에서 [Root, Medium] 으로 구분하고 있습니다.
+
+![](document/category.jpg)
+
+이 부분의 구조가 처음부터 잘못되어 있다면, 유지보수 하는 내내 if ~ else 가 남발될 수 있는 상황을 초래할 수 있습니다.
+
+그래서 State Pattern을 사용하였습니다.
+
+![](document/design_pattern_suject.jpg)
+
+ * [PathLocationContext][PathLocationContext]는 `isRoot` 상태를 확인하며, `switchMap`을 통해 적절한 Type으로 Mapping 합니다.
+ * [SubjectMapper][SubjectMapper]는 [DirectoryMediumMapper, DirecotryRootMapper, DateMediumMapper]의 Mapper type으로 `map`, `filter`, `sort`, `aggregate`를 수행합니다.
+
+### Adapter Delegation (Adapter)
+아래의 UML이 복잡하게 보이지만 간단합니다.
+* Target : GalleryAdapter
+* Adapter : LinearAdapter, GridAdapter
+* Adaptee : DirectoryLinearDelegateAdapter, MediumLinearDelegateAdapter, DirectoryGridDelegateAdapter, MediumGridDelegateAdapter, DateGridDelegateAdapter
+
+만약 이 요구사항을 하나의 Adapter에서 if ~ else문으로 해결해야 했다면, 많은 문제를 극복해야 했습니다.
+* 동적으로 LayoutParam 수정
+* Linear, Grid의 View 차이점
+* etc...
+
+Adapter 패턴으로 구조를 잡음으로써 **각 Class는 하나의 책임을 가지게 됩니다.** 즉, 다른 변경 사항의 영향을 받지 않습니다.
+
+![](document/design_pattern_adapter.jpg)
+
+
+### Transformer (Strategy)
+위에서 설명한대로 CleanGallery의 Category는 [Directory, Date]로 구성되어 있습니다.
+
+[DateTransformer][DateTransformer], [DirTransformer][DirTransformer] 는 Date, Direcotry 각각의 요소로  Groupping 을 수행합니다.
+
+> 용어 혼동의 우려로 aggregate와 Transformer의 Naming 이유를 설명드리도록 하겠습니다.
+ * aggregate : `SubjectMapper` 관점에서 Naming
+ * Transformer : `DateTransformer`, `DateTransformer` 관점에서 Naming
+
+![](document/design_pattern_strategy.jpg)
+
+### SetUp View Mode (Strategy)
+
+[Linear, Grid] 두 가지 Type의 User Interface의 요구사항이 있었습니다.  이것를 **ViewMode**라고 명칭을 정했습니다.
+
+Client의 요청에 의해 ViewMode [Linear, Grid]에 따라서 User Interface가 표현됩니다.
+
+![](document/design_pattern_viewmode.jpg)
+
 
  [MediaFetcher]: app/src/main/java/com/hucet/clean/gallery/datasource/local/MediaFetcher.kt
  [ImageVideoGifFilter]: app/src/main/java/com/hucet/clean/gallery/gallery/filter/ImageVideoGifFilter.kt
  [HiddenFileFilter]: app/src/main/java/com/hucet/clean/gallery/gallery/filter/HiddenFileFilter.kt
  [LocalDataSource]: app/src/main/java/com/hucet/clean/gallery/datasource/local/LocalDataSource.kt
  [SubjectMapper]: app/src/main/java/com/hucet/clean/gallery/gallery/directory/SubjectMapper.kt
- [GalleryPresenter]: /app/src/main/java/com/hucet/clean/gallery/presenter/GalleryPresenter.kt
+ [GalleryPresenter]: app/src/main/java/com/hucet/clean/gallery/presenter/GalleryPresenter.kt
  [GalleryRepository]: app/src/main/java/com/hucet/clean/gallery/repository/GalleryRepository.kt
+ [DateTransformer]: app/src/main/java/com/hucet/clean/gallery/gallery/category/DateTransformer.kt
+ [DirTransformer]: app/src/main/java/com/hucet/clean/gallery/gallery/directory/DirTransformer.kt
