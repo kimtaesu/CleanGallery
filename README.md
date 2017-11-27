@@ -130,7 +130,7 @@ Local Layer는 [MediaFetcher](https://github.com/kimtaesu/CleanGallery/blob/mast
 CleanGallery의 Category는 [Directory, Date]로 구성되어 있습니다.
 또, Directory 구조에서 [Root, Medium] 으로 구분하고 있습니다.
 
-![](document/category.jpg)
+![](document/category.png)
 
 이 부분의 구조가 처음부터 잘못되어 있다면, 유지보수 하는 내내 if ~ else 가 남발될 수 있는 상황을 초래할 수 있습니다.
 
