@@ -186,3 +186,4 @@ Client의 요청에 의해 ViewMode [Linear, Grid]에 따라서 User Interface�
  [GalleryRepository]: app/src/main/java/com/hucet/clean/gallery/repository/GalleryRepository.kt
  [DateTransformer]: app/src/main/java/com/hucet/clean/gallery/gallery/category/DateTransformer.kt
  [DirTransformer]: app/src/main/java/com/hucet/clean/gallery/gallery/directory/DirTransformer.kt
+ [PathLocationContext]: app/src/main/java/com/hucet/clean/gallery/gallery/directory/PathLocationContext.kt
