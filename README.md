@@ -17,7 +17,7 @@ Gallery라는 주제로 Clean Code를 지향하며 Architecture를 보다 나은
 * [Spek](https://github.com/spekframework/spek)
 
 ## Data Sequential flow
-![](https://github.com/kimtaesu/CleanGallery/blob/performance/document/flow.png)
+![](document/flow.png)
 
 ### DataStore & Filter
 DataStore 에서 Media들을 가져오기 위해서 [MediaFetcher][MediaFetcher]를 사용합니다.
@@ -99,10 +99,11 @@ subscribe(
 ```
 
 ## Architecture
-![](https://github.com/kimtaesu/CleanGallery/blob/master/document/architenture.jpg)
+![](document/architenture.jpg)
 
 ### User Interface
-[MainActivity](https://github.com/kimtaesu/CleanGallery/blob/master/app/src/main/java/com/hucet/clean/gallery/activity/MainActivity.kt)에서 표시 할 UI 구성 요소를 만드는 데 사용됩니다. [GalleryPresenter](https://github.com/kimtaesu/CleanGallery/blob/master/app/src/main/java/com/hucet/clean/gallery/presenter/GalleryPresenter.kt) 를 사용하여 Media 데이터를 가져올 수 있습니다.
+[MainActivity][MainActivity]에서 표시 할 UI 구성 요소를 만드는 데 사용됩니다.
+[GalleryPresenter][GalleryPresenter] 를 사용하여 Media 데이터를 가져올 수 있습니다.
 
 ### Presentation
 이 Layer는 UI를 표현하는데 사용되지만, 동시에 UI 자체에 대해서는 알지 못합니다. 즉, 안드로이드 프레임 워크에 의존하지 않기 때문에 Test 환경을 쉽게 구성할 수 있습니다.  [GalleryRepository](https://github.com/kimtaesu/CleanGallery/blob/master/app/src/main/java/com/hucet/clean/gallery/repository/GalleryRepository.kt)를 사용하여 Media 데이터를 가져올 수 있습니다.
@@ -113,7 +114,15 @@ Data Layer는 여러 External data layer 대한 **Access Point**입니다. 현�
 > Data layer의 추상화는 _Over Engineering_ 일 수 있습니다. Data layer는 **저 수준이기 때문에 Data Layer의 변경은 고 수준(UI, Presentation) 범위를 포함될 수 있습니다.** 또한 실제 문제가 뒤 늦게 나타날 수도 있으며, 시간이 길어질 수록 그동안 구현한 코드를 변경하는 것이 어려울 수 있습니다.
 
 ### Local
-Local Layer는 [MediaFetcher](https://github.com/kimtaesu/CleanGallery/blob/master/app/src/main/java/com/hucet/clean/gallery/datasource/local/MediaFetcher.kt)를 사용하여 데이터를 가져올 수 있습니다. MediaFetcher는 [ContentResolver](https://developer.android.com/reference/android/content/ContentResolver.html)의 Query를 통해 Local의 저장되어 있는 Image, Video, Gif를 가져옵니다.
+Local Layer는 [MediaFetcher][MediaFetcher]를 사용하여 데이터를 가져올 수 있습니다. MediaFetcher는 [ContentResolver](https://developer.android.com/reference/android/content/ContentResolver.html)의 Query를 통해 Local의 저장되어 있는 Image, Video, Gif를 가져옵니다.
+
+## Denpendencies Graph
+![](document/di.jpg)
+
+Dagger2를 사용하여 DI를 구현하였으며, 더 나아가 **Graph**를 작성함으로써 명확하게 이해를 도울 수 있습니다.
+
+> 아래 그림에서 Provide - Inject 관계 연결은 생략하였습니다.
+
 
 ## Design Patterns
 ### MediaFilter (Chain of responsibility)
@@ -176,6 +185,20 @@ Client의 요청에 의해 ViewMode [Linear, Grid]에 따라서 User Interface�
 
 ![](document/design_pattern_viewmode.jpg)
 
+### Config Changed (Observer)
+
+AppConfig properties가 변경될 때 [MainActivity][MainActivity]에서 모든 작업을 수행하면 코드가 복잡해질 뿐만 아니라 가독성이 떨어졌습니다.
+
+그래서 각 Observer 기능을 나누어 수행하도록 하였습니다.
+
+ * [PathLocationContext][PathLocationContext] : onCategoryChanged() 만 수신하고 있으며, Category가 Date type 일 경우 `moveRoot()` 를 호출합니다.
+ * [ConfigLogic][ConfigLogic] : 모두 수신하고 있으며 Config 변경 시 Preference에 해당 값을 변경합니다.
+ * [MainActivity][MainActivity] : 모두 수신하고 있으며 Config 변경 시 User Interface를 표현합니다.
+
+Client의 요청에 의해 ViewMode [Linear, Grid]에 따라서 User Interface가 표현됩니다.
+
+![](document/design_pattern_viewmode.jpg)
+
 
  [MediaFetcher]: app/src/main/java/com/hucet/clean/gallery/datasource/local/MediaFetcher.kt
  [ImageVideoGifFilter]: app/src/main/java/com/hucet/clean/gallery/gallery/filter/ImageVideoGifFilter.kt
@@ -187,3 +210,5 @@ Client의 요청에 의해 ViewMode [Linear, Grid]에 따라서 User Interface�
  [DateTransformer]: app/src/main/java/com/hucet/clean/gallery/gallery/category/DateTransformer.kt
  [DirTransformer]: app/src/main/java/com/hucet/clean/gallery/gallery/directory/DirTransformer.kt
  [PathLocationContext]: app/src/main/java/com/hucet/clean/gallery/gallery/directory/PathLocationContext.kt
+ [MainActivity]: app/src/main/java/com/hucet/clean/gallery/activity/MainActivity.kt
+ [ConfigLogic]: app/src/main/java/com/hucet/clean/gallery/config/ConfigLogic.kt
