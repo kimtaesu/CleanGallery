@@ -3,6 +3,7 @@ package org.buffer.android.boilerplate.ui.injection.module
 import android.app.Application
 import android.content.Context
 import com.hucet.clean.gallery.config.ApplicationConfig
+import com.hucet.clean.gallery.config.ReadOnlyApplicationConfig
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -20,7 +21,10 @@ open class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideConfig(application: Application): ApplicationConfig {
-        return ApplicationConfig(application)
-    }
+    fun provideConfig(application: Application): ApplicationConfig = ApplicationConfig(application)
+
+    @Provides
+    @Singleton
+    fun provideReadOnlyConfig(application: Application): ReadOnlyApplicationConfig =
+            ReadOnlyApplicationConfig(application)
 }

@@ -10,7 +10,7 @@ import javax.inject.Inject
 /**
  * Created by taesu on 2017-10-30.
  */
-class ApplicationConfig @Inject constructor(
+open class ApplicationConfig @Inject constructor(
         private val application: Application
 ) {
 
@@ -20,7 +20,7 @@ class ApplicationConfig @Inject constructor(
         this.checker = rootChecker
     }
 
-    var filterdType: Long
+    open var filterdType: Long
         get() {
             return PreferenceHelper.defaultPrefs(application)[key_filter_media, VIDEOS or IMAGES or GIFS]
         }
@@ -29,7 +29,7 @@ class ApplicationConfig @Inject constructor(
             value
         }
 
-    var sortOptionType: SortOptions
+    open var sortOptionType: SortOptions
         get() {
             when (categoryMode) {
                 CategoryMode.DATE -> {
@@ -61,7 +61,7 @@ class ApplicationConfig @Inject constructor(
             }
         }
 
-    var showHidden: Boolean
+    open var showHidden: Boolean
         get() {
             return PreferenceHelper.defaultPrefs(application)[key_show_hidden, false]
         }
@@ -70,7 +70,7 @@ class ApplicationConfig @Inject constructor(
             value
         }
 
-    var categoryMode: CategoryMode
+    open var categoryMode: CategoryMode
         set(value) {
             PreferenceHelper.defaultPrefs(application)[key_category_type] = value.name
         }
@@ -81,7 +81,7 @@ class ApplicationConfig @Inject constructor(
 
     fun isCategoryDate(): Boolean = categoryMode == CategoryMode.DATE
 
-    var viewModeType: ViewModeType
+    open var viewModeType: ViewModeType
         set(value) {
             PreferenceHelper.defaultPrefs(application)[key_layout_type] = value.name
         }

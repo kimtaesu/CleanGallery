@@ -2,6 +2,7 @@ package org.buffer.android.boilerplate.ui.injection.module
 
 import android.content.Context
 import com.hucet.clean.gallery.config.ApplicationConfig
+import com.hucet.clean.gallery.config.ReadOnlyApplicationConfig
 import com.hucet.clean.gallery.datasource.local.LocalDataSource
 import com.hucet.clean.gallery.datasource.local.MediaFetcher
 import com.hucet.clean.gallery.datasource.local.NoMediaFolderProvider
@@ -27,7 +28,7 @@ class RepositoryServiceModule {
     @Provides
     @PerActivity
     fun provideOrderedFilterContext(filters: Set<@JvmSuppressWildcards MediaTypeFilter>,
-                                    config: ApplicationConfig): OrchestraFilter {
+                                    config: ReadOnlyApplicationConfig): OrchestraFilter {
         return OrchestraFilter(filters, config)
     }
 
