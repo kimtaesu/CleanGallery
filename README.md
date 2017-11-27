@@ -1,6 +1,7 @@
 # CleanGallery
 Gallery라는 주제로 Clean Code를 지향하며 Architecture를 보다 나은 방향으로 학습하기 위한 용도의 프로젝트입니다.
 
+안전한 apk-release.apk 를 설치하면 Application을 실행할 수 있습니다.
 
 > Source는 99% [Kotlin](https://kotlinlang.org/)으로 작성되었습니다.  Unit Test는 100% [Kotlin-Spek](https://github.com/spekframework/spek)으로 작성되었습니다.
 
@@ -15,6 +16,16 @@ Gallery라는 주제로 Clean Code를 지향하며 Architecture를 보다 나은
 * [Timber](https://github.com/JakeWharton/timber)
 * [Mockito](http://site.mockito.org/)
 * [Spek](https://github.com/spekframework/spek)
+* [Material-dialogs](https://github.com/afollestad/material-dialogs)
+* [PermissionsDispatcher](https://github.com/permissions-dispatcher/PermissionsDispatcher)
+* [Firebase-CrashReport](https://firebase.google.com/docs/crash/?hl=ko)
+* [Stetho](http://facebook.github.io/stetho/)
+* [Mokito](http://http://site.mockito.org/)
+
+
+## Demos
+<img src="document/directory.gif" alt="Smiley face" height="400" width="230">
+<img src="document/date.gif" alt="Smiley face" height="400" width="230">
 
 ## Data Sequential flow
 ![](document/flow.png)
