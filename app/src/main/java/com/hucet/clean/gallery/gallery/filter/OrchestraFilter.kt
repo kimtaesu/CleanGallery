@@ -10,7 +10,7 @@ import com.hucet.clean.gallery.model.Medium
  */
 class OrchestraFilter constructor(
         filters: Set<@JvmSuppressWildcards MediaTypeFilter>,
-        private val config: ReadOnlyApplicationConfig
+        private val config: ApplicationConfig
 ) {
     private val FILTER_HIGH_PRIORITY = listOf(
             ImageVideoGifFilter::class

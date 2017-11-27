@@ -1,6 +1,7 @@
 package com.hucet.clean.gallery.activity
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -67,18 +68,16 @@ class MainActivity() : AppCompatActivity(), HasSupportFragmentInjector, Gallery.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        // TODO Revert it
-//        showGallaeryWithPermissionCheck()
+        showGallaeryWithPermissionCheck()
         initToolbar()
         showGallaery()
     }
 
-    // TODO Revert it
-//    @SuppressLint("NeedOnRequestPermissionsResult")
-//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        onRequestPermissionsResult(requestCode, grantResults)
-//    }
+    @SuppressLint("NeedOnRequestPermissionsResult")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        onRequestPermissionsResult(requestCode, grantResults)
+    }
 
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
     fun showGallaery() {

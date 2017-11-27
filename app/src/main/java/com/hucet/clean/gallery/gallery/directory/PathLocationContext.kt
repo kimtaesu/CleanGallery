@@ -21,7 +21,7 @@ interface DirectoryRootChecker {
 
 open class PathLocationContext(
         private val imageVideoGifFilter: ImageVideoGifFilter,
-        private val config: ReadOnlyApplicationConfig,
+        private val config: ApplicationConfig,
         private val mappers: Map<MapperType, SubjectMapper<Medium, out Basic>>
 ) : DirectoryRootChecker, OnConfigObserver {
 

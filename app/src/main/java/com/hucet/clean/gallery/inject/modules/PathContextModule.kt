@@ -1,7 +1,6 @@
 package com.hucet.clean.gallery.inject.modules
 
 import com.hucet.clean.gallery.config.ApplicationConfig
-import com.hucet.clean.gallery.config.ReadOnlyApplicationConfig
 import com.hucet.clean.gallery.gallery.category.DateTransformer
 import com.hucet.clean.gallery.gallery.category.DirTransformer
 import com.hucet.clean.gallery.gallery.directory.PathLocationContext
@@ -21,7 +20,7 @@ class PathContextModule() {
     @Provides
     @PerActivity
     fun providePathLocationContext(
-            config: ReadOnlyApplicationConfig,
+            config: ApplicationConfig,
             imageVideoGifFilter: ImageVideoGifFilter,
             dirTransformer: DirTransformer,
             dateTransformer: DateTransformer
