@@ -241,7 +241,6 @@ class MainActivity() : AppCompatActivity(), HasSupportFragmentInjector, Gallery.
     }
 
     override fun onViewModeChanged(viewModeType: ViewModeType) {
-        getCurrentAdapter()?.clearItems()
         setUpLayout()
         requestFetch()
     }

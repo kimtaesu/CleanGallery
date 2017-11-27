@@ -24,7 +24,7 @@ class GridViewModeSetUp @Inject constructor() : ViewModeSwichable {
             layoutManager = null
             adapter = null
             layoutManager = manager
-            swapAdapter(gridAdapter, false)
+            adapter = gridAdapter
         }
         gridAdapter.apply {
             setGlideRequest(glideRequests)
@@ -41,7 +41,7 @@ class LinearViewModeSetUp @Inject constructor() : ViewModeSwichable {
             layoutManager = null
             adapter = null
             layoutManager = manager
-            swapAdapter(linearAdapter, false)
+            adapter = linearAdapter
 
         }
         linearAdapter.apply {

@@ -15,16 +15,19 @@ import com.hucet.clean.gallery.model.Basic
  */
 class ViewModeNavigator(val mapViewModeSetUp: Map<ViewModeType, @JvmSuppressWildcards ViewModeSwichable>) {
     fun setUpLayoutManager(activity: Activity, type: ViewModeType, recyclerView: RecyclerView, adapterFP: () -> GalleryAdapter?, onGalleryClicked: OnGalleryClickedListener) {
-        val adapter = adapterFP()
         when (type) {
             ViewModeType.GRID -> {
                 val gridLayoutManager = GridLayoutManager(activity, 2)
                 gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
-                        return if (adapter?.getItemViewType(position) == GalleryType.DATE.value)
+                        val adapter = adapterFP()
+                        adapter ?: return 1
+                        if (adapter.items.isEmpty()) return 1
+                        return if (adapter?.getItemViewType(position) == GalleryType.DATE.value) {
                             gridLayoutManager.spanCount
-                        else
+                        } else {
                             1
+                        }
                     }
                 }
 
