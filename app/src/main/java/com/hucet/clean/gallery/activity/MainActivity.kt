@@ -47,8 +47,8 @@ import permissions.dispatcher.*
 import timber.log.Timber
 import javax.inject.Inject
 
-
-class MainActivity() : AppCompatActivity(), HasSupportFragmentInjector, Gallery.View, OnConfigObserver {
+@RuntimePermissions
+class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Gallery.View, OnConfigObserver {
 
     @Inject
     lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>

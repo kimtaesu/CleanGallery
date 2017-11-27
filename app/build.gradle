@@ -133,9 +133,7 @@ task copyKotlinDebugClasses(type: Copy) {
     from "build/tmp/kotlin-classes/debug"
     into "build/intermediates/classes/debug"
 }
-repositories {
-    mavenCentral()
-}
+
 apply plugin: 'com.google.gms.google-services'
 
 task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
