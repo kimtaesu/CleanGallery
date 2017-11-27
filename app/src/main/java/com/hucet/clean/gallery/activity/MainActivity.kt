@@ -70,7 +70,6 @@ class MainActivity() : AppCompatActivity(), HasSupportFragmentInjector, Gallery.
         setContentView(R.layout.activity_main)
         showGallaeryWithPermissionCheck()
         initToolbar()
-        showGallaery()
     }
 
     @SuppressLint("NeedOnRequestPermissionsResult")
