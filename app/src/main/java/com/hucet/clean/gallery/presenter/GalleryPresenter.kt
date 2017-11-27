@@ -38,7 +38,7 @@ class GalleryPresenter constructor(private val view: Gallery.View,
                             Timber.d("subscribe ${next}")
                             val adapter = activity.getCurrentAdapter() ?: throw NullPointerException("adapter is null")
                             val diffUtil = adapter.calculateDiff(next)
-                            activity.getCurrentAdapter()?.updateByDiff(diffUtil)
+                            adapter.updateByDiff(diffUtil)
                         },
                         { error ->
                             error.printStackTrace()
