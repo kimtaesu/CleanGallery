@@ -1,7 +1,8 @@
 # CleanGallery
 Gallery라는 주제로 Clean Code를 지향하며 Architecture를 보다 나은 방향으로 학습하기 위한 용도의 프로젝트입니다.
 
-안전한 apk-release.apk 를 설치하면 Application을 실행할 수 있습니다.
+Application 설치는 [Google Play](https://play.google.com/store/apps/details?id=com.hucet.clean.gallery&rdid=com.hucet.clean.gallery)를 통해서 할 수 있습니다.
+
 
 > Source는 99% [Kotlin](https://kotlinlang.org/)으로 작성되었습니다.  Unit Test는 100% [Kotlin-Spek](https://github.com/spekframework/spek)으로 작성되었습니다.
 
