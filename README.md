@@ -118,10 +118,16 @@ subscribe(
 [GalleryPresenter][GalleryPresenter] 를 사용하여 Media 데이터를 가져올 수 있습니다.
 
 ### Presentation
-이 Layer는 UI를 표현하는데 사용되지만, 동시에 UI 자체에 대해서는 알지 못합니다. 즉, 안드로이드 프레임 워크에 의존하지 않기 때문에 Test 환경을 쉽게 구성할 수 있습니다.  [GalleryRepository](https://github.com/kimtaesu/CleanGallery/blob/master/app/src/main/java/com/hucet/clean/gallery/repository/GalleryRepository.kt)를 사용하여 Media 데이터를 가져올 수 있습니다.
+이 Layer는 UI를 표현하는데 사용되지만, 동시에 UI 자체에 대해서는 알지 못합니다. 즉, 안드로이드 프레임 워크에 의존하지 않기 때문에 Test 환경을 쉽게 구성할 수 있습니다.  [GalleryRepository][GalleryRepository]를 사용하여 Media 데이터를 가져올 수 있습니다.
+
+### Domain
+Domain Layer의 [GalleryRepository][GalleryRepository]는 `fun getGalleries(pathLocationContext: PathLocationContext, cacheInvalidate: Boolean): Flowable<List<Basic>` 를 정의하고 있습니다.
+즉, Presenter로 전달되어지는 type은 `Flowable<List<Basic>`로 정의하고 있습니다.
 
 ### Data
-Data Layer는 여러 External data layer 대한 **Access Point**입니다. 현재는 Local data layer만 구현되어 있으며, 추후 요구사항에 따라 여러 Cache, Network data source로 부터 데이터를 가져오는 데 사용됩니다.
+Data Layer는 여러 External data layer 대한 **Access Point**입니다.
+현재는 [LocalDataSource][LocalDataSource]만 구현되어 있으며, 추후 요구사항에 따라 추상화를 거쳐서
+여러 Cache, Network data source로 부터 데이터를 가져오는 데 사용됩니다.
 
 > Data layer의 추상화는 _Over Engineering_ 일 수 있습니다. Data layer는 **저 수준이기 때문에 Data Layer의 변경은 고 수준(UI, Presentation) 범위를 포함될 수 있습니다.** 또한 실제 문제가 뒤 늦게 나타날 수도 있으며, 시간이 길어질 수록 그동안 구현한 코드를 변경하는 것이 어려울 수 있습니다.
 
