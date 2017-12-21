@@ -4,14 +4,6 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'jacoco'
 apply plugin: 'io.fabric'
-apply plugin: "de.mannodermaus.android-junit5"
-junitPlatform {
-    filters {
-        engines {
-            include 'spek'
-        }
-    }
-}
 
 android {
     compileSdkVersion 26
@@ -63,13 +55,17 @@ android {
     lintOptions {
         abortOnError false
     }
-    junitPlatform {
-        jupiterVersion '5.0.0'
-        vintageVersion '4.12.0'
-    }
 }
 
 // junit5 doesn't support android projects out of the box
+apply plugin: "de.mannodermaus.android-junit5"
+junitPlatform {
+    filters {
+        engines {
+            include 'spek'
+        }
+    }
+}
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
