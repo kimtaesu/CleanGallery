@@ -7,6 +7,8 @@ apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 26
+    buildToolsVersion '26.0.2'
+
     defaultConfig {
         applicationId "com.hucet.clean.gallery"
         minSdkVersion 21
@@ -16,7 +18,6 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
-
     signingConfigs {
         release {
             storeFile file(RELEASE_STORE_FILE)
@@ -25,7 +26,6 @@ android {
             keyPassword RELEASE_KEY_PASSWORD
         }
     }
-
     buildTypes {
         debug {
             testCoverageEnabled true
@@ -52,6 +52,9 @@ android {
             }
         }
     }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 // junit5 doesn't support android projects out of the box
@@ -65,11 +68,9 @@ junitPlatform {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation kotlinDeps.kotlin
     testImplementation kotlinDeps.kotlinReflect
-
     implementation androidSupportDeps.androidSupportV7
     implementation androidSupportDeps.constraintLayout
     implementation androidSupportDeps.supportRecyclerView
@@ -82,35 +83,27 @@ dependencies {
     implementation opensourceDeps.materialPerference
     implementation opensourceDeps.materialDialogCore
     implementation opensourceDeps.materialDialogCommon
-
     kapt opensourceDeps.permissionsDispatcherProcessor
     implementation(opensourceDeps.permissionDispatcher) {
         // if you don't use android.app.Fragment you can exclude support for them
         exclude module: "support-v13"
     }
-
     implementation daggerDeps.dagger
     implementation daggerDeps.daggerSupport
     kapt daggerDeps.daggerCompiler
     kapt daggerDeps.daggerProcessor
     compileOnly daggerDeps.javaxAnnotation
-
     kapt opensourceDeps.glideCompiler
     implementation opensourceDeps.glide
-
     implementation firebaseDeps.crash
-
     implementation('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
         transitive = true
     }
     implementation 'com.google.firebase:firebase-core:11.0.4'
-
     testImplementation testDeps.junit
     testImplementation testDeps.mock
     testImplementation testDeps.mockInline
     testImplementation testDeps.robolectric
-
-
     testImplementation(testDeps.spekApi) {
         exclude group: "org.jetbrains.kotlin"
     }
@@ -119,12 +112,10 @@ dependencies {
         exclude group: "org.jetbrains.kotlin"
     }
     testImplementation testDeps.spekSubject
-
     testImplementation testDeps.junitPlatformEngine
     testImplementation testDeps.kluent
     testImplementation testDeps.kluentAndroid
     debugImplementation debugDeps.stetho
-
 }
 afterEvaluate {
     compileDebugUnitTestKotlin {
