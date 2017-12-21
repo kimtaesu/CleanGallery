@@ -2,15 +2,11 @@ package com.hucet.clean.gallery.datasource.local
 
 import com.hucet.clean.gallery.fixture.CursorFixture
 import com.hucet.clean.gallery.fixture.MediumFixture
-import com.nhaarman.mockito_kotlin.never
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
-import org.amshove.kluent.`should be`
-import org.amshove.kluent.`should not be`
 import org.amshove.kluent.any
 import org.amshove.kluent.mock
-import org.jetbrains.spek.api.dsl.context
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
