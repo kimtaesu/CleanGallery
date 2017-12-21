@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/kimtaesu/CleanGallery.svg?branch=master)](https://travis-ci.org/kimtaesu/CleanGaller)
+
 # CleanGallery
 Gallery라는 주제로 Clean Code를 지향하며 Architecture를 보다 나은 방향으로 학습하기 위한 용도의 프로젝트입니다.
 
