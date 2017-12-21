@@ -4,7 +4,16 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'jacoco'
 apply plugin: 'io.fabric'
-
+// junit5 doesn't support android projects out of the box
+apply plugin: "de.mannodermaus.android-junit5"
+junitPlatform {
+    filters {
+        engines {
+            include 'spek'
+            include 'junit-vintage'
+        }
+    }
+}
 android {
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
@@ -57,17 +66,10 @@ android {
     }
 }
 
-// junit5 doesn't support android projects out of the box
-apply plugin: "de.mannodermaus.android-junit5"
-junitPlatform {
-    filters {
-        engines {
-            include 'spek'
-            include 'junit-vintage'
-        }
-    }
-}
 
+repositories {
+    maven { url 'https://jitpack.io' }
+}
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation kotlinDeps.kotlin
@@ -123,22 +125,22 @@ dependencies {
     testImplementation testDeps.kluentAndroid
     debugImplementation debugDeps.stetho
 }
-afterEvaluate {
-    compileDebugUnitTestKotlin {
-        finalizedBy copyKotlinDebugUnitTestClasses
-        finalizedBy copyKotlinDebugClasses
-    }
-}
-
-task copyKotlinDebugUnitTestClasses(type: Copy) {
-    from "build/tmp/kotlin-classes/debugUnitTest"
-    into "build/intermediates/classes/test/debug"
-}
-
-task copyKotlinDebugClasses(type: Copy) {
-    from "build/tmp/kotlin-classes/debug"
-    into "build/intermediates/classes/debug"
-}
+//afterEvaluate {
+//    compileDebugUnitTestKotlin {
+//        finalizedBy copyKotlinDebugUnitTestClasses
+//        finalizedBy copyKotlinDebugClasses
+//    }
+//}
+//
+//task copyKotlinDebugUnitTestClasses(type: Copy) {
+//    from "build/tmp/kotlin-classes/debugUnitTest"
+//    into "build/intermediates/classes/test/debug"
+//}
+//
+//task copyKotlinDebugClasses(type: Copy) {
+//    from "build/tmp/kotlin-classes/debug"
+//    into "build/intermediates/classes/debug"
+//}
 
 apply plugin: 'com.google.gms.google-services'
 
