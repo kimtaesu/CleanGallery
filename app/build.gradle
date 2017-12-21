@@ -63,6 +63,7 @@ junitPlatform {
     filters {
         engines {
             include 'spek'
+            include 'junit-vintage'
         }
     }
 }
@@ -88,6 +89,11 @@ dependencies {
         // if you don't use android.app.Fragment you can exclude support for them
         exclude module: "support-v13"
     }
+
+    testImplementation junit5.unitTests()
+    testImplementation junit5.parameterized()
+    testCompileOnly junit5.unitTestsRuntime()
+
     implementation daggerDeps.dagger
     implementation daggerDeps.daggerSupport
     kapt daggerDeps.daggerCompiler
