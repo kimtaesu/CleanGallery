@@ -3,6 +3,8 @@
     package="com.hucet.clean.gallery">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".GalleryApplication"
         android:icon="@mipmap/ic_launcher"
@@ -26,6 +28,10 @@
             android:name=".preference.SettingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SettingTheme"></activity>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="01a8a326ef40f1e4010685ff3fe389ad91c04149" />
     </application>
 
 </manifest>
